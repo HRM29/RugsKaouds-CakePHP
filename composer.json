@@ -1,0 +1,23 @@
+{
+    "name": "cakephp/rugs-kaouds",
+    "description": "This is Rugs Kaouds Master Project",
+    "type": "project",
+    "require": {
+        "cakephp/cakephp": "3.6.10",
+        "php": "7.4",
+        "cakephp/migrations": "1.7"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Harshit Mathur",
+            "email": "mathharshit2916@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "App\\":"src/"
+        }
+    }
+}

@@ -1,0 +1,917 @@
+<?php use Cake\Routing\Router;
+	use Cake\Core\Configure;  
+?>
+
+<?php
+$session = $this->request->getSession();
+$action = $this->request->getParam('action');
+$controller = $this->request->getParam('controller');
+$authUser = $session->read('Auth');
+?>
+<style>
+.select2-container{
+	display:none;
+}
+#divLoading
+{
+    display : none;
+}
+#divLoading.show
+{
+    display : block;
+    position : fixed;
+    z-index: 100;
+    background-image : url('<?php echo Router::url('/', true)."img/loading.gif"; ?>');
+    background-color:#666;
+    opacity : 0.4;
+    background-repeat : no-repeat;
+    background-position : center;
+    left : 0;
+    bottom : 0;
+    right : 0;
+    top : 0;
+}
+#loadinggif.show
+{
+    left : 50%;
+    top : 50%;
+    position : absolute;
+    z-index : 101;
+    width : 32px;
+    height : 32px;
+    margin-left : -16px;
+    margin-top : -16px;
+}
+div.content {
+   width : 1000px;
+   height : 1000px;
+}
+</style>
+
+<?php 
+$squareJsUrl = "https://js.squareupsandbox.com/v2/paymentform";
+$appID = "sandbox-sq0idb-oVE_8fXmElchrJT-NV-RkA";
+$locationId = "84FXVDJJ8VXK2";
+if( Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.live') ){   
+	$squareJsUrl = "https://js.squareup.com/v2/paymentform";  
+	$appID = "sq0idp-ADsOz8H5WYn9bsF5MTGPAg";
+	$locationId = "FX8EDKJKAWSAM";
+}		
+?>
+<script type="text/javascript" src="<?php echo $squareJsUrl;?>">
+</script>
+<?php echo $this->Html->css(array('front/sq-payment-form')); ?>	
+
+<section class="checkout-page section-padding">
+         <div class="container p-0">
+            <div class="row">
+               <div class="col-md-8">
+			   <?= $this->Flash->render('ordrrpositive') ?>
+                  <div class="checkout-step">
+                     <div class="accordion" id="accordionExample">
+                        
+						<div class="card">
+								<div class="card-header" role="tab" id="headingOne">
+									<h5 class="mb-0">
+										 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										 <span class="number">1</span> Checkout Method
+										 </button>
+									
+									  </h5>
+								</div>
+								<?php if(empty($authUser['User']['id'])){ ?>
+								<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+								<?php }else{ ?>
+								<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+								<?php } ?>
+								<?php if(empty($authUser['User']['id'])){
+										 
+											 ?>
+									<div class="panel-body">
+										
+										<div class="row">
+											<div class="col-md-12 col-sm-12">
+												 
+													<div class="check-register">
+														<?php $options = array('Guest' => 'Checkout As Guest','Login' => 'Login');
+														echo $this->Form->radio('checkoutOption', $options); ?>
+													</div>
+													 
+												<div class="continue_for_guest m-20" style="display:none;" ><a class="view-button" id="continue_for_guest" style="cursor: pointer;">Continue</a></div>
+												</div>
+											<div class="col-md-12 col-sm-12" id="login-form" style="display:none;">
+											<div class="checkout-login">
+												 <?= $this->Flash->render('positivee') ?>
+												<?php echo $this->Form->create($user,['url' => ['controller' => 'Products', 'action' => 'login']]); ?>
+												<div class="form-group">
+														<?php echo  $this->Form->control('email', ['label' => false,"placeholder"=>"Enter Email Address","class"=>"form-control","div"=>false]); ?>
+														</div>
+														<div class="form-group">
+														<?php echo  $this->Form->control('password', ['label' => false,"placeholder"=>"Enter Password","class"=>"form-control","div"=>false]); ?>
+														</div>
+													<div class="check-register login-button form-group">
+														<?php echo $this->Form->button("<span>Login</span>", array('name' => 'submitcreate2', 'class' => 'view-button', 'type' => 'submit','id'=>'submitcreate2', 'title' => 'Create an account')); ?>
+													</div>													
+												<?php echo $this->Form->end(); ?>
+											</div>
+										</div>
+										</div>
+										
+									</div>
+									<?php }else{?>
+											<ul class="static-list" style="padding:15px 15px 0px 15px;"> 
+												<li>Login As : <?php if(!empty($authUser['User']['id'])){ echo $authUser['User']['email']; } ?></li>
+											</ul>
+										<?php }?>
+								</div>
+							</div>
+						
+						<?= $this->Form->create('', ['url' => ['controller' => 'Products', 'action' => 'checkoutnew'],'type' => 'file','id'=>'form_paypal']); ?>
+                        <div class="card checkout-step-two">
+                           <div class="card-header" id="headingTwo">
+                              <h5 class="mb-0">
+									<?php if(!empty($authUser['User']['id'])){ ?>
+													<button class="btn btn-link collapsed" type="button" id="delivery_address" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+													<span class="number">2</span> Billing Information
+													</button>
+									 <?php  }else{ ?>
+													 <button class="btn btn-link collapsed" type="button" id="delivery_address" data-toggle="collapse" data-target="#" aria-expanded="false" aria-controls="collapseTwo">
+													 <span class="number">2</span> Billing Information
+													 </button>
+									<?php }?>
+                                 
+                              </h5>
+                           </div>
+						   <?php if(!empty($authUser['User']['id'])){ ?>
+                           <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                             <?php  }else{ ?>
+							 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+							 <?php }?>
+							 <div class="card-body">
+									<?php  
+										if(!empty($cardData)){
+											$total_quanty = 0;
+											$total_price = 0;
+											foreach ($cardData as $item) { 
+												$total_quanty += $item['product_qty'];
+												$total_price += round($item['selling_price'],2);
+											}
+										}
+									?>
+									<?php
+									if(!empty($authUser['User']['id'])){
+									?>
+									<?php  echo $this->Form->hidden('user_id', ['value'=>$authUser['User']['id']]); ?>
+									<?php } ?> 
+									<?php  echo $this->Form->hidden('total_price', ['value'=>$total_price]); ?>
+									<?php  echo $this->Form->hidden('total_qty', ['value'=>$total_quanty]); ?>
+									<?php  echo $this->Form->hidden('checkout_option', ['value'=>2,'id'=>'checkout_option']); ?>
+                                    <div class="row">
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+											 <?= $this->Form->control('billing_first_name', ['type'=>'text','placeholder'=>'First Name','label'=>false,'class'=>'form-control border-form-control','value' =>isset($userData->first_name)?$userData->first_name:'' ]);?>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+											 <?= $this->Form->control('billing_last_name', ['type'=>'text','placeholder'=>'Last Name','label'=>false,'class'=>'form-control border-form-control','value' =>isset($userData->last_name)?$userData->last_name:'']);?>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+                                             
+											 <?= $this->Form->control('billing_phone', ['type'=>'text','placeholder'=>'Billing Phone','label'=>false,'class'=>'form-control border-form-control','value' =>isset($userData->phone)?$userData->phone:'','data-inputmask'=>"'mask': '999-999-9999'" ]);?>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+                                            
+											 <?= $this->Form->control('billing_email', ['type'=>'email','placeholder'=>'Billing Email','label'=>false,'class'=>'form-control border-form-control','value' =>isset($userData->email)?$userData->email:'' ]);?>
+                                          </div>
+                                       </div>
+                                    </div>
+									<div class="row">
+                                       <div class="col-sm-12">
+                                          <div class="form-group">
+											 <?= $this->Form->control('billing_street_address', ['type'=>'textarea','placeholder'=>'Billing Street Address','label'=>false,'class'=>'form-control border-form-control' ]);?>
+                                             
+                                             <small>(Please provide the number and street.)</small>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">  
+										<div class="col-sm-6">
+                                          <div class="form-group">
+											  <?= $this->Form->control('billing_city', ['type'=>'text','placeholder'=>'Billing City','label'=>false,'class'=>'form-control border-form-control' ]);?>
+                                          </div>
+										</div>
+										<div class="col-sm-6">
+                                          <div class="form-group billing_state">
+											 <?= $this->Form->select('billing_state',$states, ['empty'=>'Select State','label'=>false,'class'=>'form-control border-form-control' ]);?>
+                                          </div>
+										</div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+                                             
+											 <?= $this->Form->control('billing_zip', ['type'=>'text','placeholder'=>'Zip Code','label'=>false,'class'=>'form-control border-form-control','data-inputmask'=>"'mask': '99999'" ]);?>
+                                          </div>
+                                       </div>
+									   <div class="col-sm-6">
+                                          <div class="form-group">
+                                             
+											 <?= $this->Form->select('billing_country',$countries, ['empty'=>'Select Country','label'=>false,'class'=>'form-control border-form-control country' ,'data-target'=>'billing_state','value'=>'US']);?>
+                                          </div>
+                                       </div> 
+                                    </div>
+                                    
+									<div class="custom-control custom-checkbox mb-3">
+                                       <input type="checkbox" class="custom-control-input same_as_billing" id="customCheckbill">
+                                       <label class="custom-control-label" for="customCheckbill">Use my billing address as my delivery address</label>
+                                    </div>
+                                    <div class="heading-part">
+                                       <h3 class="sub-heading">Delivery Address</h3>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+											  <?= $this->Form->control('delivery_first_name', ['type'=>'text','placeholder'=>'First Name','label'=>false,'class'=>'form-control border-form-control' ]);?>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+											 <?= $this->Form->control('delivery_last_name', ['type'=>'text','placeholder'=>'Last Name','label'=>false,'class'=>'form-control border-form-control' ]);?>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+											 <?= $this->Form->control('delivery_phone', ['type'=>'text','placeholder'=>'Delivery Phone','label'=>false,'class'=>'form-control border-form-control','data-inputmask'=>"'mask': '999-999-9999'" ]);?>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+											 <?= $this->Form->control('delivery_email', ['type'=>'email','placeholder'=>'Delivery Email','label'=>false,'class'=>'form-control border-form-control' ]);?>
+                                          </div>
+                                       </div>
+                                    </div>
+									<div class="row">
+                                       <div class="col-sm-12">
+                                          <div class="form-group">
+											 <?= $this->Form->control('delivery_street_address', ['type'=>'textarea','placeholder'=>'Delivery Street Address','label'=>false,'class'=>'form-control border-form-control' ]);?>
+                                             <small>
+											 Please include landmark (e.g : Opposite Bank) as the carrier service may find it easier to locate your address.
+                                             </small>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row"> 
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+											 <?= $this->Form->control('delivery_city', ['type'=>'text','placeholder'=>'Delivery City','label'=>false,'class'=>'form-control border-form-control' ]);?>
+                                          </div>
+                                       </div>
+									   <div class="col-sm-6">
+                                          <div class="form-group delivery_state">
+											 <?= $this->Form->select('delivery_state',$states, ['empty'=>'Select State','label'=>false,'class'=>'form-control border-form-control' ]);?>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+											 <?= $this->Form->control('delivery_zip', ['type'=>'text','placeholder'=>'Zip Code','label'=>false,'class'=>'form-control border-form-control','data-inputmask'=>"'mask': '99999'" ]);?>
+                                          </div>
+                                       </div> 
+									   <div class="col-sm-6">
+                                          <div class="form-group">
+											 <?= $this->Form->select('delivery_country',$countries, ['empty'=>'Select Country','label'=>false,'class'=>'form-control border-form-control country','id'=>'delivery_countrys','data-target'=>'delivery_state','value'=>'US' ]);?>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    
+                                    
+                                    <!--button type="button" class="btn btn-default" id="continue_to_address">CONTINUE</button--> 
+									<div class="continue_to_address"><a class="view-button" id="continue_to_address" style="cursor: pointer;">Continue</a></div>
+                              </div>
+                           </div>
+                        </div>
+						<div class="card checkout-step-two">
+                           <div class="card-header" id="headingTwo">
+                              <h5 class="mb-0">
+									 <button class="btn btn-link" type="button" id="credit_card_details" data-toggle="collapse" data-target="#" aria-expanded="true" aria-controls="collapseFour">
+									 <span class="number">3</span> Credit Card Details
+									 </button>
+                              </h5>
+                           </div>
+						   
+							 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+								<div class="panel-body no-padding">
+										<div class="order-review" id="checkout-review">    
+											<div class="table-responsive" id="checkout-review-table-wrapper">
+												<table class="data-table" id="checkout-review-table">
+													<thead>
+														<tr>
+															<th style="width: 0%!important">SKU No</th>
+															<th >Product Name</th>
+															<th >Qty</th>
+															<th >Price</th>
+															<th >Subtotal</th>
+														</tr>
+													</thead>
+													<tbody>
+													<?php 
+													$from = "Order From: Rugsnc";
+													$itemDetails = " and item details are: ";
+													$total_quanty = 0;
+													$sub_total = 0;
+													if(!empty($cardData)){ 
+													foreach ($cardData as $item) {
+														
+														$total_quanty += $item['product_qty'];
+														$sub_total += round($item['selling_price'],2);
+														$itemDetails .= "SKU: ".$item['sku_no'];
+													?>
+														<tr>
+															<td><?=$item['sku_no'] ;?></td>
+															<td><h5 class="product-name product-name1"><?=$item['title'] ;?></h5></td>
+															<td><?=$item['product_qty'] ;?></td>
+															<td><span class="cart-price"><span class="price"><?="$".number_format($item['selling_price'],2);?></span></span></td>
+															 <!-- sub total starts here -->
+															<td><span class="cart-price"><span class="price"><?="$".number_format($item['selling_price'],2);?></span></span></td>
+														</tr>
+													 <?php } }
+													 $orederSumm = $from.$itemDetails;
+													 ?>
+													</tbody>
+													<tfoot>
+														
+														<tr>
+															<td colspan="2">Total Qty.</td>
+															<td><span class="price"><?=$total_quanty;?></span></td>
+															<td>Subtotal</td>
+															<td><span class="price" id="sub_total"><?="$".number_format($sub_total,2);?></span></td>
+														</tr>
+														
+														<tr>
+															<td colspan="4"><strong>Grand Total</strong></td>
+															<td><strong><span class="price" id="total"><?="$".number_format($sub_total,2);?></span></strong></td>
+														</tr>
+													</tfoot>
+												</table>
+											</div>
+											 
+										</div>
+									</div>
+							 <div class="card-body">
+								<div class="message alert alert-danger" style="display:none;"></div>
+                                    <div class="row"> 
+										<div id="square_div">
+											<h5><legend>Credit Card Details</h5>
+											<div id="form-container">
+												<div class="sq-field">
+													<label class="sq-label">Card Number</label>
+													<div id="sq-card-number"></div>
+												</div>
+												<div class="sq-field-wrapper">
+													<div class="sq-field sq-field--in-wrapper">
+														<label class="sq-label">Expiration</label>
+														<div id="sq-expiration-date"></div>
+													</div> 
+													<div class="sq-field sq-field--in-wrapper">
+														<label class="sq-label">CVV</label>
+														<div id="sq-cvv"></div>
+													</div> 
+													<div class="sq-field sq-field--in-wrapper">
+														<label class="sq-label">Postal</label>
+														<div id="sq-postal-code"></div>
+													</div>
+												</div>
+												<div class="sq-field">
+													<input type="hidden" id="card-nonce" name="nonce">
+													<input type="hidden" name="note" value="<?php echo $orederSumm;?>"> 
+												</div>
+												<button id="sq-creditcard" class="view-button button-credit-card squBtn" onclick="onGetCardNonce(event)" id="continue_to_card">Place Order</button>
+											</div>
+										</div>
+									  
+                                    </div>
+									<input type="hidden" id="submit_url" value="<?php echo Router::url('/', true)."products/checkoutnew"; ?>">
+									<input type="hidden" id="redirect_url" value="<?php echo Router::url('/', true)."payments/success"; ?>">
+                                    
+                              </div>
+                           </div>
+                        </div>
+						<div id="divLoading"> 
+						</div>
+						 
+						<?= $this->Form->end() ?>
+						<?php /*echo $this->Form->create(false,['url' => 'https://www.sandbox.paypal.com/cgi-bin/webscr','id'=>'form_paypal_submit']);?>
+								<?php  echo $this->Form->hidden('cmd', ['value'=>'_cart']); ?>
+								<?php  echo $this->Form->hidden('upload', ['value'=>1]); ?>
+								<?php  echo $this->Form->hidden('business', ['value'=>$paypalemail]); ?>
+								<?php  echo $this->Form->hidden('currency_code', ['value'=>'USD']); ?>
+								<?php  echo $this->Form->hidden('custom', ['value'=>'','id'=>'order_id']); ?>
+								
+								<?php
+								
+								if(!empty($cardData)){$i =1; foreach ($cardData as $item) {
+									 echo $this->Form->hidden('item_number_'.$i, ['value'=>$item['id']]);
+									 echo $this->Form->hidden('item_name_'.$i, ['value'=>$item['title']]);
+									 
+									 echo $this->Form->hidden('amount_'.$i, ['value'=>$item['selling_price']]);
+									 $i++; }}
+								?>
+								<!--echo $this->Form->hidden('shipping_1', ['value'=> '','id'=>'shipping_paypal']); -->
+								<?php  echo $this->Form->hidden('return', ['value'=> Router::url('/', true).'Payments/success']); ?> 
+								<?php  echo $this->Form->hidden('cancel_return', ['value'=>  Router::url('/', true).'Payments/cancel']); ?>
+								<?php  echo $this->Form->hidden('notify_url', ['value'=>  Router::url('/', true).'Payments/success']); ?>
+						<?= $this->Form->end();*/ ?>
+						 
+                     </div>
+                     </div>
+                     </div>
+               <div class="col-md-4">
+                  <div class="card cart-right">
+                     <h5 class="card-header">My Cart <span class="float-right">(<?= count($cardData); ?> item)</span></h5>
+                     <div class="card-body pt-0 pr-0 pl-0 pb-0">
+					 <?php
+						if(!empty($cardData)){
+							foreach($cardData as $key => $data){   
+					?>
+                        <div class="cart-list-product">
+                           <a class="float-right remove-cart delete" data1="<?=$data['id'];?>" style="cursor: pointer;"><i class="mdi mdi-close"></i></a>
+							<?php  	
+								$img_src = Router::url('/', true).'uploads/product/';
+								
+								$sku = $data['sku_no'];
+								
+								$res =  $this->General->getProductImages($data['id']);
+								
+								$img_name = isset($res[0]->image)?$res[0]->image:'';
+								 
+								$inFolder = $this->General->__get_picture_folder($sku);
+									 		 
+								$filePath =  WWW_ROOT . 'uploads' . DS . 'product'.DS.$inFolder.DS.$img_name;
+								
+								$filePath21 =  WWW_ROOT . 'uploads' . DS . 'product'.DS.$inFolder.DS. str_replace('jpg','JPG',$img_name);
+									 
+								$fileUrl = $img_src.$inFolder."/".$img_name;
+								
+								$fileUr2l = $img_src.$inFolder."/".str_replace('jpg','JPG',$img_name);
+								
+								 
+								 
+								// if(file_exists($filePath)){
+							?>
+									<img src="<?php echo $img_name; ?>"  alt="<?php echo $data['title']; ?>" class="img-fluid"> 
+							 
+							<?php 
+								// }  
+							?>
+							<span class="badge badge-success">&nbsp;</span>
+							<h5><a href="<?php echo $this->Url->build(['controller'=>'products','action'=>'productView',base64_encode($data['sku_no'])]); ?>"><?= $data['title'];?></a></h5>
+                            
+							<p class="offer-price mb-0">$<?= number_format($data['selling_price'],2);?>  
+								<span class="regular-price">$<?= number_format($data['everyday_price'],2);?></span>
+							</p>
+                        </div>
+					 <?php }}else{ ?>
+						<h4 style="text-align:center;margin-top: 20px;">Cart is empty !!</h4>
+					 <?php } ?>	
+					 <div class="cart-btn"><a class="view-button" href="<?php echo Router::url('/', true)."Products/shopping/"; ?>">Continue shopping</a></div>
+					 
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+		 
+		 
+		
+      </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+	   
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	// Create and initialize a payment form object
+	const paymentForm = new SqPaymentForm({
+		// Initialize the payment form elements 
+		applicationId: '<?php echo $appID;?>',
+		locationId: '<?php echo $locationId;?>',
+		inputClass: 'sq-input',
+		autoBuild: false,
+		// Customize the CSS for SqPaymentForm iframe elements
+		inputStyles: [{
+			fontSize: '16px',
+			lineHeight: '24px',
+			padding: '16px',
+			placeholderColor: '#999',
+			//backgroundColor: 'transparent',
+		}],  
+		// Initialize the credit card placeholders
+		cardNumber: {
+			elementId: 'sq-card-number',
+			placeholder: '9999 9999 9999 9999'
+		},
+		cvv: {
+			elementId: 'sq-cvv',
+			placeholder: 'CVV'
+		},
+		expirationDate: {
+			elementId: 'sq-expiration-date',
+			placeholder: 'MM/YY'
+		},
+		postalCode: {
+			elementId: 'sq-postal-code',
+			placeholder: 'Postal'
+		},
+		// SqPaymentForm callback functions
+		callbacks: {
+			/*
+			* callback function: cardNonceResponseReceived
+			* Triggered when: SqPaymentForm completes a card nonce request
+			*/
+			cardNonceResponseReceived: function (errors, nonce, cardData) {
+				if (errors) {
+					// Log errors from nonce generation to the browser developer console.
+					console.error('Encountered errors:');
+					var err = '';
+					errors.forEach(function (error) {
+						console.error('  ' + error.message);
+						err += error.message;
+					});
+					alert('Encountered errors: '+err);
+					$('.squBtn').attr('disabled',false);
+					$("div#divLoading").removeClass('show');
+					return;
+				}
+				//alert(`The generated nonce is:\n${nonce}`);
+			 
+				document.getElementById('card-nonce').value = nonce;
+				var csrfToken = $("[name='_csrfToken']").val(); 
+				var datax = $("#form_paypal").serializeArray(); 
+				fetch('checkoutnew', {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+						'X-CSRF-Token' : csrfToken
+					},
+					body: JSON.stringify({
+						nonce: nonce,
+						note: '<?php echo $orederSumm;?>',
+						_csrfToken:  csrfToken,
+						datax:datax
+					})
+				})
+				.catch(function (err){
+					alert('Network error: ' + err);
+					$('.squBtn').attr('disabled',false);
+					$("div#divLoading").removeClass('show');
+				})
+				.then(function (response){ 
+						if (!response.ok) {
+							return response.text().then(function (errorInfo){ Promise.reject(errorInfo)});
+						}
+						return response.text();
+				})
+				.then(function (data){
+					var respone = JSON.parse(data);
+					var status = respone.status;
+					console.log(respone); 
+					if(status == 'Success'){
+						 
+						var redirect_url = $('#redirect_url').val();
+						 
+						window.location = redirect_url;
+					}else{
+						var msg = respone.data; 
+						alert(msg);
+						$('.squBtn').attr('disabled',false);
+						$("div#divLoading").removeClass('show');
+					}
+					
+					
+					
+					//alert('Payment complete successfully!');
+				})
+				.catch(function (err){
+					console.error(err);
+					console.log(err);
+					alert('Payment failed to complete!');
+					$('.squBtn').attr('disabled',false);
+					$("div#divLoading").removeClass('show');
+				});
+			  
+			}
+		}
+	});
+      
+	 
+	function onGetCardNonce(event) {
+       // Don't submit the form until SqPaymentForm returns with a nonce
+       event.preventDefault();
+	   $("div#divLoading").addClass('show');
+       // Request a nonce from the SqPaymentForm object
+       paymentForm.requestCardNonce();
+	   $('.squBtn').attr('disabled',true);
+	}
+	  
+	//BUILD THE FORM
+	$(window).load(function(){ 	
+		//paymentForm.build(); 
+	}); 
+	
+</script>	
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script> 
+<script>
+	$(":input").inputmask();
+	
+	$('.delete').click(function() {
+		var csrfToken =  <?= json_encode($this->request->getParam('_csrfToken')) ?>;
+		var id = $(this).attr("data1");
+		
+		var url ='<?php echo $this->Url->build(['controller'=>'products','action'=>'deleteCart']); ?>';    
+		$.ajax({
+			type:'POST',
+			url:url,
+			data:{_csrfToken:csrfToken,id:id},
+			success: function(result){
+				//cartdata();	
+				location.reload();  
+				//console.log(result);
+			}
+
+		});
+	});
+	$(".same_as_billing").on("change", function(){
+	if (this.checked) {
+		$("[name='delivery_first_name']").val($("[name='billing_first_name']").val());
+		$("[name='delivery_last_name']").val($("[name='billing_last_name']").val());
+		$("[name='delivery_phone']").val($("[name='billing_phone']").val());
+		$("[name='delivery_email']").val($("[name='billing_email']").val());
+		$("[name='delivery_country']").val($("[name='billing_country']").val());
+		$("[name='delivery_city']").val($("[name='billing_city']").val());
+		$("[name='delivery_zip']").val($("[name='billing_zip']").val());
+		$("[name='delivery_state']").val($("[name='billing_state']").val());
+		$("[name='delivery_street_address']").val($("[name='billing_street_address']").val());
+	}else{
+		$("[name='delivery_first_name']").val('');
+		$("[name='delivery_last_name']").val('');
+		$("[name='delivery_phone']").val('');
+		$("[name='delivery_email']").val('');
+		$("[name='delivery_country']").val('');
+		$("[name='delivery_city']").val('');
+		$("[name='delivery_zip']").val('');
+		$("[name='delivery_state']").val('');
+		$("[name='delivery_street_address']").val('');
+	}
+});
+	 $( "#continue_for_guest" ).click(function() {
+	
+		var checkout_method = $("input[name='checkoutOption']:checked").val();
+		if(checkout_method == 'Guest'){
+			$("#delivery_address").attr("data-target", "#collapseTwo");
+			$("#checkout_option").val(1);
+			$('#collapseTwo').addClass("show");
+			$('#collapseOne').removeClass("show");
+			$('#collapseThree').removeClass("show");
+		}
+	});
+	$( "#continue_to_address" ).click(function() {
+/////////billing form validation start////////////	 
+	if($('#billing-first-name').val() == ""){
+		$('#billing-first-name').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#billing-first-name").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#billing-first-name').css('border','1px solid #ced4da');
+	}
+	if($('#billing-last-name').val() == ""){
+		$('#billing-last-name').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#billing-last-name").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#billing-last-name').css('border','1px solid #ced4da');
+	}
+	 
+	 
+	if($('#billing-email').val() == ""){
+		$('#billing-email').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#billing-last-name").offset().top}, 500);
+		return false;
+	}
+	else if($('#billing-email').val() != ""){
+		var str = $('#billing-email').val();
+		var patt = new RegExp("@");
+		var res = patt.test(str);
+		if(res == false){
+			$('#billing-email').css('border','1px solid red');
+			$('html, body').animate({scrollTop: $("#billing-email").offset().top}, 500);
+			return false;
+		}else{
+			$('#billing-email').css('border','1px solid #ced4da');
+		}
+	}
+	else{
+		$('#billing-email').css('border','1px solid #ced4da');
+	}
+	if($('#billing-phone').val() == ""){
+		$('#billing-phone').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#billing-phone").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#billing-phone').css('border','1px solid #ced4da');
+	}
+	if($('#billing-country').val() == ""){
+		$('#billing-country').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#billing-country").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#billing-country').css('border','1px solid #ced4da');
+	}
+	if($('#billing-city').val() == ""){
+		$('#billing-city').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#billing-city").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#billing-city').css('border','1px solid #ced4da');
+	}
+	if($('#billing-zip').val() == ""){
+		$('#billing-zip').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#billing-zip").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#billing-zip').css('border','1px solid #ced4da');
+	}
+	if($('#billing-state').val() == ""){
+		$('#billing-state').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#billing-state").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#billing-state').css('border','1px solid #ced4da');
+	}
+	if($('#billing-street-address').val() == ""){
+		$('#billing-street-address').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#billing-street-address").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#billing-street-address').css('border','1px solid #ced4da');
+	}
+	/////////billing form validation end////////////
+	/////////delivery form validation start////////////	 
+	if($('#delivery-first-name').val() == ""){
+		$('#delivery-first-name').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#delivery-first-name").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#delivery-first-name').css('border','1px solid #ced4da');
+	}
+	if($('#delivery-last-name').val() == ""){
+		$('#delivery-last-name').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#delivery-last-name").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#delivery-last-name').css('border','1px solid #ced4da');
+	}
+	 
+	 
+	if($('#delivery-email').val() == ""){
+		$('#delivery-email').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#delivery-email").offset().top}, 500);
+		return false;
+	}
+	else if($('#delivery-email').val() != ""){
+		var str = $('#delivery-email').val();
+		var patt = new RegExp("@");
+		var res = patt.test(str);
+		if(res == false){
+			$('#delivery-email').css('border','1px solid red');
+			$('html, body').animate({scrollTop: $("#delivery-email").offset().top}, 500);
+			return false;
+		}else{
+			$('#delivery-email').css('border','1px solid #ced4da');
+		}
+	}
+	else{
+		$('#delivery-email').css('border','1px solid #ced4da');
+	}
+	if($('#delivery-phone').val() == ""){
+		$('#delivery-phone').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#delivery-phone").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#delivery-phone').css('border','1px solid #ced4da');
+	}
+	if($('#delivery-country').val() == ""){
+		$('#delivery-country').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#delivery-country").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#delivery-country').css('border','1px solid #ced4da');
+	}
+	if($('#delivery-city').val() == ""){
+		$('#delivery-city').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#delivery-city").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#delivery-city').css('border','1px solid #ced4da');
+	}
+	if($('#delivery-zip').val() == ""){
+		$('#delivery-zip').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#delivery-zip").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#delivery-zip').css('border','1px solid #ced4da');
+	}
+	if($('#delivery-state').val() == ""){
+		$('#delivery-state').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#delivery-state").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#delivery-state').css('border','1px solid #ced4da');
+	}
+	if($('#delivery-street-address').val() == ""){
+		$('#delivery-street-address').css('border','1px solid red');
+		$('html, body').animate({scrollTop: $("#delivery-street-address").offset().top}, 500);
+		return false;
+	}
+	else{
+		$('#delivery-street-address').css('border','1px solid #ced4da');
+	}
+	/////////delivery form validation end////////////
+	if ($("#same_as_billing").is(":checked"))
+		{
+			 	
+		    if($("#cr_password").val()=='')
+			{
+				$('#cr_password').css('border','1px solid red');
+				 
+				return false;
+			}
+			if($("#cr_cf_password").val()=='')
+			{	 
+				$('#cr_cf_password').css('border','1px solid red');
+				return false;
+			}
+			if($("#cr_cf_password").val()!=$("#cr_password").val()){
+				alert("Your password and confirmation password do not match.");
+				return false;	
+			}
+		} 
+
+	$("#credit_card_details").attr("data-target", "#collapseFour");
+	$('#collapseTwo').removeClass("show");
+	$('#collapseOne').removeClass("show");
+	$('#collapseThree').removeClass("show");
+	$('#collapseFour').addClass("show");
+	
+	paymentForm.build(); 
+}); 
+  
+	
+	$(document).ready(function(){
+		
+	if ( $( ".alert-danger" ).length ) {
+		$( "#collapseFour" ).removeClass("show");
+	}	
+		
+     $("#checkoutoption-guest").click(function(){
+		var radioValue = $("#checkoutoption-guest").val();
+		if(radioValue == 'Guest'){
+			
+			$('.continue_for_guest').css("display", "block");
+			$('#login-form').css("display", "none");
+		}
+	});
+	$("#checkoutoption-login").click(function(){
+		var radioValue = $("#checkoutoption-login").val();
+		if(radioValue == 'Login'){
+			$('#delivery_address').removeAttr('data-target','#collapseTwo');
+			$('.continue_for_guest').css("display", "none");
+			$('#login-form').css("display", "block");
+		}
+	});
+	});
+</script>

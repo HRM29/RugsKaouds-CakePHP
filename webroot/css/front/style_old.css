@@ -1,0 +1,259 @@
+@import url('//fonts.googleapis.com/css?family=Playfair+Display');
+@font-face {
+ font-family: 'Playfair Display';
+ src: url('../fonts/PlayfairDisplay.woff2') format('woff2'), url('../fonts/PlayfairDisplay.woff') format('woff');
+ font-weight: normal;
+ font-style: normal;
+}
+@font-face {
+    font-family: 'avenirregular';
+    src: url('fonts/avenir_roman-webfont.woff2') format('woff2'),
+         url('fonts/avenir_roman-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'goudy_old_stylebold';
+    src: url('fonts/goudy_old_style_bold-webfont.woff2') format('woff2'),
+         url('fonts/goudy_old_style_bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+body {
+	font-family: Playfair Display; 
+	font-weight: 400;
+	font-size: 13px;
+	color: #252525;
+	font-weight: normal;
+}
+h1, h2, h3, h4, h5, h6, h6 {
+	font-family: Playfair Display; 
+}
+img{ max-width: 100%; height: auto;}
+main {
+	margin-top: 60px;
+}
+
+.section-padding {
+	padding: 20px 0;
+}
+.pt {
+	padding-top:20px; margin:0
+}
+.pt-m {
+	padding-top:0px; margin:0
+}
+.top-nav-bar {
+	font-family: 'avenirregular';
+	background:#464040;
+}
+.top-bar-socials {
+	color:#eeeeee;
+	padding:10px;
+}
+.top-bar-socials i {
+	color:#797777;
+	padding:5px;
+}
+.top-link {
+	height:42px;
+	padding-top:8px;
+}
+.top-link ul {
+	text-align:right;
+	float:right;
+	padding:0;
+	margin:0;
+	color:#eeeeee;
+}
+.top-link ul span {
+	padding-top:5px;
+	color:#eeeeee;
+}
+.top-link ul li {
+	float:right;
+}
+.top-link ul li a {
+	color:#eeeeee;
+	margin:0;
+	padding:5px 10px;
+	text-transform:uppercase;
+}
+.nav-item button {
+	border:2px solid #868282;
+	padding:5px;
+	background:#464040;
+	color:#FFF;
+	outline:0;
+}
+.logo {
+	padding-top:15px;
+	margin: 0;
+}
+.logo p {
+	padding:15px;
+	text-align:center;
+	font-family:'goudy_old_stylebold'; color:#252525;
+	font-size:22px;
+	font-weight:bold;
+	margin: 0;
+}
+.navbar-light .navbar-brand {
+	color: rgba(0, 0, 0, .9);
+	display:none;
+ 	 color:#252525;
+	text-align:center;
+	width:100%;
+}
+.bg-light {
+	background-color: FFF !important;
+	width:100%;
+	text-align:center;
+	border-bottom:1px solid #eeeeee;
+	border-top:1px solid #eeeeee;
+}
+
+.navbar-nav {
+     margin-bottom: 0;
+	display:inline !important; 
+    width: 100%;
+    text-align: center;
+    right: 0;
+    left: 0;
+
+}
+.navbar li {
+	padding-left:22px;
+	padding-right:22px;
+	text-align:center;
+	 float: none;
+      display: inline-block;
+}
+.navbar .nav-link {
+	font-size:14px;
+	text-transform:uppercase;
+	padding: .2rem 1rem;
+}
+.slider {
+	padding-top:15px;
+}
+.carousel-caption {
+	bottom: 20px;
+	left:66%;
+	z-index: 1;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	color: #fff;
+	text-align: left;
+	width: 80%;
+	top: 20%;
+	font-weight:bold;
+}
+.carousel-caption h3 {
+	font-size:42px;
+	text-transform:uppercase;
+}
+.carousel-caption p {
+	font-size:38px;
+	width: 22%;
+	text-transform:uppercase;
+}
+.spacing{height:75px; display:block;}
+.main-heading {
+	text-transform:uppercase;
+	letter-spacing:5px;
+ 
+	margin:0;
+	width:100%;
+	z-index:1;
+	position: relative;
+	display:block;
+	clear:both;
+}
+.main-heading .col-md-6 { float:left;
+}
+.main-heading h1 {
+	font-size:42px;
+	text-transform:uppercase;
+	letter-spacing:5px;
+	margin:0;
+	z-index:1; 
+}
+.main-heading p {
+	font-size:14px;
+	text-transform:uppercase;
+	letter-spacing:5px;
+	padding-left:10%;
+	z-index:1;
+	margin:0;
+ }
+
+.main-heading  .heading-text {
+	font-size:14px;
+	text-transform:uppercase;
+	letter-spacing:5px;
+	padding-left:25% ;
+	z-index:1;
+	margin:0;
+ }
+.main-heading:after {
+	content: "";
+	width:auto;
+	border-top: 1px solid #eeeeee; 
+ 	top:60px;	
+	right:0; 
+	margin: auto;
+	z-index: 99;
+	position:absolute;
+	left:24%;
+}
+.wp-text{font-family: 'avenirregular';
+	position: relative; font-size:16px; color:#666666; margin:0; padding:15 0;}
+
+.wp-button{font-family: 'avenirregular';
+	border:2px solid #666;
+	float:right;
+	vertical-align:bottom;
+	width:45%;
+	padding:8px;
+	text-align:center;
+	margin-top:55px; 
+	font-weight:400;}
+
+.wp-button a{font-size:20px; color:#252525; display:block;}
+.wp-button a:hover{ text-decoration:none; color:#066}
+
+.rugs{padding-top:25px;  } 
+.rugs .col-md-5 {max-width: 39.333%;  padding:0; margin:0;}
+.rugs .col-md-2{flex: 0 0 22%; max-width: 21.222%; padding:0 0 0 10px; margin:0;}
+.rugs-img { position: relative; text-align:center; width:100%;}
+.rugs-img p{ position:absolute; bottom:35px; text-align:center; width:100%; font-size:36px; color:#252525; text-transform:uppercase}
+.rugs-left-img{position: relative; text-align:center; width:100%;}
+.rugs-left-img img{ height:182px;}
+.rugs-left-img p{ position:absolute; bottom:15px; text-align:center; width:100%; font-size:26px; color:#252525; text-transform:uppercase}
+
+.view-button{font-family: 'avenirregular';
+	border:2px solid #666;
+	float:right;
+	vertical-align:bottom;
+	width:35%;
+	padding:8px;
+	text-align:center;
+	margin-top:5px; 
+	font-weight:400;
+	color:#000;
+	letter-spacing:0;
+	text-transform: capitalize;font-size:20px;
+}
+.view-button:hover{ text-decoration:none; color:#066}
+
+.product{ width:20%; text-align:center; float:left; padding:15px 5px;}
+.product a{ text-decoration:none; color:#252525}
+.product p{ text-align:center; padding-top:10px; font-size:18px;}
+
+.footer{font-family: 'avenirregular'; background:#464040; padding:10px; color:#FFF; font-size:14px;}
+.footer p{ padding-top:10px;}
+.footer .icons{ margin:0; float:right;}
