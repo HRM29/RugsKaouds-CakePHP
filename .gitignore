@@ -1,8 +1,12 @@
-# CakePHP 3
+# CakePHP 3 - .gitignore
 
+# Ignore vendor directory
 /vendor/*
+
+# Ignore sensitive configuration
 /config/app.php
 
+# Ignore tmp directory except for placeholder files
 /tmp/cache/models/*
 !/tmp/cache/models/empty
 /tmp/cache/persistent/*
@@ -14,8 +18,10 @@
 /tmp/tests/*
 !/tmp/tests/empty
 
+# Ignore logs directory except for placeholder files
 /logs/*
 !/logs/empty
-tmp/debug_kit.sqlite
-tmp/cache/myapp_cake_routes_route_collection
 
+# Ignore specific temporary files
+/tmp/debug_kit.sqlite
+/tmp/cache/myapp_cake_routes_route_collection
