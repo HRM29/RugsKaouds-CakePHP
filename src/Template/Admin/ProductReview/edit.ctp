@@ -104,7 +104,6 @@ use Cake\Routing\Router; ?>
 	}
 
 	$('.remove_image').on('click', function() {
-		console.log(this);
 		var id = $(this).attr('data');
 		var FieldName = $(this).attr('atrValue');
 		var csrfToken = $("[name='_csrfToken']").val();
@@ -113,7 +112,7 @@ use Cake\Routing\Router; ?>
 		formData.append('_csrfToken', csrfToken);
 		formData.append('id', id);
 		formData.append('FieldName', FieldName);
-		if (confirm('Are you sure Remove Promo Image?')) {
+		if (confirm('Are you sure Remove Reviewer Image?')) {
 			$.ajax({
 				headers: {
 					'X-CSRF-Token': csrfToken

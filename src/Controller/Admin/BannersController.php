@@ -88,15 +88,19 @@ class BannersController extends AppController
 		$table = TableRegistry::getTableLocator()->get('Banners');
 
 		if ($this->request->is(['post', 'put'])) {
+			$postdata = $this->request->getData();
 			$params = array();
 			if (!empty($this->request->getData()['title'])) {
 				$params['title'] = base64_encode($this->request->getData()['title']);
 			}
 
+			if (!empty($this->request->getData()['block_type'])) {
+				$params['block_type'] = base64_encode($this->request->getData()['block_type']);
+			}
+
 			if (!empty($this->request->getData()['status_id'])) {
 				$params['status_id'] = base64_encode($this->request->getData()['status_id']);
 			}
-
 			$order['id'] = 'DESC';
 			return $this->redirect([
 				'controller' => 'Banners',
@@ -108,12 +112,18 @@ class BannersController extends AppController
 			$order = array();
 			if (isset($this->request->getQuery()['title'])) {
 				$title = base64_decode($this->request->getQuery()['title']);
-				$filters['title Like'] = '%' . $title . '%';
+				$filters['Banners.title Like'] = '%' . $title . '%';
 				$savesearch['title'] = $title;
 			}
+			if (isset($this->request->getQuery()['block_type'])) {
+				$status_id = base64_decode($this->request->getQuery()['block_type']);
+				$filters['Banners.block_type'] = $status_id;
+				$savesearch['block_type'] = $status_id;
+			}
+
 			if (isset($this->request->getQuery()['status_id'])) {
 				$status_id = base64_decode($this->request->getQuery()['status_id']);
-				$filters['Banners.status'] = $status_id;
+				$filters['Banners.status'] = (int)$status_id;
 				$savesearch['status_id'] = $status_id;
 			}
 
@@ -176,7 +186,7 @@ class BannersController extends AppController
 			if (empty($data)) {
 				throw new NotFoundException;
 			}
-			$postdata= $this->request->getData();
+			$postdata = $this->request->getData();
 			$mappedData = [
 				'title' => $postdata['title'],
 				'description' => $postdata['description'],
@@ -229,7 +239,7 @@ class BannersController extends AppController
 
 		$errorInputs = [];
 		if ($this->request->is(['post', 'put'])) {
-			$postdata= $this->request->getData();
+			$postdata = $this->request->getData();
 
 			$mappedData = [
 				'title' => $postdata['title'],
@@ -241,31 +251,34 @@ class BannersController extends AppController
 			];
 			$data = $Table->patchEntity($data, $mappedData, ['validate' => 'default']);
 			if (!$data->getErrors()) {
+				if (empty($this->request->getData()['image']['name'])) {
+					unset($data->image);
+				} else {
+					$image_file = $this->request->getData('image') ? $this->request->getData('image') : '';
+					if (!empty($image_file)) {
+						$name_ext = explode(".", $image_file['name']);
+						$ext = end($name_ext);
 
-				$image_file = $this->request->getData('image') ? $this->request->getData('image') : '';
-				if (!empty($image_file)) {
-					$name_ext = explode(".", $image_file['name']);
-					$ext = end($name_ext);
+						$image_ext = array('jpg', 'JPG', 'png', 'PNG', 'jpeg', 'JPEG');
 
-					$image_ext = array('jpg', 'JPG', 'png', 'PNG', 'jpeg', 'JPEG');
+						if (in_array($ext, $image_ext)) {
 
-					if (in_array($ext, $image_ext)) {
+							//$img = $this->My->uploadfile($image_file,'banner');
+							$img = $this->My->uploadfile($image_file, 'banner', 1, 'banner');
 
-						//$img = $this->My->uploadfile($image_file,'banner');
-						$img = $this->My->uploadfile($image_file, 'banner', 1, 'banner');
+							if ($img == 1) {
+								$this->Flash->set('Failed to upload banner images. Image Resoution must be more than 350 x 1300...', ['key' => 'positive', 'params' => ['class' => 'alert alert-danger']]);
+								return $this->redirect(['action' => 'edit', $id]);
+							} else if ($img == 2) {
+								$this->Flash->set('Failed to upload banner images. Image Resoution must be more than 350 x 1300...', ['key' => 'positive', 'params' => ['class' => 'alert alert-danger']]);
+								return $this->redirect(['action' => 'edit', $id]);
+							}
 
-						if ($img == 1) {
-							$this->Flash->set('Failed to upload banner images. Image Resoution must be more than 350 x 1300...', ['key' => 'positive', 'params' => ['class' => 'alert alert-danger']]);
-							return $this->redirect(['action' => 'edit', $id]);
-						} else if ($img == 2) {
-							$this->Flash->set('Failed to upload banner images. Image Resoution must be more than 350 x 1300...', ['key' => 'positive', 'params' => ['class' => 'alert alert-danger']]);
+							$data->image = $img;
+						} else {
+							$this->Flash->set('Invalid file format. Please choose an image file with jpg,png or jpeg format.', ['key' => 'positive', 'params' => ['class' => 'alert alert-danger']]);
 							return $this->redirect(['action' => 'edit', $id]);
 						}
-
-						$data->image = $img;
-					} else {
-						$this->Flash->set('Invalid file format. Please choose an image file with jpg,png or jpeg format.', ['key' => 'positive', 'params' => ['class' => 'alert alert-danger']]);
-						return $this->redirect(['action' => 'edit', $id]);
 					}
 				}
 				if ($Table->save($data)) {

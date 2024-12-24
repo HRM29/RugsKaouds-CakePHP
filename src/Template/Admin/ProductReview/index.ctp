@@ -107,7 +107,7 @@ use Cake\Routing\Router; ?>
 								<td><?= $this->Number->format(++$key) ?></td>
 								<td title="<?= h($val->review_text); ?>"><?= $this->General->limitText(h($val->review_text), 75) ?></td>
 								<td><?= $this->Number->format($val->rating) ?></td>
-								<td><?= $this->General->getAdminStatus($val->status) ?></td>
+								<td><?= $this->General->getAdminTextStatus($val->status) ?></td>
 								<td><?= h($val->created_at) ?></td>
 								<td class="actions">
 									<?php

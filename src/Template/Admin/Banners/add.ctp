@@ -26,19 +26,19 @@ use Cake\Routing\Router; ?>
 						</div>
 						<div class="col-xs-5">
 							<label class="control-label info-details"> Image </label>
-								<div class="">
-									<?php echo $this->Form->control('image', array("type" => "file", 'label' => false, 'required' => false, 'id' => 'carImage')); ?></br>
-								</div>
+							<div class="">
+								<?php echo $this->Form->control('image', array("type" => "file", 'label' => false, 'required' => false, 'id' => 'carImage')); ?></br>
+							</div>
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-5">
 							<label for="Name">Link</label>
-							<?= $this->Form->control('banner-link', ['placeholder' => 'Link', 'label' => false, 'class' => 'form-control']); ?>
+							<?= $this->Form->control('banner-link', ['placeholder' => 'Link', 'label' => false, 'class' => 'form-control', "required" => false]); ?>
 						</div>
 						<div class="col-xs-5">
 							<label for="Password">Block Type</label>
-							<?php $options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4",); ?>
+							<?php $options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4"); ?>
 							<?= $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
 						</div>
 						<div class="col-xs-5">

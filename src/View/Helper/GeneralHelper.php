@@ -122,15 +122,6 @@ class GeneralHelper extends Helper
 	public function getAdminStatus($status = null)
 	{
 		switch ($status) {
-			case 'approved':
-				return '<span class="label label-success">Approved</span>';
-				break;
-			case 'rejected':
-				return '<span class="label label-danger">Rejected</span>';
-				break;
-			case 'pending':
-				return '<span class="label label-warning">Pending</span>';
-				break;
 			case 0:
 				return '<span class="label label-warning ">Deleted</span>';
 				break;
@@ -772,5 +763,21 @@ class GeneralHelper extends Helper
 
 		// Return the original text if it's within the limit
 		return $text;
+	}
+	public function getAdminTextStatus($status = null)
+	{
+		switch ($status) {
+			case 'approved':
+				return '<span class="label label-success">Approved</span>';
+				break;
+			case 'rejected':
+				return '<span class="label label-danger">Rejected</span>';
+				break;
+			case 'pending':
+				return '<span class="label label-warning">Pending</span>';
+				break;
+			default:
+				return null;
+		}
 	}
 }

@@ -34,7 +34,14 @@ use Cake\Routing\Router; ?>
 				<div class="box-body">
 					<div class="col-sm-3">
 						<label for="Fund">Title</label>
-						<?= $this->Form->control('alt', ['placeholder' => 'Banners Title', 'label' => false, 'class' => 'form-control', 'value' => isset($savesearch['title']) ? $savesearch['title'] : '', 'required' => false]); ?>
+						<?= $this->Form->control('title', ['placeholder' => 'Banners Title', 'label' => false, 'class' => 'form-control', 'value' => isset($savesearch['title']) ? $savesearch['title'] : '', 'required' => false]); ?>
+					</div>
+					<div class="col-sm-3">
+						<label for="status">Block Type</label>
+						<?php
+						$options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4"); 
+						echo $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'value' => isset($savesearch['block_type']) ? $savesearch['block_type'] : '', 'empty' => 'Select Block Type']);
+						?>
 					</div>
 					<div class="col-sm-3">
 						<label for="status">Status</label>
