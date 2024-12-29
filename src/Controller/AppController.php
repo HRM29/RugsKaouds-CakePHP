@@ -763,4 +763,16 @@ class AppController extends Controller
 
         return $collectionCategoryArray;
     }
+
+    public function returnCollectionImages($id){
+        $collectionsImagesTable = TableRegistry::getTableLocator()->get('collection_images');
+        $collectionImages_SQL = $collectionsImagesTable->find('all')
+        ->select(['id','file_path','image_type','associated_id'])
+            ->where(['associated_id' => $id]);
+        if($collectionImages_SQL->count() > 0){
+            $collectionImages = $collectionImages_SQL->enableHydration(false)->toList();
+            return $collectionImages;
+        }
+        return [];
+    }
 }

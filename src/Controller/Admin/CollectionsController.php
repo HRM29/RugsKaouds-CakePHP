@@ -178,6 +178,8 @@ class CollectionsController extends AppController
         $collectionsImagesTable = TableRegistry::getTableLocator()->get('collection_images');
 
         $collection        =    $collectionsTable->get($id);
+        $collectionImages = parent::returnCollectionImages($id);
+
         $collCategoryList    =    parent::returnCollectionCategory();
         if ($this->request->is(['patch', 'put', 'post'])) {
             $postData = $this->request->getData();
@@ -230,7 +232,7 @@ class CollectionsController extends AppController
                 $this->Flash->set($this->errorMessage($collection->getErrors()), ['key' => 'positive', 'params' => ['class' => 'alert alert-danger']]);
             }
         }
-        $this->set(compact('collection', 'collCategoryList', 'title'));
+        $this->set(compact('collection', 'collCategoryList', 'title', 'collectionImages'));
     }
 
     public function view($id = null)
@@ -238,14 +240,17 @@ class CollectionsController extends AppController
         $title        =    'View Collection';
         $collectionsTable = TableRegistry::getTableLocator()->get('Collections');
         $collectionData    =    $collectionsTable->get($id);
+        $collectionImages = parent::returnCollectionImages($id);
+
         $this->set('collection', $collectionData);
-        $this->set(compact('title'));
+        $this->set(compact('title','collectionImages'));
     }
 
     public function delete($id = null)
     {
-        $collectionsTable    =    TableRegistry::getTableLocator()->get('Collections');
-        $aCollection        =    $collectionsTable->get($id);
+        $collectionsTable = TableRegistry::getTableLocator()->get('Collections');
+        $aCollection = $collectionsTable->get($id);
+        $this->removeImageRecords($id);
         if ($collectionsTable->delete($aCollection)) {
             $this->Flash->set('The collection has been deleted.', ['key' => 'positive', 'params' => ['class' => 'alert alert-success']]);
         } else {
@@ -256,13 +261,14 @@ class CollectionsController extends AppController
 
     public function deleteAll()
     {
-        $this->autoRender    =    false;
-        $collectionsTable        =    TableRegistry::getTableLocator()->get('Collections');
+        $this->autoRender = false;
+        $collectionsTable = TableRegistry::getTableLocator()->get('Collections');
         if ($this->request->is(['post', 'put'])) {
-            $newRecord    =    $this->request->getData()['user_chk'];
+            $newRecord = $this->request->getData()['user_chk'];
             foreach ($newRecord as $ids) {
                 if ($ids > 0) {
-                    $catData    =    $collectionsTable->get($ids);
+                    $catData = $collectionsTable->get($ids);
+                    $this->removeImageRecords($ids);
                     if ($collectionsTable->delete($catData)) {
                         $this->Flash->set('The collection has been deleted.', ['key' => 'positive', 'params' => ['class' => 'alert alert-success']]);
                     } else {
@@ -306,6 +312,62 @@ class CollectionsController extends AppController
                 ->withStringBody($jsonData);
 
             return $this->response;
+        }
+    }
+
+    public function deleteImg($id = null)
+    {
+        $result =  0;
+        $this->autoRender = false;
+        $this->viewBuilder()->setLayout(false);
+        $collectionsImagesTable = TableRegistry::getTableLocator()->get('collection_images');
+        $customCall = false;
+
+        if ($this->request->is('post')) {
+            $fieldName = $this->request->getData('FieldName');
+            $id        = $this->request->getData('id');
+        } else {
+            if (!is_null($id)) {
+                $id = $id;
+                $fieldName = 'file_path';
+                $customCall = true;
+            } else {
+                return;
+            }
+        }
+
+        $collectionImage = $collectionsImagesTable->get($id);
+        $removeImage = $collectionImage[$fieldName];
+        if ($collectionsImagesTable->delete($collectionImage)) {
+
+            $original = WWW_ROOT . 'uploads' . DS . 'collection' . DS . $removeImage;
+            if (file_exists($original)) {
+                unlink($original);
+            }
+
+            $original_thumb = WWW_ROOT . 'uploads' . DS . 'collection/thumb' . DS . $removeImage;
+            if (file_exists($original_thumb)) {
+                unlink($original_thumb);
+            }
+            $result =  1;
+        }
+
+        if ($customCall) {
+            return $result;
+        } else {
+            echo $result;
+        }
+    }
+
+    public function removeImageRecords($parentID)
+    {
+        $collectionsImagesTable = TableRegistry::getTableLocator()->get('collection_images');
+        $imagesRecord_SQL = $collectionsImagesTable->find('all')->where(['associated_id' => $parentID]);
+        if ($imagesRecord_SQL->count() > 0) {
+            $imagesRecord = $imagesRecord_SQL->enableHydration(false)->toList();
+            foreach ($imagesRecord as $imageData) {
+                $this->deleteImg($imageData['id']);
+            }
         }
     }
 }

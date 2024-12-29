@@ -404,11 +404,11 @@ class BannersController extends AppController
 
 		$result =  0;
 		$this->autoRender = false;
-		$this->viewBuilder()->layout(false);
+		$this->viewBuilder()->setLayout(false);
 
 		if ($this->request->is('post')) {
-			$fieldName = $this->request->data('FieldName');
-			$id        = $this->request->data('id');
+			$fieldName = $this->request->getData('FieldName');
+			$id        = $this->request->getData('id');
 		}
 
 		$banner_image = $this->Banners->get($id);

@@ -58,7 +58,7 @@ use Cake\Routing\Router; ?>
 						<div class="col-md-6 page-input">
 							<div class="form-group">
 								<label for="meta_tags">Meta Description</label>
-								<?php echo $this->Form->control('meta_tags', ['placeholder' => 'Meta Tags', 'label' => false, 'class' => 'form-control']); ?>
+								<?php echo $this->Form->control('meta_description', ['placeholder' => 'Meta Description', 'label' => false, 'class' => 'form-control']); ?>
 							</div>
 						</div>
 						<div class="col-md-6 page-input">

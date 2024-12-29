@@ -1,9 +1,12 @@
 <?php
 
-use Cake\Core\Configure; ?>
-<?php
-
 use Cake\Routing\Router; ?>
+<style>
+	.card-img-top {
+		height: 150px;
+		object-fit: cover;
+	}
+</style>
 <section class="content-header">
 	<h1>Collections </h1>
 
@@ -21,7 +24,9 @@ use Cake\Routing\Router; ?>
 					</div>
 				</div><!-- /.box-header -->
 				<?php
-					echo "<pre>collection: ";print_r($collection);echo "</pre>";
+				// echo "<pre>collection: ";
+				// print_r($collection);
+				// echo "</pre>";
 				?>
 				<?php echo $this->Form->create($collection, ['type' => 'file']); ?>
 				<div class="box-body">
@@ -67,7 +72,7 @@ use Cake\Routing\Router; ?>
 						<div class="col-md-6 page-input">
 							<div class="form-group">
 								<label for="meta_tags">Meta Description</label>
-								<?php echo $this->Form->control('meta_description', ['placeholder' => 'Meta Description', 'label' => false, 'class' => 'form-control', 'escape' => false ,'value' => $collection->meta_tags]); ?>
+								<?php echo $this->Form->control('meta_description', ['placeholder' => 'Meta Description', 'label' => false, 'class' => 'form-control', 'escape' => false, 'value' => $collection->meta_tags]); ?>
 							</div>
 						</div>
 						<div class="col-md-6 page-input">
@@ -90,7 +95,14 @@ use Cake\Routing\Router; ?>
 								?>
 							</div>
 						</div>
-
+						<div class="col-md-6">
+							<label for="Password">Images</label>
+							<div class="form-group">
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#imageModal">
+									View
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="box-footer">
@@ -102,6 +114,43 @@ use Cake\Routing\Router; ?>
 	</div>
 </section>
 
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="imageModalLabel">Images for Collection</h5>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<?php if (!empty($collectionImages)) { ?>
+						<?php foreach ($collectionImages as $eachImage): ?>
+							<?php
+							$parentPath = WWW_ROOT . '/uploads/collection' . DS;
+							$original = $parentPath . $eachImage['file_path'];
+							if (file_exists($original)) {
+							?>
+								<div class="col-md-3 mb-3">
+									<div class="card">
+										<?php
+										echo $this->Html->image('/uploads/collection/' . $eachImage['file_path'], array('width' => '100px', 'class' => 'img-responsive remove_image card-img-top', 'data' => $eachImage['id'], 'atrValue' => 'file_path'));
+										echo $this->Html->link('Remove', 'javascript:;', array('data' => $eachImage['id'], 'class' => 'remove_image', 'atrValue' => 'file_path'));
+										?>
+									</div>
+								</div>
+							<?php } ?>
+						<?php endforeach; ?>
+					<?php } else { ?>
+						<div class="col-md-8"><p>No images found for this collection.</p></div>
+					<?php } ?>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
 	setCollectionType();
 
@@ -145,9 +194,7 @@ use Cake\Routing\Router; ?>
 
 	function setPageElements(status) {
 		const collectionCategoryEle = document.getElementById('collection-category');
-		toggleElementAttributes(collectionCategoryEle, false, status)
-		const pageLinkEle = document.getElementById('page-link');
-		toggleElementAttributes(pageLinkEle, status, status)
+		toggleElementAttributes(collectionCategoryEle, false, status);
 	}
 
 	function toggleElementAttributes(element, isRequired, isDisabled) {
@@ -165,4 +212,33 @@ use Cake\Routing\Router; ?>
 			element.setAttribute('disabled', 'disabled');
 		}
 	}
+	$('.remove_image').on('click', function() {
+		var id = $(this).attr('data');
+		var FieldName = $(this).attr('atrValue');
+		var csrfToken = $("[name='_csrfToken']").val();
+
+		var formData = new FormData();
+		formData.append('_csrfToken', csrfToken);
+		formData.append('id', id);
+		formData.append('FieldName', FieldName);
+		if (confirm('Are you sure Remove Banner Image?')) {
+			$.ajax({
+				headers: {
+					'X-CSRF-Token': csrfToken
+				},
+				url: '<?php echo Router::url(['controller' => 'Collections', 'action' => 'deleteImg']); ?>',
+				type: "POST",
+				processData: false,
+				contentType: false,
+				data: formData,
+				success: function(data) {
+					location.reload();
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.error("AJAX Error:", textStatus, errorThrown);
+					console.error("Response:", jqXHR.responseText);
+				}
+			});
+		}
+	});
 </script>
