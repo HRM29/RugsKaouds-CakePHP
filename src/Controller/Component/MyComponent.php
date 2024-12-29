@@ -344,5 +344,37 @@ class MyComponent extends Component
 			$this->_registry->getController()->redirect('/users/login');
 		}
 	}
+    public function verifyImage($image) {
+        // Validate that the file is uploaded
+        if (empty($image['name'])) {
+            return ['error' => 'No file uploaded.'];
+        }
 
+        // Get file details
+        $filePath = $image['tmp_name'];
+        $fileName = $image['name'];
+        $fileSize = $image['size'];
+        $fileType = $image['type'];
+
+        // Validate image type (can be customized for more formats)
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!in_array($fileType, $allowedTypes)) {
+            return ['error' => 'Invalid file type. Allowed types: JPEG, PNG, GIF.'];
+        }
+
+        // Validate image size (e.g., limit to 5MB)
+        $maxSize = 5 * 1024 * 1024; // 5MB
+        if ($fileSize > $maxSize) {
+            //return ['error' => 'File size exceeds the maximum limit of 5MB.'];
+        }
+
+        // Check if the file is a valid image using getimagesize()
+        $imageSize = getimagesize($filePath);
+        if ($imageSize === false) {
+            return ['error' => 'Uploaded file is not a valid image.'];
+        }
+
+        // If all validations pass
+        return ['success' => 'Image is valid.', 'image_info' => $imageSize];
+    }
 }

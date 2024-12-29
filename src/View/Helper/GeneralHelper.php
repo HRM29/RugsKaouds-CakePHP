@@ -780,4 +780,37 @@ class GeneralHelper extends Helper
 				return null;
 		}
 	}
+
+	public function returnCollectionParentData($id)
+	{
+		$collectionTable	=	TableRegistry::getTableLocator()->get('Collections')->setAlias('Collection1');
+		$data = $collectionTable->find()->select(['Collection2.id', 'Collection2.title', 'Collection2.parent_id'])
+			->join([
+				'Collection2' => [
+					'table' => 'collections',
+					'type' => 'INNER',
+					'conditions' => 'Collection2.id = Collection1.parent_id'
+				]
+			])->where(['Collection1.id' => $id]);
+		if ($data->count() > 0) {
+			$parentData = $data->enableHydration(false)->first();
+			return $parentData;
+		} 
+		return '';
+	}
+
+	public function returnCollectionChildData($id)
+	{
+		$returnData = ['status' => true, 'data' => [], 'delete_parent' => false];
+		$collectionTable	=	TableRegistry::getTableLocator()->get('Collections')->setAlias('Collection1');
+		$data = $collectionTable->find()->select(['Collection1.title'])->where(['Collection1.parent_id' => $id]);
+		$childCount = $data->count();
+		if ($childCount > 0) {
+			$returnData['data'] = $data->enableHydration(false)->toArray();
+		} else {
+			$returnData['delete_parent'] = true;
+			$returnData['status'] = false;
+		}
+		return $returnData;
+	}
 }

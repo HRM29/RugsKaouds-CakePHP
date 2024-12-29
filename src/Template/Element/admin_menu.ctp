@@ -90,19 +90,33 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 			<li><a href="<?php echo Router::url('/', true); ?>admin/Captions/add"><i class="fa fa-plus"></i> Add Caption</a></li>
 		  </ul>
 		</li-->
-		<!-- Manage Product Testimonials -->
+			<!-- Manage Product Testimonials -->
 
-		<li class="treeview <?php echo ($controller == 'ProductReview' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
-			<a href="#">
-				<i class="fa fa-image"></i>
-				<span>Manage Product Reviews</span>
-				<i class="fa fa-angle-left pull-right"></i>
-			</a>
-			<ul class="treeview-menu">
-				<li><a href="<?php echo Router::url('/', true); ?>admin/ProductReview"><i class="fa fa-list-alt"></i> Product Reviews List</a></li>
-				<li><a href="<?php echo Router::url('/', true); ?>admin/ProductReview/add"><i class="fa fa-plus"></i> Add Product Review</a></li>
-			</ul>
-		</li>
+			<li class="treeview <?php echo ($controller == 'ProductReview' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
+				<a href="#">
+					<i class="fa fa-image"></i>
+					<span>Manage Product Reviews</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo Router::url('/', true); ?>admin/ProductReview"><i class="fa fa-list-alt"></i> Product Reviews List</a></li>
+					<li><a href="<?php echo Router::url('/', true); ?>admin/ProductReview/add"><i class="fa fa-plus"></i> Add Product Review</a></li>
+				</ul>
+			</li>
+			<!-- Manage Collections -->
+
+			<li class="treeview <?php echo ($controller == 'Collections' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
+				<a href="#">
+					<i class="fa fa-list-alt"></i>
+					<span>Manage Collections</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo Router::url('/', true); ?>admin/collections"><i class="fa fa-list-alt"></i>Collection List</a></li>
+					<li><a href="<?php echo Router::url('/', true); ?>admin/collections/add"><i class="fa fa-plus"></i> Add Collection</a></li>
+				</ul>
+			</li>
+
 			<!-- Manage CMS Pages -->
 			<li class="treeview <?php echo ($controller == 'CmsPages' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
 				<a href="#">
