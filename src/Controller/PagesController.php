@@ -170,8 +170,8 @@ class PagesController extends AppController
 	
 	public function home(){
 		
-		$seoTitle = "GALLERY OF ORIENTAL RUGS";  
-		$seoDescription = "Gallery of Oriental Rugs has the exclusive collection of oriental wall to wall carpet in Wilmington that will complement your existing walls and furnishings." ;
+		$seoTitle = "Best Place To Get Carpet & Rugs Online in Wilton - Kaouds";  
+		$seoDescription = "Shop today & buy high-quality, modern, unique Rugs & Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean." ;
 		$seoKeyword = "oriental wall to wall carpet in wilmington";
 		$seoH2 = "";
 		$seoH1 = "Oriental Rugs Wilmington";
@@ -183,7 +183,7 @@ class PagesController extends AppController
 		$this->set('h1_for_layout',$seoH1) ;
 		
 		$this->viewBuilder()->setLayout('front');
-		$Table = TableRegistry::get('Banners');
+		$Table = TableRegistry::getTableLocator()->get('Banners');
 		$ProductsTable = TableRegistry::get('Products');
 		$banners = $Table->find('all')->where(['status'=>1])->order(['id'=>'ASC'])->toArray();
 		$featuredProductData = $ProductsTable->find('all')->where(['Products.is_future' => 1])->toArray();
