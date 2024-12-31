@@ -184,12 +184,16 @@ class PagesController extends AppController
 		
 		$this->viewBuilder()->setLayout('front');
 		$Table = TableRegistry::getTableLocator()->get('Banners');
-		$ProductsTable = TableRegistry::get('Products');
-		$banners = $Table->find('all')->where(['status'=>1])->order(['id'=>'ASC'])->toArray();
+		$ProductsTable = TableRegistry::getTableLocator()->get('Products');
+		$banners = $Table->find('all')->select(['id','title','description','block_type','image','link','status'])->where(['status'=>1])->order(['id'=>'ASC'])->enableHydration(false)->toArray();
+		$HomeBlocks = [];
+		foreach ($banners as $bannerKey => $bannerData) {
+			$HomeBlocks['Block'.$bannerData['block_type']][] = $bannerData;
+		}
 		$featuredProductData = $ProductsTable->find('all')->where(['Products.is_future' => 1])->toArray();
 		
 		$cmspage = parent::getCmspage();
-		$this->set(compact('banners','featuredProductData','cmspage')); 
+		$this->set(compact('banners','featuredProductData','cmspage','HomeBlocks')); 
 	}
 	
 	public function aboutus(){

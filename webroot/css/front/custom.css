@@ -136,7 +136,6 @@ header .menus .navbar .srch_icon li span {
     left: 24px;
 }
 .main_banner .mn_bnr {
-	background-image: url(../images/main_bnr.jpg);
 	background-repeat: no-repeat;
     background-position: top center;
     height: 640px;
