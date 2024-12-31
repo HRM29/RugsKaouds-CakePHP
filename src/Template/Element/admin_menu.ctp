@@ -242,7 +242,7 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 				</ul>
 			</li>
 
-			<li class="treeview <?php echo ($controller == 'Piles' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
+			<!-- <li class="treeview <?php echo ($controller == 'Piles' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
 				<a href="#">
 					<i class="fa fa-paint-brush"></i>
 					<span>Manage Piles</span>
@@ -252,9 +252,9 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 					<li><a href="<?php echo Router::url('/', true); ?>admin/piles"><i class="fa fa-list-alt"></i>Piles List</a></li>
 					<li><a href="<?php echo Router::url('/', true); ?>admin/piles/add"><i class="fa fa-plus"></i> Add Pile </a></li>
 				</ul>
-			</li>
+			</li> -->
 
-			<li class="treeview <?php echo ($controller == 'Patterns' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
+			<!-- <li class="treeview <?php echo ($controller == 'Patterns' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
 				<a href="#">
 					<i class="fa fa-list"></i>
 					<span>Manage Patterns</span>
@@ -264,9 +264,9 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 					<li><a href="<?php echo Router::url('/', true); ?>admin/patterns"><i class="fa fa-list-alt"></i>Patterns List</a></li>
 					<li><a href="<?php echo Router::url('/', true); ?>admin/patterns/add"><i class="fa fa-plus"></i> Add Pattern </a></li>
 				</ul>
-			</li>
+			</li> -->
 
-			<li class="treeview <?php echo ($controller == 'Materials' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
+			<!-- <li class="treeview <?php echo ($controller == 'Materials' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
 				<a href="#">
 					<i class="fa fa-list"></i>
 					<span>Manage Materials</span>
@@ -276,9 +276,9 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 					<li><a href="<?php echo Router::url('/', true); ?>admin/materials"><i class="fa fa-list-alt"></i>Materials List</a></li>
 					<li><a href="<?php echo Router::url('/', true); ?>admin/materials/add"><i class="fa fa-plus"></i> Add Material </a></li>
 				</ul>
-			</li>
+			</li> -->
 
-			<li class="treeview <?php echo ($controller == 'Designs' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
+			<!-- <li class="treeview <?php echo ($controller == 'Designs' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
 				<a href="#">
 					<i class="fa fa-list"></i>
 					<span>Manage Designs</span>
@@ -288,9 +288,9 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 					<li><a href="<?php echo Router::url('/', true); ?>admin/designs"><i class="fa fa-list-alt"></i>Designs List</a></li>
 					<li><a href="<?php echo Router::url('/', true); ?>admin/designs/add"><i class="fa fa-plus"></i> Add Design </a></li>
 				</ul>
-			</li>
+			</li> -->
 
-			<li class="treeview <?php echo ($controller == 'Foundations' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
+			<!-- <li class="treeview <?php echo ($controller == 'Foundations' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
 				<a href="#">
 					<i class="fa fa-paint-brush"></i>
 					<span>Manage Foundations</span>
@@ -300,7 +300,7 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 					<li><a href="<?php echo Router::url('/', true); ?>admin/foundations"><i class="fa fa-list-alt"></i>Foundations List</a></li>
 					<li><a href="<?php echo Router::url('/', true); ?>admin/foundations/add"><i class="fa fa-plus"></i> Add Foundation </a></li>
 				</ul>
-			</li>
+			</li> -->
 
 			<!-- Manage Sizes -->
 

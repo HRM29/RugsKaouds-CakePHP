@@ -628,14 +628,24 @@ class AppController extends Controller
 
         $startData    =    date('Y-m-d') . ' 00:00:00';
         $endData    =    date('Y-m-d') . ' 23:59:59';
-        $result        =    $Table->find('all')
-            ->where(['MostViews.created >=' => $startData, 'MostViews.created <=' => $endData])
-            ->group('product_id')
-            ->contain(['Products' => ['ProductImages']])
-            ->toArray();
+        $result = $Table->find()
+        ->select([
+            'MostViews.product_id',
+            'total_views' => $Table->query()->func()->count('*'),
+        ])
+        ->where([
+            'MostViews.created >=' => $startData,
+            'MostViews.created <=' => $endData
+        ])
+        ->group('MostViews.product_id')
+        ->contain([
+            'Products' => function ($q) {
+                return $q->contain(['ProductImages']);
+            }
+        ])
+        ->toArray();
 
-
-
+    
         //$MostViewsList   =  $mostViewTable->find('all')->contain([''])->order(['id'=>'DESC'])->toArray();
         return $result;
     }
