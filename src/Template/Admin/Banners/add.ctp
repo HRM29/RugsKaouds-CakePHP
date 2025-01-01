@@ -38,7 +38,7 @@ use Cake\Routing\Router; ?>
 						</div>
 						<div class="col-xs-5">
 							<label for="Password">Block Type</label>
-							<?php $options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4"); ?>
+							<?php $options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4", "5" => "Block 5"); ?>
 							<?= $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
 						</div>
 						<div class="col-xs-5">

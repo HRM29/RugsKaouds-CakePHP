@@ -39,7 +39,7 @@ use Cake\Routing\Router; ?>
 					<div class="col-sm-3">
 						<label for="status">Block Type</label>
 						<?php
-						$options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4"); 
+						$options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4", "5" => "Block 5"); 
 						echo $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'value' => isset($savesearch['block_type']) ? $savesearch['block_type'] : '', 'empty' => 'Select Block Type']);
 						?>
 					</div>
@@ -107,7 +107,7 @@ use Cake\Routing\Router; ?>
 								<td><?= $this->Number->format(++$key) ?></td>
 								<td><?= h($val->title) ?></td>
 								<td><?php
-									$blockTypes = ['1' => 'Block 1', '2' => 'Block 2', '3' => 'Block 3', '4' => 'Block 4'];
+									$blockTypes = ['1' => 'Block 1', '2' => 'Block 2', '3' => 'Block 3', '4' => 'Block 4','5' => 'Block 5'];
 									echo $blockTypes[$val->block_type] ?></td>
 								<td><?= $this->General->getAdminStatus($val->status) ?></td>
 								<td><?= h($val->created) ?></td>
