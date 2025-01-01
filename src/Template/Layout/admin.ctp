@@ -57,7 +57,7 @@ $cakeDescription = Configure::read('App.meta');
         <?= $cakeDescription ?>
         <?php // $this->fetch('title') ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
+    <!-- <?= $this->Html->meta('icon') ?> -->
  
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
