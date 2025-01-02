@@ -194,7 +194,8 @@ class ProductReviewController extends AppController
 				'rating' => $postdata['review-rating'],
 				'reviewer_image' => $postdata['image']['name'],
 				'status' => $postdata['status'],
-				'user_id' => 0
+				'user_id' => 0,
+				'reviewer_name' => $postdata['reviewer-name']
 			];
 			$data = $Table->patchEntity($data, $mappedData, ['validate' => 'default']);
 			if (!$data->getErrors()) {
@@ -238,15 +239,13 @@ class ProductReviewController extends AppController
 		$errorInputs = [];
 		if ($this->request->is(['post', 'put'])) {
 			$postdata = $this->request->getData();
-			echo "<pre>postdata: ";
-			print_r($postdata);
-			echo "</pre>";
 			$mappedData = [
 				'review_text' => $postdata['description'],
 				'rating' => $postdata['review-rating'],
 				'reviewer_image' => $postdata['image']['name'],
 				'status' => $postdata['status'],
-				'user_id' => 0
+				'user_id' => 0,
+				'reviewer_name' => $postdata['reviewer-name']
 			];
 
 			$data = $Table->patchEntity($data, $mappedData, ['validate' => 'default']);

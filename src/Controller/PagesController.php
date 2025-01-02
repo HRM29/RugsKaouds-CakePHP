@@ -183,12 +183,17 @@ class PagesController extends AppController
 		$this->set('h1_for_layout',$seoH1) ;
 		
 		$this->viewBuilder()->setLayout('front');
-		$Table = TableRegistry::getTableLocator()->get('Banners');
+		$BannerTable = TableRegistry::getTableLocator()->get('Banners');
 		$ProductsTable = TableRegistry::getTableLocator()->get('Products');
-		$banners = $Table->find('all')->select(['id','title','description','block_type','image','link','link_name','status'])->where(['status'=>1])->order(['id'=>'ASC'])->enableHydration(false)->toArray();
+		$ProductReviewTable = TableRegistry::getTableLocator()->get('ProductReview');
+		$banners = $BannerTable->find('all')->select(['id','title','description','block_type','image','link','link_name','status'])->where(['status'=>1])->order(['id'=>'ASC'])->enableHydration(false)->toArray();
+		$productReviews = $ProductReviewTable->find('all')->where(['status'=>'approved'])->order(['id'=>'ASC'])->enableHydration(false)->toArray();
 		$HomeBlocks = [];
 		foreach ($banners as $bannerKey => $bannerData) {
 			$HomeBlocks['Block'.$bannerData['block_type']][] = $bannerData;
+		}
+		foreach ($productReviews as $reviewKey => $reviewData) {
+			$HomeBlocks['BlockReviews'][$reviewKey] = $reviewData;
 		}
 		$featuredProductData = $ProductsTable->find('all')->where(['Products.is_future' => 1])->toArray();
 		

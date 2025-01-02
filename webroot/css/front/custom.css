@@ -688,3 +688,23 @@ footer .cpyrght p {
 .zoom-image:hover {
     transform: scale(1.1);
 }
+
+.circular-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.star-rating {
+    font-size: 17px; 
+    color: #FFCB2B;
+}
+
+.star-rating i {
+    color: #FFCB2B; 
+}
+
+.star-rating .bi-star {
+    color: #ddd;
+}

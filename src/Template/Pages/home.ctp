@@ -218,6 +218,71 @@
 		</section>
 	<?php
 	}
+	if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
+	?>
+		<section class="rvws">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="heading">
+							<h2>Rave Reviews</h2>
+						</div>
+					</div>
+					<?php
+					foreach ($HomeBlocks['BlockReviews'] as $reviewData) {
+					?>
+						<div class="col-lg-4 col-md-12">
+							<div class="rvw_box">
+								<p style="height: 378px;"><?php echo $reviewData['review_text'] ?></p>
+								<div class="rvw_prfl">
+									<?php
+									if (!empty($reviewData['reviewer_image'])) {
+										$image = WWW_ROOT . 'uploads' . DS . 'reviewers' . DS . $reviewData['reviewer_image'];
+										if (file_exists($image)) {
+											echo $this->Html->image('/uploads/reviewers/' . $reviewData['reviewer_image'], ['alt' => $reviewData['reviewer_image'], "class" => "circular-image"]);
+										} else {
+											$image = WWW_ROOT . 'img' . DS . 'user-img.jpg';
+											echo $this->Html->image('/img/user-img.jpg', ['alt' => 'user-img.jpg', "class" => "circular-image"]);
+										}
+									} else {
+										$image = WWW_ROOT . 'img' . DS . 'user-img.jpg';
+										echo $this->Html->image('/img/user-img.jpg', ['alt' => 'user-img.jpg', "class" => "circular-image"]);
+									}
+									?>
+									<div class="rvw_text">
+										<h3><?php echo $reviewData['reviewer_name'] ?></h3>
+										<?php
+										$totalStars = 5;
+										$rating = $reviewData['rating'];
+										$emptyStars = 5 - $rating;
+										?>
+										<div class="star-rating">
+											<?php
+											for ($fullStar = 0; $fullStar < $rating; $fullStar++) {
+											?>
+												<i class="bi bi-star-fill"></i>
+											<?php
+											}
+											for ($emptyStar = 0; $emptyStar < $emptyStars; $emptyStar++) {
+											?>
+												<i class="bi bi-star"></i>
+											<?php
+											}
+											?>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					<?php
+					}
+					?>
+				</div>
+			</div>
+		</section>
+	<?php
+	}
 	?>
 	<!-- <div class="container-fluid slider">
 		<div class="row">
@@ -370,6 +435,7 @@
 		</div>
 	</div> -->
 	<div class="mb-5"></div>
+
 	<script>
 		$('.arrvls_slide').owlCarousel({
 			loop: true,

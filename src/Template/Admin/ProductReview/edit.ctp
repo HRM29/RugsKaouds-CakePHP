@@ -48,16 +48,23 @@ use Cake\Routing\Router; ?>
 							</div>
 						</div>
 						<div class="col-xs-5">
+							<label class="control-label">Reviewer Name </label>
+							<?php echo $this->Form->control('reviewer-name', array('placeholder' => 'Reviewer Name', 'label' => false, 'required' => true, 'class' => 'form-control', "value" => $data->reviewer_name)); ?></br>
+						</div>
+
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-5">
 							<label for="Name">Description</label>
 							<?= $this->Form->control('description', ['placeholder' => 'Description', 'label' => false, 'class' => 'form-control', "type" => "textarea", 'required' => true, "value" => $data->review_text]); ?>
 						</div>
-					</div>
-					<div class="form-group row">
 						<div class="col-xs-5">
 							<label for="Name">Rating</label>
 							<?php $options = array("1" => "1", "2" => "2", "3" => "3", "4" => "4", "5" => "5"); ?>
 							<?= $this->Form->control('review-rating', ['options' => $options, 'label' => false, 'class' => 'form-control', "value" => $data->rating]); ?>
 						</div>
+					</div>
+					<div class="form-group row">
 						<div class="col-xs-5">
 							<label for="Password">Status</label>
 							<?php $options = array("approved" => "Approved", "rejected" => "Rejected", "pending" => "Pending"); ?>
