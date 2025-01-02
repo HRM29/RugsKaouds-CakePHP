@@ -42,3 +42,114 @@ use Cake\Routing\Router; ?>
         </div>
     </footer>
 </section>
+<script>
+    window.onscroll = function() {
+        myFunction()
+    };
+    var header = document.getElementById("myHeader");
+    var sticky = header.offsetTop;
+
+    function myFunction() {
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
+    }
+
+    function sdbr_open() {
+        document.getElementById("mySidebar").style.display = "block";
+    }
+
+    function sdbr_close() {
+        document.getElementById("mySidebar").style.display = "none";
+    }
+
+    if ($(".srvc_box_txt p").length != 0) {
+        $(".srvc_box_txt p").matchHeight({
+            byrow: false,
+        });
+    }
+
+    if ($(".arrvl_text").length != 0) {
+        $(".arrvl_text").matchHeight({
+            byrow: false,
+        });
+    }
+
+    if ($(".rvw_box p").length != 0) {
+        $(".rvw_box p").matchHeight({
+            byrow: false,
+        });
+    }
+
+    if ($(".blg_text p").length != 0) {
+        $(".blg_text p").matchHeight({
+            byrow: false,
+        });
+    }
+
+
+    $('.arrvls_slide').owlCarousel({
+        loop: true,
+        margin: 30,
+        nav: true,
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        navText: ['<img src="images/prev.png">', '<img src="images/next.png">'],
+        responsive: {
+            0: {
+                items: 1
+            },
+            768: {
+                items: 2
+            },
+            1200: {
+                items: 3
+            }
+        }
+    });
+
+    $('.blg_slide').owlCarousel({
+        loop: true,
+        margin: 30,
+        nav: true,
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        navText: ['<img src="images/prev.png">', '<img src="images/next.png">'],
+        responsive: {
+            0: {
+                items: 1
+            },
+            768: {
+                items: 2
+            },
+            1200: {
+                items: 3
+            }
+        }
+    });
+
+    $('.tstmnls_slide').owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: true,
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        navText: ['<img src="images/tstmnls_arow_prv.png">', '<img src="images/tstmnls_arow_nxt.png">'],
+        responsive: {
+            0: {
+                items: 1
+            },
+            768: {
+                items: 1
+            },
+            1200: {
+                items: 1
+            }
+        }
+    });
+</script>

@@ -62,6 +62,18 @@ $authUser = $session->read('Auth');
 		</div>
 	</div>
 </div> -->
+<?php echo $this->Html->script(['jquery-3.7.1.min.js']); ?>
+	<?php echo $this->Html->script(['popper.min.js']); ?>
+	<?php echo $this->Html->script(['bootstrap.min.js']); ?>
+	<?php echo $this->Html->script(['jquery.matchHeight-min.js']); ?>
+	<?php echo $this->Html->script(['owl.carousel.js']); ?>
+	<?php echo $this->Html->script(['bootstrap.bundle.min.js']); ?>
+	<?php echo $this->Html->script(['select2.min.js']); ?>
+	<?php echo $this->Html->script(['owl.carousel.js']);?>
+	<?php echo $this->Html->script(['custom.min.js']); ?>
+	<?php echo $this->Html->script(['search.custom.min.js']); ?>
+	<?php echo $this->Html->script(['jquery.payform.min.js']); ?>
+	<?php echo $this->Html->script(['script.js']); ?>
 <header id="myHeader">
 	<div class="container">
 		<div class="row align-items-center">
@@ -156,68 +168,4 @@ $authUser = $session->read('Auth');
 			byrow: false,
 		});
 	}
-
-
-	$('.arrvls_slide').owlCarousel({
-		loop: true,
-		margin: 30,
-		nav: true,
-		dots: false,
-		autoplay: true,
-		autoplayTimeout: 5000,
-		navText: ['<img src="images/prev.png">', '<img src="images/next.png">'],
-		responsive: {
-			0: {
-				items: 1
-			},
-			768: {
-				items: 2
-			},
-			1200: {
-				items: 3
-			}
-		}
-	});
-
-	$('.blg_slide').owlCarousel({
-		loop: true,
-		margin: 30,
-		nav: true,
-		dots: false,
-		autoplay: true,
-		autoplayTimeout: 5000,
-		navText: ['<img src="images/prev.png">', '<img src="images/next.png">'],
-		responsive: {
-			0: {
-				items: 1
-			},
-			768: {
-				items: 2
-			},
-			1200: {
-				items: 3
-			}
-		}
-	});
-
-	$('.tstmnls_slide').owlCarousel({
-		loop: true,
-		margin: 10,
-		nav: true,
-		dots: false,
-		autoplay: true,
-		autoplayTimeout: 5000,
-		navText: ['<img src="images/tstmnls_arow_prv.png">', '<img src="images/tstmnls_arow_nxt.png">'],
-		responsive: {
-			0: {
-				items: 1
-			},
-			768: {
-				items: 1
-			},
-			1200: {
-				items: 1
-			}
-		}
-	});
 </script>

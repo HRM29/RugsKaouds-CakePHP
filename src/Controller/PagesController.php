@@ -185,7 +185,7 @@ class PagesController extends AppController
 		$this->viewBuilder()->setLayout('front');
 		$Table = TableRegistry::getTableLocator()->get('Banners');
 		$ProductsTable = TableRegistry::getTableLocator()->get('Products');
-		$banners = $Table->find('all')->select(['id','title','description','block_type','image','link','status'])->where(['status'=>1])->order(['id'=>'ASC'])->enableHydration(false)->toArray();
+		$banners = $Table->find('all')->select(['id','title','description','block_type','image','link','link_name','status'])->where(['status'=>1])->order(['id'=>'ASC'])->enableHydration(false)->toArray();
 		$HomeBlocks = [];
 		foreach ($banners as $bannerKey => $bannerData) {
 			$HomeBlocks['Block'.$bannerData['block_type']][] = $bannerData;

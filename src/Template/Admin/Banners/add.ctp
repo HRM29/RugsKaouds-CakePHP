@@ -31,20 +31,28 @@ use Cake\Routing\Router; ?>
 							</div>
 						</div>
 					</div>
-					<div class="form-group row">
-						<div class="col-xs-5">
-							<label for="Name">Link</label>
-							<?= $this->Form->control('banner-link', ['placeholder' => 'Link', 'label' => false, 'class' => 'form-control', "required" => false]); ?>
+					<div class="form-group">
+						<div class="row" style="margin-bottom: 15px;">
+							<div class="col-sm-5">
+								<label for="Name">Link</label>
+								<?= $this->Form->control('banner-link', ['placeholder' => 'Link', 'label' => false, 'class' => 'form-control', "required" => false]); ?>
+							</div>
+							<div class="col-sm-5">
+								<label for="Name">Link Name</label>
+								<?= $this->Form->control('banner-link-name', ['placeholder' => 'Link Name', 'label' => false, 'class' => 'form-control', "required" => false]); ?>
+							</div>
 						</div>
-						<div class="col-xs-5">
-							<label for="Password">Block Type</label>
-							<?php $options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4", "5" => "Block 5"); ?>
-							<?= $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
-						</div>
-						<div class="col-xs-5">
-							<label for="Password">Status</label>
-							<?php $options = array(Active => "Active", Inactive => "Inactive"); ?>
-							<?= $this->Form->control('status', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
+						<div class="row mb-3">
+							<div class="col-md-5">
+								<label for="Password">Block Type</label>
+								<?php $options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4", "5" => "Block 5"); ?>
+								<?= $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
+							</div>
+							<div class="col-md-5">
+								<label for="Password">Status</label>
+								<?php $options = array(Active => "Active", Inactive => "Inactive"); ?>
+								<?= $this->Form->control('status', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">

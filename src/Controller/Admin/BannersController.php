@@ -152,7 +152,7 @@ class BannersController extends AppController
 	public function view($id = null)
 	{
 		$title = 'Banners';
-		$Table = TableRegistry::get('Banners');
+		$Table = TableRegistry::getTableLocator()->get('Banners');
 		$pageId = base64_decode($id);
 		if (empty($pageId)) {
 			throw new NotFoundException;
@@ -193,7 +193,8 @@ class BannersController extends AppController
 				'block_type' => $postdata['block_type'],
 				'image' => $postdata['image']['name'],
 				'link' => $postdata['banner-link'],
-				'status' => $postdata['status']
+				'status' => $postdata['status'],
+				'link_name' => $postdata['banner-link-name']
 			];
 			$data = $Table->patchEntity($data, $mappedData, ['validate' => 'default']);
 
@@ -247,7 +248,8 @@ class BannersController extends AppController
 				'block_type' => $postdata['block_type'],
 				'image' => $postdata['image']['name'],
 				'link' => $postdata['banner-link'],
-				'status' => $postdata['status']
+				'status' => $postdata['status'],
+				'link_name' => $postdata['banner-link-name']
 			];
 			$data = $Table->patchEntity($data, $mappedData, ['validate' => 'default']);
 			if (!$data->getErrors()) {
@@ -306,7 +308,7 @@ class BannersController extends AppController
 
 	public function delete($id = null)
 	{
-		$Table = TableRegistry::get('Banners');
+		$Table = TableRegistry::getTableLocator()->get('Banners');
 
 		$pageId = base64_decode($id);
 		if (empty($pageId)) {
@@ -340,7 +342,7 @@ class BannersController extends AppController
 	public function deleteAllCompany()
 	{
 		$this->autoRender = false;
-		$tbl = TableRegistry::get('Companies');
+		$tbl = TableRegistry::getTableLocator()->get('Companies');
 
 		if ($this->request->is(['post', 'put'])) {
 			$newRecord = $this->request->getData()['comp_chk'];
@@ -378,7 +380,7 @@ class BannersController extends AppController
 	function removeImage()
 	{
 		$this->autoRender = false;
-		$Table = TableRegistry::get('Banners');
+		$Table = TableRegistry::getTableLocator()->get('Banners');
 		if ($this->request->is(['post', 'put'])) {
 			$pageId = $this->request->getData()['id'];
 			if (empty($pageId)) {

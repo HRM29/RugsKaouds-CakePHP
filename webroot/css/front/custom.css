@@ -147,12 +147,19 @@ header .menus .navbar .srch_icon li span {
 .rgs_type .typ_box .typ_box_imag,
 .rgs_srvc .srvc_box .srvc_box_imag {
     background: #e6e6e6;
-    border: 7px solid #e6e6e6;
-	border-radius: 9px;
+    border: 1px solid #e6e6e6; /* Slimmer border */
+    border-radius: 9px;
+    overflow: hidden; /* Ensures the zoom effect stays within the container */
+    padding: 7px; /* Slight spacing inside */
+    transition: border-color 0.5s ease-in-out; /* Smooth transition for border color */
 }
 .rgs_type .typ_box .typ_box_imag img,
 .rgs_srvc .srvc_box .srvc_box_imag img {
-    width: 100%;	
+    width: 100%;
+    aspect-ratio: 1 / 1; 
+    object-fit: cover; 
+    display: block; 
+    transition: transform 0.5s ease-in-out;
 }
 .rgs_type .typ_box h4 {
     text-align: center;
@@ -164,7 +171,7 @@ header .menus .navbar .srch_icon li span {
 }
 .rgs_type .typ_box:hover .typ_box_imag,
 .rgs_srvc .srvc_box:hover .srvc_box_imag {
-    border: 7px solid #881c06;
+    border: 7px solid #881c06 !important;
 }
 .rgs_abt .rgs_abt_txt .btn.cntct {
 	background: #fff;
@@ -588,7 +595,6 @@ footer .cpyrght p {
 	transition: all 0.4s ease-in-out;
 	-webkit-transition: all 0.4s ease-in-out;
 }
-8905571037  Daood
 .collections .clctns:hover {
     transform: scale(1.1);
 }
@@ -670,4 +676,15 @@ footer .cpyrght p {
     font-size: 14px;
     margin: 0 0 20px;
     display: block;
+}
+.zoom-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease-in-out; 
+}
+
+.zoom-image:hover {
+    transform: scale(1.1);
 }

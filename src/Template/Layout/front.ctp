@@ -63,18 +63,6 @@ use Cake\Routing\Router; ?>
 	<?php echo $this->fetch('content'); ?>
 	<?php echo $this->element('front_footer'); ?>
 
-	<?php echo $this->Html->script(['jquery-3.7.1.min.js']); ?>
-	<?php echo $this->Html->script(['popper.min.js']); ?>
-	<?php echo $this->Html->script(['bootstrap.min.js']); ?>
-	<?php echo $this->Html->script(['jquery.matchHeight-min.js']); ?>
-	<?php echo $this->Html->script(['owl.carousel.js']); ?>
-	<?php echo $this->Html->script(['bootstrap.bundle.min.js']); ?>
-	<?php echo $this->Html->script(['select2.min.js']); ?>
-	<?php echo $this->Html->script(['owl.carousel.js']);?>
-	<?php echo $this->Html->script(['custom.min.js']); ?>
-	<?php echo $this->Html->script(['search.custom.min.js']); ?>
-	<?php echo $this->Html->script(['jquery.payform.min.js']); ?>
-	<?php echo $this->Html->script(['script.js']); ?>
 </body>
 
 </html>
