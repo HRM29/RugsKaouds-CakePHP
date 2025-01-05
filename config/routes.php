@@ -71,6 +71,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 	$routes->connect('/rug-style/*', ['controller' => 'Products', 'action' => 'rugStyle']);
 	$routes->connect('/rug-size/*', ['controller' => 'Products', 'action' => 'rugSize']);
 	$routes->connect('/rug-color/*', ['controller' => 'Products', 'action' => 'rugColor']);
+	$routes->connect('/contact/', ['controller' => 'Pages', 'action' => 'contactUs']);
    
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
