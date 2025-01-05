@@ -4,6 +4,8 @@ use Cake\Routing\Router;
 
 $session = $this->request->getSession();
 $authUser = $session->read('Auth');
+$action = $this->request->getParam('action');
+$controller = $this->request->getParam('controller');
 ?>
 
 <!-- <div class="container-fluid bg-light">
@@ -83,7 +85,7 @@ $authUser = $session->read('Auth');
 		<div class="row align-items-center">
 			<div class="col-md-1">
 				<div class="logo">
-					<a href="#"><?php echo $this->Html->image('logo.jpg', ['alt' => 'logo']); ?></a>
+					<a href="/Kaouds/"><?php echo $this->Html->image('logo.jpg', ['alt' => 'logo']); ?></a>
 				</div>
 			</div>
 			<div class="col-md-11">
@@ -95,7 +97,7 @@ $authUser = $session->read('Auth');
 						<div class="collapse navbar-collapse" id="mySidebar">
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 								<button onclick="sdbr_close()" class="close">&times;</button>
-								<li class="nav-item"><a class="nav-link active" href="#">Shop</a></li>
+								<li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Collections</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Services</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Rug Care</a></li>
@@ -104,7 +106,7 @@ $authUser = $session->read('Auth');
 								<li class="nav-item"><a class="nav-link" href="#">About</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Projects</a></li>
-								<li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact/">Contact</a></li>
 							</ul>
 						</div>
 						<div class="srch_icon">

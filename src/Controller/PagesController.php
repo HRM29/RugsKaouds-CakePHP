@@ -119,7 +119,7 @@ class PagesController extends AppController
 		$data = $Table->newEntity();
 
 		// echo "CP1";exit; 
-		$seoTitle = "Contact Us | Gallery of Oriental Rugs";
+		$seoTitle = "Contact - Carpets & Rugs";
 		$seoDescription = "If you have any queries about our products or information, you can contact us at 910.392.2605 or send us a message via contact form.";
 		$seoKeyword = "oriental wall to wall carpet in wilmington";
 		$seoH2 = "";
@@ -512,6 +512,7 @@ class PagesController extends AppController
 		$postData = $this->request->getData();
 		// Check for duplicate email
 		$existingEntry = 0;
+
 		if ($postData['subscribe-type'] == 'newsletter') {
 			$existingEntry = $ContactNewsletterTable->find()
 				->where([
@@ -520,7 +521,28 @@ class PagesController extends AppController
 				])
 				->count();
 			$successMessage =  'Subscribed Successfully!';
-			$errorMessage =  'Failed to Subscribe Newsleter!. Please try again.';
+			$errorMessage =  'Failed to Subscribe Newsleter. Please try again.';
+			$mappedData = [
+				'name' => $postData['subscriber_name'],
+				'email' => $postData['email'],
+				'type' => $postData['subscribe-type'],
+			];
+		} else {
+			$existingEntry = $ContactNewsletterTable->find()
+				->where([
+					'email' => $postData['contact-email'],
+					'created_at >=' => (new \DateTime('-10 minutes'))->format('Y-m-d H:i:s'),
+					'type' => 'contact_us',
+				])
+				->count();
+			$successMessage =  'Your message has been sent!';
+			$errorMessage =  'Unable to send your message. Please try again.';
+			$mappedData = [
+				'name' => $postData['contact-name'],
+				'email' => $postData['contact-email'],
+				'type' => $postData['subscribe-type'],
+				'message' => $postData['contact-message']
+			];
 		}
 		$recaptchaResponse = $postData['g-recaptcha-response'];
 		$captchaResponse = $this->verifyRecaptcha($recaptchaResponse);
@@ -535,13 +557,9 @@ class PagesController extends AppController
 				->withStringBody(json_encode($response));
 			return $this->response;
 		}
-		$mappedData = [
-			'name' => $postData['subscriber_name'],
-			'email' => $postData['email'],
-			'type' => $postData['subscribe-type'],
-		];
+
 		$data = $ContactNewsletterTable->patchEntity($data, $mappedData, ['validate' => 'default']);
-		if ($existingEntry > 0) {
+		if ($existingEntry == 0) {
 			if (!$data->getErrors()) {
 				if ($ContactNewsletterTable->save($data)) {
 					$response = [
@@ -564,11 +582,19 @@ class PagesController extends AppController
 				];
 			}
 		} else {
-			$response = [
-				'success' => false,
-				'message' => 'This email is already subscribed to the newsletter.',
-				'errors' => ''
-			];
+			if ($postData['subscribe-type'] == 'newsletter') {
+				$response = [
+					'success' => false,
+					'message' => 'This email is already subscribed to the newsletter.',
+					'errors' => ''
+				];
+			} else {
+				$response = [
+					'success' => false,
+					'message' => 'It seems you’ve already sent this message recently.',
+					'errors' => ''
+				];
+			}
 		}
 
 		// Explicitly return the response as JSON

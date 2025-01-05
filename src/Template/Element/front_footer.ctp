@@ -53,7 +53,7 @@ use Cake\Routing\Router; ?>
                         <div class="form_group">
                             <?= $this->Form->control('Sign Up', ['type' => 'button', 'class' => 'btn subscribe-newsletter', 'label' => false, "required"]) ?>
                         </div>
-                        <?= $this->Form->control('g-recaptcha-response', ["type" => "hidden", "id" => 'g-recaptcha-response']); ?>
+                        <?= $this->Form->control('g-recaptcha-response', ["type" => "hidden", "class" => "g-recaptcha-response", "id" => false]); ?>
                         <?= $this->Form->end() ?>
                     </div>
                 </div>
@@ -287,11 +287,14 @@ use Cake\Routing\Router; ?>
         grecaptcha.execute("<?= CAPTCHA_SITEKEY ?>", {
             action: 'submit'
         }).then(function(token) {
-            document.getElementById('g-recaptcha-response').value = token;
+            console.log('Token refreshed at:', new Date().toLocaleTimeString());
+            document.querySelectorAll('.g-recaptcha-response').forEach(element => {
+                element.value = token;
+            });
         });
     }
     grecaptcha.ready(function() {
         refreshToken();
-        setInterval(refreshToken, 120000);
+        setInterval(refreshToken, 60000);
     });
 </script>
