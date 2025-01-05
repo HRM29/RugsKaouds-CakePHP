@@ -152,4 +152,16 @@ use Cake\Routing\Router; ?>
             }
         }
     });
+
+    function refreshToken() {
+        grecaptcha.execute("<?= CAPTCHA_SITEKEY ?>", {
+            action: 'submit'
+        }).then(function(token) {
+            document.getElementById('g-recaptcha-response').value = token;
+        });
+    }
+    grecaptcha.ready(function() {
+        refreshToken();
+        setInterval(refreshToken, 120000);
+    });
 </script>

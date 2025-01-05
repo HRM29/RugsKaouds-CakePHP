@@ -402,6 +402,7 @@
 						<div class="form_group">
 							<?= $this->Form->control('Sign Up', ['type' => 'button', 'class' => 'btn subscribe-newsletter', 'label' => false, "required"]) ?>
 						</div>
+						<?= $this->Form->control('g-recaptcha-response', ["type" => "hidden", "id" => 'g-recaptcha-response']); ?>
 						<?= $this->Form->end() ?>
 					</div>
 				</div>

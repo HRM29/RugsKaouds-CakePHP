@@ -26,6 +26,7 @@ use Cake\View\Helper\SessionHelper;
 use Cake\Event\Event;
 use Cake\Routing\Router;
 use Cake\Mailer\Email;
+use Cake\Http\Client;
 
 /**
  * Static content controller
@@ -521,7 +522,19 @@ class PagesController extends AppController
 			$successMessage =  'Subscribed Successfully!';
 			$errorMessage =  'Failed to Subscribe Newsleter!. Please try again.';
 		}
-
+		$recaptchaResponse = $postData['g-recaptcha-response'];
+		$captchaResponse = $this->verifyRecaptcha($recaptchaResponse);
+		if (isset($captchaResponse['success']) && $captchaResponse['success'] == 1) {
+		} else {
+			$response = [
+				'success' => false,
+				'message' => 'reCAPTCHA verification failed. Please try again.',
+				'data' => ''
+			];
+			$this->response = $this->response->withType('application/json')
+				->withStringBody(json_encode($response));
+			return $this->response;
+		}
 		$mappedData = [
 			'name' => $postData['subscriber_name'],
 			'email' => $postData['email'],
@@ -562,5 +575,16 @@ class PagesController extends AppController
 		$this->response = $this->response->withType('application/json')
 			->withStringBody(json_encode($response));
 		return $this->response;
+	}
+
+	private function verifyRecaptcha($recaptchaResponse)
+	{
+		$http = new Client();
+		$response = $http->post('https://www.google.com/recaptcha/api/siteverify', [
+			'secret' => CAPTCHA_SECRETKEY,
+			'response' => $recaptchaResponse,
+		]);
+
+		return json_decode($response->getBody()->getContents(), true);
 	}
 }

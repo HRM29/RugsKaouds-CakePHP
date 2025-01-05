@@ -76,6 +76,7 @@ $authUser = $session->read('Auth');
 <?php echo $this->Html->script(['jquery.payform.min.js']); ?>
 <?php echo $this->Html->script(['script.js']); ?>
 <?php echo $this->Html->script(['sweetalert2.min.js']); ?>
+<script src="https://www.google.com/recaptcha/api.js?render=<?= CAPTCHA_SITEKEY ?>"></script>
 
 <header id="myHeader">
 	<div class="container">
