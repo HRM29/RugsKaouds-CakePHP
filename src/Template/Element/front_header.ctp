@@ -1,4 +1,5 @@
 <?php
+
 use Cake\Routing\Router;
 
 $session = $this->request->getSession();
@@ -63,17 +64,19 @@ $authUser = $session->read('Auth');
 	</div>
 </div> -->
 <?php echo $this->Html->script(['jquery-3.7.1.min.js']); ?>
-	<?php echo $this->Html->script(['popper.min.js']); ?>
-	<?php echo $this->Html->script(['bootstrap.min.js']); ?>
-	<?php echo $this->Html->script(['jquery.matchHeight-min.js']); ?>
-	<?php echo $this->Html->script(['owl.carousel.js']); ?>
-	<?php echo $this->Html->script(['bootstrap.bundle.min.js']); ?>
-	<?php echo $this->Html->script(['select2.min.js']); ?>
-	<?php echo $this->Html->script(['owl.carousel.js']);?>
-	<?php echo $this->Html->script(['custom.min.js']); ?>
-	<?php echo $this->Html->script(['search.custom.min.js']); ?>
-	<?php echo $this->Html->script(['jquery.payform.min.js']); ?>
-	<?php echo $this->Html->script(['script.js']); ?>
+<?php echo $this->Html->script(['popper.min.js']); ?>
+<?php echo $this->Html->script(['bootstrap.min.js']); ?>
+<?php echo $this->Html->script(['jquery.matchHeight-min.js']); ?>
+<?php echo $this->Html->script(['owl.carousel.js']); ?>
+<?php echo $this->Html->script(['bootstrap.bundle.min.js']); ?>
+<?php echo $this->Html->script(['select2.min.js']); ?>
+<?php echo $this->Html->script(['owl.carousel.js']); ?>
+<?php echo $this->Html->script(['custom.min.js']); ?>
+<?php echo $this->Html->script(['search.custom.min.js']); ?>
+<?php echo $this->Html->script(['jquery.payform.min.js']); ?>
+<?php echo $this->Html->script(['script.js']); ?>
+<?php echo $this->Html->script(['sweetalert2.min.js']); ?>
+
 <header id="myHeader">
 	<div class="container">
 		<div class="row align-items-center">

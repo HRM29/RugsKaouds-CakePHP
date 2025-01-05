@@ -42,8 +42,9 @@ use Cake\Routing\Router; ?>
 	<meta name="facebook-domain-verification" content="3rrn0glngylfceooaifricmhzex1j9" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-	<?php echo $this->Html->css(array('front/bootstrap.min', 'front/bootstrap-icons.min', 'front/owl.carousel.min','front/owl.theme.default.min','front/custom','front/responsive')); ?>
+	<?php echo $this->Html->css(array('front/bootstrap.min', 'front/bootstrap-icons.min', 'front/owl.carousel.min', 'front/owl.theme.default.min', 'front/custom', 'front/responsive', 'front/sweetalert2.min')); ?>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-J34YWES5NL"></script>
+
 	<script>
 		window.dataLayer = window.dataLayer || [];
 
@@ -58,8 +59,8 @@ use Cake\Routing\Router; ?>
 
 <body>
 
-	<?php echo $this->element('front_header');?>
-	
+	<?php echo $this->element('front_header'); ?>
+
 	<?php echo $this->fetch('content'); ?>
 	<?php echo $this->element('front_footer'); ?>
 

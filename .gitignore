@@ -25,3 +25,6 @@
 # Ignore specific temporary files
 /tmp/debug_kit.sqlite
 /tmp/cache/myapp_cake_routes_route_collection
+webroot/uploads/
+webroot/uploads/
+webroot/uploads/

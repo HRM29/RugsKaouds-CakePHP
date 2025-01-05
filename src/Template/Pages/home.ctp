@@ -127,7 +127,12 @@
 					<div class="arrvls_slide owl-carousel owl-theme">
 						<div class="item">
 							<div class="arrvl_box">
-								<img src="images/arrvl_slide001.jpg">
+								<?php
+								$image = WWW_ROOT . 'uploads' . DS . 'product' . DS . 'arrvl_slide001.jpg';
+								if (file_exists($image)) {
+									echo $this->Html->image('/uploads/product/arrvl_slide001.jpg', ['alt' => 'arrvl_slide001.jpg']);
+								}
+								?>
 								<div class="arrvl_text">
 									<h3>Falu Red</h3>
 									<p>3’x5’3″ Falu Red, Hand Knotted, Wool and Silk, Nain with Large Medallion, 250 KPSI, Oriental Rug</p>
@@ -139,7 +144,12 @@
 						</div>
 						<div class="item">
 							<div class="arrvl_box">
-								<img src="images/arrvl_slide002.jpg">
+								<?php
+								$image = WWW_ROOT . 'uploads' . DS . 'product' . DS . 'arrvl_slide002.jpg';
+								if (file_exists($image)) {
+									echo $this->Html->image('/uploads/product/arrvl_slide002.jpg', ['alt' => 'arrvl_slide002.jpg']);
+								}
+								?>
 								<div class="arrvl_text">
 									<h3>Spring White</h3>
 									<p>2’7″x6’1″ Spring White, 250 KPSI, Hand Knotted, Nain with Center Motif Flower Design, Wool and Silk, Runner, Oriental Rug</p>
@@ -151,24 +161,17 @@
 						</div>
 						<div class="item">
 							<div class="arrvl_box">
-								<img src="images/arrvl_slide003.jpg">
+								<?php
+								$image = WWW_ROOT . 'uploads' . DS . 'product' . DS . 'arrvl_slide003.jpg';
+								if (file_exists($image)) {
+									echo $this->Html->image('/uploads/product/arrvl_slide003.jpg', ['alt' => 'arrvl_slide003.jpg']);
+								}
+								?>
 								<div class="arrvl_text">
 									<h3>Uranian Blue</h3>
 									<p>2’8″x6’6″ Uranian Blue, Nain with Large Center Medallion, 250 KPSI, Wool and Silk, Hand Knotted, Runner, Oriental Rug</p>
 									<span>$2,374.19</span>
 									<span class="nw_price">$1,424.51</span>
-									<a class="btn crt_btn" href="#"><i class="bi bi-bag-plus"></i> Add to Cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="arrvl_box">
-								<img src="images/arrvl_slide002.jpg">
-								<div class="arrvl_text">
-									<h3>Spring White</h3>
-									<p>2’7″x6’1″ Spring White, 250 KPSI, Hand Knotted, Nain with Center Motif Flower Design, Wool and Silk, Runner, Oriental Rug</p>
-									<span>$2,152.26</span>
-									<span class="nw_price">$1,291.35</span>
 									<a class="btn crt_btn" href="#"><i class="bi bi-bag-plus"></i> Add to Cart</a>
 								</div>
 							</div>
@@ -284,157 +287,127 @@
 	<?php
 	}
 	?>
-	<!-- <div class="container-fluid slider">
-		<div class="row">
-			<?php if (empty($HomeBlocks)) {
-			?>
-				<div class="desktop_slider">
-					<div id="demo" class="carousel slide" data-ride="carousel">
-						<div class="carousel-inner">
-							<?php
-							$i = 0;
-							foreach ($banners as $banner) {
-							?>
-								<div class="carousel-item <?php echo ($i == 0) ? 'active' : ''; ?>">
+	<section class="blogs">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="heading">
+						<h2>From The Blog</h2>
+					</div>
+					<div class="blg_slide owl-carousel owl-theme">
+						<div class="item">
+							<div class="blg_box">
+								<div class="blg_imag">
 									<?php
-									$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $banner->image;
+									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog001.jpg';
 									if (file_exists($image)) {
-										echo $this->Html->image('/uploads/banner/' . $banner->image, array('alt' => $banner->image));
-									} else {
-										echo $this->Html->image('slider1.jpg', ['alt' => 'Los Angeles']);
+										echo $this->Html->image('/img/blogs/' . 'blog001.jpg', ['alt' => 'blog001.jpg']);
 									}
 									?>
-									<div class="carousel-caption">
-										<h3><?php echo $banner->title; ?></h3>
-										<p><?php echo $banner->description; ?> </p>
-									</div>
+									<span>01 Oct, 2024</span>
 								</div>
-							<?php $i++;
-							} ?>
-						</div>
-
-						<a class="carousel-control-prev" href="#demo" data-slide="prev"> <span class="carousel-control-prev-icon"></span> </a> <a class="carousel-control-next" href="#demo" data-slide="next"> <span class="carousel-control-next-icon"></span> </a>
-					</div>
-				</div>
-			<?php } ?>
-
-
-			<div class="mob_slider">
-				<div id="demo" class="carousel slide" data-ride="carousel">
-					<div class="carousel-inner">
-						<div class="carousel-item">
-							<img src="/uploads/banner/mob_slide01.jpg" alt="223688703_Sh51439_slider3.jpg">
-							<div class="carousel-caption">
-								<h3>New Arrivals</h3>
-								<p>experience the mystical beauty of oriental rugs in your home </p>
+								<div class="blg_text">
+									<h3>Celebrating our 68th Year!</h3>
+									<p>We have been selling and servicing our wonderful clients for 68 years with some of [...]</p>
+								</div>
 							</div>
 						</div>
-						<div class="carousel-item active">
-							<img src="/uploads/banner/mob_slide02.jpg" alt="1316479190_slide02.jpg">
-							<div class="carousel-caption">
-								<h3>New Arrivals01</h3>
-								<p>experience the mystical beauty of oriental rugs </p>
+						<div class="item">
+							<div class="blg_box">
+								<div class="blg_imag">
+									<?php
+									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog002.jpg';
+									if (file_exists($image)) {
+										echo $this->Html->image('/img/blogs/' . 'blog002.jpg', ['alt' => 'blog002.jpg']);
+									}
+									?>
+									<span>25 Jul, 2024</span>
+								</div>
+								<div class="blg_text">
+									<h3>We do love doing stairs!</h3>
+									<p>Gorgeous Wool & Viscose woven modern pattern on this stair and landing project. Product is [...]</p>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="blg_box">
+								<div class="blg_imag">
+									<?php
+									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog003.jpg';
+									if (file_exists($image)) {
+										echo $this->Html->image('/img/blogs/' . 'blog003.jpg', ['alt' => 'blog003.jpg']);
+									}
+									?>
+									<span>24 Jun, 2024</span>
+								</div>
+								<div class="blg_text">
+									<h3>Another Stair Creation!</h3>
+									<p>Deerfield Mushroom Animal cut pile print with custom stair rods finish off this multi-level staircase [...]</p>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="blg_box">
+								<div class="blg_imag">
+									<?php
+									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog002.jpg';
+									if (file_exists($image)) {
+										echo $this->Html->image('/img/blogs/' . 'blog002.jpg', ['alt' => 'blog002.jpg']);
+									}
+									?>
+									<span>25 Jul, 2024</span>
+								</div>
+								<div class="blg_text">
+									<h3>We do love doing stairs!</h3>
+									<p>Gorgeous Wool & Viscose woven modern pattern on this stair and landing project. Product is [...]</p>
+								</div>
 							</div>
 						</div>
 					</div>
-
-					<a class="carousel-control-prev" href="#demo" data-slide="prev"> <span class="carousel-control-prev-icon"></span> </a> <a class="carousel-control-next" href="#demo" data-slide="next"> <span class="carousel-control-next-icon"></span> </a>
-				</div>
-			</div>
-
-
-		</div>
-	</div>
-	<div class="container ">
-		<div class="row ">
-			<div class="spacing">&nbsp;</div>
-			<div class="col-12 p-0">
-				<div class="main-heading ">
-					<h1>CARPET</h1>
-					<p>Collection</p>
-				</div>
-			</div>
-			<div class="col-md-7 wp-text">Selecting a Wall-to-Wall Carpet Carpet can do much more than cover your floors. It can be the foundation of a decorating plan, inspiring other ideas. Or, it can be selected to complement existing walls and furnishings. Above all, the carpet you choose should reflect your personality and bring comfort to your home.</div>
-			<div class="col-md-5 pull-right p-0 ">
-				<div class="wp-button"><a href="<?php echo $this->Url->build(['controller' => 'pages', 'action' => 'carpet']); ?>" class="view-button">View All</a></div>
-			</div>
-		</div>
-		<div class="row rugs">
-			<div class="col-md-5">
-				<div class="rugs-img"><a href="#"><?= $this->Html->image('rugs1.jpg', ['alt' => '']); ?>
-						<p>Stanton Carpet</p>
-					</a>
-				</div>
-			</div>
-			<div class="col-md-5">
-				<div class="rugs-img"><a href="#"><?= $this->Html->image('rugs2.jpg', ['alt' => '']); ?>
-						<p>Rosecore</p>
-					</a>
-				</div>
-			</div>
-			<div class="col-md-2 ">
-				<div class="rugs-left-img pt-m"><a href="#"><?= $this->Html->image('rugs3.jpg', ['alt' => '']); ?>
-						<p>Crescent</p>
-					</a>
-				</div>
-				<div class="rugs-left-img pt"><a href="#"><?= $this->Html->image('rugs4.jpg', ['alt' => '']); ?>
-						<p>Nourison</p>
-					</a>
-				</div>
-				<div class="rugs-left-img pt"><a href="#"><?= $this->Html->image('rugs5.jpg', ['alt' => '']); ?>
-						<p>Karastan</p>
-					</a>
 				</div>
 			</div>
 		</div>
-	</div>
-
-	<div class="container ">
-		<div class="row ">
-			<div class="spacing1">&nbsp;</div>
-			<div class="main-heading p-0">
-				<div class="col-md-6">
-					<h1>featureD</h1>
-					<p class="heading-text">products</p>
+	</section>
+	<?php
+	$image = WWW_ROOT . 'img' . DS . "nwsltr_bg.jpg";
+	if (file_exists($image)) {
+		$newsletterImg = Router::url('/', true) . 'img/' . "nwsltr_bg.jpg";
+	}
+	?>
+	<section class="grnt_nws" style="background-image: url( <?= $newsletterImg; ?>);">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-12 no_padding">
+					<div class="grntee">
+						<div class="heading">
+							<h2>Customer Feedback & Comments</h2>
+						</div>
+						<p>We guarantee our products and services. Our handmade rugs are guaranteed to be made from the finest of materials without any defect. We guarantee that under normal conditions and with proper care, your Kaoud Hand Knotted Carpet will last a lifetime.</p>
+						<p>If for any reason after the sale you are not completely satisfied within 30 days of your purchase, we will gladly take your rug back and exchange it for the rug of your choice.</p>
+					</div>
 				</div>
-				<div class="col-md-6 p-0"><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'shopping']); ?>" class="view-button">View All</a></div>
-			</div>
-
-			<div class="col-md-12 p-0 mt-4">
-				<?php foreach ($featuredProductData as $data) { ?>
-					<div class="product "><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
-							<?php
-							$img_src = Router::url('/', true) . 'uploads/product/';
-
-							$img_no = str_replace("GOR", " ", $data->sku_no);
-							$img_name = $data->sku_no . "t.jpg";
-
-							$inFolder = $this->General->__get_picture_folder($img_name);
-
-
-							$imgName =  $img_name . " 001.jpg";
-
-							$fileUrl = $img_src . $inFolder . "/" . $img_name;
-							$thumb_imgName =    $img_name . " 001.jpg";
-							$thumbArr = explode('_', $pimg['ProductImage']['image']);
-							$fileUrlThumb = $img_src . $inFolder . '/thumbs/thumb_' . $thumb_imgName;
-							if ($this->General->remote_file_exists($fileUrl)) {
-							?>
-								<img src="<?php echo $fileUrl; ?>" alt="<?php echo $record->title; ?>" />
-
-							<?php } else {
-							?>
-								<img src="<?php echo $this->General->getProductSingleImages($data->id)->image; ?>" alt="<?php echo $data->title; ?>" style="height: 250px;" />
-							<?php
-							} ?>
-							<p>Size: <?php echo $data->dimension_1_feet . "'" . $data->dimension_1_inches . '" X ' . $data->dimension_2_feet . "'" . $data->dimension_2_inches . '"'; ?></p>
-						</a></div>
-				<?php } ?>
-
+				<div class="col-lg-6 col-md-12 no_padding">
+					<div class="nwsltr">
+						<div class="heading">
+							<h2>Newsletter</h2>
+						</div>
+						<?= $this->Form->create(null, ['url' => "javscript:void(0)", 'id' => "subscribe-newsletter"]) ?>
+						<div class="form_group">
+							<?= $this->Form->control('subscriber_name', ['placeholder' => 'Your Name*', 'class' => 'fotm_control', "required", 'label' => false]) ?>
+						</div>
+						<div class="form_group my-1">
+							<?= $this->Form->control('email', ['placeholder' => 'Your Email*', 'class' => 'fotm_control', 'label' => false, "required"]) ?>
+							<?= $this->Form->control('subscribe-type', ["type" => "hidden", 'value' => "newsletter"]) ?>
+						</div>
+						<div class="form_group">
+							<?= $this->Form->control('Sign Up', ['type' => 'button', 'class' => 'btn subscribe-newsletter', 'label' => false, "required"]) ?>
+						</div>
+						<?= $this->Form->end() ?>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div> -->
-	<div class="mb-5"></div>
+	</section>
 
 	<script>
 		$('.arrvls_slide').owlCarousel({
@@ -497,6 +470,95 @@
 				1200: {
 					items: 1
 				}
+			}
+		});
+		$(document).ready(function() {
+			$(".subscribe-newsletter").on("click", function(event) {
+				let isValid = true;
+
+				// Get form values
+				let name = $("#subscriber-name").val().trim();
+				let email = $("#email").val().trim();
+
+				// Clear previous error messages
+				$(".error").remove();
+
+				// Name validation
+				if (name === "") {
+					isValid = false;
+					$("#subscriber-name").after('<span class="error" style="color: red;">Name is required.</span>');
+				}
+
+				// Email validation
+				if (email === "") {
+					isValid = false;
+					$("#email").after('<span class="error" style="color: red;">Email is required.</span>');
+				} else if (!validateEmail(email)) {
+					isValid = false;
+					$("#email").after('<span class="error" style="color: red;">Enter a valid email address.</span>');
+				}
+
+				if (isValid) {
+					const newsLetterForm = document.getElementById("subscribe-newsletter");
+					let formData = new FormData(newsLetterForm);
+					const csrfToken = $("[name='_csrfToken']").val();
+
+					$.ajax({
+						headers: {
+							'X-CSRF-Token': csrfToken
+						},
+						url: "<?php echo Router::url(['controller' => 'Pages', 'action' => 'subscribeLetter']); ?>", // Form action URL
+						type: "POST", // HTTP method
+						data: formData,
+						processData: false, // Don't process the FormData
+						contentType: false, // Don't set content type
+						success: function(response) {
+							// Handle success response
+							if (response.success) {
+								Swal.fire({
+									title: "Success!",
+									text: response.message,
+									icon: "success",
+									confirmButtonText: "OK",
+									customClass: {
+										popup: "small-alert", // Apply custom class to the popup
+									},
+								}).then(() => {
+									// Optionally reset the form or redirect
+									$("#subscribe-newsletter")[0].reset();
+								});
+							} else {
+								Swal.fire({
+									title: "Error!",
+									text: response.message,
+									icon: "error",
+									confirmButtonText: "OK",
+									customClass: {
+										popup: "small-alert", // Apply custom class to the popup
+									},
+
+								});
+							}
+						},
+						error: function(xhr) {
+							// Handle error response
+							Swal.fire({
+								title: "An Error Occurred!",
+								text: `Error Code: ${xhr.status}, ${xhr.statusText}`,
+								icon: "error",
+								confirmButtonText: "OK",
+								customClass: {
+									popup: "small-alert", // Apply custom class to the popup
+								},
+							});
+						},
+					});
+				}
+			});
+
+			function validateEmail(email) {
+				let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				return regex.test(email);
 			}
 		});
 	</script>
