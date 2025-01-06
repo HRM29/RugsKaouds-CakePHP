@@ -1,16 +1,37 @@
 	<?php
 
 	use Cake\Routing\Router; ?>
-	<section class="main_banner">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-12 no_padding">
-					<div class="mn_bnr"></div>
+	<?php
+	if (isset($HomeBlocks['Block1']) && !empty($HomeBlocks['Block1'])) {
+	?>
+		<section class="main_banner">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12 no_padding">
+						<div class="mn_slide owl-carousel owl-theme">
+							<?php
+							foreach ($HomeBlocks['Block1'] as $Block1Data) {
+							?>
+								<div class="item">
+									<div class="arrvl_box">
+										<?php
+										$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $Block1Data['image'];
+										if (file_exists($image)) {
+											echo $this->Html->image('/uploads/banner/' . $Block1Data['image'], ['alt' => $Block1Data['image'], "class" => "carousel-image"]);
+										}
+										?>
+									</div>
+								</div>
+							<?php
+							}
+							?>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 	<?php
+	}
 	if (isset($HomeBlocks['Block2']) && !empty($HomeBlocks['Block2'])) {
 	?>
 		<section class="rgs_type">
@@ -371,6 +392,26 @@
 
 
 	<script>
+		$('.mn_slide').owlCarousel({
+			loop: true,
+			margin: 30,
+			nav: true,
+			dots: false,
+			autoplay: true,
+			autoplayTimeout: 5000,
+			navText: ['<?php echo $this->Html->image('prev_wht.png', ['alt' => 'prev_wht']); ?>', '<?php echo $this->Html->image('next_wht.png', ['alt' => 'next_wht']); ?>'],
+			responsive: {
+				0: {
+					items: 1
+				},
+				768: {
+					items: 1
+				},
+				1200: {
+					items: 1
+				}
+			}
+		});
 		$('.arrvls_slide').owlCarousel({
 			loop: true,
 			margin: 30,

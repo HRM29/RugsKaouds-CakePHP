@@ -3,9 +3,19 @@
 use Cake\Routing\Router;
 use Cake\Core\Configure;
 ?>
-<section class="main_banner">
+<section class="inner_banner shp">
     <div class="container-fluid">
         <div class="row">
+            <div class="col-md-12 no_padding">
+                <div class="inr_bnr">
+                    <?php
+                    $image = WWW_ROOT . 'img' . DS . 'conact_us_banner.jpg';
+                    if (file_exists($image)) {
+                        echo $this->Html->image('/img/' . "conact_us_banner.jpg", ['alt' => "conact_us_banner"]);
+                    }
+                    ?>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -13,11 +23,8 @@ use Cake\Core\Configure;
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="heading">
-
-                </div>
                 <?= $this->Form->create(null, ['url' => "javscript:void(0)", 'id' => "contact-us"]) ?>
-                <h3>Contact US</h3>
+                <h3>Contact</h3>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form_group">
@@ -38,9 +45,16 @@ use Cake\Core\Configure;
                 <?= $this->Form->control('g-recaptcha-response', ["type" => "hidden", "class" => "g-recaptcha-response", "id" => false]); ?>
                 <?= $this->Form->control('subscribe-type', ["type" => "hidden", 'value' => "contact_us"]) ?>
                 <div class="form_group">
-                    <?= $this->Form->control('Sign Up', ['type' => 'button', 'class' => 'btn contact-kaouds', 'label' => false, "id" => "contact-kaouds"]) ?>
+                    <?= $this->Form->control('Submit', ['type' => 'button', 'class' => 'btn contact-kaouds', 'label' => false, "id" => "contact-kaouds"]) ?>
                 </div>
                 <?= $this->Form->end() ?>
+
+                <div class="mapouter">
+                    <div class="gmap_canvas">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d779.9606479109412!2d-73.41898929498979!3d41.16399106222474!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e81d1fe79dcc0f%3A0x60cd628477e28356!2sKaoud%20Carpets%20%26%20Rugs!5e1!3m2!1sen!2sin!4v1677135407724!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <!-- <a href="https://camzzle.com">look at this web-site</a> -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>

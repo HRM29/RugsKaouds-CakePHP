@@ -41,6 +41,7 @@ header {
     position: absolute;
     top: 0;
     width: 100%;
+	z-index:11;
 }
 header .menus .navbar .navbar-collapse .navbar-nav .close {
   display: none;
@@ -66,9 +67,7 @@ header .menus .navbar .navbar-collapse .navbar-nav .nav-item .nav-link.active {
   color: #881c06;
   background: #fff;
 }
-header .menus .navbar .navbar-collapse .navbar-nav .nav-item:last-child .nav-link {
-  padding-right: 0;
-}
+
 header .menus .navbar .navbar-collapse .navbar-nav .dropdown-menu {
 	position: absolute;
     top: 46px;
@@ -135,12 +134,37 @@ header .menus .navbar .srch_icon li span {
     line-height: 20px;
     left: 24px;
 }
-.main_banner .mn_bnr {
-	background-repeat: no-repeat;
-    background-position: top center;
-    height: 640px;
-    background-size: cover;
+.main_banner .mn_slide.owl-theme .item .arrvl_box {
+    position: relative;
 }
+.main_banner .mn_slide.owl-theme .item .arrvl_box:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    content: "";
+    height: 100%;
+}
+.main_banner .mn_slide.owl-theme .owl-nav [class*="owl-"] {
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    width: 43px;
+    height: 43px;
+    line-height: 39px;
+}
+.main_banner .mn_slide.owl-theme .owl-nav .owl-next {
+    right: 30px;
+}
+.main_banner .mn_slide.owl-theme .owl-nav .owl-prev {
+    left: 30px;
+}
+
+.carousel-image {
+    height: 600px; 
+    object-fit: cover; 
+  }
 .rgs_type {
     margin: 90px 0 0 0;
 }
@@ -528,7 +552,12 @@ footer .cpyrght p {
     height: 340px;
     background-size: cover;
 }
-
+.inner_banner.shp .inr_bnr img {
+    object-fit: cover;
+    height: 340px;
+    width: 100%; /* Adjust width as needed */
+    object-position: top center;
+}
 .ltst_arrvls.shop {
     margin: 90px 0 70px;
 }
@@ -676,6 +705,20 @@ footer .cpyrght p {
     font-size: 14px;
     margin: 0 0 20px;
     display: block;
+}
+
+.mapouter{
+	position:relative;
+	text-align:right;
+}
+.gmap_canvas {
+	overflow:hidden;
+	background:none!important;
+}
+.gmap_canvas a {
+	color: #000;
+	text-decoration: none;
+	font-size: 17px;
 }
 .zoom-image {
     width: 100%;
