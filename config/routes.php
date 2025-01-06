@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routes configuration
  *
@@ -47,17 +48,17 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
-	
-	//$routes->connect('/', ['prefix' => 'admin','controller' => 'Users', 'action' => 'login']);
+
+    //$routes->connect('/', ['prefix' => 'admin','controller' => 'Users', 'action' => 'login']);
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    
+
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'home']);
-	$routes->connect('/Products/', ['controller' => 'Products', 'action' => 'search']);
-	$routes->connect(
+    $routes->connect('/Products/', ['controller' => 'Products', 'action' => 'search']);
+    $routes->connect(
         '/:slug',
         ['controller' => 'Pages', 'action' => 'display'],
         [
@@ -65,18 +66,26 @@ Router::scope('/', function (RouteBuilder $routes) {
             //'slug' => '[^\/]+' // Taken from your example
         ]
     );
-	
-	$routes->connect('/Products/*', ['controller' => 'Products', 'action' => 'rugs']);
-	
-	$routes->connect('/rug-style/*', ['controller' => 'Products', 'action' => 'rugStyle']);
-	$routes->connect('/rug-size/*', ['controller' => 'Products', 'action' => 'rugSize']);
-	$routes->connect('/rug-color/*', ['controller' => 'Products', 'action' => 'rugColor']);
-	$routes->connect('/contact/', ['controller' => 'Pages', 'action' => 'contactUs']);
-   
+
+    $routes->connect('/Products/*', ['controller' => 'Products', 'action' => 'rugs']);
+
+    $routes->connect('/rug-style/*', ['controller' => 'Products', 'action' => 'rugStyle']);
+    $routes->connect('/rug-size/*', ['controller' => 'Products', 'action' => 'rugSize']);
+    $routes->connect('/rug-color/*', ['controller' => 'Products', 'action' => 'rugColor']);
+    $routes->connect('/contact/', ['controller' => 'Pages', 'action' => 'contactUs']);
+
+    $routes->connect('/collections', ['controller' => 'Pages', 'action' => 'collectionMenu']);
+
+    // Route with optional slug
+    $routes->connect(
+        '/collections/:slug',
+        ['controller' => 'Pages', 'action' => 'collectionMenu'],
+        ['pass' => ['slug'], 'slug' => '.*'] // Pass slug as a parameter, allowing it to be optional
+    );
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
-	 
+
     /**
      * Connect catchall routes for all controllers.
      *
@@ -100,6 +109,6 @@ Router::prefix('admin', function ($routes) {
     $routes->connect('/', ['controller' => 'Users', 'action' => 'login']);
 
     $routes->connect('/forgot', ['controller' => 'Users', 'action' => 'forgot']);
-  $routes->connect('/users/dashboard', ['controller' => 'Users', 'action' => 'index']);
+    $routes->connect('/users/dashboard', ['controller' => 'Users', 'action' => 'index']);
     $routes->fallbacks('DashedRoute');
 });

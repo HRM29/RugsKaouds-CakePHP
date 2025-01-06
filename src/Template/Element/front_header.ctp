@@ -8,63 +8,6 @@ $action = $this->request->getParam('action');
 $controller = $this->request->getParam('controller');
 ?>
 
-<!-- <div class="container-fluid bg-light">
-	<div class="row">
-		<div class="col-md-12">
-			<nav class="navbar navbar-expand-lg navbar-light "> <span class="navbar-brand">Enjoy Free Shipping</span>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-				<div class="collapse navbar-collapse" id="navbarNavDropdown">
-					<ul class="navbar-nav">
-						<li class="nav-item active"> <a class="nav-link underline" href="<?php echo Router::url('/', true) ?>">Home <span class="sr-only">(current)</span></a> </li>
-						<li class="nav-item"> <a class="nav-link underline" href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'shopping']); ?>">Shop </a> </li>
-						<li class="nav-item"> <a class="nav-link underline" href="<?php echo Router::url('/', true) ?>pages/carpet">Carpet</a> </li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle underline" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Rug Cleaning </a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-								<a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/rugcleaning">Rug Cleaning</a>
-								<a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/rugrepair">Rug Repair</a>
-								<a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/rugappraisal">Rug Appraisal</a>
-							</div>
-						</li>
-
-					</ul>
-
-					<div class="logo">
-						<a href="<?php echo Router::url('/', true) ?>">
-							<?= $this->Html->image('logo.png', ['alt' => '', 'width' => '60px']); ?>
-						</a>
-						<p><a href="<?php echo Router::url('/', true) ?>">GALLERY OF ORIENTAL RUGS</a></p>
-					</div>
-
-					<ul class="navbar-nav">
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle underline" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Interior design </a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-								<a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/interiordesign">Interior Design</a>
-								<a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/pairingpatternsorientalrug">Pairing Patterns</a>
-							</div>
-						</li>
-
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle underline" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About Us</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-								<a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/aboutus">About Us</a>
-								<a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/awardwinning">Award Winning</a>
-								<a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/businesshighlights">Business Highlights</a>
-								<a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/frednasseribio">Fred Nasseri Bio</a>
-								<a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/videos">Videos</a>
-							</div>
-						</li>
-
-						<li class="nav-item"> <a class="nav-link underline" href="<?php echo Router::url('/', true) ?>pages/contactUs">Contact Us</a> </li>
-						<ul>
-
-
-				</div>
-			</nav>
-		</div>
-	</div>
-</div> -->
 <?php echo $this->Html->script(['jquery-3.7.1.min.js']); ?>
 <?php echo $this->Html->script(['popper.min.js']); ?>
 <?php echo $this->Html->script(['bootstrap.min.js']); ?>
@@ -78,6 +21,7 @@ $controller = $this->request->getParam('controller');
 <?php echo $this->Html->script(['jquery.payform.min.js']); ?>
 <?php echo $this->Html->script(['script.js']); ?>
 <?php echo $this->Html->script(['sweetalert2.min.js']); ?>
+<?php echo $this->Html->script(['fancybox.umd.js']); ?>
 <script src="https://www.google.com/recaptcha/api.js?render=<?= CAPTCHA_SITEKEY ?>"></script>
 
 <header id="myHeader">
@@ -98,7 +42,7 @@ $controller = $this->request->getParam('controller');
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 								<button onclick="sdbr_close()" class="close">&times;</button>
 								<li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
-								<li class="nav-item"><a class="nav-link" href="#">Collections</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Services</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Rug Care</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Choosing A Rug</a></li>
@@ -106,7 +50,7 @@ $controller = $this->request->getParam('controller');
 								<li class="nav-item"><a class="nav-link" href="#">About</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Projects</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact/">Contact</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
 							</ul>
 						</div>
 						<div class="srch_icon">

@@ -50,7 +50,7 @@ class PagesController extends AppController
 	public function beforeFilter(Event $event)
 	{
 		parent::beforeFilter($event);
-		$this->Auth->allow(['portfolio1', 'videos', 'frednasseribio', 'businesshighlights', 'awardwinning', 'pairingpatternsorientalrug', 'interiordesign', 'index', 'portfolio', 'privacypolicy', 'contactUs', 'carpet', 'rugcleaning', 'aboutus', 'rugrepair', 'rugappraisal', 'faq', 'returns', 'termsofuse', 'testmail', 'subscribeLetter']);
+		$this->Auth->allow(['portfolio1', 'videos', 'frednasseribio', 'businesshighlights', 'awardwinning', 'pairingpatternsorientalrug', 'interiordesign', 'index', 'portfolio', 'privacypolicy', 'contactUs', 'carpet', 'rugcleaning', 'aboutus', 'rugrepair', 'rugappraisal', 'faq', 'returns', 'termsofuse', 'testmail', 'subscribeLetter', 'collectionMenu']);
 
 
 		if ($this->Auth->user('role_id') == 1) {
@@ -114,61 +114,18 @@ class PagesController extends AppController
 	public function contactUs()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$page = 'Contact Us';
-		$Table = TableRegistry::get('ContactUs');
-		$data = $Table->newEntity();
-
-		// echo "CP1";exit; 
+		$Table = TableRegistry::getTableLocator()->get('ContactUs');
 		$seoTitle = "Contact - Carpets & Rugs";
-		$seoDescription = "If you have any queries about our products or information, you can contact us at 910.392.2605 or send us a message via contact form.";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
-		$seoH2 = "";
-		$seoH1 = "Contact Us";
+		// $seoDescription = "If you have any queries about our products or information, you can contact us at 910.392.2605 or send us a message via contact form.";
+		// $seoKeyword = "oriental wall to wall carpet in wilmington";
+		// $seoH2 = "";
+		// $seoH1 = "Contact Us";
 
 		$this->set('title_for_layout', $seoTitle);
-		$this->set('keyword_for_layout', $seoKeyword);
-		$this->set('description_for_layout', $seoDescription);
-		$this->set('h2_for_layout', $seoH2);
-		$this->set('h1_for_layout', $seoH1);
-
-		/*	
-		if($this->request->is(['post', 'put'])) {
-			$data = $Table->patchEntity($data, $this->request->getData(),['validate'=>'default']);
-			if (!$data->getErrors()){
-				if($Table->save($data)) {
-					
-					$message        =   'Contact Us Enquiry';
-					$subject        =   'Contact Us Enquiry';
-					$email          =   new Email();
-					$email->transport('default');
-					// $to  = Configure::read("App.EmailFrom");
-					$to  = "info@rugsnc.com";
-					
-					$results =  $email
-								->setTo($to)
-								->emailFormat('html')
-								->template('contact_us')
-								->viewVars(['data' => $data])
-								->setSubject($subject)
-								->send($message);
-							
-					
-					
-					$this->Flash->set('Your Message successfully Send.',['key' => 'positive','params'=>['class' => 'alert alert-success']]);
-					$this->redirect(array('controller'=>'Pages','action'=>'contact-us'));
-				}
-				else{
-					$this->Flash->set('Message could not be send. Please, try again.', ['key' => 'positive','params' => ['class' => 'alert alert-danger']]);
-				}
-			}
-			else{
-				$this->Flash->set($this->errorMessage($data->getErrors()),['key' => 'positive','params'=>['class' => 'alert alert-danger']]);
-			}
-		}
-	
-		$this->set(compact('data','page'));
-
-	*/
+		// $this->set('keyword_for_layout', $seoKeyword);
+		// $this->set('description_for_layout', $seoDescription);
+		// $this->set('h2_for_layout', $seoH2);
+		// $this->set('h1_for_layout', $seoH1);
 	}
 
 	public function home()
@@ -612,5 +569,34 @@ class PagesController extends AppController
 		]);
 
 		return json_decode($response->getBody()->getContents(), true);
+	}
+	public function collectionMenu($slug = null)
+	{
+		$this->viewBuilder()->setLayout('front');
+		$seoTitle = "Our Collection - Kaoud Carpets & Rugs";
+
+		$CollectionTable = TableRegistry::getTableLocator()->get('Collections');
+		$PageType = 'Collections';
+		if ($slug !== null && !empty($slug)) {
+			$PageType = 'CollectionPage';
+			$collection = $CollectionTable->find()
+				->contain(['CollectionImages'])
+				->where(['Collections.collection_type' => "page", 'Collections.status' => 1, 'Collections.page_url' => trim($slug)])
+				->enableHydration(false)
+				->first();
+		} else {
+			$collection = $CollectionTable->find()
+				->contain([
+					'CollectionImages' => function ($q) {
+						return $q->order(['created_at' => 'DESC']); // Fetch only the last image
+					},
+				])
+				->where(['Collections.collection_type' => "page", 'Collections.status' => 1])
+				->enableHydration(false)
+				->toList();
+		}
+		$this->set('title_for_layout', $seoTitle);
+		$this->set('collection', $collection);
+		$this->set('PageType', $PageType);
 	}
 }

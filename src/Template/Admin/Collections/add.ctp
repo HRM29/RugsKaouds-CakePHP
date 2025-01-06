@@ -142,13 +142,17 @@ use Cake\Routing\Router; ?>
 		const pageTitle = document.getElementById('title');
 		const collectionType = document.getElementById('collection-type');
 
-		function returnPageUrl() {
+		function returnPageUrl(checkLink = false) {
 			const linkValue = pageTitle.value.trim();
 			const csrfToken = $("[name='_csrfToken']").val();
 
 			const formData = new FormData();
 			formData.append('_csrfToken', csrfToken);
-			formData.append('linkValue', linkValue);
+			if (checkLink) {
+				formData.append('linkValue', pageLink.value.trim());
+			} else {
+				formData.append('linkValue', linkValue);
+			}
 			if (collectionType.value === 'page') {
 				$.ajax({
 					headers: {
@@ -181,7 +185,7 @@ use Cake\Routing\Router; ?>
 				returnPageUrl();
 			});
 			pageLink.addEventListener('blur', function() {
-				returnPageUrl();
+				returnPageUrl(true);
 			});
 		} else {
 			console.error('Page title element not found!');

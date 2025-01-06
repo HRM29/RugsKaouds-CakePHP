@@ -9,20 +9,22 @@ use Cake\Validation\Validator;
 use Cake\Log\Log;
 
 
-class CollectionsTable extends Table
+class CollectionImagesTable extends Table
 {
 
     public function initialize(array $config)
     {
-        $this->setTable('collections');
+        $this->setTable('collection_images');
         $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
-        // Associations
-        $this->hasMany('CollectionImages', [
-            'foreignKey' => 'associated_id', // This matches the `associated_id` field in `collection_images`
-            'dependent' => true, // Deletes images if the collection is deleted
-            'cascadeCallbacks' => true, // Ensures cascading operations
+        
+        $this->belongsTo('Collections', [
+            'foreignKey' => 'associated_id',
+            'joinType' => 'INNER',
+            'cascadeCallbacks' => true, // Enables cascading delete
         ]);
+        
+        $this->addBehavior('Timestamp');
     }
 
     /**

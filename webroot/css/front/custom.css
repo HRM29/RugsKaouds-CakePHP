@@ -619,6 +619,9 @@ footer .cpyrght p {
     margin: 90px 0 70px;
 }
 .collections .clctns {
+    width: 195px;
+    height: 195px;
+    overflow: hidden;
     position: relative;
     margin: 0 0 30px;
 	transition: all 0.4s ease-in-out;
@@ -628,13 +631,13 @@ footer .cpyrght p {
     transform: scale(1.1);
 }
 .collections .clctns:after {
-    content: "";
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
     background: rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.3);
 }
 .collections .clctns img {
     width: 100%;
