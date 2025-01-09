@@ -7,6 +7,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use Cake\Routing\Router;
 use Cake\Event\Event;
+use Cake\Utility\Text;
 
 //use Cake\ORM\Behavior\TreeBehavior;
 /**
@@ -197,6 +198,39 @@ class CategoriesController extends AppController {
 			return $this->redirect(['action' => 'index']);
 		}
 	}
-	
+	public function returnPageUrl()
+    {
+        $this->request->allowMethod(['post', 'put']); // Only POST and PUT requests are allowed
+        $this->autoRender =    false;
+        $collectionTable =    TableRegistry::getTableLocator()->get('Categories');
+        if ($this->request->is(['post', 'put'])) {
+            $postData    =    $this->request->getData();
+            $returnData = ['status' => false, 'message' => '', "value" => ''];
+            if (!empty($postData['linkValue'])) {
+                $pageURl = Text::slug($postData['linkValue']);
+                $existingURl_Count = $collectionTable->find('all')
+                    ->select(['id'])
+                    ->where([
+                        'Categories.page_link' => $pageURl
+                    ])
+                    ->count();
+                if ($existingURl_Count > 0) {
+                    $returnData["status"] = false;
+                    $returnData["message"] = "URL Already exist.";
+                } else {
+                    $returnData["status"] = true;
+                    $returnData["value"] = strtolower($pageURl);
+                }
+            }
+            // // Encode the data to JSON
+            $jsonData = json_encode($returnData);
+
+            // // Return the response with proper JSON headers
+            $this->response = $this->response->withType('json')
+                ->withStringBody($jsonData);
+
+            return $this->response;
+        }
+    }
 	
 }

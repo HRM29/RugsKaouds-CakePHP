@@ -89,7 +89,7 @@ class PagesController extends AppController
 
 		try {
 
-			$cmsPageTable = TableRegistry::get('CmsPages');
+			$cmsPageTable = TableRegistry::getTableLocator()->get('CmsPages');
 
 			$contentData = $cmsPageTable->find('all')
 				->where(['CmsPages.slug' => $page])->first();
@@ -418,7 +418,7 @@ class PagesController extends AppController
 		$emailId = 'sam@mailinator.com';
 		$username = "Sam";
 		$activation_link = Router::url('/', true) . 'users/activate/' . base64_encode(12);
-		$EmailTemplates = TableRegistry::get('EmailTemplates');
+		$EmailTemplates = TableRegistry::getTableLocator()->get('EmailTemplates');
 		$query = $EmailTemplates->find('all')->where(['EmailTemplates.slug' => 'user_registration']);
 
 		$template = $query->first();

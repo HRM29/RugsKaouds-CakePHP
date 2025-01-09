@@ -110,6 +110,7 @@ if (isset($collection) && !empty($collection)) {
             }
         },
         animationEffect: "zoom",
+        Thumbs: false
     });
     $(".contact-kaouds").on("click", function(event) {
         let isValid = true;

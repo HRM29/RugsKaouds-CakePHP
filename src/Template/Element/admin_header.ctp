@@ -11,10 +11,11 @@
         <!-- Logo -->
         <a href="<?php echo Router::url('/', true); ?>admin/users" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b><?php echo Configure::read('App.HeaderName'); ?></b></span>
+          <span class="logo-mini"><b><?php echo $this->Html->image('/img/logo.jpg', ['alt' => Configure::read('App.HeaderName')]); ?></b></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"> <?php echo Configure::read('App.meta'); ?>
-			<!--img src="<?php echo Router::url('/', true); ?>img/CLlogo3.png" alt="<?php echo Configure::read('App.meta'); ?>" class="logo-default" style="margin-top:0px; max-height:60px; line-height:60px;"--></span>
+          <span class="logo-lg"><?php
+           echo $this->Html->image('/img/logo.jpg', ['alt' => Configure::read('App.meta')]);
+          ?></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">

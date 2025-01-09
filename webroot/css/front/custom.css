@@ -619,9 +619,11 @@ footer .cpyrght p {
     margin: 90px 0 70px;
 }
 .collections .clctns {
-    width: 195px;
-    height: 195px;
-    overflow: hidden;
+    display: grid;
+    gap: 16px;
+    max-width: 1200px;
+    width: 100%;
+    height: auto;
     position: relative;
     margin: 0 0 30px;
 	transition: all 0.4s ease-in-out;
@@ -641,6 +643,9 @@ footer .cpyrght p {
 }
 .collections .clctns img {
     width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .collections .clctns h3 {
     position: absolute;
@@ -753,4 +758,57 @@ footer .cpyrght p {
 
 .star-rating .bi-star {
     color: #ddd;
+}
+
+.shop-head {
+	font-family: Heebo;
+	background: #f2f2f2;
+	min-height: 40px;
+	margin-top: 24px;
+	clear: both;
+	display: block
+}
+.shop-head h2 {
+	font-family: Heebo;
+	font-size: 12px;
+	display: inline-block;
+	color: #777;
+	padding: 13px 15px;
+	margin: 0;
+}
+
+.shop-bottom-section {
+	float: right
+}
+.pagination {
+	margin: 0;
+	padding-right: 15px;
+}
+.pagination a {
+	color: #515b5b;
+	padding: 10px 10px;
+	display: inline-block;
+}
+.pagination a:hover, .pagination .active a {
+	background: #881c06;
+	color: #fff;
+}
+.pagination .prev, .pagination .next, .pagination .last, .pagination .first {
+	position: relative;
+}
+.pagination .prev::before, .pagination .next::after, .pagination .last::after, .pagination .first::before {
+	font: normal normal normal 14px/1 FontAwesome;
+	display: inline-block;
+}
+.pagination .prev::before {
+	content: "\f104";
+}
+.pagination .next::after {
+	content: "\f105";
+}
+.pagination .first::before {
+	content: "\f100";
+}
+.pagination .last::after {
+	content: "\f101";
 }

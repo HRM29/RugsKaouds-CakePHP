@@ -80,7 +80,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="page_link">Page Link</label>
-								<?php echo $this->Form->control('page_link', ['placeholder'=>'Page Link','label'=>false,'class'=>'form-control']);?>
+								<?php echo $this->Form->control('page_link', ['placeholder'=>'Page Link','label'=>false,'class'=>'form-control', "disabled"=>"disabled", "readonly"]);?>
 							</div>
 						</div>
 					</div>

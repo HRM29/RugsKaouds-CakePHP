@@ -67,7 +67,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
-    $routes->connect('/Products/*', ['controller' => 'Products', 'action' => 'rugs']);
+    $routes->connect('/product-category/*', ['controller' => 'Products', 'action' => 'rugs']);
 
     $routes->connect('/rug-style/*', ['controller' => 'Products', 'action' => 'rugStyle']);
     $routes->connect('/rug-size/*', ['controller' => 'Products', 'action' => 'rugSize']);
@@ -82,6 +82,9 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['controller' => 'Pages', 'action' => 'collectionMenu'],
         ['pass' => ['slug'], 'slug' => '.*'] // Pass slug as a parameter, allowing it to be optional
     );
+
+    $routes->connect('/shop/', ['controller' => 'Products', 'action' => 'shopping']);
+
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */

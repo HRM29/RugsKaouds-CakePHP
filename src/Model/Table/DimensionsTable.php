@@ -35,8 +35,10 @@ class DimensionsTable extends Table {
 		$this->setTable('dimensions');
 		$this->setDisplayField('id');
 		$this->setPrimaryKey('id');
-		
 		$this->addBehavior('Timestamp');
+		$this->hasMany('Products', [
+            'foreignKey' => 'dimension_id',
+        ]);
 	}
 
 	/**
