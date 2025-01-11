@@ -243,7 +243,7 @@ class ProductsController extends AppController
 				return $q->where(['Products.status' => 1]);
 			})
 			->distinct(['Categories.id']) // Ensure unique categories
-			->select(['Categories.id', 'Categories.title', 'Categories.page_link','total_products' => $CategoryTable->find()->func()->count('Products.id')])
+			->select(['Categories.id', 'Categories.title', 'Categories.page_link', 'total_products' => $CategoryTable->find()->func()->count('Products.id')])
 			->group(['Categories.id', 'Categories.name'])
 			->where(['Categories.status' => 1])
 			->order(['Categories.title']);
@@ -263,7 +263,7 @@ class ProductsController extends AppController
 				return $q->where(['Products.status' => 1]);
 			})
 			->distinct(['Dimensions.id']) // Ensure unique categories
-			->select(['Dimensions.id', 'Dimensions.title', 'Dimensions.type','Dimensions.slug'])
+			->select(['Dimensions.id', 'Dimensions.title', 'Dimensions.type', 'Dimensions.slug'])
 			->where(['Dimensions.status' => 1])
 			->order(['Dimensions.title']);
 
@@ -1374,477 +1374,478 @@ class ProductsController extends AppController
 		return $return;
 	}
 
-	public function rugs($value = null, $key = null)
+	public function rugs($categorySlug = null, $key = null)
 	{
+		$this->viewBuilder()->setLayout('front');
 		$arrParms = array();
 		$title = '';
-		if (!empty($value && $key)) {
+		$filterDataOptions = $this->returnFilterDataOptions();
+		if (!empty($categorySlug)) {
 			$valueArr = explode(',', $value);
 			$keyArr = explode(',', $key);
-			if (!empty($keyArr)) {
-				for ($i = 0; $count = count($keyArr), $i < $count; $i++) {
-					$arrParms[$keyArr[$i]] = explode('~', $valueArr[$i]);
-				}
-				// echo "<pre>";print_r($arrParms);exit;
-				$colors = array();
-				$dimensions = array();
-				$styles = array();
-				$collections = array();
-				$result = array();
-				$filters = array();
-				$price = array();
-				$orderBy = array();
-				$spcialSizes = array();
-				$categoriesTable	=	TableRegistry::getTableLocator()->get('Categories');
-				$dimensionsTable	=	TableRegistry::getTableLocator()->get('Dimensions');
-				$colorsTable	=	TableRegistry::getTableLocator()->get('Colors');
-				$orderBy			=   ['id' => 'DESC'];
 
-
-				$styleFilter = $colorFilter = $sizeFilter = $patternFilter = $designFilter = $materialFilter = $constructionFilter = array();
-
-				//$orderBy	=   ["FIELD(`sku_no`,'ORC407187','ORC394542','ORC395046','ORC374256','ORC400716','ORC283194','ORC393975','ORC401589','ORC368505','ORC405162','ORC402858','ORC406764') DESC, FIELD(Products.dimension_id,25) DESC"];
-
-
-				if (!empty($arrParms)) {
-					foreach ($arrParms as $k => $val) {
-						if ($k == 'collection') {
-							foreach ($val as $kk => $stVal) {
-								$collectionVal = $stVal;
-								if ($collectionVal != '') {
-									$catID = $categoriesTable->find('all')
-										->where(['term LIKE' => $collectionVal, 'status' => 1])->first();
-									if (!empty($catID)) {
-										$collections[] = $catID->id;
-										$title 		   = $catID->title;
-									}
-								}
-							}
-						}
-						if ($k == 'size') {
-							foreach ($val as $sk => $sizeVal) {
-								$dimensionArr = explode('&', $sizeVal);
-
-								$dimensionSlug = $dimensionArr[0];
-								$dimensionType = $dimensionArr[1];
-								if (!empty($dimensionSlug && $dimensionType)) {
-									$Dimension	=	$dimensionsTable->find('all')
-										->where(['slug LIKE' => $dimensionSlug, 'type' => $dimensionType, 'status' => 1])->first();
-									if (!empty($Dimension)) {
-										$dimensions[] = $Dimension->id;
-									} else if ($dimensionType == 5) {
-										//$dimensions[] = 0;
-										list($width, $height) = explode('x', strtolower($dimensionSlug));
-
-										$spcialSizes  = array('width' => $width, 'height' => $height);
-									}
-								}
-							}
-						}
-
-						if ($k == 'color') {
-							foreach ($val as $ck => $colorVal) {
-								$colorVal = $colorVal;
-
-								if ($colorVal != '') {
-									$Color	=	$colorsTable->find('all')
-										->where(['slug LIKE' => $colorVal, 'status' => 1])->first();
-									if (!empty($Color)) {
-										$colors[] = $Color->id;
-									}
-								}
-							}
-						}
-						if ($k == 'slug') {
-							foreach ($val as $slk => $slugVal) {
-								$slug_v = $slugVal;
-							}
-						}
-						if ($k == 'price') {
-							foreach ($val as $pricek => $priceVal) {
-								$price[] = $priceVal;
-							}
-						}
-
-						if ($k == 'price_sort') {
-							foreach ($val as $so_pricek => $so_priceVal) {
-								$price_sort[] = $so_priceVal;
-							}
-						}
-						if ($k == 'style') {
-							if (is_array($val)) {
-								foreach ($val as $v) {
-									$styles[] = $v;
-								}
-							}
-						}
-						if ($k == 'pattern') {
-							if (is_array($val)) {
-								foreach ($val as $v) {
-									$patterns[] = $v;
-								}
-							}
-						}
-						if ($k == 'design') {
-							if (is_array($val)) {
-								foreach ($val as $v) {
-									$designs[] = $v;
-								}
-							}
-						}
-						if ($k == 'material') {
-							if (is_array($val)) {
-								foreach ($val as $v) {
-									$materials[] = $v;
-								}
-							}
-						}
-						if ($k == 'constr') {
-							if (is_array($val)) {
-								foreach ($val as $v) {
-									$construction[] = $v;
-								}
-							}
-						}
-					}
-
-					//echo "<pre>";print_r($spcialSizes);die;
-
-					if (!empty($collections)) {
-						$new_implode = implode(",", $collections);
-						$filters['OR'][]['Products.category_id IN'] = $collections;
-						$filters['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
-						$filters['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
-						$filters['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
-						$filters['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
-
-						$styleFilter = $colorFilter = $patternFilter = $designFilter = $materialFilter = $constructionFilter = $filters;
-
-						$sizeFilter['OR'][]['Products.category_id IN'] = $collections;
-						$sizeFilter['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
-						$sizeFilter['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
-						$sizeFilter['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
-						$sizeFilter['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
-					}
-
-					if (isset($styles) && !empty($styles)) {
-						$filters['AND'][]['Products.overstock_style IN'] = $styles;
-
-						$colorFilter['AND'][]['Products.overstock_style IN'] = $styles;
-						$sizeFilter['AND'][]['Products.overstock_style IN'] = $styles;
-						$patternFilter['AND'][]['Products.overstock_style IN'] = $styles;
-						$designFilter['AND'][]['Products.overstock_style IN'] = $styles;
-						$materialFilter['AND'][]['Products.overstock_style IN'] = $styles;
-						$constructionFilter['AND'][]['Products.overstock_style IN'] = $styles;
-					}
-
-					if (!empty($dimensions)) {
-						$filters['Products.dimension_id IN'] = $dimensions;
-
-						$styleFilter['Products.dimension_id IN'] = $dimensions;
-						$colorFilter['Products.dimension_id IN'] = $dimensions;
-						$patternFilter['Products.dimension_id IN'] = $dimensions;
-						$designFilter['Products.dimension_id IN'] = $dimensions;
-						$materialFilter['Products.dimension_id IN'] = $dimensions;
-						$constructionFilter['Products.dimension_id IN'] = $dimensions;
-					}
-
-					if (!empty($spcialSizes)) {
-						$wdth = isset($spcialSizes['width']) ? $spcialSizes['width'] : '';
-						$hght = isset($spcialSizes['height']) ? $spcialSizes['height'] : '';
-
-						if ($wdth != '' && $wdth > 0) {
-							$filters['Products.dimension_1_feet'] = $wdth;
-
-							$styleFilter['Products.dimension_1_feet'] = $wdth;
-							$colorFilter['Products.dimension_1_feet'] = $wdth;
-							$patternFilter['Products.dimension_1_feet'] = $wdth;
-							$designFilter['Products.dimension_1_feet'] = $wdth;
-							$materialFilter['Products.dimension_1_feet'] = $wdth;
-							$constructionFilter['Products.dimension_1_feet'] = $wdth;
-						}
-
-						if ($hght != '' && $hght > 0) {
-							$filters['Products.dimension_2_feet'] = $hght;
-
-							$styleFilter['Products.dimension_2_feet'] = $hght;
-							$colorFilter['Products.dimension_2_feet'] = $hght;
-							$patternFilter['Products.dimension_2_feet'] = $hght;
-							$designFilter['Products.dimension_2_feet'] = $hght;
-							$materialFilter['Products.dimension_2_feet'] = $hght;
-							$constructionFilter['Products.dimension_2_feet'] = $hght;
-						}
-					}
-
-					if (!empty($colors)) {
-						$filters['Products.color_id IN'] = $colors;
-
-						$styleFilter['Products.color_id IN'] = $colors;
-						$sizeFilter['Products.color_id IN'] = $colors;
-						$patternFilter['Products.color_id IN'] = $colors;
-						$designFilter['Products.color_id IN'] = $colors;
-						$materialFilter['Products.color_id IN'] = $colors;
-						$constructionFilter['Products.color_id IN'] = $colors;
-					}
-
-					if (isset($patterns) && !empty($patterns)) {
-						$filters['AND'][]['Products.pattern IN'] = $patterns;
-
-						$styleFilter['AND'][]['Products.pattern IN'] = $patterns;
-						$colorFilter['AND'][]['Products.pattern IN'] = $patterns;
-						$sizeFilter['AND'][]['Products.pattern IN'] = $patterns;
-						$designFilter['AND'][]['Products.pattern IN'] = $patterns;
-						$materialFilter['AND'][]['Products.pattern IN'] = $patterns;
-						$constructionFilter['AND'][]['Products.pattern IN'] = $patterns;
-					}
-
-					if (isset($designs) && !empty($designs)) {
-						$filters['AND'][]['Products.rug_design IN'] = $designs;
-
-						$styleFilter['AND'][]['Products.rug_design IN'] = $designs;
-						$colorFilter['AND'][]['Products.rug_design IN'] = $designs;
-						$sizeFilter['AND'][]['Products.rug_design IN'] = $designs;
-						$patternFilter['AND'][]['Products.rug_design IN'] = $designs;
-						$materialFilter['AND'][]['Products.rug_design IN'] = $designs;
-						$constructionFilter['AND'][]['Products.rug_design IN'] = $designs;
-					}
-
-					if (isset($materials) && !empty($materials)) {
-						$filters['AND'][]['Products.material IN'] = $materials;
-
-						$styleFilter['AND'][]['Products.material IN'] = $materials;
-						$colorFilter['AND'][]['Products.material IN'] = $materials;
-						$sizeFilter['AND'][]['Products.material IN'] = $materials;
-						$patternFilter['AND'][]['Products.material IN'] = $materials;
-						$designFilter['AND'][]['Products.material IN'] = $materials;
-						$constructionFilter['AND'][]['Products.material IN'] = $materials;
-					}
-
-					if (isset($construction) && !empty($construction)) {
-						$filters['AND'][]['Products.rug_type IN'] = $construction;
-
-						$styleFilter['AND'][]['Products.rug_type IN'] = $construction;
-						$colorFilter['AND'][]['Products.rug_type IN'] = $construction;
-						$sizeFilter['AND'][]['Products.rug_type IN'] = $construction;
-						$patternFilter['AND'][]['Products.rug_type IN'] = $construction;
-						$designFilter['AND'][]['Products.rug_type IN'] = $construction;
-						$materialFilter['AND'][]['Products.rug_type IN'] = $construction;
-					}
-
-					if (!empty($price)) {
-						foreach ($price as $pr_key => $p_val) {
-							$pNeArr  = explode("-", $p_val);
-							if ($pNeArr[0] != 15000) {
-								$filters['AND']['OR'][] = [
-									'Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]),
-									'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])
-								];
-
-								$styleFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
-
-								$colorFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
-
-								$sizeFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
-
-								$patternFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
-								$designFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
-								$materialFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
-								$constructionFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
-							} else {
-								$filters['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
-
-								$styleFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
-
-								$colorFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
-
-								$sizeFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
-
-								$patternFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
-								$designFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
-								$materialFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
-								$constructionFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
-							}
-						}
-					}
-
-					if (!empty($price_sort)) {
-						foreach ($price_sort as $sort_key => $prsort_val) {
-							if ($prsort_val == 'low') {
-								//$filters['Products.selling_price'] = $prsort_val;
-								$orderBy = ['selling_price' => 'ASC'];
-							} else {
-								$orderBy = ['selling_price' => 'DESC'];
-							}
-						}
-					}
-
-
-					if (!empty($slug_v)) {
-						if (!empty($slug_v)) {
-							$slugArr = explode(' ', $slug_v);
-
-							foreach ($slugArr as $slugkey2 => $slugVal) {
-
-								$col_arr = $this->checkColor($slugVal);
-								$styl_arr = $this->checkStyle($slugVal);
-
-								if (!empty($col_arr)) {
-									$filters['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
-									//$new_impClr = implode(",",$col_arr);
-
-									$styleFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
-									$colorFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
-									$sizeFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
-									$patternFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
-									$designFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
-									$materialFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
-									$constructionFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
-								}
-								if (!empty($styl_arr)) {
-									$filters['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
-									$new_implode = implode(",", $styl_arr);
-									$filters['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
-									$filters['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
-									$filters['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
-									$filters['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
-
-
-									$styleFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
-
-									$styleFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
-									$styleFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
-									$styleFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
-									$styleFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
-
-									$colorFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
-
-									$colorFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
-									$colorFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
-									$colorFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
-									$colorFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
-
-									$sizeFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
-
-									$sizeFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
-									$sizeFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
-									$sizeFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
-									$sizeFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
-
-									$patternFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
-
-									$patternFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
-									$patternFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
-									$patternFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
-									$patternFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
-
-									$designFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
-									$designFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
-									$designFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
-									$designFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
-									$designFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
-
-									$materialFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
-									$materialFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
-									$materialFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
-									$materialFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
-									$materialFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
-
-									$constructionFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
-									$constructionFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
-									$constructionFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
-									$constructionFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
-									$constructionFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
-								}
-
-								$filters['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
-								$filters['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
-								$filters['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
-								$filters['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
-								$filters['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
-								$filters['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
-								//	$filters['OR'][]['Products.sku_no LIKE'] = "%$slug_v%";
-
-
-
-								$styleFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
-								$styleFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
-								$styleFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
-								$styleFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
-								$styleFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
-								$styleFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
-
-								$colorFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
-								$colorFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
-								$colorFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
-								$colorFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
-								$colorFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
-								$colorFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
-
-								$sizeFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
-								$sizeFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
-								$sizeFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
-								$sizeFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
-								$sizeFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
-								$sizeFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
-
-								$patternFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
-								$patternFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
-								$patternFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
-								$patternFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
-								$patternFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
-								$patternFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
-
-								$designFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
-								$designFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
-								$designFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
-								$designFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
-								$designFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
-								$designFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
-
-								$materialFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
-								$materialFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
-								$materialFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
-								$materialFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
-								$materialFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
-								$materialFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
-
-								$constructionFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
-								$constructionFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
-								$constructionFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
-								$constructionFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
-								$constructionFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
-								$constructionFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
-							}
-						}
-
-						$title = $slug_v;
-					}
-
-					$productTable	=	TableRegistry::getTableLocator()->get('Products');
-
-					$filters['Products.status'] = 1;
-					$filters['Products.sold_status'] = 0;
-
-					//echo '<pre>'; print_r($sizeFilter); die;
-					$result	=	$this->paginate($productTable, [
-						'conditions' => [$filters],
-						//'order'		=>	['id'=>'DESC'],
-						'order'		=>	$orderBy,
-						'contain'	=>	['ProductImages'],
-						'limit'		=>	Configure::read('App.pageRecord')
-					]);
-					//	echo '<pre>'; print_r($result); die;
-				}
+			for ($i = 0; $count = count($keyArr), $i < $count; $i++) {
+				$arrParms[$keyArr[$i]] = explode('~', $valueArr[$i]);
 			}
+			// echo "<pre>";print_r($arrParms);exit;
+			$colors = array();
+			$dimensions = array();
+			$styles = array();
+			$collections = array();
+			$result = array();
+			$filters = array();
+			$price = array();
+			$orderBy = array();
+			$spcialSizes = array();
+			$categoriesTable	=	TableRegistry::getTableLocator()->get('Categories');
+			$dimensionsTable	=	TableRegistry::getTableLocator()->get('Dimensions');
+			$colorsTable	=	TableRegistry::getTableLocator()->get('Colors');
+			$orderBy			=   ['id' => 'DESC'];
 
 
+			$styleFilter = $colorFilter = $sizeFilter = $patternFilter = $designFilter = $materialFilter = $constructionFilter = array();
+
+			//$orderBy	=   ["FIELD(`sku_no`,'ORC407187','ORC394542','ORC395046','ORC374256','ORC400716','ORC283194','ORC393975','ORC401589','ORC368505','ORC405162','ORC402858','ORC406764') DESC, FIELD(Products.dimension_id,25) DESC"];
+
+			if (!empty($arrParms)) {
+				foreach ($arrParms as $k => $val) {
+					if ($k == 'collection') {
+						foreach ($val as $kk => $stVal) {
+							$collectionVal = $stVal;
+							if ($collectionVal != '') {
+								$catID = $categoriesTable->find('all')
+									->where(['term LIKE' => $collectionVal, 'status' => 1])->first();
+								if (!empty($catID)) {
+									$collections[] = $catID->id;
+									$title 		   = $catID->title;
+								}
+							}
+						}
+					}
+					if ($k == 'size') {
+						foreach ($val as $sk => $sizeVal) {
+							$dimensionArr = explode('&', $sizeVal);
+
+							$dimensionSlug = $dimensionArr[0];
+							$dimensionType = $dimensionArr[1];
+							if (!empty($dimensionSlug && $dimensionType)) {
+								$Dimension	=	$dimensionsTable->find('all')
+									->where(['slug LIKE' => $dimensionSlug, 'type' => $dimensionType, 'status' => 1])->first();
+								if (!empty($Dimension)) {
+									$dimensions[] = $Dimension->id;
+								} else if ($dimensionType == 5) {
+									//$dimensions[] = 0;
+									list($width, $height) = explode('x', strtolower($dimensionSlug));
+
+									$spcialSizes  = array('width' => $width, 'height' => $height);
+								}
+							}
+						}
+					}
+
+					if ($k == 'color') {
+						foreach ($val as $ck => $colorVal) {
+							$colorVal = $colorVal;
+
+							if ($colorVal != '') {
+								$Color	=	$colorsTable->find('all')
+									->where(['slug LIKE' => $colorVal, 'status' => 1])->first();
+								if (!empty($Color)) {
+									$colors[] = $Color->id;
+								}
+							}
+						}
+					}
+					if ($k == 'slug') {
+						foreach ($val as $slk => $slugVal) {
+							$slug_v = $slugVal;
+						}
+					}
+					if ($k == 'price') {
+						foreach ($val as $pricek => $priceVal) {
+							$price[] = $priceVal;
+						}
+					}
+
+					if ($k == 'price_sort') {
+						foreach ($val as $so_pricek => $so_priceVal) {
+							$price_sort[] = $so_priceVal;
+						}
+					}
+					if ($k == 'style') {
+						if (is_array($val)) {
+							foreach ($val as $v) {
+								$styles[] = $v;
+							}
+						}
+					}
+					if ($k == 'pattern') {
+						if (is_array($val)) {
+							foreach ($val as $v) {
+								$patterns[] = $v;
+							}
+						}
+					}
+					if ($k == 'design') {
+						if (is_array($val)) {
+							foreach ($val as $v) {
+								$designs[] = $v;
+							}
+						}
+					}
+					if ($k == 'material') {
+						if (is_array($val)) {
+							foreach ($val as $v) {
+								$materials[] = $v;
+							}
+						}
+					}
+					if ($k == 'constr') {
+						if (is_array($val)) {
+							foreach ($val as $v) {
+								$construction[] = $v;
+							}
+						}
+					}
+				}
+
+				//echo "<pre>";print_r($spcialSizes);die;
+
+				if (!empty($collections)) {
+					$new_implode = implode(",", $collections);
+					$filters['OR'][]['Products.category_id IN'] = $collections;
+					$filters['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
+					$filters['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
+					$filters['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
+					$filters['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
+
+					$styleFilter = $colorFilter = $patternFilter = $designFilter = $materialFilter = $constructionFilter = $filters;
+
+					$sizeFilter['OR'][]['Products.category_id IN'] = $collections;
+					$sizeFilter['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
+					$sizeFilter['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
+					$sizeFilter['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
+					$sizeFilter['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
+				}
+
+				if (isset($styles) && !empty($styles)) {
+					$filters['AND'][]['Products.overstock_style IN'] = $styles;
+
+					$colorFilter['AND'][]['Products.overstock_style IN'] = $styles;
+					$sizeFilter['AND'][]['Products.overstock_style IN'] = $styles;
+					$patternFilter['AND'][]['Products.overstock_style IN'] = $styles;
+					$designFilter['AND'][]['Products.overstock_style IN'] = $styles;
+					$materialFilter['AND'][]['Products.overstock_style IN'] = $styles;
+					$constructionFilter['AND'][]['Products.overstock_style IN'] = $styles;
+				}
+
+				if (!empty($dimensions)) {
+					$filters['Products.dimension_id IN'] = $dimensions;
+
+					$styleFilter['Products.dimension_id IN'] = $dimensions;
+					$colorFilter['Products.dimension_id IN'] = $dimensions;
+					$patternFilter['Products.dimension_id IN'] = $dimensions;
+					$designFilter['Products.dimension_id IN'] = $dimensions;
+					$materialFilter['Products.dimension_id IN'] = $dimensions;
+					$constructionFilter['Products.dimension_id IN'] = $dimensions;
+				}
+
+				if (!empty($spcialSizes)) {
+					$wdth = isset($spcialSizes['width']) ? $spcialSizes['width'] : '';
+					$hght = isset($spcialSizes['height']) ? $spcialSizes['height'] : '';
+
+					if ($wdth != '' && $wdth > 0) {
+						$filters['Products.dimension_1_feet'] = $wdth;
+
+						$styleFilter['Products.dimension_1_feet'] = $wdth;
+						$colorFilter['Products.dimension_1_feet'] = $wdth;
+						$patternFilter['Products.dimension_1_feet'] = $wdth;
+						$designFilter['Products.dimension_1_feet'] = $wdth;
+						$materialFilter['Products.dimension_1_feet'] = $wdth;
+						$constructionFilter['Products.dimension_1_feet'] = $wdth;
+					}
+
+					if ($hght != '' && $hght > 0) {
+						$filters['Products.dimension_2_feet'] = $hght;
+
+						$styleFilter['Products.dimension_2_feet'] = $hght;
+						$colorFilter['Products.dimension_2_feet'] = $hght;
+						$patternFilter['Products.dimension_2_feet'] = $hght;
+						$designFilter['Products.dimension_2_feet'] = $hght;
+						$materialFilter['Products.dimension_2_feet'] = $hght;
+						$constructionFilter['Products.dimension_2_feet'] = $hght;
+					}
+				}
+
+				if (!empty($colors)) {
+					$filters['Products.color_id IN'] = $colors;
+
+					$styleFilter['Products.color_id IN'] = $colors;
+					$sizeFilter['Products.color_id IN'] = $colors;
+					$patternFilter['Products.color_id IN'] = $colors;
+					$designFilter['Products.color_id IN'] = $colors;
+					$materialFilter['Products.color_id IN'] = $colors;
+					$constructionFilter['Products.color_id IN'] = $colors;
+				}
+
+				if (isset($patterns) && !empty($patterns)) {
+					$filters['AND'][]['Products.pattern IN'] = $patterns;
+
+					$styleFilter['AND'][]['Products.pattern IN'] = $patterns;
+					$colorFilter['AND'][]['Products.pattern IN'] = $patterns;
+					$sizeFilter['AND'][]['Products.pattern IN'] = $patterns;
+					$designFilter['AND'][]['Products.pattern IN'] = $patterns;
+					$materialFilter['AND'][]['Products.pattern IN'] = $patterns;
+					$constructionFilter['AND'][]['Products.pattern IN'] = $patterns;
+				}
+
+				if (isset($designs) && !empty($designs)) {
+					$filters['AND'][]['Products.rug_design IN'] = $designs;
+
+					$styleFilter['AND'][]['Products.rug_design IN'] = $designs;
+					$colorFilter['AND'][]['Products.rug_design IN'] = $designs;
+					$sizeFilter['AND'][]['Products.rug_design IN'] = $designs;
+					$patternFilter['AND'][]['Products.rug_design IN'] = $designs;
+					$materialFilter['AND'][]['Products.rug_design IN'] = $designs;
+					$constructionFilter['AND'][]['Products.rug_design IN'] = $designs;
+				}
+
+				if (isset($materials) && !empty($materials)) {
+					$filters['AND'][]['Products.material IN'] = $materials;
+
+					$styleFilter['AND'][]['Products.material IN'] = $materials;
+					$colorFilter['AND'][]['Products.material IN'] = $materials;
+					$sizeFilter['AND'][]['Products.material IN'] = $materials;
+					$patternFilter['AND'][]['Products.material IN'] = $materials;
+					$designFilter['AND'][]['Products.material IN'] = $materials;
+					$constructionFilter['AND'][]['Products.material IN'] = $materials;
+				}
+
+				if (isset($construction) && !empty($construction)) {
+					$filters['AND'][]['Products.rug_type IN'] = $construction;
+
+					$styleFilter['AND'][]['Products.rug_type IN'] = $construction;
+					$colorFilter['AND'][]['Products.rug_type IN'] = $construction;
+					$sizeFilter['AND'][]['Products.rug_type IN'] = $construction;
+					$patternFilter['AND'][]['Products.rug_type IN'] = $construction;
+					$designFilter['AND'][]['Products.rug_type IN'] = $construction;
+					$materialFilter['AND'][]['Products.rug_type IN'] = $construction;
+				}
+
+				if (!empty($price)) {
+					foreach ($price as $pr_key => $p_val) {
+						$pNeArr  = explode("-", $p_val);
+						if ($pNeArr[0] != 15000) {
+							$filters['AND']['OR'][] = [
+								'Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]),
+								'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])
+							];
+
+							$styleFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
+
+							$colorFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
+
+							$sizeFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
+
+							$patternFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
+							$designFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
+							$materialFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
+							$constructionFilter['AND']['OR'][] = ['Products.selling_price <= ' => str_replace(',', '', $pNeArr[1]), 'Products.selling_price >= ' => str_replace(',', '', $pNeArr[0])];
+						} else {
+							$filters['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
+
+							$styleFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
+
+							$colorFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
+
+							$sizeFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
+
+							$patternFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
+							$designFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
+							$materialFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
+							$constructionFilter['AND']['OR']['Products.selling_price >'] = str_replace(',', '', $pNeArr[0]);
+						}
+					}
+				}
+
+				if (!empty($price_sort)) {
+					foreach ($price_sort as $sort_key => $prsort_val) {
+						if ($prsort_val == 'low') {
+							//$filters['Products.selling_price'] = $prsort_val;
+							$orderBy = ['selling_price' => 'ASC'];
+						} else {
+							$orderBy = ['selling_price' => 'DESC'];
+						}
+					}
+				}
+
+
+				if (!empty($slug_v)) {
+					if (!empty($slug_v)) {
+						$slugArr = explode(' ', $slug_v);
+
+						foreach ($slugArr as $slugkey2 => $slugVal) {
+
+							$col_arr = $this->checkColor($slugVal);
+							$styl_arr = $this->checkStyle($slugVal);
+
+							if (!empty($col_arr)) {
+								$filters['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
+								//$new_impClr = implode(",",$col_arr);
+
+								$styleFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
+								$colorFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
+								$sizeFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
+								$patternFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
+								$designFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
+								$materialFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
+								$constructionFilter['AND'][$slugkey2]['OR'][]['Products.color_id IN'] = $col_arr;
+							}
+							if (!empty($styl_arr)) {
+								$filters['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
+								$new_implode = implode(",", $styl_arr);
+								$filters['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
+								$filters['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
+								$filters['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
+								$filters['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
+
+
+								$styleFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
+
+								$styleFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
+								$styleFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
+								$styleFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
+								$styleFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
+
+								$colorFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
+
+								$colorFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
+								$colorFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
+								$colorFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
+								$colorFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
+
+								$sizeFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
+
+								$sizeFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
+								$sizeFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
+								$sizeFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
+								$sizeFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
+
+								$patternFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
+
+								$patternFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
+								$patternFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
+								$patternFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
+								$patternFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
+
+								$designFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
+								$designFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
+								$designFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
+								$designFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
+								$designFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
+
+								$materialFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
+								$materialFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
+								$materialFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
+								$materialFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
+								$materialFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
+
+								$constructionFilter['AND'][$slugkey2]['OR'][]['Products.category_id IN'] = $styl_arr;
+								$constructionFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode%";
+								$constructionFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode%";
+								$constructionFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%$new_implode,%";
+								$constructionFilter['AND'][$slugkey2]['OR'][]['Products.sub_category LIKE'] = "%,$new_implode,%";
+							}
+
+							$filters['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
+							$filters['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
+							$filters['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
+							$filters['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
+							$filters['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
+							$filters['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
+							//	$filters['OR'][]['Products.sku_no LIKE'] = "%$slug_v%";
+
+
+
+							$styleFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
+							$styleFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
+							$styleFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
+							$styleFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
+							$styleFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
+							$styleFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
+
+							$colorFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
+							$colorFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
+							$colorFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
+							$colorFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
+							$colorFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
+							$colorFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
+
+							$sizeFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
+							$sizeFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
+							$sizeFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
+							$sizeFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
+							$sizeFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
+							$sizeFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
+
+							$patternFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
+							$patternFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
+							$patternFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
+							$patternFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
+							$patternFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
+							$patternFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
+
+							$designFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
+							$designFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
+							$designFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
+							$designFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
+							$designFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
+							$designFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
+
+							$materialFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
+							$materialFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
+							$materialFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
+							$materialFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
+							$materialFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
+							$materialFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
+
+							$constructionFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal%";
+							$constructionFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal%";
+							$constructionFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%$slugVal,%";
+							$constructionFilter['AND'][$slugkey2]['OR'][]['Products.other_colors LIKE'] = "%,$slugVal,%";
+							$constructionFilter['AND'][$slugkey2]['OR']['Products.title LIKE'] = "%$slugVal%";
+							$constructionFilter['AND'][$slugkey2]['OR']['Products.sku_no LIKE'] = "%$slugVal%";
+						}
+					}
+
+					$title = $slug_v;
+				}
+
+				$productTable	=	TableRegistry::getTableLocator()->get('Products');
+
+				$filters['Products.status'] = 1;
+				$filters['Products.sold_status'] = 0;
+				$filters['Categories.page_link'] = $categorySlug;
+
+				//echo '<pre>'; print_r($sizeFilter); die;
+				$result	=	$this->paginate($productTable, [
+					'conditions' => [$filters],
+					'order'		=>	$orderBy,
+					'contain'	=>	['ProductImages', 'Categories'],
+					'limit'		=>	Configure::read('App.pageRecord')
+				]);
+				//	echo '<pre>'; print_r($result); die;
+			}
+			if (!empty($filterDataOptions)) {
+				$enabledCategories = $filterDataOptions['enabledCategories'];
+				$totalCategoriesCount = $filterDataOptions['totalCategoriesCount'];
+				$enabledDimentions = $filterDataOptions['enabledDimentions'];
+				$this->set(compact('enabledCategories', 'totalCategoriesCount', 'enabledDimentions'));
+			}
 			$valueArr = $this->flatten($arrParms);
 			$this->set(compact('result', 'title', 'valueArr', 'arrParms', 'styleFilter', 'colorFilter', 'designFilter', 'materialFilter', 'constructionFilter', 'patternFilter', 'sizeFilter'));
 		} else {
-			//return $this->redirect('/');
-			//return $this->redirect(array('controller'=>'users','action'=>'index'));
 			return $this->redirect(array('controller' => 'Products', 'action' => 'shopping'));
-			// redirect on home page
 		}
 	}
 
@@ -2309,5 +2310,48 @@ class ProductsController extends AppController
 
 			$this->set(compact('states', 'targetDiv'));
 		}
+	}
+
+	private function returnFilterDataOptions()
+	{
+		$returnArr = ['enabledDimentions' => [], 'enabledCategories' => [], 'totalCategories' => []];
+
+		$CategoryTable = TableRegistry::getTableLocator()->get('Categories');
+		$DimensionsTable = TableRegistry::getTableLocator()->get('Dimensions');
+		$CategoryQuery = $CategoryTable->find()
+			->innerJoinWith('Products', function ($q) {
+				return $q->where(['Products.status' => 1]);
+			})
+			->distinct(['Categories.id']) // Ensure unique categories
+			->select(['Categories.id', 'Categories.title', 'Categories.page_link', 'total_products' => $CategoryTable->find()->func()->count('Products.id')])
+			->group(['Categories.id', 'Categories.name'])
+			->where(['Categories.status' => 1])
+			->order(['Categories.title']);
+
+		$enabledCategories = $CategoryQuery->enableHydration(false)->all();
+		$returnArr['enabledCategories'] = $enabledCategories;
+		$totalCategoriesCount = $CategoryTable->find()
+			->innerJoinWith('Products', function ($q) {
+				return $q->where(['Products.status' => 1]); // Condition for products status
+			})
+			->where(['Categories.status' => 1]) // Condition for categories status
+			->select(['total' => $CategoryTable->find()->func()->count('Products.id')]) // Count all products
+			->first()
+			->total;
+		$returnArr['totalCategoriesCount'] = $totalCategoriesCount;
+
+		$DimensionsQuery = $DimensionsTable->find()
+			->innerJoinWith('Products', function ($q) {
+				return $q->where(['Products.status' => 1]);
+			})
+			->distinct(['Dimensions.id']) // Ensure unique categories
+			->select(['Dimensions.id', 'Dimensions.title', 'Dimensions.type', 'Dimensions.slug'])
+			->where(['Dimensions.status' => 1])
+			->order(['Dimensions.title']);
+
+		$enabledDimentions = $DimensionsQuery->enableHydration(false)->all();
+		$returnArr['enabledDimentions'] = $enabledDimentions;
+
+		return $returnArr;
 	}
 }

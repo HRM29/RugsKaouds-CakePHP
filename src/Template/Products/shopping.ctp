@@ -35,9 +35,42 @@ use Cake\Core\Configure; ?>
 						?>
 								<div class="col-md-6">
 									<div class="arrvl_box">
-										<?php
-										echo $this->Html->image($imageURL, ['alt' => $data->title, "width" => 249, "height" => 296]);
-										?>
+										<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
+											<div class="product-thumb">
+												<?php
+												$img_src = Router::url('/', true) . 'uploads/product/';
+
+												$img_name = isset($data->product_images[0]->image) ? $data->product_images[0]->image : '';
+
+												// $img_name = $data->sku_no."a.jpg";
+												$img_name_a = substr($data->sku_no, 3) . "a.jpg";
+
+												$sku = $data->sku_no;
+
+												$inFolder = $this->General->__get_picture_folder($sku);
+
+
+												$filePath =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . $img_name;
+												$filePath_A =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . $img_name_a;
+												//echo $filePath ; die(" Check point1");
+
+												$filePath21 =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . str_replace('jpg', 'JPG', $img_name);
+
+												$fileUrl = $img_src . $inFolder . "/" . $img_name;
+												$fileUrl_A = $img_src . $inFolder . "/" . $img_name_a;
+
+												$fileUr2l = $img_src . $inFolder . "/" . str_replace('jpg', 'JPG', $img_name);
+
+												if ($img_name != '') {
+												?>
+													<img src="<?php echo $img_name; ?>" alt="<?= $data->title; ?>" width="400" />
+
+												<?php } else { ?>
+													<img src="<?php echo Router::url('/', true); ?>img/no-image.png" alt="<?php echo $data->title; ?>" style="height:250px;" />
+												<?php
+												} ?>
+											</div>
+										</a>
 										<div class="arrvl_text">
 											<h3><?= $data->style; ?></h3>
 											<p><?= $data->title; ?></p>
@@ -88,10 +121,7 @@ use Cake\Core\Configure; ?>
 				data: {
 					product_id: productId
 				},
-				success: function(data) {
-					console.log(data);
-					// return false
-				}
+				success: function(data) {}
 
 			});
 		});
