@@ -41,7 +41,7 @@ $controller = $this->request->getParam('controller');
 						<div class="collapse navbar-collapse" id="mySidebar">
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 								<button onclick="sdbr_close()" class="close">&times;</button>
-								<li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $action == 'shopping' || $action == 'rugs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Services</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Rug Care</a></li>

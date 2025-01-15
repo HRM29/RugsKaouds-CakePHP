@@ -286,7 +286,6 @@ $(document).ready(function(){
 				data:{pr_id:pr_id,_csrfToken:csrfToken},
 				url:url,
 				success:function(result) {
-					console.log(result);
 					if(result==0){
 						$("#cart-button").show();
 						$("#go_to_cart").hide();

@@ -66,7 +66,7 @@ use Cake\Core\Configure;
 
 												if ($img_name != '') {
 												?>
-													<img src="<?php echo $img_name; ?>" alt = "<?= $data->title; ?>" width = "400"/>
+													<img src="<?php echo $img_name; ?>" alt="<?= $data->title; ?>" width="400" />
 
 												<?php } else { ?>
 													<img src="<?php echo Router::url('/', true); ?>img/no-image.png" alt="<?php echo $data->title; ?>" style="height:250px;" />
@@ -79,7 +79,6 @@ use Cake\Core\Configure;
 											<p><?= $data->title; ?></p>
 											<span>$<?php echo number_format($data->selling_price, 2); ?></span>
 											<span class="nw_price">$<?php echo number_format($data->everyday_price, 2); ?></span>
-											<h4 class="product-prize">$<?= number_format($data->selling_price, 2); ?></h4>
 											<a class="btn crt_btn" href="#"><i class="bi bi-bag-plus"></i> Add to Cart</a>
 										</div>
 									</div>
@@ -110,7 +109,6 @@ use Cake\Core\Configure;
 	</div>
 	</div>
 </section>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.4.3.min.js"></script>
 <script>
 	$(document).ready(function() {
 
@@ -185,10 +183,8 @@ use Cake\Core\Configure;
 		});
 	}
 
-	$(window).load(function() {
-
-		// Select and loop the container element of the elements you want to equalise
+	$(window).on('load', function() {
+		// Select and loop the container element of the elements you want to equalize
 		equalheight();
-
 	});
 </script>
