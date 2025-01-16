@@ -3,13 +3,8 @@
 use Cake\Routing\Router;
 use Cake\Core\Configure;
 
-$patternFilters = isset($patternFilter) ? $patternFilter : array();
-$styleFilters = isset($styleFilter) ? $styleFilter : array();
-$colorFilters = isset($colorFilter) ? $colorFilter : array();
-$designFilters = isset($designFilter) ? $designFilter : array();
-$materialFilters = isset($materialFilter) ? $materialFilter : array();
-$constructionFilters = isset($constructionFilter) ? $constructionFilter : array();
-$sizeFilters = isset($sizeFilter) ? $sizeFilter : array();
+$priceFilters = isset($price_range) ? $price_range : array();
+$sizeFilters = isset($size_range) ? $size_range : array();
 ?>
 <div class="col-md-4">
 	<div class="sidebar">
@@ -38,8 +33,13 @@ $sizeFilters = isset($sizeFilter) ? $sizeFilter : array();
 				<ul id="size-filter">
 					<?php
 					foreach ($enabledDimentions as $dimensionItem => $dimensionData) {
+						if (in_array($dimensionData['id'], $sizeFilters)) {
+							$checked = true;
+						} else {
+							$checked = false;
+						}
 					?>
-						<li><input data-name="<?= $dimensionData['title']; ?>" data-slug="<?= $dimensionData['slug']; ?>" class="size-filter" type="checkbox" value="<?= $dimensionData['id']; ?>"><label for="bapf_1_2543"><?= $dimensionData['title']; ?></label></li>
+						<li><input data-name="<?= $dimensionData['title']; ?>" <?= $checked ? 'checked' : ''; ?> data-slug="<?= $dimensionData['slug']; ?>" class="size-filter" type="checkbox" value="<?= $dimensionData['id']; ?>"><label for="bapf_1_2543"><?= $dimensionData['title']; ?></label></li>
 					<?php
 					}
 					?>
@@ -82,29 +82,41 @@ $sizeFilters = isset($sizeFilter) ? $sizeFilter : array();
 				<option value="wool-and-silk">Wool and Silk</option>
 			</select>
 		</div> -->
+		<?php
+		$priceRanges = [
+			['id' => 'prc_001', 'range' => '100-1000', 'label' => '$100-$1,000'],
+			['id' => 'prc_002', 'range' => '1000-10000', 'label' => '$1,000-$10,000'],
+			['id' => 'prc_003', 'range' => '10000-20000', 'label' => '$10,000-$20,000'],
+			['id' => 'prc_004', 'range' => '20000-30000', 'label' => '$20,000-$30,000'],
+			['id' => 'prc_005', 'range' => '40000-50000', 'label' => '$40,000-$50,000'],
+			['id' => 'prc_006', 'range' => '50000-60000', 'label' => '$50,000-$60,000'],
+			['id' => 'prc_007', 'range' => '60000-70000', 'label' => '$60,000-$70,000'],
+			['id' => 'prc_008', 'range' => '70000-80000', 'label' => '$70,000-$80,000'],
+			['id' => 'prc_009', 'range' => '80000-90000', 'label' => '$80,000-$90,000'],
+			['id' => 'prc_010', 'range' => '90000-100000', 'label' => '$90,000-$1,00,000'],
+			['id' => 'prc_011', 'range' => '100000', 'label' => '$1,00,000 Above'],
+		];
+		?>
 		<div class="product_categories prc">
 			<h3>Filter By Price</h3>
 			<ul id="price-filter">
-				<li><input data-name="10 Ft" id="prc_001" name="price[]" type="checkbox" data-curr="$" value="100-1000"><label for="prc_001">$100-$1000</label></li>
-				<li><input data-name="10x14" id="prc_002" name="price[]" type="checkbox" data-curr="$" value="1000-10000"><label for="prc_002">$1000-$10,000</label></li>
-				<li><input data-name="11 Ft" id="prc_003" name="price[]" type="checkbox" data-curr="$" value="10000-20000"><label for="prc_003">$10,000-$20,000</label></li>
-				<li><input data-name="12 Ft" id="prc_004" name="price[]" type="checkbox" data-curr="$" value="20000-30000"><label for="prc_004">$20,000-$30,000</label></li>
-				<li><input data-name="12 Ft" id="prc_005" name="price[]" type="checkbox" data-curr="$" value="40000-50000"><label for="prc_005">$40,000-$50,000</label></li>
-				<li><input data-name="13 Ft" id="prc_006" name="price[]" type="checkbox" data-curr="$" value="50000-60000"><label for="prc_006">$50,000-$60,000</label></li>
-				<li><input data-name="14 Ft" id="prc_007" name="price[]" type="checkbox" data-curr="$" value="60000-70000"><label for="prc_007">$60,000-$70,000</label></li>
-				<li><input data-name="15 Ft" id="prc_008" name="price[]" type="checkbox" data-curr="$" value="70000-80000"><label for="prc_008">$70,000-$80,000</label></li>
-				<li><input data-name="16 Ft" id="prc_009" name="price[]" type="checkbox" data-curr="$" value="80000-90000"><label for="prc_009">$80,000-$90,000</label></li>
-				<li><input data-name="17 Ft" id="prc_010" name="price[]" type="checkbox" data-curr="$" value="90000-100000"><label for="prc_010">$90,000-$1,00,000</label></li>
-				<li><input data-name="18 Ft" id="prc_011" name="price[]" type="checkbox" data-curr="$" value="100000"><label for="prc_011">$1,00,000 Above</label></li>
+				<?php foreach ($priceRanges as $price): ?>
+					<li>
+						<input
+							data-name="<?= $price['label']; ?>"
+							id="<?= $price['id']; ?>"
+							name="price[]"
+							type="checkbox"
+							value="<?= $price['range']; ?>"
+							<?= in_array($price['range'], $priceFilters) ? 'checked' : ''; ?>>
+						<label for="<?= $price['id']; ?>"><?= $price['label']; ?></label>
+					</li>
+				<?php endforeach; ?>
 			</ul>
 		</div>
 	</div>
 </div>
-<!-- <div class="col-md-12 mob_filter">
-	<div id="main01">
-		<h4 onclick="openNav0()"><i class="fa fa-filter"></i> Filters</h4>
-	</div>
-</div>   -->
+
 
 
 
@@ -733,6 +745,7 @@ $sizeFilters = isset($sizeFilter) ? $sizeFilter : array();
 			} else {
 				url.searchParams.delete('price');
 			}
+			// console.log(url.toString());
 			window.location.href = url.toString();
 		}
 		$('#size-filter input.size-filter, #price-filter input[type="checkbox"]').on('change', updateFilters);

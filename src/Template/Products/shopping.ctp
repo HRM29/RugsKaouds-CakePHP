@@ -26,7 +26,7 @@ use Cake\Core\Configure; ?>
 				<div class="shp_prdcts">
 					<div class="row">
 						<?php
-						if (!empty($ProductData)) {
+						if (count($ProductData) > 0) {
 							foreach ($ProductData as $data) {
 								if (!empty($data['product_images'])) {
 									$image_data = $data['product_images'][0];
@@ -85,9 +85,15 @@ use Cake\Core\Configure; ?>
 								</div>
 						<?php
 							}
+						} else {
+							echo "No products were found matching your selection.";
+							$noRecords = true;
 						}
 						?>
 					</div>
+					<?php
+					if (!$noRecords) {
+					?>
 					<div class="shop-head shop-head-bottom">
 						<h2>
 							<?= $this->Paginator->counter([
@@ -106,6 +112,9 @@ use Cake\Core\Configure; ?>
 							</nav>
 						</div>
 					</div>
+					<?php 
+					}
+					?>
 
 				</div>
 			</div>

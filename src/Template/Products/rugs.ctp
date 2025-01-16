@@ -85,24 +85,31 @@ use Cake\Core\Configure;
 								</div>
 						<?php }
 						} else {
-							echo "No record Found!";
+							echo "No products were found matching your selection.";
+							$noRecords = true;
 						} ?>
-
 					</div>
-					<div class="shop-head shop-head-bottom">
-						<h2><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></h2>
-						<div class="shop-bottom-section">
-							<nav>
-								<ul class="pagination justify-content-center">
-									<?= $this->Paginator->first(('First')) ?>
-									<?= $this->Paginator->prev(('Previous')) ?>
-									<?= $this->Paginator->numbers() ?>
-									<?= $this->Paginator->next(('Next')) ?>
-									<?= $this->Paginator->last(('Last')) ?>
-								</ul>
-							</nav>
+					<?php
+					if (!$noRecords) {
+					?>
+						<div class="shop-head shop-head-bottom">
+							<h2><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></h2>
+							<div class="shop-bottom-section">
+								<nav>
+									<ul class="pagination justify-content-center">
+										<?= $this->Paginator->first(('First')) ?>
+										<?= $this->Paginator->prev(('Previous')) ?>
+										<?= $this->Paginator->numbers() ?>
+										<?= $this->Paginator->next(('Next')) ?>
+										<?= $this->Paginator->last(('Last')) ?>
+									</ul>
+								</nav>
+							</div>
 						</div>
-					</div>
+					<?php
+					}
+					?>
+
 				</div>
 			</div>
 		</div>
