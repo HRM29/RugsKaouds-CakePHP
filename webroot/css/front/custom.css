@@ -637,7 +637,7 @@ footer .cpyrght p {
 }
 .collections .clctns img {
     width: 100%;
-    height: auto;
+    height: 300px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -784,7 +784,7 @@ footer .cpyrght p {
     margin: 0 0 15px;
 }		
 .faqs .faqs_inr .accordion .accordion-item .accordion-header .accordion-button:after {
-    background-image: url(../images/next_wht.png);
+    background-image: url(../../img/next_wht.png);
     background-repeat: no-repeat;    
     width: 12px;
     height: 20px;

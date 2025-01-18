@@ -5,6 +5,7 @@ use Cake\Routing\Router;
 $session = $this->request->getSession();
 $authUser = $session->read('Auth');
 $action = $this->request->getParam('action');
+$slug = $this->request->getParam('slug');
 $controller = $this->request->getParam('controller');
 ?>
 
@@ -42,15 +43,15 @@ $controller = $this->request->getParam('controller');
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 								<button onclick="sdbr_close()" class="close">&times;</button>
 								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $action == 'shopping' || $action == 'rugs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li>
-								<li class="nav-item"><a class="nav-link" href="#">Services</a></li>
-								<li class="nav-item"><a class="nav-link" href="#">Rug Care</a></li>
-								<li class="nav-item"><a class="nav-link" href="#">Choosing A Rug</a></li>
-								<li class="nav-item"><a class="nav-link" href="#">Faqs</a></li>
-								<li class="nav-item"><a class="nav-link" href="#">About</a></li>
-								<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-								<li class="nav-item"><a class="nav-link" href="#">Projects</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Services</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Rug Care</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Choosing A Rug</a></li>
+								<li class="nav-item"><a class="nav-link <?= $slug; ?> <?= $slug == 'FAQS' || $slug == 'faqs' ? 'active'  : ''; ?>" href="#">Faqs</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $slug == 'about-us' ? 'active'  : ''; ?>" href="#">About</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Blog</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Projects</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
 							</ul>
 						</div>
 						<div class="srch_icon">
@@ -66,12 +67,14 @@ $controller = $this->request->getParam('controller');
 	</div>
 </header>
 <script>
-	document.getElementById('search-details').addEventListener('keyup', function(event) {
-		if (event.code === 'Enter') {
-			event.preventDefault();
-			document.querySelector('form').submit();
-		}
-	});
+	if (document.getElementById('search-details')) {
+		document.getElementById('search-details').addEventListener('keyup', function(event) {
+			if (event.code === 'Enter') {
+				event.preventDefault();
+				document.querySelector('form').submit();
+			}
+		});
+	}
 	window.onscroll = function() {
 		myFunction()
 	};

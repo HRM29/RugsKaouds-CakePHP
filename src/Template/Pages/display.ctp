@@ -2,6 +2,7 @@
 use Cake\Routing\Router;
 use Cake\Core\Configure;
 ?>
+<?php if(!empty($contentData)){echo $contentData->content;} ?>
  <!-- breadcrumb area start -->
 	<!--div class="breadcrumb-area">
 		<div class="container">
@@ -28,7 +29,7 @@ use Cake\Core\Configure;
 				<!-- About Text Start -->
 				<div class="col-lg-12">
 					<div class="about-text-wrap">
-						<?php if(!empty($contentData)){echo $contentData->content;} ?>
+						
 					</div>
 				</div>
 				<!-- About Text End -->

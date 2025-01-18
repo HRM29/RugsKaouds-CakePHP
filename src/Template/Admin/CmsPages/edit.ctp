@@ -55,3 +55,8 @@
 	</div>   <!-- /.row -->
 </section><!-- /.content -->  
 <?php echo $this->Html->script('ckeditor/ckeditor');?> 
+<script>
+	CKEDITOR.replace('content', {
+		allowedContent: true // Allows all content, including <section> tag
+	});
+</script>
