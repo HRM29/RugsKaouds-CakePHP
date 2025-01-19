@@ -50,7 +50,7 @@ class PagesController extends AppController
 	public function beforeFilter(Event $event)
 	{
 		parent::beforeFilter($event);
-		$this->Auth->allow(['portfolio1', 'videos', 'frednasseribio', 'businesshighlights', 'awardwinning', 'pairingpatternsorientalrug', 'interiordesign', 'index', 'portfolio', 'privacypolicy', 'contactUs', 'carpet', 'rugcleaning', 'aboutus', 'rugrepair', 'rugappraisal', 'faq', 'returns', 'termsofuse', 'testmail', 'subscribeLetter', 'collectionMenu']);
+		$this->Auth->allow(['portfolio1', 'videos', 'frednasseribio', 'businesshighlights', 'awardwinning', 'pairingpatternsorientalrug', 'interiordesign', 'index', 'portfolio', 'privacypolicy', 'contactUs', 'carpet', 'rugcleaning', 'aboutus', 'rugrepair', 'rugappraisal', 'faq', 'returns', 'termsofuse', 'testmail', 'subscribeLetter', 'collectionMenu', 'projects']);
 
 
 		if ($this->Auth->user('role_id') == 1) {
@@ -598,5 +598,22 @@ class PagesController extends AppController
 		$this->set('title_for_layout', $seoTitle);
 		$this->set('collection', $collection);
 		$this->set('PageType', $PageType);
+	}
+
+	public function projects()
+	{
+		$this->viewBuilder()->setLayout('front');
+		$seoTitle = "Projects - Kaoud Carpets & Rugs";
+
+		$ProjectsTable = TableRegistry::getTableLocator()->get('Projects');
+
+		$projects = $ProjectsTable->find()->where([
+			'status' => "active",
+			'image_url !=' => ""
+		])
+			->enableHydration(false)
+			->toList();
+		$this->set('title_for_layout', $seoTitle);
+		$this->set('projects', $projects);
 	}
 }

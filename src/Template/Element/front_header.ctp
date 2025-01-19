@@ -42,15 +42,15 @@ $controller = $this->request->getParam('controller');
 						<div class="collapse navbar-collapse" id="mySidebar">
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 								<button onclick="sdbr_close()" class="close">&times;</button>
-								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $action == 'shopping' || $action == 'rugs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action == 'shopping' || $action == 'rugs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Services</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Rug Care</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Choosing A Rug</a></li>
-								<li class="nav-item"><a class="nav-link <?= $slug; ?> <?= $slug == 'FAQS' || $slug == 'faqs' ? 'active'  : ''; ?>" href="#">Faqs</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $slug == 'FAQS' || $slug == 'faqs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>faqs">Faqs</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $slug == 'about-us' ? 'active'  : ''; ?>" href="#">About</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Blog</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Projects</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action == 'projects' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>completed-projects">Projects</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
 							</ul>
 						</div>

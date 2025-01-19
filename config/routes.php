@@ -76,15 +76,14 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/collections', ['controller' => 'Pages', 'action' => 'collectionMenu']);
 
-    // Route with optional slug
     $routes->connect(
         '/collections/:slug',
         ['controller' => 'Pages', 'action' => 'collectionMenu'],
-        ['pass' => ['slug'], 'slug' => '.*'] // Pass slug as a parameter, allowing it to be optional
+        ['pass' => ['slug'], 'slug' => '.*'] 
     );
 
     $routes->connect('/shop/', ['controller' => 'Products', 'action' => 'shopping']);
-
+    $routes->connect('/completed-projects/', ['controller' => 'Pages', 'action' => 'projects']);
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
