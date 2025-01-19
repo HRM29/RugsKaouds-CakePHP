@@ -129,6 +129,19 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 				</ul>
 			</li>
 
+			<!-- Manage Projects -->
+			<li class="treeview <?php echo ($controller == 'Projects' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
+				<a href="#">
+					<i class="fa fa-image"></i>
+					<span>Manage Projects</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo Router::url('/', true); ?>admin/Projects"><i class="fa fa-list-alt"></i> Projects List</a></li>
+					<li><a href="<?php echo Router::url('/', true); ?>admin/Projects/add"><i class="fa fa-plus"></i> Add Project</a></li>
+				</ul>
+			</li>
+
 			<!-- Manage currencies -->
 
 			<!--li class="treeview <?php echo ($controller == 'Currencies' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">

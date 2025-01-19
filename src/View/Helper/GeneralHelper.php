@@ -776,6 +776,15 @@ class GeneralHelper extends Helper
 			case 'pending':
 				return '<span class="label label-warning">Pending</span>';
 				break;
+			case 'active':
+				return '<span class="label label-success">Active</span>';
+				break;
+			case 'inactive':
+				return '<span class="label label-danger">InActive</span>';
+				break;
+			case 'archived':
+				return '<span class="label label-warning">Archived</span>';
+				break;
 			default:
 				return null;
 		}
@@ -795,7 +804,7 @@ class GeneralHelper extends Helper
 		if ($data->count() > 0) {
 			$parentData = $data->enableHydration(false)->first();
 			return $parentData;
-		} 
+		}
 		return '';
 	}
 
