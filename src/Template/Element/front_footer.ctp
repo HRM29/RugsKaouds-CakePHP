@@ -73,6 +73,9 @@ $controller = $this->request->getParam('controller');
         </div>
     </footer>
 </section>
+<div id="loadingModal" class="modal-overlay">
+    <div class="loader"></div>
+</div>
 <script>
     window.onscroll = function() {
         myFunction()
@@ -224,5 +227,4 @@ $controller = $this->request->getParam('controller');
         refreshToken();
         setInterval(refreshToken, 60000);
     });
-
 </script>

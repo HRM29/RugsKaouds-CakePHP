@@ -34,15 +34,12 @@ use Cake\Controller\Component\PaginatorComponent;
  */
 class ProductsController extends AppController
 {
-
-
-
 	public function initialize()
 	{
 		parent::initialize();
 		//$this->loadComponent('PaypalPro');
 		$this->loadComponent('SquarePayment');
-		$this->Auth->allow(['index', 'getFilterParam', 'search', 'rugs', 'rugStyle', 'rugSize', 'rugColor', 'productView', 'addToCart', 'checkCartButton', 'cart', 'checkoutnew', 'deleteCart', 'updateCart', 'removeProduct', 'applyCoupon', 'searchProducts', 'itemUpdate', 'address', 'getstate', 'orderreview', 'orderPlaced', 'getstates', 'insertProductIntoDBJson', 'insertProductIntoDBXml', 'insertProductIntoDBJsonNew', 'shopping', 'addToFaviourite', 'removeFromFaviourite', 'getState']);
+		$this->Auth->allow(['index', 'getFilterParam', 'search', 'rugs', 'rugStyle', 'rugSize', 'rugColor', 'productView', 'addToCart', 'checkCartButton', 'cart', 'checkoutnew', 'deleteCart', 'updateCart', 'removeProduct', 'applyCoupon', 'searchProducts', 'itemUpdate', 'address', 'getstate', 'orderreview', 'orderPlaced', 'getstates', 'insertProductIntoDBJson', 'insertProductIntoDBXml', 'insertProductIntoDBJsonNew', 'shopping', 'addToFaviourite', 'removeFromFaviourite', 'getState', 'checkout']);
 		$this->loadComponent('Paginator');
 		$this->viewBuilder()->setLayout('frontend');
 	}
@@ -317,7 +314,7 @@ class ProductsController extends AppController
 		if ($this->request->is(['post', 'put'])) {
 			$product_id = $this->request->getData()['product_id'];
 
-			$productdetail = $ProductsTable->find()->select(['id', 'title', 'sku_no', 'selling_price', 'everyday_price', 'category_id'])->where(['id' => $product_id])->enableHydration(false)->first();
+			$productdetail = $ProductsTable->find()->select(['id', 'title', 'sku_no', 'selling_price', 'everyday_price', 'category_id', 'shipping_price'])->where(['id' => $product_id])->enableHydration(false)->first();
 
 			$productdetail['product_qty']  = 1;
 			$productdetail['sub_total'] = $productdetail['price'];
@@ -372,7 +369,6 @@ class ProductsController extends AppController
 		$this->viewBuilder()->setLayout('front');
 		$session = $this->request->getSession();
 		$cardData = $session->read('cart');
-
 		if (empty($cardData)) {
 			return $this->redirect(Router::url('/', true));
 		}
@@ -747,69 +743,33 @@ class ProductsController extends AppController
 		$this->viewBuilder()->setLayout(false);
 		$session	=	$this->request->getSession();
 		$authUser	=	$session->read('Auth');
-
+		$responseData = [];
 		$cartProducttable	=	TableRegistry::getTableLocator()->get('CartProducts');
 		$producttable		=	TableRegistry::getTableLocator()->get('Products');
 		if ($this->request->is(['put', 'post'])) {
-			$productId	=	$this->request->getData()['product_id'];
-			$productData =	$producttable->get($productId, ['contain' => ['ProductImages']]);
+			$postdata = $this->request->getData();
+			$cartData = $session->read('cart');
 
-			//		   pr($authUser); die;
-
-			if (!empty($authUser['Front']) && $authUser['Front']['role_id'] == FRONT) { //pr($authUser); //die('jsk');
-				$userId	=	$authUser['Front']['id'];
-				$result	=	$cartProducttable->find('all')->where(['product_id' => $productId, 'user_id' => $userId])->toArray();
-				//pr($result); die;
-				if (empty($result)) {
-					if (!empty($session->read('Config.Cart'))) {
-						$cartData	=	$session->read('Config.Cart');
+			foreach ($postdata as $productKey => $productVal) {
+				$product_id = explode('_', $productKey)[0];
+				foreach ($cartData as $carKey => $cartValue) {
+					if ($product_id == $cartValue['id']) {
+						$cartData[$carKey]['product_qty'] = $productVal;
+						$cartData[$carKey]['sub_total'] = $cartData[$carKey]['everyday_price'] * $productVal;
 					}
-					$cartData[]	=	$productData;
-					$session->write('Config.Cart', $cartData);
-					$entity	=	$cartProducttable->newEntity();
-					$entity->product_id		=	$productId;
-					$entity->user_id		=	$userId;
-					$entity->price			=	!empty($productData->selling_price) ? $productData->selling_price : '0';
-					$entity->color_id		=	!empty($productData->color_id) ? $productData->color_id : '0';
-					$entity->dimension_id	=	!empty($productData->dimension_id) ? $productData->dimension_id : '0';
-					$cartProducttable->save($entity);
-				} else {
-					$cartData	=	$session->read('Config.Cart');
-					$productsArr =	[];
-					if (!empty($cartData)) {
-						foreach ($cartData as $products) {
-							$productsArr[]	=	$products->id;
-						}
-					}
-					if (!in_array($productId, $productsArr)) {
-						$cartData[]	=	$productData;
-					}
-
-					$session->write('Config.Cart', $cartData);
 				}
-				$this->redirect(['controller' => 'products', 'action' => 'cart']);
-				$this->Flash->success('product added to your cart successfully.');
-			} else { //pr($authUser); die('jss');
-				if (!empty($session->read('Config.Cart'))) {
-					$cartData	=	$session->read('Config.Cart');
-					$productsArr =	[];
-					if (!empty($cartData)) {
-						foreach ($cartData as $products) {
-							$productsArr[]	=	$products->id;
-						}
-					}
-					if (!in_array($productId, $productsArr)) {
-						$cartData[]	=	$productData;
-					}
-				} else {
-					$cartData[]	=	$productData;
-				}
-
-				//pr($cartData); die;
-				$session->write('Config.Cart', $cartData);
-				$this->redirect(['controller' => 'products', 'action' => 'cart']);
-				$this->Flash->success('product added to your cart successfully.');
 			}
+			$session->delete('cart');
+			$session->write('cart', $cartData);
+			$subtotal = 0;
+			foreach ($cartData as $carKey => $cartValue) {
+				$subtotal += $cartValue['sub_total'];
+			}
+			$responseData['subtotal'] = $subtotal;
+
+			return $this->response
+				->withType('application/json')
+				->withStringBody(json_encode($responseData));
 		}
 	}
 
@@ -1979,5 +1939,10 @@ class ProductsController extends AppController
 		$returnArr['enabledDimentions'] = $enabledDimentions;
 
 		return $returnArr;
+	}
+
+	public function checkout() {
+		$this->viewBuilder()->setLayout('front');
+		
 	}
 }

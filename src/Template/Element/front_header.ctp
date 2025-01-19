@@ -3,12 +3,20 @@
 use Cake\Routing\Router;
 
 $session = $this->request->getSession();
+$session = $this->request->getSession();
+$cardData = $session->read('cart');
+if (empty($cardData)) {
+	$cart_count = 0;
+} else {
+	$cart_count = count($cardData);
+}
 $authUser = $session->read('Auth');
 $action = $this->request->getParam('action');
 $slug = $this->request->getParam('slug');
 $controller = $this->request->getParam('controller');
 
-$aboutUs_Slugs = ['kaoud-carpets-rugs','our-brands-inventory','community','asid'];
+$aboutUs_Slugs = ['kaoud-carpets-rugs', 'our-brands-inventory', 'community', 'asid'];
+$shop_Actions = ['shopping', 'rugs', 'cart', 'checkout'];
 ?>
 
 <?php echo $this->Html->script(['jquery-3.7.1.min.js']); ?>
@@ -44,7 +52,7 @@ $aboutUs_Slugs = ['kaoud-carpets-rugs','our-brands-inventory','community','asid'
 						<div class="collapse navbar-collapse" id="mySidebar">
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 								<button onclick="sdbr_close()" class="close">&times;</button>
-								<li class="nav-item"><a class="nav-link <?= $action == 'shopping' || $action == 'rugs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
+								<li class="nav-item"><a class="nav-link <?= in_array($action, $shop_Actions) ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li>
 								<li class="nav-item dropdown">
 									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
@@ -55,9 +63,9 @@ $aboutUs_Slugs = ['kaoud-carpets-rugs','our-brands-inventory','community','asid'
 										<li><a class="dropdown-item" href="#">Schedule Sell Us</a></li>
 									</ul>
 								</li>
-								<li class="nav-item"><a class="nav-link <?= $slug == 'rug-care' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>rug-care">Rug Care</a></li>     
-								<li class="nav-item"><a class="nav-link <?= $slug == 'choosing-a-rug' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>choosing-a-rug">Choosing A Rug</a></li>     
-								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $slug == 'FAQS' || $slug == 'faqs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>faqs">Faqs</a></li>
+								<li class="nav-item"><a class="nav-link <?= $slug == 'rug-care' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>rug-care">Rug Care</a></li>
+								<li class="nav-item"><a class="nav-link <?= $slug == 'choosing-a-rug' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>choosing-a-rug">Choosing A Rug</a></li>
+								<li class="nav-item"><a class="nav-link <?= $slug == 'FAQS' || $slug == 'faqs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>faqs">Faqs</a></li>
 								<li class="nav-item dropdown">
 									<a class="nav-link dropdown-toggle <?= in_array($slug, $aboutUs_Slugs) ? 'active'  : ''; ?>" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -66,10 +74,10 @@ $aboutUs_Slugs = ['kaoud-carpets-rugs','our-brands-inventory','community','asid'
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/community">Community</a></li>
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/asid">Asid</a></li>
 									</ul>
-								</li>	
-								<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>   
+								</li>
+								<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action == 'projects' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>completed-projects">Projects</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
 							</ul>
 						</div>
 						<div class="srch_icon">
@@ -77,7 +85,7 @@ $aboutUs_Slugs = ['kaoud-carpets-rugs','our-brands-inventory','community','asid'
 								<li><a href="#"><i class="bi bi-search"></i></a></li>
 								<li><a href="#"><i class="bi bi-person-fill"></i></a></li>
 								<li><a href="#"><i class="bi bi-heart-fill"></i></a></li>
-								<li><a href="#"><i class="bi bi-cart-fill"></i><span>0</span></a></li>
+								<li><a href="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'cart']); ?>"><i class="bi bi-cart-fill"></i><span><?= $cart_count; ?></span></a></li>
 							</ul>
 						</div>
 					</nav>
@@ -140,5 +148,14 @@ $aboutUs_Slugs = ['kaoud-carpets-rugs','our-brands-inventory','community','asid'
 		$(".blg_text p").matchHeight({
 			byrow: false,
 		});
+	}
+	// Show the loading modal
+	function showLoadingModal() {
+		document.getElementById('loadingModal').style.display = 'flex';
+	}
+
+	// Hide the loading modal
+	function hideLoadingModal() {
+		document.getElementById('loadingModal').style.display = 'none';
 	}
 </script>
