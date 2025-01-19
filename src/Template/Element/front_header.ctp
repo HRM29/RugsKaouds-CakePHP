@@ -7,6 +7,8 @@ $authUser = $session->read('Auth');
 $action = $this->request->getParam('action');
 $slug = $this->request->getParam('slug');
 $controller = $this->request->getParam('controller');
+
+$aboutUs_Slugs = ['kaoud-carpets-rugs','our-brands-inventory','community','asid'];
 ?>
 
 <?php echo $this->Html->script(['jquery-3.7.1.min.js']); ?>
@@ -26,7 +28,7 @@ $controller = $this->request->getParam('controller');
 <script src="https://www.google.com/recaptcha/api.js?render=<?= CAPTCHA_SITEKEY ?>"></script>
 
 <header id="myHeader">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row align-items-center">
 			<div class="col-md-1">
 				<div class="logo">
@@ -44,12 +46,28 @@ $controller = $this->request->getParam('controller');
 								<button onclick="sdbr_close()" class="close">&times;</button>
 								<li class="nav-item"><a class="nav-link <?= $action == 'shopping' || $action == 'rugs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Services</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Rug Care</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Choosing A Rug</a></li>
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item" href="#">Schedule Rug Cleaning</a></li>
+										<li><a class="dropdown-item" href="#">Schedule Rug Repair</a></li>
+										<li><a class="dropdown-item" href="#">Schedule Appraisal</a></li>
+										<li><a class="dropdown-item" href="#">Schedule Sell Us</a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a class="nav-link <?= $slug == 'rug-care' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>rug-care">Rug Care</a></li>     
+								<li class="nav-item"><a class="nav-link <?= $slug == 'choosing-a-rug' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>choosing-a-rug">Choosing A Rug</a></li>     
 								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $slug == 'FAQS' || $slug == 'faqs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>faqs">Faqs</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $slug == 'about-us' ? 'active'  : ''; ?>" href="#">About</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action; ?>" href="#">Blog</a></li>
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle <?= in_array($slug, $aboutUs_Slugs) ? 'active'  : ''; ?>" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/kaoud-carpets-rugs">Kaoud Carpets & Rugs</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/our-brands-inventory">Our Brands & Inventory</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/community">Community</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/asid">Asid</a></li>
+									</ul>
+								</li>	
+								<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>   
 								<li class="nav-item"><a class="nav-link <?= $action == 'projects' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>completed-projects">Projects</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action; ?> <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
 							</ul>
@@ -57,6 +75,8 @@ $controller = $this->request->getParam('controller');
 						<div class="srch_icon">
 							<ul>
 								<li><a href="#"><i class="bi bi-search"></i></a></li>
+								<li><a href="#"><i class="bi bi-person-fill"></i></a></li>
+								<li><a href="#"><i class="bi bi-heart-fill"></i></a></li>
 								<li><a href="#"><i class="bi bi-cart-fill"></i><span>0</span></a></li>
 							</ul>
 						</div>

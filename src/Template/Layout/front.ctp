@@ -42,7 +42,7 @@ use Cake\Routing\Router; ?>
 	<meta name="facebook-domain-verification" content="3rrn0glngylfceooaifricmhzex1j9" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-	<?php echo $this->Html->css(array('front/bootstrap.min.css?ver=1.0', 'front/bootstrap-icons.min.css?ver=1.0', 'front/owl.carousel.min', 'front/owl.theme.default.min', 'front/custom.css?ver=1.02B', 'front/responsive.css?ver=1.0', 'front/sweetalert2.min.css?ver=1.0', 'front/fancybox.umd.css?ver=0.1')); ?>
+	<?php echo $this->Html->css(array('front/bootstrap.min.css?ver=1.0', 'front/bootstrap-icons.min.css?ver=1.0', 'front/owl.carousel.min', 'front/owl.theme.default.min', 'front/custom.css?ver=1.02C', 'front/responsive.css?ver=1.0', 'front/sweetalert2.min.css?ver=1.0', 'front/fancybox.umd.css?ver=0.1')); ?>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-J34YWES5NL"></script>
 
 	<script>

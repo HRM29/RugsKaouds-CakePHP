@@ -84,6 +84,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/shop/', ['controller' => 'Products', 'action' => 'shopping']);
     $routes->connect('/completed-projects/', ['controller' => 'Pages', 'action' => 'projects']);
+    $routes->connect('/about-us/:slug', ['controller' => 'Pages', 'action' => 'display'], ['pass' => ['slug'],'slug' => 'kaoud-carpets-rugs|our-brands-inventory|community|asid']);
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
@@ -104,6 +105,7 @@ Router::scope('/', function (RouteBuilder $routes) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
+
     $routes->fallbacks(DashedRoute::class);
 });
 

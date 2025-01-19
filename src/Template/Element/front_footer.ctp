@@ -1,24 +1,14 @@
 <?php
 
-use Cake\Routing\Router; ?>
+use Cake\Routing\Router;
+
+$session = $this->request->getSession();
+$authUser = $session->read('Auth');
+$action = $this->request->getParam('action');
+$slug = $this->request->getParam('slug');
+$controller = $this->request->getParam('controller');
+?>
 <section class="footer">
-    <!-- <div class="container">
-        <div class="row">
-            <div class="show-mob top-bar-socials"> <a target="_blank" href="https://www.facebook.com/GalleryOfOrientalRugs"><i class="fa fa-facebook"></i></a> <a target="_blank" href="https://www.instagram.com/galleryoforientalrugsnc"><i class="fa fa-instagram"></i></a>
-            </div>
-            <div class="col-sm-8">
-                <ul class="footer-links">
-                    <li><a href="<?php echo Router::url('/', true) ?>pages/faq">FAQs</a></li>
-                    <li><a href="<?php echo Router::url('/', true) ?>pages/returns">Returns</a></li>
-                    <li><a href="<?php echo Router::url('/', true) ?>pages/termsofuse">Terms Of Uses</a></li>
-                    <li><a href="<?php echo Router::url('/', true) ?>pages/privacypolicy">Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-4 copyright-footer">
-                <p>&copy;2024 Gallery of Oriental Rugs</p>
-            </div>
-        </div>
-    </div> -->
     <?php
     $image = WWW_ROOT . 'img' . DS . "nwsltr_bg.jpg";
     if (file_exists($image)) {
@@ -66,11 +56,11 @@ use Cake\Routing\Router; ?>
                 <div class="col-md-6">
                     <div class="ftr_menus">
                         <ul>
-                            <li><a href="#">About</a></li>
+                            <li><a class="<?= $action; ?>" href="<?php echo Router::url('/', true) ?>about-us">About</a></li>
                             <li><a href="#">Our Stores</a></li>
                             <li><a href="#">Blog</a></li>
-                            <li><a href="#">Faqs</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="<?php echo Router::url('/', true) ?>faqs">Faqs</a></li>
+                            <li><a href="<?php echo Router::url('/', true) ?>privacy-policy">Privacy Policy</a></li>
                         </ul>
                     </div>
                 </div>
@@ -130,69 +120,6 @@ use Cake\Routing\Router; ?>
         });
     }
 
-
-    $('.arrvls_slide').owlCarousel({
-        loop: true,
-        margin: 30,
-        nav: true,
-        dots: false,
-        autoplay: true,
-        autoplayTimeout: 5000,
-        navText: ['<img src="images/prev.png">', '<img src="images/next.png">'],
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1200: {
-                items: 3
-            }
-        }
-    });
-
-    $('.blg_slide').owlCarousel({
-        loop: true,
-        margin: 30,
-        nav: true,
-        dots: false,
-        autoplay: true,
-        autoplayTimeout: 5000,
-        navText: ['<img src="images/prev.png">', '<img src="images/next.png">'],
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1200: {
-                items: 3
-            }
-        }
-    });
-
-    $('.tstmnls_slide').owlCarousel({
-        loop: true,
-        margin: 10,
-        nav: true,
-        dots: false,
-        autoplay: true,
-        autoplayTimeout: 5000,
-        navText: ['<img src="images/tstmnls_arow_prv.png">', '<img src="images/tstmnls_arow_nxt.png">'],
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 1
-            },
-            1200: {
-                items: 1
-            }
-        }
-    });
     $(document).ready(function() {
         $(".subscribe-newsletter").on("click", function(event) {
             let isValid = true;
@@ -297,4 +224,5 @@ use Cake\Routing\Router; ?>
         refreshToken();
         setInterval(refreshToken, 60000);
     });
+
 </script>

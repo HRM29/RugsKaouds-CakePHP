@@ -36,7 +36,7 @@ input:focus, .form-control:focus, .accordion-button:focus {
 
 header {
     background: rgb(136, 28, 6, .8);
-    padding: 0;
+    padding: 0 70px;
     box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.4);
     position: absolute;
     top: 0;
@@ -67,10 +67,18 @@ header .menus .navbar .navbar-collapse .navbar-nav .nav-item .nav-link.active {
   color: #881c06;
   background: #fff;
 }
-
 header .menus .navbar .navbar-collapse .navbar-nav .dropdown-menu {
 	position: absolute;
-    top: 46px;
+    top: 70px;
+	padding: 0;	
+}
+header .menus .navbar .navbar-collapse .navbar-nav .dropdown-menu li .dropdown-item {
+	padding: 6px 15px;
+}
+header .menus .navbar .navbar-collapse .navbar-nav .dropdown-menu li .dropdown-item:focus, 
+header .menus .navbar .navbar-collapse .navbar-nav .dropdown-menu li .dropdown-item:hover {
+	background: #a04938;
+	color: #fff;
 }
 header .menus .navbar .navbar-collapse .navbar-nav .dropdown-menu.submenu {
     position: absolute;
@@ -106,20 +114,24 @@ header .menus .navbar .navbar-collapse .navbar-nav .dropdown-menu.submenu.show l
 header .menus .navbar .srch_icon li {
     display: inline-block;
     list-style: none;
-    margin: 0 0 0 20px;
+    margin: 0 0 0 15px;
 	position: relative;
 }
 header .menus .navbar .srch_icon li a {
     color: #fff;
+    font-size: 23px;
+}
+header .menus .navbar .srch_icon li:last-child a {
     font-size: 17px;
 }
 header .menus .navbar .srch_icon li:last-child {
     border: 1px solid #fff;
 	border-radius: 100%;
-	height: 40px;
-	width: 40px;
-	line-height: 40px;
+	height: 37px;
+	width: 37px;
+	line-height: 37px;
 	text-align: center;	 
+	margin: 0 0 0 20px;
 }
 header .menus .navbar .srch_icon li span {
     position: absolute;
@@ -171,8 +183,8 @@ header .menus .navbar .srch_icon li span {
 .rgs_type .typ_box .typ_box_imag,
 .rgs_srvc .srvc_box .srvc_box_imag {
     background: #e6e6e6;
-    border: 1px solid #e6e6e6; /* Slimmer border */
-    border-radius: 9px;
+    border: 7px solid #e6e6e6;
+	border-radius: 9px;
     overflow: hidden; /* Ensures the zoom effect stays within the container */
     padding: 7px; /* Slight spacing inside */
     transition: border-color 0.5s ease-in-out; /* Smooth transition for border color */
@@ -623,6 +635,7 @@ footer .cpyrght p {
 	transition: all 0.4s ease-in-out;
 	-webkit-transition: all 0.4s ease-in-out;
 }
+
 .collections .clctns:hover {
     transform: scale(1.1);
 }
@@ -920,4 +933,285 @@ footer .cpyrght p {
 }
 .pagination .last::after {
 	content: "\f101";
+}
+
+.cart {
+	margin: 90px 0 0;
+}
+.cart .crt_tbl table thead tr th {
+ 	font-size: 12px;
+}
+.cart .crt_tbl table tbody tr td form.qnty {
+  width: 120px;
+  margin: 0 auto;
+  text-align: center;
+}
+.cart .crt_tbl table tbody tr td img {
+  filter: brightness(0);	
+}
+.cart .crt_tbl table tbody tr td:hover img {
+  filter: brightness(1);	
+}
+.cart .crt_tbl table tbody tr td form.qnty .value-button {
+  display: inline-block;
+  border: 1px solid #ddd;
+  margin: 0px;
+  width: 33px;
+  height: 33px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 3px 0;
+  font-size: 17px;
+  background: #eee;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.cart .crt_tbl  table tbody tr td form.qnty .value-button:hover {
+  cursor: pointer;
+}
+.cart .crt_tbl table tbody tr td form.qnty #decrease {
+  margin-right: -4px;
+  margin-top: -4px;
+  border-radius: 8px 0 0 8px;
+}
+.cart .crt_tbl table tbody tr td form.qnty #increase {
+  margin-left: -4px;
+  margin-top: -4px;
+  border-radius: 0 8px 8px 0;
+}
+.cart .crt_tbl table tbody tr td form.qnty #input-wrap {
+  margin: 0px;
+  padding: 0px;
+}
+.cart .crt_tbl  table tbody tr td form.qnty input#number {
+  text-align: center;
+  border: none;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin: 0px;
+  width: 33px;
+  height: 33px;
+}
+.cart .crt_tbl table tbody tr td form.qnty input[type=number]::-webkit-inner-spin-button,
+.cart .crt_tbl table tbody tr td form.qnty input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.cart .crt_sbttl table thead tr th {
+	font-size: 17px;
+	padding: 0 0 4px;
+}
+.cart .crt_sbttl table tbody tr td {
+	text-align: right;	
+}
+.cart .crt_sbttl table tbody tr td {
+	font-size: 15px;
+	font-weight: 600;
+	padding: 7px 0;
+}
+.cart .crt_sbttl table tbody tr th {
+	font-weight: 400;
+	padding: 7px 0;	
+}
+.cart .crt_sbttl table tbody tr:last-child th, .cart .crt_sbttl table tbody tr:last-child td {
+	font-size: 18px;
+	font-weight: 700;
+}
+.cart .crt_sbttl .btns .btn.chk {
+	width: 100%;
+	background: #0091ce;
+	border: 1px solid #0091ce;
+	margin:0 0 20px;
+	color: #fff;
+}
+.cart .crt_sbttl .btns .btn.chk {
+	background: #0074a5;
+}
+.cart .crt_sbttl .btns .btn.pay {
+	background: #ffc439;
+	border: 1px solid #ffc439;
+	border-radius: 30px;
+	width: 100%;
+}
+.cart .crt_sbttl .btns .btn.pay img {
+	width: 27%;
+}
+.cart .crt_sbttl {
+	border-left: 1px solid #ccc;
+	padding: 0 0 0 30px;
+} 
+.cart .crt_sbttl .cupn {
+	margin: 60px 0 0;
+}
+.cart .crt_sbttl .cupn h3 {
+	background: #a04938;
+	padding: 8px 20px;
+	color: #fff;
+}
+.cart .crt_sbttl .cupn input.fotm_control {
+	width: 100%;
+	border: 1px solid #ccc;
+	padding: 6px 12px;
+	margin: 12px 0;
+}
+.cart .crt_sbttl .cupn .btn.aply {
+	width: 100%;
+	background: #fff;
+	border: 1px solid #881c06;
+	color: #881c06;
+	transition: all 0.4s ease-in-out;
+	-webkit-transition: all 0.4s ease-in-out;
+}
+.cart .crt_sbttl .cupn .btn.aply:hover {
+	background: #881c06;
+	color: #fff;
+}
+.cart .crt_sbttl .cupn ul {
+	margin: 20px 0 0;
+}
+.cart .crt_sbttl .cupn li {
+	display: inline-block;
+	list-style: none;
+	background: rgba(0,0,0,.1);
+	border-radius: 5px;
+	margin: 3px 3px 0;
+	opacity: .6;
+	padding: 3px 5px 5px;
+	transition: all 0.4s ease-in-out;
+	-webkit-transition: all 0.4s ease-in-out;
+}
+.cart .crt_sbttl .cupn li svg {
+	height: 20px;
+}
+.cart .crt_sbttl .cupn li:hover {
+	opacity:1;
+}
+.rg_clng form .form_group p {
+	margin: 0 0 4px;
+}
+.rg_clng form .form_group strong {
+	color: #777;
+	font-size: 17px;
+}
+.rg_clng.chkout .rug_checkbox li {
+	display: block;
+	list-style: none;
+	margin: 0 0 7px;
+	font-size: 15px;
+}
+.rg_clng.chkout .rug_checkbox li label {
+	margin: 0 0 0 3px;
+	font-size: 13px;
+}
+.rg_clng.chkout .rug_checkbox {
+	margin: 10px 0 15px;
+}
+.rg_clng.chkout form h3 {
+	text-align: left;
+}
+.rg_clng.chkout .chkout_ordr {
+	margin: 78px 0 0;
+	border: 1px solid #ccc;
+} 
+.rg_clng.chkout .chkout_ordr h3 {
+	background: #a04938;
+	color: #fff;
+	padding: 12px 20px;
+	margin: 0;
+}
+.rg_clng.chkout .chkout_ordr table thead tr th {
+	text-transform: uppercase;
+}
+.rg_clng.chkout .chkout_ordr table thead tr th:last-child {
+	min-width: 100px;
+}
+.rg_clng.chkout .chkout_ordr .crt_sbttl .rug_radio,
+.rg_clng.chkout .chkout_ordr .crt_sbttl .rug_checkbox,
+.rg_clng.chkout .chkout_ordr .crt_sbttl .btn.pay,
+.rg_clng.chkout .chkout_ordr .crt_sbttl p {
+	margin: 0 10px 15px;
+}
+.rg_clng.chkout .chkout_ordr .crt_sbttl .rug_radio .rug_typ {
+	margin: 0 0 4px;
+	display: block;
+	list-style: none;
+}
+.rg_clng.chkout .chkout_ordr .crt_sbttl .rug_radio .rug_typ label {
+	margin: 0 0 0 3px;
+}
+.rg_clng.chkout .chkout_ordr .crt_sbttl .btn.pay {
+    background: #ffc439;
+	border: 1px solid #ffc439;
+	border-radius: 30px;
+	margin: 0 10px;
+	display: block;
+	padding: 4px 0;
+}
+.rg_clng.chkout .chkout_ordr .crt_sbttl p {
+	margin: 10px 10px;
+	font-size: 15px;
+}
+.rg_clng.chkout .chkout_ordr .crt_sbttl {
+	padding: 10px 20px 20px;
+}
+.rg_clng.acount form .form_group .btn {
+	margin: 20px 0 0;
+}
+.rg_clng.acount form .lst_pswrd a {
+	color: #777;
+	text-decoration: none;
+	font-size: 17px;
+}
+.rg_clng.acount form label span {
+	font-size: 15px;
+	margin: 0 0 0 6px;
+}
+.rgs_abt.crpt_rgs .rgs_abt_txt p {
+	max-width: 100%;
+}
+.rgs_abt.crpt_rgs .rgs_abt_txt img {
+	display: inline;
+	float: right;
+	margin-left: 40px;
+	margin-bottom: 20px;
+}
+.rgs_abt.crpt_rgs .rgs_abt_txt p a {
+	text-decoration: none;
+}
+.rgs_abt.crpt_rgs .brnds_glry img {
+	width: 100%;
+}
+.rgs_abt.crpt_rgs .cmunty_slide.owl-theme .owl-nav [class*="owl-"] {
+	background: transparent;
+}
+.rgs_abt.crpt_rgs form {
+	background: #eee;
+	padding: 20px 20px 40px;
+	border-radius: 4px;
+	margin: 90px 0 0;
+}
+.rgs_abt.crpt_rgs form h2 {
+	line-height: 29px;
+	font-size: 27px;
+}
+.rgs_abt.crpt_rgs form p {
+	font-size: 16px;
+	color: #777;
+}
+.rgs_abt.crpt_rgs form .form_group .fotm_control {
+	width: 100%;
+	padding:7px 15px;
+	border: 1px solid #ccc;
+	border-radius:4px;
+	margin: 0 0 15px;
+}
+.rgs_abt.crpt_rgs form .form_group textarea.fotm_control {
+	min-height: 110px;
+}
+.rgs_abt.crpt_rgs form .btn {
+	margin: 30px 0 0;
 }
