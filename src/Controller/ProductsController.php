@@ -571,7 +571,8 @@ class ProductsController extends AppController
 
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
-
+			echo "<pre>data: ";print_r($data);echo "</pre>";
+			die();
 			$session = $this->request->getSession();
 			$shop = $session->read('cart');
 			$invnum = mt_rand(100000, 999999);
@@ -932,10 +933,6 @@ class ProductsController extends AppController
 			$orderArr['order'] = $this->request->getData();
 			$orderArr['order']['product'] = $CartData;
 			$orderArr['order']['order_checkout'] = $order_checkout;
-
-
-			//$product = $session->read('Config.Cart');
-			//$orders = $session->read('orders');
 
 			$order_checkout = $session->write('orders', $orderArr);
 			$this->redirect(['controller' => 'products', 'action' => 'orderreview']);
@@ -1941,8 +1938,40 @@ class ProductsController extends AppController
 		return $returnArr;
 	}
 
-	public function checkout() {
+	public function checkout()
+	{
 		$this->viewBuilder()->setLayout('front');
-		
+		$session = $this->request->getSession();
+		$cardData = $session->read('cart');
+		if (empty($cardData)) {
+			return $this->redirect(Router::url('/', true));
+		}
+		if ($session->check('Auth.User')) {
+			$authUser = $session->read('Auth.User');
+			$userTable = TableRegistry::getTableLocator()->get('Users');
+			$userData = $userTable->find()
+				->select(['Users.id', 'Users.role_id', 'Users.first_name', 'Users.last_name', 'Users.email', 'Users.phone', 'UserDetails.company', 'UserDetails.address', 'UserDetails.country', 'UserDetails.state', 'UserDetails.city', 'UserDetails.postal_code'])
+				->contain(['UserDetails'])
+				->where(['Users.id' => $authUser['id']])
+				->first();
+			$this->set(compact('userData'));
+		}
+		$countries = parent::countryLists();
+		$states = parent::statesList();
+		$newsletterData = $this->returnNewsletterData();
+		$this->set(compact('countries', 'states', 'newsletterData', 'cardData'));
+	}
+
+	private function returnNewsletterData()
+	{
+		$newsletterTable = TableRegistry::getTableLocator()->get('ContactNewsletter');
+		$newsletterData = $newsletterTable->find('list', [
+			'keyField' => 'id',
+			'valueField' => 'email'
+		])
+			->where(['ContactNewsletter.status' => 1, 'ContactNewsletter.type' => 'newsletter'])
+			->enableHydration(false)
+			->toArray();
+		return $newsletterData;
 	}
 }

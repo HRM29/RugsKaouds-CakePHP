@@ -406,11 +406,12 @@ return [
      *
      * To use database sessions, load the SQL file located at config/schema/sessions.sql
      */
+
     'Session' => [
         'defaults' => 'php',
-        'timeout' => 1440,
+        'timeout' => 240, // Timeout in minutes (4 hours)
         'ini' => [
-            'session.gc_maxlifetime' => 86400, // Timeout in seconds (24 hours)
+            'session.gc_maxlifetime' => 14400, // Timeout in seconds (4 hours)
         ],
     ],
 ];

@@ -6,12 +6,10 @@ use Cake\Core\Configure;
 
 <?php
 $session = $this->request->getSession();
-echo "<pre>session: ";print_r($session->read());echo "</pre>";
 
 $action = $this->request->getParam('action');
 $controller = $this->request->getParam('controller');
 $authUser = $session->read('Auth');
-
 $squareJsUrl = "https://js.squareupsandbox.com/v2/paymentform";
 $appID = "sandbox-sq0idb-oVE_8fXmElchrJT-NV-RkA";
 $locationId = "84FXVDJJ8VXK2";
@@ -49,75 +47,105 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 				?>
 					<p>Returning customer? <a href="<?php echo $this->Url->build(['controller' => 'User', 'action' => 'login']); ?>">Click here to login</a></p>
 				<?php
+				} else {
+					echo "<p>Welcome, " . $authUser['User']['first_name'] . " " . $authUser['User']['last_name'] . "</p>";
 				} ?>
 				<p>Have a coupon? <a href="#">Click here to enter your code</a></p>
-				<form action="#">
+				<form action="#" name="form_paypal" id="form_paypal">
 					<h3>Billing Details</h3>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="name" value="" placeholder="First Name">
+								<input class="fotm_control" type="text" name="first-name" value="<?= $userData->first_name ?>" placeholder="First Name">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="name" value="" placeholder="Last Name">
+								<input class="fotm_control" type="text" name="last-name" value="<?= $userData->last_name ?>" placeholder="Last Name">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="name" value="" placeholder="Company Name (Optional)">
+								<input class="fotm_control" type="text" name="company-name" value="<?= $userData->user_detail->company ?>" placeholder="Company Name (Optional)">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
 								<p>Country / Region</p>
 								<strong>United States (US)</strong>
+								<input type="hidden" name="country_code" value="US">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="adrs" value="" placeholder="Address">
+								<input class="fotm_control" type="text" name="address-name" value="<?= $userData->user_detail->address ?>" placeholder="Address">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="city" value="" placeholder="Town / City">
+								<input class="fotm_control" type="text" name="city-name" value="<?= $userData->user_detail->city ?>" placeholder="Town / City">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<select class="fotm_control" name="">
-									<option value="0">State</option>
-									<option value="1">Alabama</option>
-									<option value="2">Alaska</option>
-									<option value="3">Arizona</option>
-									<option value="4">Arkansas</option>
+								<select class="fotm_control" name="states-name">
+									<?php
+									foreach ($states as $statekey => $statesData) {
+										if (isset($userData->user_detail->state) && $userData->user_detail->state == $statekey) {
+											$selected = 'selected';
+										} else {
+											$selected = '';
+										}
+									?>
+										<option value="<?php echo $statekey; ?>" <?= $selected ?>><?php echo $statesData; ?></option>
+									<?php
+									}
+									?>
 								</select>
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="zipcode" value="" placeholder="Zip Code">
+								<input class="fotm_control" type="text" name="zipcode" value="<?= $userData->user_detail->postal_code ?>" placeholder="Zip Code">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="number" name="phone" value="" placeholder="Phone">
+								<input class="fotm_control" type="number" name="phone" value="<?= $userData->phone ?>" placeholder="Phone">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="email" name="email" value="" placeholder="Email Address">
+								<input class="fotm_control billing-email" type="email" name="email" value="<?= $userData->email ?>" placeholder="Email Address" onblur="checkEmail()">
 							</div>
 						</div>
 						<ul class="rug_checkbox">
-							<li class="rug_typ">
-								<input name="rug_typ" type="checkbox" value="" id="rug_typ001">
-								<label for="rug_typ001" id="rug_typ001">Creat an Account?</label>
-							</li>
-							<li class="rug_typ">
-								<input name="rug_typ" type="checkbox" value="" id="rug_typ002">
+							<?php
+							if (empty($authUser['User']['id'])) {
+							?>
+								<li class="rug_typ">
+									<input name="rug_typ" type="checkbox" value="" id="rug_typ001">
+									<label for="rug_typ001" id="rug_typ001">Creat an Account?</label>
+								</li>
+							<?php } ?>
+
+							<?php
+							if (isset($newsletterData) && !empty($newsletterData)) {
+								$hide_newsletter = '';
+								$checked_val = '0';
+								if (in_array($userData->email, $newsletterData)) {
+									$checked = 'checked';
+									$hide_newsletter = 'style="display:none;"';
+									$checked_val = '1';
+								} else {
+									$checked = '';
+								}
+							} else {
+								$checked = '';
+							}
+							?>
+							<li class="rug_typ" <?= $hide_newsletter; ?>>
+								<input name="rug_typ" name="sign-up-newsletter" type="checkbox" value="<?= $checked_val; ?>" <?= $checked; ?> id="rug_typ002" onchange="toggleNewsletterCheckbox()">
 								<label for="rug_typ002" id="rug_typ002">Sign me up for the newsletter!</label>
 							</li>
 							<li class="rug_typ">
@@ -127,11 +155,10 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 						</ul>
 						<div class="col-md-12">
 							<div class="form_group">
-								<textarea class="fotm_control" name="" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+								<textarea class="fotm_control" name="delivery-note" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
 							</div>
 						</div>
 					</div>
-
 				</form>
 			</div>
 			<div class="col-md-5">
@@ -145,14 +172,31 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 									<th scope="col">Subtotal</th>
 								</tr>
 							</thead>
+							<?= $this->Form->create(null, ['url' => "javscript:void(0)", 'id' => "payment-details"]); ?>
 							<tbody>
-								<tr>
-									<th scope="row">2'9"x4'1" Polar Bear White, Nain with Large Medallion Design, 250 KPSI, Wool and Silk, Hand Knotted, Oriental Rug</th>
-									<td>$922.28</td>
-								</tr>
+								<?php
+								if (!empty($cardData)) {
+									$total_quanty = 0;
+									$total_price = 0;
+									foreach ($cardData as $item) {
+										$total_quanty += $item['product_qty'];
+										$total_price += round($item['everyday_price'] * $item['product_qty'], 2);
+									}
+								}
+								if (!empty($cardData)) {
+									foreach ($cardData as $key => $data) {
+								?>
+										<tr>
+											<th scope="row"><?php echo $data['title'] ?></th>
+											<td>$<?= number_format(($data['everyday_price'] * $data['product_qty']), 2); ?></td>
+										</tr>
+								<?php
+									}
+								}
+								?>
 								<tr>
 									<th scope="row">Subtotal</th>
-									<td>$922.28</td>
+									<td>$<?= number_format($total_price, 2); ?></td>
 								</tr>
 								<tr>
 									<th scope="row">Shipping</th>
@@ -164,27 +208,37 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 								</tr>
 								<tr>
 									<th scope="row">Total</th>
-									<td>$922.28</td>
+									<td>$<?= number_format($total_price, 2); ?></td>
 								</tr>
+								<?php
+								if (!empty($authUser['User']['id'])) {
+								?>
+									<?php echo $this->Form->hidden('user_id', ['value' => $authUser['User']['id']]); ?>
+								<?php } ?>
+								<?php echo $this->Form->hidden('total_price', ['value' => $total_price]); ?>
+								<?php echo $this->Form->hidden('total_qty', ['value' => $total_quanty]); ?>
+								<?php echo $this->Form->hidden('checkout_option', ['value' => 0, 'id' => 'checkout_option']); ?>
 							</tbody>
+							<?= $this->Form->end(); ?>
 						</table>
 						<ul class="rug_radio">
 							<li class="rug_typ">
-								<input name="rug_typ" type="radio" value="1" id="rug_typ011">
+								<input name="payment-option" type="radio" value="1" id="payment-paypal">
 								<label for="rug_typ011" id="rug_typ011">Paypal</label>
 							</li>
 							<li class="rug_typ">
-								<input name="rug_typ" type="radio" value="2" id="rug_typ012">
+								<input name="payment-option" type="radio" value="2" id="payment-cards">
 								<label for="rug_typ012" id="rug_typ012">Debit & Credit Cards</label>
 							</li>
 						</ul>
 						<ul class="rug_checkbox">
 							<li class="rug_typ">
-								<input name="rug_typ" type="checkbox" value="" id="rug_typ013">
+								<input name="terms-conditions" type="checkbox" value="" id="terms-conditions">
 								<label for="rug_typ013" id="rug_typ013">I have read and agree to the website terms and conditions.</label>
 							</li>
 						</ul>
-						<a href="#" class="btn pay"><img src="/Kaouds/img/pay.png" alt="pay"></a>
+						<a href="javascript:void(0);" class="btn pay payment-1" style="display: none;"><img src="/Kaouds/img/pay.png" alt="pay"></a>
+						<a href="javascript:void(0);" class="btn pay payment-2" style="display: none;"><strong>Place Order</strong></a>
 						<p>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.</p>
 					</div>
 				</div>
@@ -193,9 +247,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 		</div>
 	</div>
 </section>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 <script type="text/javascript">
 	// Create and initialize a payment form object
 	const paymentForm = new SqPaymentForm({
@@ -670,6 +722,146 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 				location.reload();
 			}
 
+		});
+	});
+
+	function checkEmail() {
+		var emailInput = document.querySelector('.billing-email').value;
+		var userEmail = '<?= $userData->email ?>';
+		var newsletterCheckbox = document.querySelector('input[id="rug_typ002"]').parentElement;
+
+		if (emailInput !== userEmail) {
+			newsletterCheckbox.style.display = 'block';
+		} else {
+			newsletterCheckbox.style.display = 'none';
+		}
+	}
+
+	function toggleNewsletterCheckbox() {
+		const newsletterCheckbox = document.getElementById('rug_typ002');
+		newsletterCheckbox.addEventListener('change', function() {
+			if (this.checked) {
+				this.value = '1';
+			} else {
+				this.value = '0';
+			}
+		});
+	}
+
+	function updateCheckoutOption() {
+		const paymentOptions = document.querySelectorAll('input[name="payment-option"]');
+		const checkoutOptionInput = document.getElementById('checkout_option');
+
+		paymentOptions.forEach(option => {
+			option.addEventListener('change', function() {
+				if (this.value === '1') {
+					document.querySelector('.payment-1').style.display = 'block';
+					document.querySelector('.payment-1').classList.add('pay-now');
+					document.querySelector('.payment-2').style.display = 'none';
+					document.querySelector('.payment-2').classList.remove('pay-now');
+				} else {
+					document.querySelector('.payment-1').style.display = 'none';
+					document.querySelector('.payment-1').classList.remove('pay-now');
+					document.querySelector('.payment-2').style.display = 'block';
+					document.querySelector('.payment-2').classList.add('pay-now');
+				}
+				checkoutOptionInput.value = this.value;
+			});
+		});
+	}
+
+	updateCheckoutOption();
+	toggleNewsletterCheckbox();
+
+	function sendEncryptedData() {
+		const csrfToken = $("[name='_csrfToken']").val();
+		const formDataPaypal = new FormData(document.getElementById("form_paypal"));
+		const formDataPayment = new FormData(document.getElementById("payment-details"));
+
+		// Combine both FormData objects
+		for (let [key, value] of formDataPayment.entries()) {
+			formDataPaypal.append(key, value);
+		}
+		// Convert FormData to JSON object
+		let data = {};
+		formDataPaypal.forEach((value, key) => {
+			data[key] = value;
+		});
+
+		// Validation
+		const requiredFields = [
+			'first-name', 'last-name', 'address-name', 'city-name', 'states-name', 'zipcode', 'phone', 'email'
+		];
+		let isValid = true;
+		requiredFields.forEach(field => {
+			if (!data[field] || data[field].trim() === '') {
+				isValid = false;
+				document.querySelector(`[name="${field}"]`).style.border = '1px solid red';
+			} else {
+				document.querySelector(`[name="${field}"]`).style.border = '1px solid #ced4da';
+			}
+		});
+
+		// Validate terms and conditions
+		const termsConditions = document.querySelector('[name="terms-conditions"]');
+		if (!termsConditions.checked) {
+			isValid = false;
+			termsConditions.nextElementSibling.style.color = 'red';
+		} else {
+			termsConditions.nextElementSibling.style.color = 'inherit';
+		}
+
+		if (!isValid) {
+			alert('Please fill in all required fields and agree to the terms and conditions.');
+			return;
+		}
+
+		fetch('<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'checkoutnew']); ?>', {
+				method: 'POST',
+				headers: {
+					'X-CSRF-Token': csrfToken,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.status === 'Success') {
+					window.location = data.redirect_url;
+				} else {
+					alert(data.message);
+				}
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert('An error occurred while processing your request.');
+			});
+	}
+
+	document.querySelectorAll('.pay-now').forEach(element => {
+		element.addEventListener('click', function(event) {
+			event.preventDefault();
+			sendEncryptedData();
+		});
+	});
+
+	const observer = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			if (mutation.attributeName === 'class') {
+				const target = mutation.target;
+				if (target.classList.contains('pay-now')) {
+					target.addEventListener('click', function(event) {
+						event.preventDefault();
+						sendEncryptedData();
+					});
+				}
+			}
+		});
+	});
+
+	document.querySelectorAll('.btn').forEach(element => {
+		observer.observe(element, {
+			attributes: true
 		});
 	});
 </script>

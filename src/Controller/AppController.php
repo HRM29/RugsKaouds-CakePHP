@@ -344,13 +344,12 @@ class AppController extends Controller
 
     public function statesList()
     {
-        $Table = TableRegistry::get('States');
+        $Table = TableRegistry::getTableLocator()->get('States');
         $query = $Table->find('list', [
             'keyField' => 'id',
             'valueField' => 'state'
         ])->order(['state' => 'ASC']);
-        $states = $query->all();
-
+        $states = $query->enableHydration(false)->toArray();
         return $states;
         exit;
     }
