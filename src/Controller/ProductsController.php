@@ -292,7 +292,8 @@ class ProductsController extends AppController
 			'contain' => ['ProductImages'],
 			'order' => $order
 		]);
-		$this->set(compact('ProductData', 'enabledCategories', 'totalCategoriesCount', 'enabledDimentions'));
+		$cartItems = $this->checkCartButton();
+		$this->set(compact('ProductData', 'enabledCategories', 'totalCategoriesCount', 'enabledDimentions', 'cartItems'));
 	}
 
 	public function updateRecentView()
@@ -340,11 +341,11 @@ class ProductsController extends AppController
 	public function checkCartButton()
 	{
 
-		$this->autoRender = false;
+		$session = $this->request->getSession();
+		$datases = $session->read('cart');
+		$productcart = array();
 		if ($this->request->is(['post', 'put'])) {
-			$session = $this->request->getSession();
-			$datases = $session->read('cart');
-
+			$this->autoRender = false;
 			$pr_id = $this->request->getData()['pr_id'];
 			if (!empty($datases)) {
 				foreach ($datases as $new) {
@@ -361,6 +362,13 @@ class ProductsController extends AppController
 			}
 
 			print_r($exiting_cart);
+		} else {
+			if (!empty($datases)) {
+				foreach ($datases as $new) {
+					$productcart[] = $new['id'];
+				}
+			}
+			return $productcart;
 		}
 	}
 
@@ -570,15 +578,63 @@ class ProductsController extends AppController
 
 
 		if ($this->request->is('post')) {
-			$data = $this->request->getData();
-			echo "<pre>data: ";print_r($data);echo "</pre>";
-			die();
+			$postdata = $this->request->getData();
 			$session = $this->request->getSession();
 			$shop = $session->read('cart');
 			$invnum = mt_rand(100000, 999999);
 			$_SESSION['invnum'] = $invnum;
 
-			if (!empty($data['datax'])) {
+			if (!empty($postdata)) {
+				$mappedData = [];
+				$mappedData['billing_first_name'] = $postdata['billing-first-name'];
+				$mappedData['billing_last_name'] = $postdata['billing-last-name'];
+				$mappedData['billing_phone'] = $postdata['billing-phone'];
+				$mappedData['billing_email'] = $postdata['billing-email'];
+				$mappedData['billing_street_address'] = $postdata['billing-address-name'];
+				$mappedData['billing_city'] = $postdata['billing-city-name'];
+				$mappedData['billing_state'] = $postdata['billing-states-name'];
+				$mappedData['billing_country'] = $postdata['billing-country-code'];
+				$mappedData['billing_zip'] = $postdata['billing-zipcode'];
+				$mappedData['checkout_option'] = $postdata['checkout_option'];
+				if (isset($postdata['shipping-delivery-note'])) {
+					$mappedData['delivery_note'] = $postdata['shipping-delivery-note'];
+				}
+				if (null !== $session->read('Auth.User.id')) {
+					$mappedData['user_id'] = $session->read('Auth.User.id');
+				} else {
+					$mappedData['user_id'] = 0;
+				}
+				$mappedData['total_qty'] = $postdata['total_qty'];
+				$mappedData['sub_total'] = $postdata['total_price'];
+				$mappedData['total_price'] = $postdata['total_price'];
+
+				if ($postdata['ship-to-different'] == 0) {
+					$mappedData['delivery_first_name'] = $postdata['billing-first-name'];
+					$mappedData['delivery_last_name'] = $postdata['billing-last-name'];
+					$mappedData['delivery_phone'] = $postdata['billing-phone'];
+					$mappedData['delivery_email'] = $postdata['billing-email'];
+					$mappedData['delivery_street_address'] = $postdata['billing-address-name'];
+					$mappedData['delivery_city'] = $postdata['billing-city-name'];
+					$mappedData['delivery_state'] = $postdata['billing-states-name'];
+					$mappedData['delivery_country'] = $postdata['billing-country-code'];
+					$mappedData['delivery_zip'] = $postdata['billing-zipcode'];
+				} else {
+					$mappedData['delivery_first_name'] = $postdata['billing-first-name'];
+					$mappedData['delivery_last_name'] = $postdata['billing-last-name'];
+					$mappedData['delivery_phone'] = $postdata['billing-phone'];
+					$mappedData['delivery_email'] = $postdata['billing-email'];
+					$mappedData['delivery_street_address'] = $postdata['billing-address-name'];
+					$mappedData['delivery_city'] = $postdata['billing-city-name'];
+					$mappedData['delivery_state'] = $postdata['billing-states-name'];
+					$mappedData['delivery_country'] = $postdata['billing-country-code'];
+					$mappedData['delivery_zip'] = $postdata['billing-zipcode'];
+				}
+				$mappedData['date_purchased'] = date('Y-m-d H:i:s');
+				$mappedData['schedule_date'] = date('Y-m-d H:i:s');
+				$mappedData['created_by'] = $postdata['user_id'] ?? 0;
+				$mappedData['updated_by'] = 0;
+				$mappedData['reference_id'] = 0;
+				/*
 				foreach ($data['datax'] as $val) {
 					if ($val['name'] != '_method' && $val['name'] != 'nds-pmd') {
 						$data[$val['name']] = $val['value'];
@@ -588,19 +644,23 @@ class ProductsController extends AppController
 				unset($data['datax']);
 
 				$result = $this->SquarePayment->doDirectPayment($data, $shop);
+				*/
+				$result['status'] = 'Success';
+				$result['txn_id'] = rand(100000, 999999);
 
 				//echo "<pre>";print_r($result['status']);die;
 
 				if ($result['status'] == 'Success') {
-					$order = $orders->patchEntity($order, $data);
+					$order = $orders->patchEntity($order, $mappedData);
 
 					$order->payment_status = 1;
 					$order->order_status = 0;
 					$order->trans_id = $result['txn_id'];
-					//$order->created = date("Y-m-d");
-					//$order->modified = date("Y-m-d");
-
-					$order->payment_method = "Card";
+					if ($postdata['checkout_option'] == 2) {
+						$order->payment_method = "Card";
+					} elseif ($postdata['checkout_option'] == 1) {
+						$order->payment_method = "Paypal";
+					}
 					//Order save to orders table	
 
 					$tr_id = array("tr_id" => $result['txn_id'], "status" => $result['status']);
@@ -615,8 +675,6 @@ class ProductsController extends AppController
 						$session = $this->request->getSession();
 						$cartdta = $session->read('cart');
 
-						$price = 0;
-						$quantity = 0;
 
 						$product_details = array();
 						foreach ($cartdta as $proSub) {
@@ -628,6 +686,9 @@ class ProductsController extends AppController
 							$product_details['product_id'] = $proSub['id'];
 							$product_details['qty'] = $proSub['product_qty'];
 							$product_details['price'] = $proSub['selling_price'];
+							$product_details['user_id'] = $mappedData['user_id'];
+							$product_details['unit'] = 'pcs';
+							$product_details['size'] = '';
 
 							$orderDetails = $OrderProducts->patchEntity($OrderProduct, $product_details);
 							//Order details save to database
@@ -635,7 +696,7 @@ class ProductsController extends AppController
 
 
 							// update product table
-							$ProductsTable->updateAll(['sold_status' => 2], ['id' => $proSub['id']]);
+							//$ProductsTable->updateAll(['sold_status' => 2], ['id' => $proSub['id']]);
 						}
 
 						$email_billing = $orders->find('all')->select(['billing_first_name', 'billing_last_name', 'billing_email',])->where(['id' => $last_id])->First();

@@ -76,10 +76,21 @@ use Cake\Core\Configure; ?>
 											<p><?= $data->title; ?></p>
 											<span>$<?php echo number_format($data->selling_price, 2); ?></span>
 											<span class="nw_price">$<?php echo number_format($data->everyday_price, 2); ?></span>
-											<div class="pdocut-buton cart-button" data-id=<?php echo $data->id; ?>>
-												<a class="btn crt_btn cart-button" data-id=<?php echo $data->id; ?> href="javascript:void(0);"><i class="bi bi-bag-plus"></i> Add to Cart</a>
-											</div>
-
+											<?php
+											if (in_array($data->id, $cartItems)) {
+											?>
+												<div class="pdocut-buton cart-button" data-id=<?php echo $data->id; ?>>
+													<a class="btn crt_btn cart-button" data-id=<?php echo $data->id; ?> href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>"><i class="bi bi-bag-plus"></i> Added to Cart</a>
+												</div>
+											<?php
+											} else {
+											?>
+												<div class="pdocut-buton cart-button" data-id=<?php echo $data->id; ?>>
+													<a class="btn crt_btn cart-button" data-id=<?php echo $data->id; ?> href="javascript:void(0);"><i class="bi bi-bag-plus"></i> Add to Cart</a>
+												</div>
+											<?php
+											}
+											?>
 										</div>
 									</div>
 								</div>
@@ -94,25 +105,25 @@ use Cake\Core\Configure; ?>
 					<?php
 					if (!$noRecords) {
 					?>
-					<div class="shop-head shop-head-bottom">
-						<h2>
-							<?= $this->Paginator->counter([
-								'format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
-							]) ?>
-						</h2>
-						<div class="shop-bottom-section">
-							<nav>
-								<ul class="pagination justify-content-center">
-									<?= $this->Paginator->first(__('First')) ?>
-									<?= $this->Paginator->prev(__('Previous')) ?>
-									<?= $this->Paginator->numbers() ?>
-									<?= $this->Paginator->next(__('Next')) ?>
-									<?= $this->Paginator->last(__('Last')) ?>
-								</ul>
-							</nav>
+						<div class="shop-head shop-head-bottom">
+							<h2>
+								<?= $this->Paginator->counter([
+									'format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+								]) ?>
+							</h2>
+							<div class="shop-bottom-section">
+								<nav>
+									<ul class="pagination justify-content-center">
+										<?= $this->Paginator->first(__('First')) ?>
+										<?= $this->Paginator->prev(__('Previous')) ?>
+										<?= $this->Paginator->numbers() ?>
+										<?= $this->Paginator->next(__('Next')) ?>
+										<?= $this->Paginator->last(__('Last')) ?>
+									</ul>
+								</nav>
+							</div>
 						</div>
-					</div>
-					<?php 
+					<?php
 					}
 					?>
 

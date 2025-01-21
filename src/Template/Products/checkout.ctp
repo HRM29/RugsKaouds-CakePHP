@@ -51,44 +51,48 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 					echo "<p>Welcome, " . $authUser['User']['first_name'] . " " . $authUser['User']['last_name'] . "</p>";
 				} ?>
 				<p>Have a coupon? <a href="#">Click here to enter your code</a></p>
+				<div id="alert-message" class="alert alert-danger alert-dismissible" role="alert" style="display: none;">
+					<span id="alert-text"></span>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
 				<form action="#" name="form_paypal" id="form_paypal">
 					<h3>Billing Details</h3>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="first-name" value="<?= $userData->first_name ?>" placeholder="First Name">
+								<input class="fotm_control" type="text" name="billing-first-name" value="<?= $userData->first_name ?>" placeholder="First Name">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="last-name" value="<?= $userData->last_name ?>" placeholder="Last Name">
+								<input class="fotm_control" type="text" name="billing-last-name" value="<?= $userData->last_name ?>" placeholder="Last Name">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="company-name" value="<?= $userData->user_detail->company ?>" placeholder="Company Name (Optional)">
+								<input class="fotm_control" type="text" name="billing-company-name" value="<?= $userData->user_detail->company ?>" placeholder="Company Name (Optional)">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
 								<p>Country / Region</p>
 								<strong>United States (US)</strong>
-								<input type="hidden" name="country_code" value="US">
+								<input type="hidden" name="billing-country-code" value="US">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="address-name" value="<?= $userData->user_detail->address ?>" placeholder="Address">
+								<input class="fotm_control" type="text" name="billing-address-name" value="<?= $userData->user_detail->address ?>" placeholder="Address">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="city-name" value="<?= $userData->user_detail->city ?>" placeholder="Town / City">
+								<input class="fotm_control" type="text" name="billing-city-name" value="<?= $userData->user_detail->city ?>" placeholder="Town / City">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<select class="fotm_control" name="states-name">
+								<select class="fotm_control" name="billing-states-name">
 									<?php
 									foreach ($states as $statekey => $statesData) {
 										if (isset($userData->user_detail->state) && $userData->user_detail->state == $statekey) {
@@ -106,17 +110,17 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="zipcode" value="<?= $userData->user_detail->postal_code ?>" placeholder="Zip Code">
+								<input class="fotm_control" type="text" name="billing-zipcode" value="<?= $userData->user_detail->postal_code ?>" placeholder="Zip Code">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="number" name="phone" value="<?= $userData->phone ?>" placeholder="Phone">
+								<input class="fotm_control" type="number" name="billing-phone" value="<?= $userData->phone ?>" placeholder="Phone">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control billing-email" type="email" name="email" value="<?= $userData->email ?>" placeholder="Email Address" onblur="checkEmail()">
+								<input class="fotm_control billing-email" type="email" name="billing-email" value="<?= $userData->email ?>" placeholder="Email Address" onblur="checkEmail()">
 							</div>
 						</div>
 						<ul class="rug_checkbox">
@@ -124,7 +128,8 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 							if (empty($authUser['User']['id'])) {
 							?>
 								<li class="rug_typ">
-									<input name="rug_typ" type="checkbox" value="" id="rug_typ001">
+									<input type="checkbox" value="" id="create_account">
+									<input name="create_account" type="checkbox" value="" class="create_account">
 									<label for="rug_typ001" id="rug_typ001">Creat an Account?</label>
 								</li>
 							<?php } ?>
@@ -145,17 +150,84 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 							}
 							?>
 							<li class="rug_typ" <?= $hide_newsletter; ?>>
-								<input name="rug_typ" name="sign-up-newsletter" type="checkbox" value="<?= $checked_val; ?>" <?= $checked; ?> id="rug_typ002" onchange="toggleNewsletterCheckbox()">
+								<input name="rug_typ" type="checkbox" value="" <?= $checked; ?> id="rug_typ002" onchange="toggleNewsletterCheckbox()">
+								<input type="hidden" name="sign-up-newsletter" value="<?= $checked_val; ?>" class="sign-up-newsletter">
 								<label for="rug_typ002" id="rug_typ002">Sign me up for the newsletter!</label>
 							</li>
 							<li class="rug_typ">
-								<input name="rug_typ" type="checkbox" value="" id="rug_typ003">
+								<input  type="checkbox" value="0" id="ship-to-different">
+								<input type="hidden" name="ship-to-different" value="0" class="ship-to-different">
 								<label for="rug_typ003" id="rug_typ003">Ship to a different address?</label>
 							</li>
 						</ul>
+						<div class="col-md-6 ship-to-different" style="display: none;">
+							<div class="form_group">
+								<input class="fotm_control" type="text" name="delivery-first-name" value="" placeholder="First Name">
+							</div>
+						</div>
+						<div class="col-md-6 ship-to-different" style="display: none;" >
+							<div class="form_group">
+								<input class="fotm_control" type="text" name="delivery-last-name" value="" placeholder="Last Name">
+							</div>
+						</div>
+						<div class="col-md-12 ship-to-different" style="display: none;">
+							<div class="form_group">
+								<input class="fotm_control" type="text" name="delivery-company-name" value="" placeholder="Company Name (Optional)">
+							</div>
+						</div>
+						<div class="col-md-12 ship-to-different" style="display: none;">
+							<div class="form_group">
+								<p>Country / Region</p>
+								<strong>United States (US)</strong>
+								<input type="hidden" name="delivery-country-code" value="US">
+							</div>
+						</div>
+						<div class="col-md-12 ship-to-different" style="display: none;">
+							<div class="form_group">
+								<input class="fotm_control" type="text" name="delivery-address-name" value="" placeholder="Address">
+							</div>
+						</div>
+						<div class="col-md-12 ship-to-different" style="display: none;">
+							<div class="form_group">
+								<input class="fotm_control" type="text" name="delivery-city-name" value="" placeholder="Town / City">
+							</div>
+						</div>
+						<div class="col-md-12 ship-to-different" style="display: none;">
+							<div class="form_group">
+								<select class="fotm_control" name="delivery-states-name">
+									<?php
+									foreach ($states as $statekey => $statesData) {
+										if (isset($userData->user_detail->state) && $userData->user_detail->state == $statekey) {
+											$selected = 'selected';
+										} else {
+											$selected = '';
+										}
+									?>
+										<option value="<?php echo $statekey; ?>" <?= $selected ?>><?php echo $statesData; ?></option>
+									<?php
+									}
+									?>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-12 ship-to-different" style="display: none;">
+							<div class="form_group">
+								<input class="fotm_control" type="text" name="delivery-zipcode" value="" placeholder="Zip Code">
+							</div>
+						</div>
+						<div class="col-md-12 ship-to-different" style="display: none;">
+							<div class="form_group">
+								<input class="fotm_control" type="number" name="billing-phone" value="" placeholder="Phone">
+							</div>
+						</div>
+						<div class="col-md-12 ship-to-different" style="display: none;">
+							<div class="form_group">
+								<input class="fotm_control delivery-email" type="email" name="delivery-email" value="" placeholder="Email Address" onblur="checkEmail()">
+							</div>
+						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<textarea class="fotm_control" name="delivery-note" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+								<textarea class="fotm_control" name="shipping-delivery-note" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
 							</div>
 						</div>
 					</div>
@@ -233,7 +305,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 						</ul>
 						<ul class="rug_checkbox">
 							<li class="rug_typ">
-								<input name="terms-conditions" type="checkbox" value="" id="terms-conditions">
+								<input name="payment-terms-conditions" type="checkbox" value="" id="terms-conditions">
 								<label for="rug_typ013" id="rug_typ013">I have read and agree to the website terms and conditions.</label>
 							</li>
 						</ul>
@@ -739,15 +811,30 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 
 	function toggleNewsletterCheckbox() {
 		const newsletterCheckbox = document.getElementById('rug_typ002');
+		const newsletterInput = document.querySelector('.sign-up-newsletter');
 		newsletterCheckbox.addEventListener('change', function() {
 			if (this.checked) {
 				this.value = '1';
+				newsletterInput.value = '1';
 			} else {
 				this.value = '0';
+				newsletterInput.value = '0';
 			}
 		});
 	}
-
+	function toggleShipToDiffAddressCheckbox() {
+		const shipDiffAddCheckbox = document.getElementById('ship-to-different');
+		const shipDiffAddInput = document.querySelector('.ship-to-different');
+		shipDiffAddCheckbox.addEventListener('change', function() {
+			if (this.checked) {
+				this.value = '1';
+				shipDiffAddInput.value = '1';
+			} else {
+				this.value = '0';
+				shipDiffAddInput.value = '0';
+			}
+		});
+	}
 	function updateCheckoutOption() {
 		const paymentOptions = document.querySelectorAll('input[name="payment-option"]');
 		const checkoutOptionInput = document.getElementById('checkout_option');
@@ -772,6 +859,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 
 	updateCheckoutOption();
 	toggleNewsletterCheckbox();
+	toggleShipToDiffAddressCheckbox();
 
 	function sendEncryptedData() {
 		const csrfToken = $("[name='_csrfToken']").val();
@@ -790,20 +878,42 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 
 		// Validation
 		const requiredFields = [
-			'first-name', 'last-name', 'address-name', 'city-name', 'states-name', 'zipcode', 'phone', 'email'
+			'billing-first-name', 'billing-last-name', 'billing-address-name', 'billing-city-name', 'billing-states-name', 'billing-zipcode', 'billing-phone', 'billing-email'
 		];
 		let isValid = true;
 		requiredFields.forEach(field => {
+			const fieldElement = document.querySelector(`[name="${field}"]`);
 			if (!data[field] || data[field].trim() === '') {
 				isValid = false;
-				document.querySelector(`[name="${field}"]`).style.border = '1px solid red';
+				fieldElement.style.border = '1px solid red';
+				if (isValid === false) {
+					fieldElement.focus();
+				}
 			} else {
-				document.querySelector(`[name="${field}"]`).style.border = '1px solid #ced4da';
+				fieldElement.style.border = '1px solid #ced4da';
 			}
 		});
+		// Validate delivery address if "Ship to a different address" is checked
+		if (data['ship-to-different'] === '1') {
+			const deliveryFields = [
+				'delivery-first-name', 'delivery-last-name', 'delivery-address-name', 'delivery-city-name', 'delivery-states-name', 'delivery-zipcode', 'delivery-phone', 'delivery-email'
+			];
+			deliveryFields.forEach(field => {
+				const fieldElement = document.querySelector(`[name="${field}"]`);
+				if (!data[field] || data[field].trim() === '') {
+					isValid = false;
+					fieldElement.style.border = '1px solid red';
+					if (isValid === false) {
+						fieldElement.focus();
+					}
+				} else {
+					fieldElement.style.border = '1px solid #ced4da';
+				}
+			});
+		}
 
 		// Validate terms and conditions
-		const termsConditions = document.querySelector('[name="terms-conditions"]');
+		const termsConditions = document.querySelector('[name="payment-terms-conditions"]');
 		if (!termsConditions.checked) {
 			isValid = false;
 			termsConditions.nextElementSibling.style.color = 'red';
@@ -812,7 +922,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 		}
 
 		if (!isValid) {
-			alert('Please fill in all required fields and agree to the terms and conditions.');
+			showAlert('Please fill in all required fields and agree to the terms and conditions.');
 			return;
 		}
 
@@ -829,12 +939,30 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 				if (data.status === 'Success') {
 					window.location = data.redirect_url;
 				} else {
-					alert(data.message);
+					Swal.fire({
+						title: "Error!",
+						text: data.message,
+						icon: "error",
+						confirmButtonText: "OK",
+						customClass: {
+							popup: "small-alert", // class name for the popup container
+						},
+
+					});
 				}
 			})
 			.catch(error => {
 				console.error('Error:', error);
-				alert('An error occurred while processing your request.');
+				Swal.fire({
+					title: "Error!",
+					text: 'An error occurred while processing your request.',
+					icon: "error",
+					confirmButtonText: "OK",
+					customClass: {
+						popup: "small-alert", // class name for the popup container
+					},
+
+				});
 			});
 	}
 
@@ -864,4 +992,16 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 			attributes: true
 		});
 	});
+
+	function showAlert(message) {
+		const alertMessage = document.getElementById('alert-message');
+		const alertText = document.getElementById('alert-text');
+		alertText.textContent = message;
+		alertMessage.style.display = 'block';
+	}
+
+	function hideAlert() {
+		const alertMessage = document.getElementById('alert-message');
+		alertMessage.style.display = 'none';
+	}
 </script>
