@@ -79,7 +79,21 @@ use Cake\Core\Configure;
 											<p><?= $data->title; ?></p>
 											<span>$<?php echo number_format($data->selling_price, 2); ?></span>
 											<span class="nw_price">$<?php echo number_format($data->everyday_price, 2); ?></span>
-											<a class="btn crt_btn" href="#"><i class="bi bi-bag-plus"></i> Add to Cart</a>
+											<?php
+											if (in_array($data->id, $cartItems)) {
+											?>
+												<div class="pdocut-buton cart-button" data-id=<?php echo $data->id; ?>>
+													<a class="btn crt_btn cart-button" data-id=<?php echo $data->id; ?> href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>"><i class="bi bi-bag-plus"></i> Added to Cart</a>
+												</div>
+											<?php
+											} else {
+											?>
+												<div class="pdocut-buton cart-button" data-id=<?php echo $data->id; ?>>
+													<a class="btn crt_btn cart-button" data-id=<?php echo $data->id; ?> href="javascript:void(0);"><i class="bi bi-bag-plus"></i> Add to Cart</a>
+												</div>
+											<?php
+											}
+											?>
 										</div>
 									</div>
 								</div>
@@ -193,5 +207,23 @@ use Cake\Core\Configure;
 	$(window).on('load', function() {
 		// Select and loop the container element of the elements you want to equalize
 		equalheight();
+	});
+	$('.cart-button').click(function() {
+
+		var product_id = $(this).attr('data-id');
+		//var csrfToken = $("[name='_csrfToken']").val();
+		var csrfToken = <?php echo json_encode($this->request->getParam('_csrfToken')) ?>;
+		var url = '<?php echo $this->Url->build(['controller' => 'products', 'action' => 'addToCart']); ?>';
+		$.ajax({
+			type: 'POST',
+			data: {
+				product_id: product_id,
+				_csrfToken: csrfToken
+			},
+			url: url,
+			success: function(data) {
+				window.location.replace('<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>');
+			}
+		});
 	});
 </script>

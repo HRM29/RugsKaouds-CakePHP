@@ -8,7 +8,7 @@
 Wilmington, NC 28403</br>
 Phone: 1-800-999-2605 (toll free)</br>
 Fax: 910-392-7878</br>
-Email: info@rugsnc.com</p>
+Email: info@kaouds.com</p>
 <h4>Information We Collect</h4>
 <p>We may collect the following information: first and last name, street address, city, telephone number, email address and, when necessary, credit card information, when you:</p>
 <ul class="static-list">
@@ -46,7 +46,7 @@ Email: info@rugsnc.com</p>
 <li>Wilmington, NC 28403</li>
 <li>Phone: 1-800-999-2605 (toll free)</li>
 <li>Fax: 910-392-7878</li>
-<li>Email: info@rugsnc.com </li>
+<li>Email: info@kaouds.com </li>
 </ul>
 <p>If you no longer wish to receive our e-newsletters and email promotions you may contact us at:</p>
 <ul class="static-list-2">
@@ -55,7 +55,7 @@ Email: info@rugsnc.com</p>
 <li>Wilmington, NC 28403</li>
 <li>Phone: 1-800-999-2605 (toll free)</li>
 <li>Fax: 910-392-7878</li>
-<li>Email: info@rugsnc.com </li>
+<li>Email: info@kaouds.com </li>
 </ul>
 <h4>Cookies and Pixel Tags</h4>
 <p>A cookie is a small data file that is stored by your Web browser on your computer. Cookies enable you to place an order on our website. </p>
@@ -75,7 +75,7 @@ Email: info@rugsnc.com</p>
 <li>Wilmington, NC 28403</li>
 <li>Phone: 1-800-999-2605 (toll free)</li>
 <li>Fax: 910-392-7878</li>
-<li>Email: info@rugsnc.com </li>
+<li>Email: info@kaouds.com </li>
 </ul>
 <p>A limited amount of purchase information also may be available to you. To protect your privacy, we will need to validate your identity before you update or review your information.</p>
 <h4>Security</h4>
@@ -93,7 +93,7 @@ Email: info@rugsnc.com</p>
 <li>Wilmington, NC 28403</li>
 <li>Phone: 1-800-999-2605 (toll free)</li>
 <li>Fax: 910-392-7878</li>
-<li>Email: info@rugsnc.com </li>
+<li>Email: info@kaouds.com </li>
 </ul>
 </div>
 </div>

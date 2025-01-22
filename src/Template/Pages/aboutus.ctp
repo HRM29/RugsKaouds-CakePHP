@@ -26,8 +26,8 @@
 <li>Tel: 910.392.2605</li>
 <li>Toll-free 800-999-2605</li>
 <li>Fax: 910.392.7878</li>
-<li>Email: info@rugsnc.com</li>
-<li>Website: www.rugsnc.com</li>
+<li>Email: info@Kaouds.com</li>
+<li>Website: www.kaouds.com</li>
 </ul>
 <h4>Hours of Operation</h4>
 <ul class="static-list-2">

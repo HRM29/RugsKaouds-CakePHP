@@ -386,7 +386,6 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 		</li-->
 
 			<!-- Manage Coupons -->
-			<?php /* ?>
 		<li class="treeview <?php echo ($controller == 'Coupons' && (in_array($action,$defaulActions)))?'active':'';?>">
 		  <a href="#">
 			<i class="fa fa-gift"></i>
@@ -398,7 +397,6 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 			<li><a href="<?php echo Router::url('/', true); ?>admin/coupons/add"><i class="fa fa-plus"></i> Add Coupons</a></li> 
 		  </ul>
 		</li>
-		<?php */ ?>
 			<!-- Manage Product -->
 
 			<li class="treeview <?php echo ($controller == 'Products' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">

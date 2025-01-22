@@ -439,9 +439,8 @@ class AppController extends Controller
 
     public function getLatestProducts()
     {
-        $productTable = TableRegistry::get('Products');
-        //$latestProducts = $productTable->find('all')->where(['status' => 1])->contain(['ProductImages'])->limit(15)->order(['id'=>'DESC'])->toArray();
-        $latestProducts = '';
+        $productTable = TableRegistry::getTableLocator()->get('Products');
+        $latestProducts = $productTable->find('all')->where(['status' => 1])->contain(['ProductImages'])->limit(5)->order(['id' => 'DESC'])->toArray();
         return $latestProducts;
     }
 
@@ -628,23 +627,23 @@ class AppController extends Controller
         $startData    =    date('Y-m-d') . ' 00:00:00';
         $endData    =    date('Y-m-d') . ' 23:59:59';
         $result = $Table->find()
-        ->select([
-            'MostViews.product_id',
-            'total_views' => $Table->query()->func()->count('*'),
-        ])
-        ->where([
-            'MostViews.created >=' => $startData,
-            'MostViews.created <=' => $endData
-        ])
-        ->group('MostViews.product_id')
-        ->contain([
-            'Products' => function ($q) {
-                return $q->contain(['ProductImages']);
-            }
-        ])
-        ->toArray();
+            ->select([
+                'MostViews.product_id',
+                'total_views' => $Table->query()->func()->count('*'),
+            ])
+            ->where([
+                'MostViews.created >=' => $startData,
+                'MostViews.created <=' => $endData
+            ])
+            ->group('MostViews.product_id')
+            ->contain([
+                'Products' => function ($q) {
+                    return $q->contain(['ProductImages']);
+                }
+            ])
+            ->toArray();
 
-    
+
         //$MostViewsList   =  $mostViewTable->find('all')->contain([''])->order(['id'=>'DESC'])->toArray();
         return $result;
     }
@@ -760,9 +759,9 @@ class AppController extends Controller
     {
         $collectionsTable = TableRegistry::getTableLocator()->get('Collections');
         $collectionCategory = $collectionsTable->find('all')
-            ->select(['id', 'title']) 
+            ->select(['id', 'title'])
             ->where(['collection_type' => 'category', 'status' => 1])
-            ->distinct(['title']) 
+            ->distinct(['title'])
             ->toList();
 
         $collectionCategoryArray = [];
@@ -773,15 +772,49 @@ class AppController extends Controller
         return $collectionCategoryArray;
     }
 
-    public function returnCollectionImages($id){
+    public function returnCollectionImages($id)
+    {
         $collectionsImagesTable = TableRegistry::getTableLocator()->get('collection_images');
         $collectionImages_SQL = $collectionsImagesTable->find('all')
-        ->select(['id','file_path','image_type','associated_id'])
+            ->select(['id', 'file_path', 'image_type', 'associated_id'])
             ->where(['associated_id' => $id]);
-        if($collectionImages_SQL->count() > 0){
+        if ($collectionImages_SQL->count() > 0) {
             $collectionImages = $collectionImages_SQL->enableHydration(false)->toList();
             return $collectionImages;
         }
         return [];
+    }
+    public function checkCartAddedProducts()
+    {
+
+        $session = $this->request->getSession();
+        $datases = $session->read('cart');
+        $productcart = array();
+        if ($this->request->is(['post', 'put'])) {
+            $this->autoRender = false;
+            $pr_id = $this->request->getData()['pr_id'];
+            if (!empty($datases)) {
+                foreach ($datases as $new) {
+                    $productcart[] = $new['id'];
+                }
+                if (in_array($pr_id, $productcart)) {
+                    $exiting_cart = 1;
+                } else {
+                    $exiting_cart = 0;
+                }
+            } else {
+
+                $exiting_cart = 0;
+            }
+
+            print_r($exiting_cart);
+        } else {
+            if (!empty($datases)) {
+                foreach ($datases as $new) {
+                    $productcart[] = $new['id'];
+                }
+            }
+            return $productcart;
+        }
     }
 }

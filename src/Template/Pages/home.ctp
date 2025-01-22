@@ -77,8 +77,8 @@
 							<div class="rgs_abt_txt">
 								<h1><?php echo $Block3Data['title'] ?></h1>
 								<?php echo $Block3Data['description'] ?>
-								<a class="btn" href="#">Shop Now</a>
-								<a class="btn cntct" href="#">Contact Us</a>
+								<a class="btn" href="<?php echo Router::url('/', true) ?>shop">Shop Now</a>
+								<a class="btn cntct" href="<?php echo Router::url('/', true) ?>contact">Contact Us</a>
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -138,6 +138,10 @@
 	<?php
 	}
 	?>
+	<?php
+	if (count($latestProducts) > 0) {
+	}
+	?>
 	<section class="ltst_arrvls">
 		<div class="container">
 			<div class="row">
@@ -146,23 +150,76 @@
 						<h2>Latest Arrivals</h2>
 					</div>
 					<div class="arrvls_slide owl-carousel owl-theme">
-						<div class="item">
-							<div class="arrvl_box">
-								<?php
-								$image = WWW_ROOT . 'uploads' . DS . 'product' . DS . 'arrvl_slide001.jpg';
-								if (file_exists($image)) {
-									echo $this->Html->image('/uploads/product/arrvl_slide001.jpg', ['alt' => 'arrvl_slide001.jpg']);
-								}
-								?>
-								<div class="arrvl_text">
-									<h3>Falu Red</h3>
-									<p>3’x5’3″ Falu Red, Hand Knotted, Wool and Silk, Nain with Large Medallion, 250 KPSI, Oriental Rug</p>
-									<span>$2,156.39</span>
-									<span class="nw_price">$1,293.83</span>
-									<a class="btn crt_btn" href="#"><i class="bi bi-bag-plus"></i> Add to Cart</a>
+						<?php
+						foreach ($latestProducts as $productkeys => $productData) {
+							if (!empty($productData['product_images'])) {
+								$image_data = $productData['product_images'][0];
+								$imageURL = $image_data->image;
+							}
+						?>
+							<div class="item">
+								<div class="arrvl_box">
+									<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
+										<?php
+										$img_src = Router::url('/', true) . 'uploads/product/';
+
+										$img_name = isset($productData->product_images[0]->image) ? $productData->product_images[0]->image : '';
+
+										// $img_name = $data->sku_no."a.jpg";
+										$img_name_a = substr($productData->sku_no, 3) . "a.jpg";
+
+										$sku = $productData->sku_no;
+
+										$inFolder = $this->General->__get_picture_folder($sku);
+
+
+										$filePath =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . $img_name;
+										$filePath_A =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . $img_name_a;
+										//echo $filePath ; die(" Check point1");
+
+										$filePath21 =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . str_replace('jpg', 'JPG', $img_name);
+
+										$fileUrl = $img_src . $inFolder . "/" . $img_name;
+										$fileUrl_A = $img_src . $inFolder . "/" . $img_name_a;
+
+										$fileUr2l = $img_src . $inFolder . "/" . str_replace('jpg', 'JPG', $img_name);
+
+										if ($img_name != '') {
+										?>
+											<img src="<?php echo $img_name; ?>" alt="<?= $productData->title; ?>" width="400" />
+
+										<?php } else { ?>
+											<img src="<?php echo Router::url('/', true); ?>img/no-image.png" alt="<?php echo $productData->title; ?>" style="height:250px;" />
+										<?php
+										} ?>
+									</a>
+									<div class="arrvl_text">
+										<h3><?php echo $productData->style; ?></h3>
+										<p><?= $productData->title; ?></p>
+										<span>$<?php echo number_format($productData->selling_price, 2); ?></span>
+										<span class="nw_price">$<?php echo number_format($productData->everyday_price, 2); ?></span>
+										<?php
+										if (in_array($productData->id, $cartItems)) {
+										?>
+											<div class="pdocut-buton cart-button" data-id=<?php echo $productData->id; ?>>
+												<a class="btn crt_btn cart-button" data-id=<?php echo $productData->id; ?> href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>"><i class="bi bi-bag-plus"></i> Added to Cart</a>
+											</div>
+										<?php
+										} else {
+										?>
+											<div class="pdocut-buton cart-button" data-id=<?php echo $productData->id; ?>>
+												<a class="btn crt_btn cart-button" data-id=<?php echo $productData->id; ?> href="javascript:void(0);"><i class="bi bi-bag-plus"></i> Add to Cart</a>
+											</div>
+										<?php
+										}
+										?>
+									</div>
 								</div>
 							</div>
-						</div>
+						<?php
+						}
+						?>
+
 						<div class="item">
 							<div class="arrvl_box">
 								<?php
@@ -473,5 +530,23 @@
 					items: 1
 				}
 			}
+		});
+		$('.cart-button').click(function() {
+
+			var product_id = $(this).attr('data-id');
+			//var csrfToken = $("[name='_csrfToken']").val();
+			var csrfToken = <?php echo json_encode($this->request->getParam('_csrfToken')) ?>;
+			var url = '<?php echo $this->Url->build(['controller' => 'products', 'action' => 'addToCart']); ?>';
+			$.ajax({
+				type: 'POST',
+				data: {
+					product_id: product_id,
+					_csrfToken: csrfToken
+				},
+				url: url,
+				success: function(data) {
+					window.location.replace('<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>');
+				}
+			});
 		});
 	</script>

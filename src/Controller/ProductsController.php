@@ -15,7 +15,7 @@ use Cake\View\View;
 
 use Cake\Routing\Router;
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\Network\Email\Email;
+use Cake\Mailer\Email;
 use Cake\Controller\Component\PaginatorComponent;
 //use Cake\Mailer\Email;
 
@@ -538,13 +538,16 @@ class ProductsController extends AppController
 					
 					$email_billing = $orders->find('all')->select(['billing_first_name','billing_last_name','billing_email',])->where(['id'=>$last_id])->First();
 					
-					$message = 'Thank you for order';
+					$message = 'Thank you for your order';
 					$subject = 'Order Details at www.rugsnc.com';
 					$email = new Email();
 					
 					$email->transport('default');
 					$to  = $email_billing->billing_email;
 					$cc  = Configure::read("App.EmailFrom");
+					if (empty($cc) || !filter_var($cc, FILTER_VALIDATE_EMAIL)) {
+						$cc = 'default@example.com'; // Fallback email address
+					}
 				
 					$result = $email->setFrom(Configure::read("App.EmailFrom"))
 					->setTo($to)
@@ -702,21 +705,27 @@ class ProductsController extends AppController
 						$email_billing = $orders->find('all')->select(['billing_first_name', 'billing_last_name', 'billing_email',])->where(['id' => $last_id])->First();
 
 						$message = 'Thank you for order';
-						$subject = 'Order Details at www.rugsnc.com';
+						$subject = 'Order Details at Kaouds.com';
 						$email = new Email();
 
-						$email->transport('default');
+						$email->setTransport('default');
 						$to  = $email_billing->billing_email;
-						$cc  = Configure::read("App.EmailFrom");
-
-						$result = $email->setFrom(Configure::read("App.EmailFrom"))
-							->setTo($to)
-							->setCc($cc)
-							->emailFormat('html')
-							->template('orderemail')
-							->viewVars(['content' => $cartdta, 'order_id' => $last_id, 'user_info' => $email_billing])
-							->setSubject($subject)
-							->send($message);
+						$cc  = 'mathharshit2916@gmail.com'; //Configure::read("App.EmailFrom");
+						if (empty($cc) || !filter_var($cc, FILTER_VALIDATE_EMAIL)) {
+							$cc = 'mathharshit2916@gmail.com'; // Fallback email address
+						}
+						$email->setFrom(Configure::read("App.EmailFrom"));
+						$email->setTo($to);
+						$email->setCc($cc);
+						$email->setEmailFormat('html');
+						$email->setLayout('orderemail');
+						$email->setViewVars(['content' => $cartdta, 'order_id' => $last_id, 'user_info' => $email_billing]);
+						$email->setSubject($subject);
+						try {
+							$result = $email->send($message);
+						} catch (\Exception $e) {
+							// Handle the exception (e.g., log the error, show a user-friendly message, etc.)
+						}
 					}
 
 					$response = array(
@@ -1487,7 +1496,8 @@ class ProductsController extends AppController
 				$this->set(compact('enabledCategories', 'totalCategoriesCount', 'enabledDimentions'));
 			}
 			$valueArr = $this->flatten($arrParms);
-			$this->set(compact('result', 'title'));
+			$cartItems = $this->checkCartButton();
+			$this->set(compact('result', 'title', 'valueArr', 'cartItems'));
 		} else {
 			return $this->redirect(array('controller' => 'Products', 'action' => 'shopping'));
 		}

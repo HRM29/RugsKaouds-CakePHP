@@ -162,7 +162,8 @@ class PagesController extends AppController
 		$ContactNewsletterTable = TableRegistry::getTableLocator()->get('ContactNewsletter');
 
 		$cmspage = parent::getCmspage();
-		$this->set(compact('banners', 'featuredProductData', 'cmspage', 'HomeBlocks'));
+		$cartItems = parent::checkCartAddedProducts();
+		$this->set(compact('banners', 'featuredProductData', 'cmspage', 'HomeBlocks', 'cartItems'));
 		$this->set('newsletter', $ContactNewsletterTable->newEntity());
 	}
 

@@ -66,7 +66,7 @@ $controller = $this->request->getParam('controller');
                 </div>
                 <div class="col-md-6">
                     <div class="cpyrght">
-                        <p>Copyright 2024 © Kaoud Carpets & Rugs</p>
+                        <p>Copyright <?= date('Y')?> © Kaoud Carpets & Rugs</p>
                     </div>
                 </div>
             </div>

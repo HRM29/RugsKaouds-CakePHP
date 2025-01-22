@@ -315,7 +315,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 					</div>
 				</div>
 			</div>
-
+			<input type="hidden" id="redirect_url" value="<?php echo Router::url('/', true)."payments/success"; ?>">
 		</div>
 	</div>
 </section>
@@ -925,7 +925,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 			showAlert('Please fill in all required fields and agree to the terms and conditions.');
 			return;
 		}
-
+		showLoadingModal();
 		fetch('<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'checkoutnew']); ?>', {
 				method: 'POST',
 				headers: {
@@ -937,8 +937,11 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 			.then(response => response.json())
 			.then(data => {
 				if (data.status === 'Success') {
-					window.location = data.redirect_url;
+					var redirect_url = $('#redirect_url').val();
+
+					window.location = redirect_url;
 				} else {
+					hideLoadingModal();
 					Swal.fire({
 						title: "Error!",
 						text: data.message,

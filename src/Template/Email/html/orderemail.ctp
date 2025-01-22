@@ -2,7 +2,7 @@
 <?php use Cake\Core\Configure;?>
 
 <p>Dear <?=$user_info->billing_first_name." ".$user_info->billing_last_name ?></p>
-<p>Thank you for purchasing on <a href="http://rugsnc.com/">www.rugsnc.com</a>. Here are the details of your order.</p>
+<p>Thank you for purchasing on <a href="http://kaouds.com/">www.kaouds.com</a>. Here are the details of your order.</p>
 <p>Order#: <?=$order_id?></p>
 <!--p>Date: <?=$date; ?></p-->
 
@@ -135,10 +135,10 @@
       </tr>
    </tbody>
 </table>
-<p>If you have any questions, contact us at : <a href="mailto:info@rugsnc.com">info@rugsnc.com</a> </p>
+<p>If you have any questions, contact us at : <a href="mailto:info@kaouds.com">info@kaouds.com</a> </p>
 
 <p>Thanks & Regards</p>
-<p>Team, Rugsnc.</p>
+<p>Team, Kaouds.</p>
 		
 		
 
