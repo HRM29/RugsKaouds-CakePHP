@@ -30,7 +30,7 @@ $cakeDescription = Configure::read('App.meta');
         <?= $cakeDescription ?>:
         <?= $this->fetch('title') ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
+    <?= $this->Html->meta('icon', Router::url('/', true) . "img/favicon.jpeg") ?>
 
 
     <?= $this->fetch('meta') ?>

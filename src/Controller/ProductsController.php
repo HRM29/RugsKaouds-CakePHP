@@ -246,10 +246,19 @@ class ProductsController extends AppController
 		if (!empty($queryParam)) {
 			$sizes = $queryParam['sizes'] ?? '';
 			$prices = $queryParam['price'] ?? '';
-
+			$sorting = $queryParam['sort'] ?? '';
 			if (!empty($sizes)) {
 				$sizeArray = explode('~', $sizes);
-				$conditions['Products.dimension_id IN'] = $sizeArray;
+				$dimensionsTable = TableRegistry::getTableLocator()->get('Dimensions');
+				$dimensionIds = $dimensionsTable->find()
+					->select(['id'])
+					->where(['slug IN' => $sizeArray])
+					->extract('id')
+					->toArray();
+
+				if (!empty($dimensionIds)) {
+					$conditions['Products.dimension_id IN'] = $dimensionIds;
+				}
 				$this->set('size_range', $sizeArray);
 			}
 
@@ -274,6 +283,16 @@ class ProductsController extends AppController
 				}
 				$this->set('price_range', $priceRanges);
 			}
+
+			if ($sorting == 'latest') {
+				$order['id'] = 'DESC';
+			} elseif ($sorting == 'low-to-high') {
+				$order['everyday_price'] = 'ASC';
+			} elseif ($sorting == 'high-to-low') {
+				$order['everyday_price'] = 'DESC';
+			} else {
+				$order['id'] = 'DESC';
+			}
 		}
 
 		$filters = [
@@ -284,7 +303,6 @@ class ProductsController extends AppController
 
 
 		$ProductsTable = TableRegistry::getTableLocator()->get('Products');
-		$order['id'] = 'DESC';
 
 		$ProductData = $this->paginate($ProductsTable, [
 			'limit' => Configure::read('App.pageRecord'),
@@ -1437,6 +1455,7 @@ class ProductsController extends AppController
 				// Extract sizes and prices
 				$sizes = $queryParam['sizes'] ?? '';
 				$prices = $queryParam['price'] ?? '';
+				$sorting = $queryParam['sort'] ?? '';
 
 				// Parse sizes into an array
 				if (!empty($sizes)) {
@@ -1467,6 +1486,16 @@ class ProductsController extends AppController
 					}
 					$this->set('price_range', $priceRanges);
 				}
+
+				if ($sorting == 'latest') {
+					$order['Products.id'] = 'DESC';
+				} elseif ($sorting == 'low-to-high') {
+					$order['Products.everyday_price'] = 'ASC';
+				} elseif ($sorting == 'high-to-low') {
+					$order['Products.everyday_price'] = 'DESC';
+				} else {
+					$order['Products.id'] = 'DESC';
+				}
 			}
 
 			// Additional filters
@@ -1485,7 +1514,7 @@ class ProductsController extends AppController
 			// Fetch paginated results
 			$result = $this->paginate($productTable, [
 				'conditions' => $finalConditions,
-				'order' => ['Products.id' => 'DESC'],
+				'order' => $order,
 				'contain' => ['ProductImages', 'Categories'],
 				'limit' => Configure::read('App.pageRecord')
 			]);
@@ -1494,6 +1523,13 @@ class ProductsController extends AppController
 				$totalCategoriesCount = $filterDataOptions['totalCategoriesCount'];
 				$enabledDimentions = $filterDataOptions['enabledDimentions'];
 				$this->set(compact('enabledCategories', 'totalCategoriesCount', 'enabledDimentions'));
+			}
+			if(!empty($enabledCategories)){
+				foreach ($enabledCategories as $categoriesData) {
+					if($categoriesData['page_link'] == $categorySlug){
+						$title = $categoriesData['title'];
+					}
+				}
 			}
 			$valueArr = $this->flatten($arrParms);
 			$cartItems = $this->checkCartButton();
@@ -1998,10 +2034,15 @@ class ProductsController extends AppController
 			->innerJoinWith('Products', function ($q) {
 				return $q->where(['Products.status' => 1]);
 			})
-			->distinct(['Dimensions.id']) // Ensure unique categories
-			->select(['Dimensions.id', 'Dimensions.title', 'Dimensions.type', 'Dimensions.slug'])
+			->select([
+				'Dimensions.slug',
+				'id' => 'MAX(Dimensions.id)',
+				'title' => 'MAX(Dimensions.title)',
+				'type' => 'MAX(Dimensions.type)'
+			])
 			->where(['Dimensions.status' => 1])
-			->order(['Dimensions.title']);
+			->group(['Dimensions.slug'])
+			->order(['MAX(Dimensions.title)']);
 
 		$enabledDimentions = $DimensionsQuery->enableHydration(false)->all();
 		$returnArr['enabledDimentions'] = $enabledDimentions;

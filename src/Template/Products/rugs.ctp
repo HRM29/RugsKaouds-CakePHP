@@ -6,7 +6,7 @@ use Cake\Core\Configure;
 <section class="inner_banner shp">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-12 no_padding">
+			<!-- <div class="col-md-12 no_padding">
 				<div class="inr_bnr">
 					<?php
 					$image = WWW_ROOT . 'img' . DS . 'conact_us_banner.jpg';
@@ -15,26 +15,47 @@ use Cake\Core\Configure;
 					}
 					?>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </section>
 <section class="ltst_arrvls shop">
 	<div class="container">
 		<div class="row">
+			<div class="col-md-12">
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb bg-light p-3 rounded">
+						<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page"><?= !empty($title) ? $title : 'Shop'; ?></li>
+					</ol>
+				</nav>
+			</div>
 			<?php echo $this->element('front/search_bar'); ?>
 			<div class="col-md-8">
 				<div class="shp_prdcts">
-					<h5 class="rugs-headding"><?= $title ?></h5>
 					<div class="row">
 						<?php
 						if (count($result) > 0) {
+						?>
+							<div class="shop-head shop-head-bottom">
+								<h2>
+									<?= $this->Paginator->counter([
+										'format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+									]) ?>
+								</h2>
+								<select name="sort-list" id="sort-list" class="sort-list">
+									<option value="latest" <?= $this->request->getQuery('sort') == 'latest' ? 'selected' : '' ?>>Latest</option>
+									<option value="low-to-high" <?= $this->request->getQuery('sort') == 'low-to-high' ? 'selected' : '' ?>>Price: Low to High</option>
+									<option value="high-to-low" <?= $this->request->getQuery('sort') == 'high-to-low' ? 'selected' : '' ?>>Price: High to Low</option>
+								</select>
+							</div>
+							<?php
 							foreach ($result as $data) {
 								if (!empty($data['product_images'])) {
 									$image_data = $data['product_images'][0];
 									$imageURL = $image_data->image;
 								}
-						?>
+							?>
 								<div class="col-md-6">
 									<div class="arrvl_box">
 										<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">

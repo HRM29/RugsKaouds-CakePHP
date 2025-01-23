@@ -13,7 +13,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 use Cake\Core\Configure;
- 
+use Cake\Routing\Router;
 $cakeDescription = Configure::read('App.meta');
 ?>
 <!DOCTYPE html>
@@ -57,7 +57,7 @@ $cakeDescription = Configure::read('App.meta');
         <?= $cakeDescription ?>
         <?php // $this->fetch('title') ?>
     </title>
-    <!-- <?= $this->Html->meta('icon') ?> -->
+    <?= $this->Html->meta('icon', Router::url('/', true) . "img/favicon.jpeg") ?>
  
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>

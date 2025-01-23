@@ -35,7 +35,7 @@ input:focus, .form-control:focus, .accordion-button:focus {
 }
 
 header {
-    background: rgb(136, 28, 6, .8);
+    background: #881C06;
     padding: 0 70px;
     box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.4);
     position: absolute;
@@ -51,7 +51,7 @@ header.sticky {
     top: 0;
     z-index: 11;
     width: 100%;
-	background: #721908;
+	background: #881C06;
 }
 header .menus .navbar {
     padding: 0;
