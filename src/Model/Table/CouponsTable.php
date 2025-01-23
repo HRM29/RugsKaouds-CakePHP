@@ -36,7 +36,7 @@ class CouponsTable extends Table
         $validator
                 ->requirePresence('code')
 				->notEmpty('code', 'No code found.')
-				->add('code', 'unique', ['rule' => ['validateUnique'], 'provider' => 'table','message' => 'code already exists']);
+				->add('code', 'unique', ['rule' => ['validateUnique'], 'provider' => 'table','message' => 'Code already exists']);
 				
 				
 		$validator 

@@ -114,7 +114,7 @@ class CouponsController extends AppController
     public function view($id = null)
     {	
 		$title = "Coupons"; 
-		$table = TableRegistry::get('Coupons');
+		$table = TableRegistry::getTableLocator()->get('Coupons');
         $data = $table->get(base64_decode($id));
 		$data->from_to_date = $data->start_date.'-'.$data->valid_date;
 		
@@ -129,7 +129,7 @@ class CouponsController extends AppController
     public function add()
     {
 		$title = "Coupons"; 
-		$table = TableRegistry::get('Coupons');
+		$table = TableRegistry::getTableLocator()->get('Coupons');
         $Coupon = $table->newEntity();
         if ($this->request->is('post')) { 
 			$user_id =  $this->Auth->user('id');
@@ -144,6 +144,7 @@ class CouponsController extends AppController
 				$Coupon->user_id 	= $user_id; 
 				$Coupon->start_date = date("Y-m-d", strtotime($start_date)); 
 				$Coupon->valid_date = date("Y-m-d", strtotime($valid_date)); 
+				$Coupon->use_count = 0; 
 				
 				if ($table->save($Coupon)) { 
 					$this->Flash->set('The Coupon has been saved.', ['key' => 'positive','params' => ['class' => 'alert alert-success']]);
@@ -169,7 +170,7 @@ class CouponsController extends AppController
     public function edit($id = null)
     {
 		$title = "Coupons"; 
-		$table = TableRegistry::get('Coupons');
+		$table = TableRegistry::getTableLocator()->get('Coupons');
         $Coupon = $table->get(base64_decode($id));
         if ($this->request->is(['patch', 'post', 'put'])) {
 			$user_id =  $this->Auth->user('id');
@@ -183,6 +184,7 @@ class CouponsController extends AppController
 			{   $Coupon->user_id 	= $user_id; 
 				$Coupon->start_date = date("Y-m-d", strtotime($start_date)); 
 				$Coupon->valid_date = date("Y-m-d", strtotime($valid_date));
+				$Coupon->use_count = 0; 
 				
 			//	pr($Coupon); die;
 				if ($table->save($Coupon)) 
@@ -212,7 +214,7 @@ class CouponsController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null) {
-		$table = TableRegistry::get('Coupons');
+		$table = TableRegistry::getTableLocator()->get('Coupons');
         $Coupon = $table->get(base64_decode($id)); 
         if ($table->delete($Coupon)) 
 		{
@@ -232,7 +234,7 @@ class CouponsController extends AppController
      */
     public function deleteAllCoupons(){
 		$this->autoRender = false;
-		$tbl = TableRegistry::get('Coupons');
+		$tbl = TableRegistry::getTableLocator()->get('Coupons');
 		$temp = $_POST['ID'];
 		$newRecord = json_decode($temp);
 		if(empty($temp)){
