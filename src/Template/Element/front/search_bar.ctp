@@ -6,7 +6,7 @@ use Cake\Core\Configure;
 $priceFilters = isset($price_range) ? $price_range : array();
 $sizeFilters = isset($size_range) ? $size_range : array();
 ?>
-<div class="col-md-4">
+<div class="col-md-3">
 	<div class="sidebar">
 
 		<?php

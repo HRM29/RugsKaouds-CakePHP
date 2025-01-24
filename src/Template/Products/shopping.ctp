@@ -21,16 +21,16 @@ use Cake\Core\Configure; ?>
 <section class="ltst_arrvls shop">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
-				<nav aria-label="breadcrumb">
-					<ol class="breadcrumb bg-light p-3 rounded">
-						<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
-						<li class="breadcrumb-item active" aria-current="page"><?= !empty($title) ? $title : 'Shop'; ?></li>
-					</ol>
-				</nav>
-			</div>
+				<div class="col-md-12">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb bg-light p-3 rounded">
+							<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
+							<li class="breadcrumb-item active" aria-current="page"><?= !empty($title) ? $title : 'Shop'; ?></li>
+						</ol>
+					</nav>
+				</div>
 			<?php echo $this->element('front/search_bar'); ?>
-			<div class="col-md-8">
+			<div class="col-md-9">
 				<div class="shp_prdcts">
 					<div class="row">
 						<?php
@@ -55,7 +55,7 @@ use Cake\Core\Configure; ?>
 									$imageURL = $image_data->image;
 								}
 							?>
-								<div class="col-md-6">
+								<div class="col-md-4">
 									<div class="arrvl_box">
 										<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
 											<div class="product-thumb">
@@ -94,7 +94,7 @@ use Cake\Core\Configure; ?>
 											</div>
 										</a>
 										<div class="arrvl_text">
-											<h3><?= $data->style; ?></h3>
+											<h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>"><?= $data->style; ?></a></h3>
 											<p><?= $data->title; ?></p>
 											<span>$<?php echo number_format($data->selling_price, 2); ?></span>
 											<span class="nw_price">$<?php echo number_format($data->everyday_price, 2); ?></span>

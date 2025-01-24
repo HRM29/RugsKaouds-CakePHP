@@ -31,7 +31,7 @@ use Cake\Core\Configure;
 				</nav>
 			</div>
 			<?php echo $this->element('front/search_bar'); ?>
-			<div class="col-md-8">
+			<div class="col-md-9">
 				<div class="shp_prdcts">
 					<div class="row">
 						<?php
@@ -56,7 +56,7 @@ use Cake\Core\Configure;
 									$imageURL = $image_data->image;
 								}
 							?>
-								<div class="col-md-6">
+								<div class="col-md-4">
 									<div class="arrvl_box">
 										<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
 											<div class="product-thumb">
@@ -96,7 +96,7 @@ use Cake\Core\Configure;
 											</div>
 										</a>
 										<div class="arrvl_text">
-											<h3><?php echo $data->style; ?></h3>
+											<h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>"><?= $data->style; ?></a></h3>
 											<p><?= $data->title; ?></p>
 											<span>$<?php echo number_format($data->selling_price, 2); ?></span>
 											<span class="nw_price">$<?php echo number_format($data->everyday_price, 2); ?></span>
