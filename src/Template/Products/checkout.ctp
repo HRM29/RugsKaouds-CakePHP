@@ -155,7 +155,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 								<label for="rug_typ002" id="rug_typ002">Sign me up for the newsletter!</label>
 							</li>
 							<li class="rug_typ">
-								<input  type="checkbox" value="0" id="ship-to-different">
+								<input type="checkbox" value="0" id="ship-to-different">
 								<input type="hidden" name="ship-to-different" value="0" class="ship-to-different">
 								<label for="rug_typ003" id="rug_typ003">Ship to a different address?</label>
 							</li>
@@ -165,7 +165,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 								<input class="fotm_control" type="text" name="delivery-first-name" value="" placeholder="First Name">
 							</div>
 						</div>
-						<div class="col-md-6 ship-to-different" style="display: none;" >
+						<div class="col-md-6 ship-to-different" style="display: none;">
 							<div class="form_group">
 								<input class="fotm_control" type="text" name="delivery-last-name" value="" placeholder="Last Name">
 							</div>
@@ -250,10 +250,20 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 								if (!empty($cardData)) {
 									$total_quanty = 0;
 									$total_price = 0;
+									$subtotal = 0;
 									foreach ($cardData as $item) {
 										$total_quanty += $item['product_qty'];
-										$total_price += round($item['everyday_price'] * $item['product_qty'], 2);
+										$subtotal = $total_price += round($item['everyday_price'] * $item['product_qty'], 2);
 									}
+								}
+								$discount_price = 0;
+								if ($session->check('coupon')) {
+									$couponData = $session->read('coupon');
+									$discount = $couponData['discount_value'];
+									$discount_type = $couponData['discount_type'];
+									$discount_price = $couponData['cart_discount'];
+									$couponCode = $couponData['code'];
+									$total_price = $total_price - $discount_price;
 								}
 								if (!empty($cardData)) {
 									foreach ($cardData as $key => $data) {
@@ -268,7 +278,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 								?>
 								<tr>
 									<th scope="row">Subtotal</th>
-									<td>$<?= number_format($total_price, 2); ?></td>
+									<td>$<?= number_format($subtotal, 2); ?></td>
 								</tr>
 								<tr>
 									<th scope="row">Shipping</th>
@@ -278,6 +288,16 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 									<th scope="row">Tax</th>
 									<td>$0.00</td>
 								</tr>
+								<?php
+								if ($discount_price > 0) {
+								?>
+									<tr>
+										<th scope="row">Discount<?= $discount_type == 'percentage' ? ' ' . $discount . ' ' . '%' : ''; ?></th>
+										<td>$<?= number_format($discount_price, 2); ?></td>
+									</tr>
+								<?php
+								}
+								?>
 								<tr>
 									<th scope="row">Total</th>
 									<td>$<?= number_format($total_price, 2); ?></td>
@@ -286,7 +306,12 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 								if (!empty($authUser['User']['id'])) {
 								?>
 									<?php echo $this->Form->hidden('user_id', ['value' => $authUser['User']['id']]); ?>
-								<?php } ?>
+								<?php }
+								if ($discount_price > 0) {
+									echo $this->Form->hidden('discount-price', ['value' => $discount_price]);
+								}
+								?>
+								<?php echo $this->Form->hidden('sub_total', ['value' => $subtotal]); ?>
 								<?php echo $this->Form->hidden('total_price', ['value' => $total_price]); ?>
 								<?php echo $this->Form->hidden('total_qty', ['value' => $total_quanty]); ?>
 								<?php echo $this->Form->hidden('checkout_option', ['value' => 0, 'id' => 'checkout_option']); ?>
@@ -315,7 +340,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 					</div>
 				</div>
 			</div>
-			<input type="hidden" id="redirect_url" value="<?php echo Router::url('/', true)."payments/success"; ?>">
+			<input type="hidden" id="redirect_url" value="<?php echo Router::url('/', true) . "payments/success"; ?>">
 		</div>
 	</div>
 </section>
@@ -822,6 +847,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 			}
 		});
 	}
+
 	function toggleShipToDiffAddressCheckbox() {
 		const shipDiffAddCheckbox = document.getElementById('ship-to-different');
 		const shipDiffAddInput = document.querySelector('.ship-to-different');
@@ -835,6 +861,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 			}
 		});
 	}
+
 	function updateCheckoutOption() {
 		const paymentOptions = document.querySelectorAll('input[name="payment-option"]');
 		const checkoutOptionInput = document.getElementById('checkout_option');

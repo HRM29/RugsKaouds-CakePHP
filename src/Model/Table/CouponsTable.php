@@ -39,13 +39,26 @@ class CouponsTable extends Table
 				->add('code', 'unique', ['rule' => ['validateUnique'], 'provider' => 'table','message' => 'Code already exists']);
 				
 				
-		$validator 
-            ->requirePresence('discount')
-            ->notEmpty('discount');
-		
-		$validator 
-            ->requirePresence('type')
-            ->notEmpty('type');
+            $validator 
+                ->requirePresence('discount')
+                ->notEmpty('discount')
+                ->add('discount', 'validDiscount', [
+                  'rule' => function ($value, $context) {
+                      if (isset($context['data']['type']) && $context['data']['type'] === '2' && $value > 100) {
+                        return false;
+                      }
+                      return true;
+                  },
+                  'message' => 'For percentage type, discount should not be more than 100.'
+                ]);
+
+            $validator 
+                ->requirePresence('type')
+                ->notEmpty('type')
+                ->add('type', 'validType', [
+                  'rule' => ['inList', ['1', '2']],
+                  'message' => 'Type must be either Percentage or Fixed.'
+                ]);
 			
 		$validator 
             ->requirePresence('status')

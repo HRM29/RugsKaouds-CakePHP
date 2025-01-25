@@ -223,7 +223,7 @@ $sizeFilters = isset($size_range) ? $size_range : array();
 		function updateFilters() {
 			let sizes = [];
 			let prices = [];
-			let sort = $('#sort-list').val();
+			let sort = $('#sort_type').val();
 
 			// Get all selected sizes
 			$('#size-filter input.size-filter:checked').each(function() {
