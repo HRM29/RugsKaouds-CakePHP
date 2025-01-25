@@ -39,7 +39,7 @@ class ProductsController extends AppController
 		parent::initialize();
 		//$this->loadComponent('PaypalPro');
 		$this->loadComponent('SquarePayment');
-		$this->Auth->allow(['index', 'getFilterParam', 'search', 'rugs', 'rugStyle', 'rugSize', 'rugColor', 'productView', 'addToCart', 'checkCartButton', 'cart', 'checkoutnew', 'deleteCart', 'updateCart', 'removeProduct', 'applyCoupon', 'searchProducts', 'itemUpdate', 'address', 'getstate', 'orderreview', 'orderPlaced', 'getstates', 'insertProductIntoDBJson', 'insertProductIntoDBXml', 'insertProductIntoDBJsonNew', 'shopping', 'addToFaviourite', 'removeFromFaviourite', 'getState', 'checkout']);
+		$this->Auth->allow(['index', 'getFilterParam', 'search', 'rugs', 'rugStyle', 'rugSize', 'rugColor', 'productView', 'addToCart', 'checkCartButton', 'cart', 'checkoutnew', 'deleteCart', 'updateCart', 'removeProduct', 'applyCoupon', 'searchProducts', 'itemUpdate', 'address', 'getstate', 'orderreview', 'orderPlaced', 'getstates', 'insertProductIntoDBJson', 'insertProductIntoDBXml', 'insertProductIntoDBJsonNew', 'shopping', 'addToFaviourite', 'removeFromFaviourite', 'getState', 'checkout', 'removeCoupon']);
 		$this->loadComponent('Paginator');
 		$this->viewBuilder()->setLayout('frontend');
 	}
@@ -855,6 +855,11 @@ class ProductsController extends AppController
 				$subtotal += $cartValue['sub_total'];
 			}
 			$responseData['subtotal'] = $subtotal;
+			if ($session->check('coupon')) {
+				$couponData = $session->read('coupon');
+				$couponCode = $couponData['code'];
+				$couponLogic = $this->couponLogicReturn($couponCode);
+			}
 
 			return $this->response
 				->withType('application/json')
@@ -902,24 +907,8 @@ class ProductsController extends AppController
 	public function applyCoupon()
 	{
 		$this->viewBuilder()->setLayout(false);
-		$couponTable =	TableRegistry::getTableLocator()->get('Coupons');
-		$couponCode	=	$this->request->data['coupon_code'];
-		$curentDate	=	date('Y-m-d');
-		$result		=	$couponTable->find('all')
-			->where(['code LIKE' => $couponCode, 'status' => ACTIVE, 'start_date <=' => $curentDate, 'valid_date >=' => $curentDate])->first();
-		if (!empty($result)) {
-			$response	=	[
-				'status'	=>	1,
-				'message'	=>	'Coupon code applied successfully.',
-				'data'		=>	$result
-			];
-		} else {
-			$response	=	[
-				'status'	=>	0,
-				'message'	=>	'Invalid coupon code.',
-				'data'		=>	''
-			];
-		}
+		$couponCode	=	$this->request->getData('coupon_code');
+		$response = $this->couponLogicReturn($couponCode);
 		echo json_encode($response);
 		exit;
 	}
@@ -1524,9 +1513,9 @@ class ProductsController extends AppController
 				$enabledDimentions = $filterDataOptions['enabledDimentions'];
 				$this->set(compact('enabledCategories', 'totalCategoriesCount', 'enabledDimentions'));
 			}
-			if(!empty($enabledCategories)){
+			if (!empty($enabledCategories)) {
 				foreach ($enabledCategories as $categoriesData) {
-					if($categoriesData['page_link'] == $categorySlug){
+					if ($categoriesData['page_link'] == $categorySlug) {
 						$title = $categoriesData['title'];
 					}
 				}
@@ -2085,5 +2074,90 @@ class ProductsController extends AppController
 			->enableHydration(false)
 			->toArray();
 		return $newsletterData;
+	}
+
+	private function updateCartDiscount($couponData)
+	{
+		$session = $this->request->getSession();
+		$cartData = $session->read('cart');
+		$returnArr = ['discount' => 0];
+
+		if (!empty($cartData)) {
+			$total_quanty = 0;
+			$total_price = 0;
+			foreach ($cartData as $item) {
+				$total_quanty += $item['product_qty'];
+				$total_price += round($item['everyday_price'] * $item['product_qty'], 2);
+			}
+			if ($couponData['type'] == '2') {
+				$discount = ($couponData['discount'] / 100) * $total_price;
+			} else {
+				$discount = $couponData['discount'];
+			}
+			$total_price = $total_price - $discount;
+			$returnArr = ['discount' => $discount, 'total_price' => $total_price];
+		}
+		return $returnArr;
+	}
+	public function removeCoupon()
+	{
+		$this->viewBuilder()->setLayout(false);
+		$session = $this->request->getSession();
+		if ($session->check('coupon')) {
+			$session->delete('coupon');
+			$response = [
+				'status' => 1,
+				'message' => 'Coupon code removed successfully.'
+			];
+		} else {
+			$response = [
+				'status' => 0,
+				'message' => 'No coupon code found.'
+			];
+		}
+		echo json_encode($response);
+		exit;
+	}
+
+	private function couponLogicReturn($couponCode)
+	{
+		$couponTable =	TableRegistry::getTableLocator()->get('Coupons');
+		$curentDate	=	date('Y-m-d');
+		$result		=	$couponTable->find('all')
+			->where(['code LIKE' => $couponCode, 'status' => ACTIVE, 'start_date <=' => $curentDate, 'valid_date >=' => $curentDate, 'use_count < redemption'])->first();
+
+		if (!empty($result)) {
+			$session = $this->request->getSession();
+			$cartData = $session->read('cart');
+			$discount = 0;
+
+			$cartDiscount = $this->updateCartDiscount($result->toArray());
+
+			if (!empty($cartDiscount) && $cartDiscount['discount'] > 0) {
+				$session->delete('coupon');
+				$discount = $cartDiscount['discount'];
+				$discountData = [
+					'code' => $couponCode,
+					'cart_discount' => $discount,
+					'discount_type' => $result->type == 2 ? 'percentage' : 'fixed',
+					'discount_value' => $result->discount,
+				];
+				$session->write('coupon', $discountData);
+			}
+
+			$response	=	[
+				'status'	=>	1,
+				'message'	=>	'Coupon code applied successfully.',
+				'data'		=>	$discountData
+			];
+		} else {
+			$response	=	[
+				'status'	=>	0,
+				'message'	=>	'Invalid coupon code.',
+				'data'		=>	''
+			];
+		}
+
+		return $response;
 	}
 }

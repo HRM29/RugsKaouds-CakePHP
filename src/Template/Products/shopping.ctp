@@ -47,6 +47,7 @@ use Cake\Core\Configure; ?>
 									<option value="low-to-high" <?= $this->request->getQuery('sort') == 'low-to-high' ? 'selected' : '' ?>>Price: Low to High</option>
 									<option value="high-to-low" <?= $this->request->getQuery('sort') == 'high-to-low' ? 'selected' : '' ?>>Price: High to Low</option>
 								</select>
+								<input type="hidden" name="sort_type" id="sort_type" value="<?= $this->request->getQuery('sort') ?>">
 							</div>
 							<?php
 							foreach ($ProductData as $data) {
@@ -229,5 +230,9 @@ use Cake\Core\Configure; ?>
 				window.location.replace('<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>');
 			}
 		});
+	});
+	$('#sort-list').change(function() {
+		var sort = $(this).val();
+		$('#sort_type').val(sort);
 	});
 </script>
