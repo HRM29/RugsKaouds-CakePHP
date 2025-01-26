@@ -352,6 +352,11 @@ class ProductsController extends AppController
 				$session->write('cart', $input);
 				$cartValue = $session->read('cart');
 			}
+			if ($session->check('coupon')) {
+				$couponData = $session->read('coupon');
+				$couponCode = $couponData['code'];
+				$couponLogic = $this->couponLogicReturn($couponCode);
+			}
 			echo json_encode($cartValue);
 		}
 	}
@@ -625,9 +630,6 @@ class ProductsController extends AppController
 				} else {
 					$mappedData['user_id'] = 0;
 				}
-				$mappedData['total_qty'] = $postdata['total_qty'];
-				$mappedData['sub_total'] = $postdata['total_price'];
-				$mappedData['total_price'] = $postdata['total_price'];
 
 				if ($postdata['ship-to-different'] == 0) {
 					$mappedData['delivery_first_name'] = $postdata['billing-first-name'];
@@ -655,6 +657,18 @@ class ProductsController extends AppController
 				$mappedData['created_by'] = $postdata['user_id'] ?? 0;
 				$mappedData['updated_by'] = 0;
 				$mappedData['reference_id'] = 0;
+
+				$returnCartDetails = $this->returnCartDetails();
+				if (!empty($returnCartDetails)) {
+					$mappedData['total_qty'] = $returnCartDetails['cartQty'];
+					$mappedData['sub_total'] = $returnCartDetails['cartTotal'];
+					$mappedData['total_price'] = $returnCartDetails['cartGrandTotal'];
+					if ($returnCartDetails['cartDiscount'] > 0) {
+						$mappedData['discount_amount'] = $returnCartDetails['cartDiscount'];
+						$mappedData['discount_code'] = $postdata['coupon-code'];
+					}
+				}
+
 				/*
 				foreach ($data['datax'] as $val) {
 					if ($val['name'] != '_method' && $val['name'] != 'nds-pmd') {
@@ -722,36 +736,70 @@ class ProductsController extends AppController
 
 						$email_billing = $orders->find('all')->select(['billing_first_name', 'billing_last_name', 'billing_email',])->where(['id' => $last_id])->First();
 
-						$message = 'Thank you for order';
+						$message = 'Thank you for your order';
 						$subject = 'Order Details at Kaouds.com';
 						$email = new Email();
 
-						$email->setTransport('default');
-						$to  = $email_billing->billing_email;
-						$cc  = 'mathharshit2916@gmail.com'; //Configure::read("App.EmailFrom");
-						if (empty($cc) || !filter_var($cc, FILTER_VALIDATE_EMAIL)) {
-							$cc = 'mathharshit2916@gmail.com'; // Fallback email address
-						}
-						$email->setFrom(Configure::read("App.EmailFrom"));
-						$email->setTo($to);
-						$email->setCc($cc);
-						$email->setEmailFormat('html');
-						$email->setLayout('orderemail');
-						$email->setViewVars(['content' => $cartdta, 'order_id' => $last_id, 'user_info' => $email_billing]);
-						$email->setSubject($subject);
 						try {
+							// Set email transport configuration
+							$email->setTransport('default');
+
+							// Recipient email
+							$to = $email_billing->billing_email;
+							if (empty($to) || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
+								throw new \InvalidArgumentException('Invalid recipient email address');
+							}
+
+							// CC email with fallback
+							$cc = 'mathharshit2916@gmail.com'; // Default fallback email
+							if (!empty(Configure::read("App.EmailFrom")) && filter_var(Configure::read("App.EmailFrom"), FILTER_VALIDATE_EMAIL)) {
+								$cc = 'mathharshit2916@gmail.com';
+							}
+
+							// Set email parameters
+							$email->setFrom(Configure::read("App.EmailFrom"))
+								->setTo($to)
+								->setCc($cc)
+								->setEmailFormat('html')
+								->setTemplate('orderemail')
+								->setViewVars([
+									'content' => $cartdta,
+									'order_id' => $last_id,
+									'user_info' => $email_billing,
+								])
+								->setSubject($subject);
+
+							// Send the email
 							$result = $email->send($message);
+
+							$response = array(
+								"msg" => "Payment successfull.",
+								"status" => "Success",
+								'data' => $result['data'],
+								"code" => 200
+							);
+						} catch (\InvalidArgumentException $e) {
+							// Log and handle invalid email errors
+							$this->log('Email sending error: ' . $e->getMessage(), 'error');
+							$this->Flash->error(__('Invalid email address. Unable to send email.'));
+							$response = array(
+								"msg" => "Payment successfull. Failed to Send Mail.",
+								"status" => "Success",
+								'data' => $result['data'],
+								"code" => 200
+							);
 						} catch (\Exception $e) {
-							// Handle the exception (e.g., log the error, show a user-friendly message, etc.)
+							// Log and handle general email sending errors
+							$this->log('Email sending error: ' . $e->getMessage(), 'error');
+							$this->Flash->error(__('Unable to send email. Please try again later.'));
+							$response = array(
+								"msg" => "Payment successfull. Failed to Send Mail.",
+								"status" => "Success",
+								'data' => $result['data'],
+								"code" => 200
+							);
 						}
 					}
-
-					$response = array(
-						"msg" => "Payment successfull.",
-						"status" => "Success",
-						'data' => $result['data'],
-						"code" => 200
-					);
 				} else {
 					$response = array(
 						"msg" => "Received a non-POST request",
@@ -789,6 +837,11 @@ class ProductsController extends AppController
 
 			$session->delete('cart');
 			$session->write('cart', $datases);
+			if ($session->check('coupon')) {
+				$couponData = $session->read('coupon');
+				$couponCode = $couponData['code'];
+				$couponLogic = $this->couponLogicReturn($couponCode);
+			}
 		}
 	}
 
@@ -2141,6 +2194,7 @@ class ProductsController extends AppController
 					'cart_discount' => $discount,
 					'discount_type' => $result->type == 2 ? 'percentage' : 'fixed',
 					'discount_value' => $result->discount,
+					'coupon_id' => $result->id
 				];
 				$session->write('coupon', $discountData);
 			}
@@ -2159,5 +2213,42 @@ class ProductsController extends AppController
 		}
 
 		return $response;
+	}
+
+	private function returnCartDetails()
+	{
+		$session = $this->request->getSession();
+		$cartData = $session->read('cart');
+		$cartTotal = 0;
+		$cartQty = 0;
+		$cartDiscount = 0;
+		$cartSubTotal = 0;
+		$cartShipping = 0;
+		$cartTax = 0;
+		$cartGrandTotal = 0;
+		$cartDiscountData = $session->read('coupon');
+		if (!empty($cartData)) {
+			foreach ($cartData as $item) {
+				$cartQty += $item['product_qty'];
+				$cartTotal += round($item['everyday_price'] * $item['product_qty'], 2);
+			}
+			if (!empty($cartDiscountData)) {
+				$cartDiscount = $cartDiscountData['cart_discount'];
+			}
+			$cartSubTotal = $cartTotal - $cartDiscount;
+			$cartShipping = 0;
+			$cartTax = 0;
+			$cartGrandTotal = $cartSubTotal + $cartShipping + $cartTax;
+		}
+		$cartDetails = [
+			'cartQty' => $cartQty,
+			'cartTotal' => $cartTotal,
+			'cartDiscount' => $cartDiscount,
+			'cartSubTotal' => $cartSubTotal,
+			'cartShipping' => $cartShipping,
+			'cartTax' => $cartTax,
+			'cartGrandTotal' => $cartGrandTotal
+		];
+		return $cartDetails;
 	}
 }

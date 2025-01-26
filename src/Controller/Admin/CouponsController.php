@@ -14,6 +14,7 @@ use Cake\View\Exception\MissingTemplateException;
 use Cake\Event\Event;
 use Cake\Utility\Security;
 use Cake\View\ViewBuilder;
+use DateTime;
 
 /**
  * Users Controller
@@ -179,15 +180,18 @@ class CouponsController extends AppController
 			$user_id =  $this->Auth->user('id');
 			$validDate  = $this->request->getData()['from_to_date'];
 			$couponType  = $this->request->getData()['type'];
-			$ArrDate 	= explode('-', $validDate);
-			$start_date = $ArrDate[0];
-			$valid_date = $ArrDate[1];
-
+			$ArrDate 	= explode(' - ', $validDate);
+			$start_date = trim($ArrDate[0]);
+			$valid_date = trim($ArrDate[1]);
+			$Coupon->type = $couponType;
+			$start_date_obj = DateTime::createFromFormat('d-m-Y', $start_date);
+			$valid_date_obj = DateTime::createFromFormat('d-m-Y', $valid_date);
+			
 			$Coupon = $table->patchEntity($Coupon, $this->request->getData(), ['validate' => 'default']);
 			if (!$Coupon->getErrors()) {
 				$Coupon->user_id 	= $user_id;
-				$Coupon->start_date = date("Y-m-d", strtotime($start_date));
-				$Coupon->valid_date = date("Y-m-d", strtotime($valid_date));
+				$Coupon->start_date = $start_date_obj->format('Y-m-d');
+				$Coupon->valid_date = $valid_date_obj->format('Y-m-d');
 				$Coupon->use_count = 0;
 
 				// pr($Coupon); die;
@@ -201,7 +205,7 @@ class CouponsController extends AppController
 				$this->Flash->set($this->errorMessage($Coupon->getErrors()), ['key' => 'positive', 'params' => ['class' => 'alert alert-danger']]);
 			}
 		}
-		$Coupon->from_to_date = $Coupon->start_date . '-' . $Coupon->valid_date;
+		$Coupon->from_to_date = $Coupon->start_date->format('d-m-Y') . ' - ' . $Coupon->valid_date->format('d-m-Y');
 		$this->set(compact('Coupon', 'title'));
 	}
 

@@ -80,13 +80,14 @@ use Cake\Routing\Router; ?>
 	</div> <!-- /.row -->
 </section><!-- /.content -->
 
-<?php echo $this->Html->script('daterangepicker/moment.min.js'); ?>
-<?php echo $this->Html->script('daterangepicker/daterangepicker.js'); ?>
 
 <script type="text/javascript">
 	$(function() {
 		//Date range picker
-		$('#reservation').daterangepicker();
+		$('#reservation').daterangepicker({
+			startDate: '<?= $Coupon->start_date->format('d-m-Y') ?>',
+			endDate: '<?= $Coupon->valid_date->format('d-m-Y') ?>',
+		});
 	});
 
 	function NumericValidation(e) {

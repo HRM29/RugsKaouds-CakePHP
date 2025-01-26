@@ -18,6 +18,13 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 	$appID = "sq0idp-ADsOz8H5WYn9bsF5MTGPAg";
 	$locationId = "FX8EDKJKAWSAM";
 }
+if ($session->check('coupon')) {
+	$couponData = $session->read('coupon');
+	$discount = $couponData['discount_value'];
+	$discount_type = $couponData['discount_type'];
+	$discount_price = $couponData['cart_discount'];
+	$couponCode = $couponData['code'];
+}
 ?>
 <script type="text/javascript" src="<?php echo $squareJsUrl; ?>">
 </script>
@@ -49,13 +56,33 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 				<?php
 				} else {
 					echo "<p>Welcome, " . $authUser['User']['first_name'] . " " . $authUser['User']['last_name'] . "</p>";
-				} ?>
-				<p>Have a coupon? <a href="#">Click here to enter your code</a></p>
-				<div id="alert-message" class="alert alert-danger alert-dismissible" role="alert" style="display: none;">
-					<span id="alert-text"></span>
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
+				}
+				if ($couponCode != '') {
+					echo "<p>Coupon code applied: <a href=\"javascript:void(0);\" id=\"toggle-coupon-section\" class=\"have-coupon\">" . $couponCode . "</a></p>";
+				} else {
+					echo "<p>Have a coupon? <a href=\"javascript:void(0);\" id=\"toggle-coupon-section\" class=\"have-coupon\">Click here to enter your code</a></p>";
+				}
+				?>
 				<form action="#" name="form_paypal" id="form_paypal">
+					<div id="coupon-section" style="display: none;">
+						<?php
+						if ($couponCode == '') {
+							echo "<p>If you have a coupon code, please apply it below.</p>";
+						}
+						?>
+						<div class="form_group">
+							<input class="fotm_control" type="text" name="coupon-code" value="<?= $couponCode; ?>" id="coupon-code" placeholder="Enter your coupon code">
+						</div>
+						<?php if ($session->check('coupon')): ?>
+							<a href="javascript:void(0);" class="btn remove" id="remove-coupon">&nbsp;&nbsp;&times;&nbsp;&nbsp;</a>
+						<?php else: ?>
+							<a href="javascript:void(0);" class="btn aply" id="apply-coupon-btn">Apply Coupon</a>
+						<?php endif; ?>
+					</div>
+					<div id="alert-message" class="alert alert-danger alert-dismissible" role="alert" style="display: none;">
+						<span id="alert-text"></span>
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
 					<h3>Billing Details</h3>
 					<div class="row">
 						<div class="col-md-6">
@@ -128,9 +155,8 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 							if (empty($authUser['User']['id'])) {
 							?>
 								<li class="rug_typ">
-									<input type="checkbox" value="" id="create_account">
-									<input name="create_account" type="checkbox" value="" class="create_account">
-									<label for="rug_typ001" id="rug_typ001">Creat an Account?</label>
+									<input name="create_account" type="checkbox" value="" class="create_account" id="create_account">
+									<label for="create_account">Creat an Account?</label>
 								</li>
 							<?php } ?>
 
@@ -150,14 +176,14 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 							}
 							?>
 							<li class="rug_typ" <?= $hide_newsletter; ?>>
-								<input name="rug_typ" type="checkbox" value="" <?= $checked; ?> id="rug_typ002" onchange="toggleNewsletterCheckbox()">
+								<input type="checkbox" value="" <?= $checked; ?> id="sign-up-box" onchange="toggleNewsletterCheckbox()">
 								<input type="hidden" name="sign-up-newsletter" value="<?= $checked_val; ?>" class="sign-up-newsletter">
-								<label for="rug_typ002" id="rug_typ002">Sign me up for the newsletter!</label>
+								<label for="sign-up-box">Sign me up for the newsletter!</label>
 							</li>
 							<li class="rug_typ">
 								<input type="checkbox" value="0" id="ship-to-different">
 								<input type="hidden" name="ship-to-different" value="0" class="ship-to-different">
-								<label for="rug_typ003" id="rug_typ003">Ship to a different address?</label>
+								<label for="ship-to-different">Ship to a different address?</label>
 							</li>
 						</ul>
 						<div class="col-md-6 ship-to-different" style="display: none;">
@@ -217,7 +243,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 						</div>
 						<div class="col-md-12 ship-to-different" style="display: none;">
 							<div class="form_group">
-								<input class="fotm_control" type="number" name="billing-phone" value="" placeholder="Phone">
+								<input class="fotm_control" type="number" name="delivery-phone" value="" placeholder="Phone">
 							</div>
 						</div>
 						<div class="col-md-12 ship-to-different" style="display: none;">
@@ -321,17 +347,17 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 						<ul class="rug_radio">
 							<li class="rug_typ">
 								<input name="payment-option" type="radio" value="1" id="payment-paypal">
-								<label for="rug_typ011" id="rug_typ011">Paypal</label>
+								<label for="payment-paypal">Paypal</label>
 							</li>
 							<li class="rug_typ">
 								<input name="payment-option" type="radio" value="2" id="payment-cards">
-								<label for="rug_typ012" id="rug_typ012">Debit & Credit Cards</label>
+								<label for="payment-cards">Debit & Credit Cards</label>
 							</li>
 						</ul>
 						<ul class="rug_checkbox">
 							<li class="rug_typ">
 								<input name="payment-terms-conditions" type="checkbox" value="" id="terms-conditions">
-								<label for="rug_typ013" id="rug_typ013">I have read and agree to the website terms and conditions.</label>
+								<label for="terms-conditions">I have read and agree to the website terms and conditions.</label>
 							</li>
 						</ul>
 						<a href="javascript:void(0);" class="btn pay payment-1" style="display: none;"><img src="/Kaouds/img/pay.png" alt="pay"></a>
@@ -825,7 +851,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 	function checkEmail() {
 		var emailInput = document.querySelector('.billing-email').value;
 		var userEmail = '<?= $userData->email ?>';
-		var newsletterCheckbox = document.querySelector('input[id="rug_typ002"]').parentElement;
+		var newsletterCheckbox = document.querySelector('input[id="sign-up-box"]').parentElement;
 
 		if (emailInput !== userEmail) {
 			newsletterCheckbox.style.display = 'block';
@@ -835,7 +861,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 	}
 
 	function toggleNewsletterCheckbox() {
-		const newsletterCheckbox = document.getElementById('rug_typ002');
+		const newsletterCheckbox = document.getElementById('sign-up-box');
 		const newsletterInput = document.querySelector('.sign-up-newsletter');
 		newsletterCheckbox.addEventListener('change', function() {
 			if (this.checked) {
@@ -902,7 +928,6 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 		formDataPaypal.forEach((value, key) => {
 			data[key] = value;
 		});
-
 		// Validation
 		const requiredFields = [
 			'billing-first-name', 'billing-last-name', 'billing-address-name', 'billing-city-name', 'billing-states-name', 'billing-zipcode', 'billing-phone', 'billing-email'
@@ -977,12 +1002,10 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 						customClass: {
 							popup: "small-alert", // class name for the popup container
 						},
-
 					});
 				}
 			})
 			.catch(error => {
-				console.error('Error:', error);
 				Swal.fire({
 					title: "Error!",
 					text: 'An error occurred while processing your request.',
@@ -991,8 +1014,8 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 					customClass: {
 						popup: "small-alert", // class name for the popup container
 					},
-
 				});
+				hideLoadingModal();
 			});
 	}
 
@@ -1034,4 +1057,96 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 		const alertMessage = document.getElementById('alert-message');
 		alertMessage.style.display = 'none';
 	}
+
+	function applyCoupon() {
+		var couponCode = $("input[name='coupon-code']").val().trim();
+		if (couponCode === "") {
+			$("input[name='coupon-code']").css('border', '2px solid red').focus();
+			$(".coupon-error").remove(); // Remove any existing error message
+			$("input[name='coupon-code']").after('<div class="coupon-error" style="color: red; margin-top: -5px;margin-bottom: 15px">Coupon code cannot be empty.</div>');
+			return;
+		} else {
+			$("input[name='coupon-code']").css('border', '');
+			$(".coupon-error").remove(); // Remove error message if any
+		}
+
+		showLoadingModal();
+		var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
+		var url = '<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'applyCoupon']); ?>';
+		$.ajax({
+			headers: {
+				'X-CSRF-Token': csrfToken
+			},
+			type: 'POST',
+			url: url,
+			data: {
+				coupon_code: couponCode
+			},
+			success: function(result) {
+				hideLoadingModal();
+				result = JSON.parse(result);
+
+				if (result.status) {
+					Swal.fire({
+						title: "Success!",
+						text: "Coupon applied successfully!",
+						icon: "success",
+						confirmButtonText: "OK",
+						customClass: {
+							popup: "small-alert", // Apply custom class to the popup
+						},
+					}).then(() => {
+						location.reload();
+					});
+				} else {
+					Swal.fire({
+						title: "Error!",
+						text: "Invalid coupon code.",
+						icon: "error",
+						confirmButtonText: "OK",
+						customClass: {
+							popup: "small-alert", // Apply custom class to the popup
+						},
+
+					});
+				}
+			},
+			error: function() {
+				hideLoadingModal();
+				alert("An error occurred while applying the coupon. Please try again.");
+			}
+		});
+	}
+
+	$('#apply-coupon-btn').click(applyCoupon);
+
+	function removeCoupon() {
+		var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
+		var url = '<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'removeCoupon']); ?>';
+		$.ajax({
+			headers: {
+				'X-CSRF-Token': csrfToken
+			},
+			type: 'POST',
+			url: url,
+			success: function(result) {
+				location.reload();
+			},
+			error: function() {
+				alert("An error occurred while removing the coupon. Please try again.");
+			}
+		});
+	}
+
+	$('#remove-coupon').click(removeCoupon);
+
+	document.getElementById('toggle-coupon-section').addEventListener('click', function() {
+		var couponSection = document.getElementById('coupon-section');
+
+		if (couponSection.style.display === 'none' || couponSection.style.display === '') {
+			couponSection.style.display = 'block';
+		} else {
+			couponSection.style.display = 'none';
+		}
+	});
 </script>

@@ -44,7 +44,7 @@ $cakeDescription = Configure::read('App.meta');
 	<?php //echo $this->Html->script(array('admin/bootstrap-timepicker.min','admin/daterangepicker/daterangepicker'));?>
 
 	<?php echo $this->Html->script(array('../plugins/jQuery/jQuery-2.1.4.min'));?>
-	<?php echo $this->Html->script(array('../plugins/timepicker/js/bootstrap-timepicker.min','admin/daterangepicker/daterangepicker'));?>   
+	<?php echo $this->Html->script(array('../plugins/timepicker/js/bootstrap-timepicker.min','admin/daterangepicker/daterangepicker.js?ver=1.2'));?>   
 	<?php echo $this->Html->script(array('../plugins/iCheck/js/icheck.min'));?>
 	
 	<?php echo $this->Html->script('../plugins/bootstrap/js/bootstrap-select.min.js');?> <!-- multi select-->

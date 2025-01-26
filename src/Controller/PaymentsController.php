@@ -44,7 +44,7 @@ class PaymentsController extends AppController {
 		$cartitems = $session->read('cart'); 
 		$tr_data = $session->read('tr_id'); 
 		$payment_status = $tr_data['status'];
-		$orderstable = TableRegistry::get("Orders");
+		$orderstable = TableRegistry::getTableLocator()->get("Orders");
 		
 		if(!empty($tr_data)){
 			
@@ -71,6 +71,7 @@ class PaymentsController extends AppController {
 				->send($message);
 			} */
 			$session->delete('cart');
+			$session->delete('coupon');
 		}
 		$orderid = $orderstable->find()->where(['trans_id'=>$tr_data['tr_id']])->first();
 		
