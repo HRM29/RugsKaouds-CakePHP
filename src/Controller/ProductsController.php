@@ -744,7 +744,7 @@ class ProductsController extends AppController
 							// Set email transport configuration
 							$email->setTransport('default');
 
-							// Recipient email
+							// Recipient email validation
 							$to = $email_billing->billing_email;
 							if (empty($to) || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
 								throw new \InvalidArgumentException('Invalid recipient email address');
@@ -753,7 +753,7 @@ class ProductsController extends AppController
 							// CC email with fallback
 							$cc = 'mathharshit2916@gmail.com'; // Default fallback email
 							if (!empty(Configure::read("App.EmailFrom")) && filter_var(Configure::read("App.EmailFrom"), FILTER_VALIDATE_EMAIL)) {
-								$cc = 'mathharshit2916@gmail.com';
+								//$cc = Configure::read("App.EmailFrom"); // Set the actual EmailFrom config value if it's valid
 							}
 
 							// Set email parameters
@@ -766,37 +766,43 @@ class ProductsController extends AppController
 									'content' => $cartdta,
 									'order_id' => $last_id,
 									'user_info' => $email_billing,
+									'returnCartDetails' => $returnCartDetails
 								])
 								->setSubject($subject);
 
 							// Send the email
-							$result = $email->send($message);
+							$result = $email->send();
 
-							$response = array(
-								"msg" => "Payment successfull.",
-								"status" => "Success",
-								'data' => $result['data'],
-								"code" => 200
-							);
+							if ($result) {
+								$response = array(
+									"msg" => "Payment successful.",
+									"status" => "Success",
+									'data' => 'Email sent successfully',
+									"code" => 200
+								);
+							} else {
+								$response = array(
+									"msg" => "Payment successful. Email failed to send.",
+									"status" => "Success",
+									'data' => 'Email sending failed',
+									"code" => 200
+								);
+							}
 						} catch (\InvalidArgumentException $e) {
-							// Log and handle invalid email errors
-							$this->log('Email sending error: ' . $e->getMessage(), 'error');
 							$this->Flash->error(__('Invalid email address. Unable to send email.'));
 							$response = array(
-								"msg" => "Payment successfull. Failed to Send Mail.",
+								"msg" => "Payment successful. Failed to send email due to invalid email.",
 								"status" => "Success",
-								'data' => $result['data'],
-								"code" => 200
+								'data' => 'Invalid email address',
+								"code" => 400
 							);
 						} catch (\Exception $e) {
-							// Log and handle general email sending errors
-							$this->log('Email sending error: ' . $e->getMessage(), 'error');
 							$this->Flash->error(__('Unable to send email. Please try again later.'));
 							$response = array(
-								"msg" => "Payment successfull. Failed to Send Mail.",
+								"msg" => "Payment successful. Failed to send email.",
 								"status" => "Success",
-								'data' => $result['data'],
-								"code" => 200
+								'data' => 'Failed to send email due to a server issue',
+								"code" => 500
 							);
 						}
 					}

@@ -991,7 +991,7 @@ if ($session->check('coupon')) {
 				if (data.status === 'Success') {
 					var redirect_url = $('#redirect_url').val();
 
-					window.location = redirect_url;
+					// window.location = redirect_url;
 				} else {
 					hideLoadingModal();
 					Swal.fire({

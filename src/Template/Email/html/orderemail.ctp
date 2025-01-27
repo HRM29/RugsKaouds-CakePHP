@@ -1,144 +1,138 @@
-<?php
+<p style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">Dear <strong><?= $user_info->billing_first_name . " " . $user_info->billing_last_name ?></strong>,</p>
+<p style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">Thank you for purchasing on <a href="http://kaouds.com/" style="color: #881c06; text-decoration: none; font-weight: bold;">www.kaouds.com</a>. Here are the details of your order:</p>
+<p style="font-family: Arial, sans-serif; font-size: 16px; color: #333;"><strong>Order#:</strong> <?= $order_id ?></p>
 
-use Cake\Routing\Router; ?>
-<?php
+<style>
+	table {
+		width: 100%;
+		max-width: 800px;
+		margin: 20px auto;
+		border-collapse: collapse;
+		border: 1px solid #ddd;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		font-family: 'Arial', sans-serif;
+	}
 
-use Cake\Core\Configure; ?>
+	th,
+	td {
+		padding: 12px;
+		text-align: center;
+		font-size: 14px;
+		border: 1px solid #ddd;
+	}
 
-<p>Dear <?= $user_info->billing_first_name . " " . $user_info->billing_last_name ?></p>
-<p>Thank you for purchasing on <a href="http://kaouds.com/">www.kaouds.com</a>. Here are the details of your order.</p>
-<p>Order#: <?= $order_id ?></p>
-<!--p>Date: <?= $date; ?></p-->
+	th {
+		background-color: #881c06;
+		color: #fff;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
 
-<table class="m_-3166822651416627521MsoNormalTable" border="0" cellspacing="0" cellpadding="0" width="500" style="width:250.0pt" id="m_-3166822651416627521ydpd4265244yiv4647367218yui_3_16_0_ym19_1_1558676002541_40276">
-   <tbody>
-      <tr style="height:.5pt" id="m_-3166822651416627521ydpd4265244yiv4647367218yui_3_16_0_ym19_1_1558676002541_40274">
-         <td width="62" valign="top" style="width:31.0pt;border:none;border-right:solid white 1.0pt;background:#23201e;padding:2.0pt 2.0pt 2.0pt 2.0pt;height:.5pt">
-            <div>
-               <p class="MsoNormal"><b><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;;color:white">ID</span></b><u></u><u></u></p>
-            </div>
-         </td>
-         <td width="80" valign="top" style="width:40.0pt;border:none;border-right:solid white 1.0pt;background:#23201e;padding:2.0pt 2.0pt 2.0pt 2.0pt;height:.5pt" id="m_-3166822651416627521ydpd4265244yiv4647367218yui_3_16_0_ym19_1_1558676002541_40284">
-            <div id="m_-3166822651416627521ydpd4265244yiv4647367218yui_3_16_0_ym19_1_1558676002541_40283">
-               <p class="MsoNormal"><b><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;;color:white">Picture</span></b><u></u><u></u></p>
-            </div>
-         </td>
-         <td width="102" valign="top" style="width:51.0pt;border:none;border-right:solid white 1.0pt;background:#23201e;padding:2.0pt 2.0pt 2.0pt 2.0pt;height:.5pt">
-            <div>
-               <p class="MsoNormal"><b><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;;color:white">Product Name</span></b><u></u><u></u></p>
-            </div>
-         </td>
+	td {
+		background-color: #f9f9f9;
+	}
 
-         <td width="50" nowrap="" valign="top" style="width:25.0pt;border:none;border-right:solid white 1.0pt;background:#23201e;padding:2.0pt 2.0pt 2.0pt 2.0pt;height:.5pt" id="m_-3166822651416627521ydpd4265244yiv4647367218yui_3_16_0_ym19_1_1558676002541_40282">
-            <div id="m_-3166822651416627521ydpd4265244yiv4647367218yui_3_16_0_ym19_1_1558676002541_40281">
-               <p class="MsoNormal"><b><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;;color:white">Qty.</span></b><u></u><u></u></p>
-            </div>
-         </td>
-         <td width="52" nowrap="" valign="top" style="width:26.0pt;border:none;border-right:solid white 1.0pt;background:#23201e;padding:2.0pt 2.0pt 2.0pt 2.0pt;height:.5pt" id="m_-3166822651416627521ydpd4265244yiv4647367218yui_3_16_0_ym19_1_1558676002541_40273">
-            <div id="m_-3166822651416627521ydpd4265244yiv4647367218yui_3_16_0_ym19_1_1558676002541_40272">
-               <p class="MsoNormal" align="right" style="text-align:right"><b><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;;color:white">Price</span></b><u></u><u></u></p>
-            </div>
-         </td>
-         <td nowrap="" valign="top" style="background:#23201e;padding:2.0pt 2.0pt 2.0pt 2.0pt;height:.5pt">
-            <div>
-               <p class="MsoNormal" align="right" style="text-align:right"><b><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;;color:white">Amount</span></b><u></u><u></u></p>
-            </div>
-         </td>
-      </tr>
-      <?php
-      $ttl_qty = 0;
-      $i = 1;
-      foreach ($content as $key => $data) { ?>
-         <tr>
-            <td width="102" style="width:51.0pt;border:solid #23201e 1.0pt;border-top:none;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-               <div>
-                  <p class="MsoNormal"><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;"><?= $i ?></span><u></u><u></u></p>
-               </div>
-            </td>
-            <td width="102" style="width:51.0pt;border:solid #23201e 1.0pt;border-top:none;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-               <div>
-                  <p class="MsoNormal"><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;">
-                        <?php
-                        $img_src = 'https://shrugs.com/rug_pictures/';
+	td img {
+		height: 100px;
+		max-width: 100px;
+		border-radius: 8px;
+		border: 1px solid #ddd;
+	}
 
-                        $img_no = str_replace("GOR", " ", $data['sku_no']);
-                        $img_name = "sh" . $img_no / 7;
-                        $inFolder = $this->General->__get_picture_folder($img_name);
+	.amount-cell,
+	.qty-cell {
+		text-align: center;
+	}
 
-                        $imgName =  $img_name . " 001.jpg";
+	.bold {
+		font-weight: bold;
+	}
 
-                        $fileUrl = $img_src . "overstock_rugs/" . $inFolder . "/" . $imgName;
-                        $fileUrl = str_replace(" ", "%20", $fileUrl);
-                        $thumb_imgName =     $img_name . " 001.jpg";
-                        $thumbArr = explode('_', $pimg['ProductImage']['image']);
-                        $fileUrlThumb = $img_src . $inFolder . '/thumbs/thumb_' . $thumb_imgName;
+	.total-row td {
+		font-weight: bold;
+		background-color: #f1f1f1;
+	}
 
-                        if ($this->General->remote_file_exists($fileUrl)) {
-                        ?>
-                           <img src="<?php echo $fileUrl; ?>" alt="<?php echo $data['title']; ?>" style="height:100px;" />
-                        <?php } ?>
-                     </span><u></u><u></u></p>
-               </div>
-            </td>
-            <td width="102" style="width:51.0pt;border:solid #23201e 1.0pt;border-top:none;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-               <div>
-                  <p class="MsoNormal"><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;"><?= $data['title'] ?></span><u></u><u></u>
-                  </p>
-               </div>
-            </td>
+	.total-row td:last-child {
+		text-align: right;
+		color: #881c06;
+	}
 
-            <td nowrap="" style="border-top:none;border-left:none;border-bottom:solid #23201e 1.0pt;border-right:solid #23201e 1.0pt;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-               <div>
-                  <p class="MsoNormal" align="right" style="text-align:right"><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;"><?= $data['product_qty'] ?></span><u></u><u></u></p>
-               </div>
-            </td>
-            <td nowrap="" style="border-top:none;border-left:none;border-bottom:solid #23201e 1.0pt;border-right:solid #23201e 1.0pt;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-               <div>
-                  <p class="MsoNormal" align="right" style="text-align:right"><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;"><?= "$" . $data['selling_price']; ?></span><u></u><u></u></p>
-               </div>
-            </td>
-            <td nowrap="" style="border-top:none;border-left:none;border-bottom:solid #23201e 1.0pt;border-right:solid #23201e 1.0pt;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-               <div>
-                  <p class="MsoNormal" align="right" style="text-align:right"><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;"><?= "$" . $data['selling_price']; ?> </span><u></u><u></u></p>
-               </div>
-            </td>
-         </tr>
-      <?php
-         $ttl_qty += $data['product_qty'];
-         $sub_total += $data['selling_price'];
-         $i++;
-      } ?>
+	a {
+		color: #881c06;
+		text-decoration: none;
+	}
 
-      <tr>
-         <td colspan="3" style="border:solid #23201e 1.0pt;border-top:none;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-            <p class="MsoNormal" align="right" style="text-align:right"><b><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;">Total Qty. : </span></b><u></u><u></u></p>
-         </td>
-         <td style="border-top:none;border-left:none;border-bottom:solid #23201e 1.0pt;border-right:solid #23201e 1.0pt;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-            <p class="MsoNormal" align="right" style="text-align:right"><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;"><?= $ttl_qty; ?></span><u></u><u></u></p>
-         </td>
-         <td style="border-top:none;border-left:none;border-bottom:solid #23201e 1.0pt;border-right:solid #23201e 1.0pt;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-            <p class="MsoNormal" align="right" style="text-align:right"><b><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;">SubTotal</span></b><u></u><u></u></p>
-         </td>
-         <td nowrap="" style="border-top:none;border-left:none;border-bottom:solid #23201e 1.0pt;border-right:solid #23201e 1.0pt;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-            <div>
-               <p class="MsoNormal" align="right" style="text-align:right"><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;"><?= "$" . $sub_total; ?></span><u></u><u></u></p>
-            </div>
-         </td>
-      </tr>
+	a:hover {
+		text-decoration: underline;
+	}
 
-      <tr>
-         <td colspan="5" style="border:solid #23201e 1.0pt;border-top:none;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-            <p class="MsoNormal" align="right" style="text-align:right"><b><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;">Total</span></b><u></u><u></u></p>
-         </td>
-         <td nowrap="" style="border-top:none;border-left:none;border-bottom:solid #23201e 1.0pt;border-right:solid #23201e 1.0pt;padding:2.0pt 2.0pt 2.0pt 2.0pt">
-            <div>
-               <p class="MsoNormal" align="right" style="text-align:right"><span style="font-size:10.0pt;font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;"><?= "$" . $sub_total; ?></span><u></u><u></u></p>
-            </div>
-         </td>
-      </tr>
-   </tbody>
+	p {
+		margin: 10px 0;
+		line-height: 1.6;
+	}
+</style>
+
+<table>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Product Name</th>
+			<th>Qty.</th>
+			<th>Price</th>
+			<th>Amount</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+		$ttl_qty = 0;
+		$sub_total = 0;
+		$discount_amount = 0;
+		$i = 1;
+		foreach ($content as $key => $data) { ?>
+			<tr>
+				<td><?= $i ?></td>
+				<td><?= $data['title'] ?></td>
+				<td class="qty-cell"><?= $data['product_qty'] ?></td>
+				<td class="amount-cell"><?= "$" . number_format($data['everyday_price'], 2) ?></td>
+				<td class="amount-cell"><?= "$" . number_format($data['everyday_price'] * $data['product_qty'], 2) ?></td>
+			</tr>
+		<?php
+			$i++;
+		}
+		if (!empty($returnCartDetails)) {
+			$ttl_qty = $returnCartDetails['cartQty'];
+			$cartTotal = $returnCartDetails['cartTotal'];
+			$cartGrandTotal = $returnCartDetails['cartGrandTotal'];
+			$discount_amount = $returnCartDetails['cartDiscount'];
+		?>
+			<tr class="total-row">
+				<td colspan="2">Total Qty.</td>
+				<td><?= $ttl_qty ?></td>
+				<td>SubTotal</td>
+				<td class="amount-cell"><?= "$" . number_format($cartTotal, 2) ?></td>
+			</tr>
+
+			<?php if ($discount_amount > 0): ?>
+				<tr class="total-row">
+					<td colspan="2">Discount</td>
+					<td></td>
+					<td>-</td>
+					<td class="amount-cell"><?= "$" . number_format($discount_amount, 2) ?></td>
+				</tr>
+			<?php endif; ?>
+
+			<tr class="total-row">
+				<td colspan="2">Total</td>
+				<td colspan="3" class="amount-cell"><?= "$" . number_format($cartGrandTotal, 2) ?></td>
+			</tr>
+		<?php
+		}
+		?>
+	</tbody>
 </table>
-<p>If you have any questions, contact us at : <a href="mailto:info@kaouds.com">info@kaouds.com</a> </p>
 
-<p>Thanks & Regards</p>
-<p>Team, Kaouds.</p>
+<p style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">If you have any questions, contact us at: <a href="mailto:info@kaouds.com" style="color: #881c06; text-decoration: none; font-weight: bold;">info@kaouds.com</a></p>
+
+<p style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">Thanks & Regards,</p>
+<p style="font-family: Arial, sans-serif; font-size: 16px; color: #333;"><strong>Team Kaouds</strong></p>
