@@ -1,83 +1,80 @@
-<?php use Cake\Routing\Router; ?>
-<!-- About Area start -->
-    <div class="login-account-area section-padding">
-        <div class="container">
-            <div class="row">
-                    <div class="col-sm-12 col-md-6">
-					<?= $this->Flash->render('positive_register');?>
-                        <?php echo $this->Form->create($user,['url' => ['controller' => 'Users', 'action' => 'register'],'class'=>'create-account-form','id'=>'signupform']);?>
-                            <!-- <form method="post" class="create-account-form" action="#"> -->
-                            <h3 class="heading-title">Create an account</h3>
-							<div class="row">
-							<div class="col-sm-6 col-xs-12">
-                             <div class="form-group">
-                                <?php echo  $this->Form->control('first_name', ['label' => false,"placeholder"=>"Enter First Name","class"=>"form-control","div"=>false,"required" =>true]); ?>
-                            </div>
-							
-							</div>
-							<div class="col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <?php echo  $this->Form->control('last_name', ['label' => false,"placeholder"=>"Enter Last Name","class"=>"form-control","div"=>false,"required" =>true]); ?>
-                            </div>
-							
-							</div>
-							</div>
-							<div class="row">
-							<div class="col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <?php echo  $this->Form->control('password', ['type' => 'password','label' => false,"placeholder"=>"Enter Password","class"=>"form-control","div"=>false,"required" =>true]); ?>
-                            </div>
-							
-							</div>
-							<div class="col-sm-6 col-xs-12">
-                            <div class="form-group ">
-                                <?php echo  $this->Form->control('confirm_password', ['type' => 'password','label' => false,"placeholder"=>"Enter Confirm Password","class"=>"form-control","div"=>false,"required" =>true]); ?>
-                            </div>
-							
-							</div>
-							</div>
-							<div class="row">
-							<div class="col-sm-6 col-xs-12">
-                            <div class="form-group ">
-                                <?php echo  $this->Form->control('email', ['label' => false,"placeholder"=>"Enter Email Address","class"=>"form-control","div"=>false,"required" =>true]); ?>
-                            </div>
-							
-							</div>
-							
-							<div class="col-sm-6 col-xs-12">
-                            <div class="form-group ">
-                                <?php echo  $this->Form->control('phone', ['label' => false,"placeholder"=>"Enter Phone No.","class"=>"form-control","div"=>false,"required" =>true]); ?>
-                            </div>
-							
-							</div>
-							
-							<div class="col-12">
-                           
-                                <?php echo $this->Form->button("<span>Create an account</span>", array('name' => 'submitcreate','class' => 'view-button', 'type' => 'submit', 'id'=>'submitcreate',  'title' => 'Create an account')); ?> 
-                           
-							
-							</div>
-							</div>      
-                        <?php echo $this->Form->end(); ?>
-                    </div>
-                    <div class="col-sm-12 col-md-5 offset-md-1 cols-for-mob">
-						<?= $this->Flash->render('positive_login') ?>
-                         <?php echo $this->Form->create($userlogin,['url' => ['controller' => 'Users', 'action' => 'login'],'class'=>'login-form','id'=>'loginform']); ?>
-                            <!-- <form method="post" class="login-form" action="#"> -->
-                            <h3 class="heading-title">Already registered?</h3>
-                            <div class="form-group">
-                                <?php echo  $this->Form->control('email', ['label' => false,"placeholder"=>"Enter Email Address","class"=>"form-control","id"=>"emailId","div"=>false,"required" =>true]); ?>
-                            </div>
-                            <div class="form-group">
-                                <?php echo  $this->Form->control('password', ['label' => false,"placeholder"=>"Enter Password","class"=>"form-control","id"=>"login-password","div"=>false,"required" =>true]); ?>
-                            </div>
-                            <p class="lost-password form-group"><a rel="nofollow" href="<?php echo $this->Url->build(['controller'=>'users','action'=>'forgotPassword']); ?>">Forgot your password?</a></p>
-                            <div class="submit">                    
-                                <?php echo $this->Form->button("<span>Sign In</span>", array('name' => 'submitcreate2', 'class' => 'view-button', 'type' => 'submit','id'=>'submitcreate2', 'title' => 'Create an account')); ?>
-                            </div>
-                        <?php echo $this->Form->end(); ?>
-                    </div>
+<section class="inner_banner shp">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 no_padding">
             </div>
         </div>
     </div>
+</section>
+<!-- About Area start -->
+<section class="rg_clng acount">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <?= $this->Flash->render('positive_login') ?>
+                <?php echo $this->Form->create($userlogin, ['url' => ['controller' => 'Users', 'action' => 'login'], 'class' => 'login-form', 'id' => 'loginform']); ?>
+                <!-- <form method="post" class="login-form" action="#"> -->
+                <h3 class="heading-title">Login</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_group">
+                            <input class="fotm_control" type="email" name="email" id="emailId" value="" placeholder="Username or Email" required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form_group">
+                            <input class="fotm_control" type="password" name="password" id="login-password" value="" placeholder="Password">
+                        </div>
+                    </div>
+                    <label>
+                        <input name="remember-me-check" type="checkbox" value="" id="remember-me-check">
+                        <span for="remember-me-check">Remember me</span>
+                    </label>
+                    <div class="form_group">
+                        <?php echo $this->Form->button("<span>Login</span>", array('name' => 'submitcreate2', 'class' => 'btn', 'type' => 'submit', 'id' => 'submitcreate2', 'title' => 'Create an account')); ?>
+                    </div>
+                    <p class="lst_pswrd"><a rel="nofollow" href="<?php echo $this->Url->build(['controller' => 'users', 'action' => 'forgotPassword']); ?>">Lost Your Password?</a></p>
+                </div>
+                <?php echo $this->Form->end(); ?>
+            </div>
+            <div class="col-md-6">
+                <?= $this->Flash->render('positive_register'); ?>
+                <?php echo $this->Form->create($user, ['url' => ['controller' => 'Users', 'action' => 'register'], 'class' => 'create-account-form', 'id' => 'signupform']); ?>
+                <!-- <form method="post" class="create-account-form" action="#"> -->
+                <h3 class="heading-title">Register</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_group ">
+                            <?php echo  $this->Form->control('email', ['label' => false, "placeholder" => "Enter Email Address", "class" => "fotm_control", "div" => false, "required" => true]); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group">
+                            <?php echo  $this->Form->control('password', ['type' => 'password', 'label' => false, "placeholder" => "Enter Password", "class" => "fotm_control", "div" => false, "required" => true]); ?>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group ">
+                            <?php echo  $this->Form->control('confirm_password', ['type' => 'password', 'label' => false, "placeholder" => "Enter Confirm Password", "class" => "fotm_control", "div" => false, "required" => true]); ?>
+                        </div>
+                    </div>
+                </div>
+                <p>A link to set a new password will be sent to your email address.</p>
+                <p>Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our </p>
+                <label>
+                    <input name="sign-up-letter" type="checkbox" value="" id="sign-up-letter">
+                    <span for="sign-up-letter">Sign me up for the newsletter!</span>
+                </label>
+                <div class="form_group">
+                        <?php echo $this->Form->button("<span>Register</span>", array('name' => 'submitcreate', 'class' => 'view-button btn', 'type' => 'submit', 'id' => 'submitcreate',  'title' => 'Create an account')); ?>
+                </div>
+                <?php echo $this->Form->end(); ?>
+            </div>
+
+        </div>
+    </div>
+</section>
 <!-- About Area end -->
