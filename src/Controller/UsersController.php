@@ -716,7 +716,7 @@ class UsersController extends AppController
 	{
 
 		$this->viewBuilder()->setLayout('front');
-		$userTable = TableRegistry::get('Users');
+		$userTable = TableRegistry::getTableLocator()->get('Users');
 		$user = $this->Users->get($this->Auth->user('id'), [
 			'contain' => []
 		]);
@@ -732,7 +732,7 @@ class UsersController extends AppController
 				$img = $this->My->uploadfile($imageData, 'user');
 				$user->avatar = $img;
 			}
-
+			$user->company_name = $this->request->getData()['company_name'];
 			if ($this->Users->save($user)) {
 				$this->Flash->set('The user has been updated.', ['key' => 'positive_myaccount', 'params' => ['class' => 'alert alert-success']]);
 
@@ -753,7 +753,7 @@ class UsersController extends AppController
 		$controller = $this->request->getParam('controller');
 		$authUser = $session->read('Auth');
 
-		$orderTable = TableRegistry::get('Orders');
+		$orderTable = TableRegistry::getTableLocator()->get('Orders');
 		$totalOrders = $orderTable->find()->where(['user_id' => $authUser['User']['id']])->contain(['OrderDetails'])->order(['id' => 'desc'])->toArray();
 
 		$filters = [];
@@ -764,6 +764,7 @@ class UsersController extends AppController
 			'contain'	=>	['OrderDetails'],
 			'limit'		=>	6
 		]);
+
 		$CompleteListing = $orderTable->find()->where(['user_id' => $authUser['User']['id'], 'payment_status' => 1])->toArray();
 		$PendingListing = $orderTable->find()->where(['user_id' => $authUser['User']['id'], 'payment_status' => 0])->toArray();
 
