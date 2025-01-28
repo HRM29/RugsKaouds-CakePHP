@@ -85,6 +85,11 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/shop/', ['controller' => 'Products', 'action' => 'shopping']);
     $routes->connect('/completed-projects/', ['controller' => 'Pages', 'action' => 'projects']);
     $routes->connect('/about-us/:slug', ['controller' => 'Pages', 'action' => 'display'], ['pass' => ['slug'],'slug' => 'kaoud-carpets-rugs|our-brands-inventory|community|asid']);
+
+    $routes->connect('/my-account', ['controller' => 'Users', 'action' => 'login']);
+    $routes->connect('/my-account-2', ['controller' => 'Users', 'action' => 'myaccount']);
+    $routes->connect('/my-account/lost-password/', ['controller' => 'Users', 'action' => 'forgotPassword']);
+
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */

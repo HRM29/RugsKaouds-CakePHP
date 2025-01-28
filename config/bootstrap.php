@@ -603,3 +603,4 @@ if(!empty($results3)){
 }
 define('CAPTCHA_SITEKEY','6LfQzK4qAAAAAIpST_YxkEoZ_duvF7P5hEqwi9Yi');
 define('CAPTCHA_SECRETKEY','6LfQzK4qAAAAAMIn6p4l4goSoFWsSio6ZSJTpGfJ');
+define('KAOUDS_SALT','KAOUDS-RUGS-KEY');

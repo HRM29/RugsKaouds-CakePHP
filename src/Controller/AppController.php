@@ -24,6 +24,7 @@ use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\I18n\Time;
 use Cake\I18n\Date;
+use Cake\Utility\Security;
 
 /**
  * Application Controller
@@ -159,7 +160,20 @@ class AppController extends Controller
             $hot_sale        =    $this->getHotSalesProducts();
             $cmspage        =    $this->getCmspage();
             //$sizesLIst	    =	$this->getSizesLIst();
+            $rememberMeCookie = $this->request->getCookie('RememberMe');
+            if (empty($authUser) && $rememberMeCookie) {
+                // Decrypt the user ID from the cookie
+                $userId = Security::decrypt($rememberMeCookie, Security::getSalt());
+                $this->loadModel('Users');
+                if ($userId) {
+                    // Find the user in the database
+                    $user = $this->Users->get($userId); // Replace `Users` with your user table
 
+                    if ($user) {
+                        $this->Auth->setUser($user->toArray());
+                    }
+                }
+            }
             $this->set(compact('categories', 'latestProducts', 'is_future', 'is_special', 'is_best', 'new_arival', 'newProducts', 'captionFront', 'captionBack', 'bannersList', 'MostViewsList', 'hot_sale', 'cmspage'));
         }
     }
@@ -238,21 +252,13 @@ class AppController extends Controller
    } */
     public function sendMailTo($to, $subject, $message)
     {
-        /* $email = new Email();
-		$email->transport('default'); 
-		$result = $email->from([Configure::read('App.EmailFrom') => 'Rugsnc'])
-		->to($to)
-		->emailFormat('html')
-		->subject($subject)
-		->send($message); */
-
         $email = new Email('default');
         $email
-            ->transport('default')
-            ->from(['info@rugsnc.com' => 'Rugsnc'])
-            ->to($to)
-            ->subject($subject)
-            ->emailFormat('html')
+            ->setTransport('default')
+            ->setFrom(Configure::read("App.EmailFrom"))
+            ->setTo($to)
+            ->setSubject($subject)
+            ->setEmailFormat('html')
             ->send($message);
 
         return 1;

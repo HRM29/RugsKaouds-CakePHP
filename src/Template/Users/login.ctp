@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <label>
-                        <input name="remember-me-check" type="checkbox" value="" id="remember-me-check">
+                        <input type="checkbox" value="" name="remember-me-check" id="remember-me-check">
                         <span for="remember-me-check">Remember me</span>
                     </label>
                     <div class="form_group">
@@ -49,19 +49,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form_group">
-                            <?php echo  $this->Form->control('password', ['type' => 'password', 'label' => false, "placeholder" => "Enter Password", "class" => "fotm_control", "div" => false, "required" => true]); ?>
-                        </div>
-
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group ">
-                            <?php echo  $this->Form->control('confirm_password', ['type' => 'password', 'label' => false, "placeholder" => "Enter Confirm Password", "class" => "fotm_control", "div" => false, "required" => true]); ?>
-                        </div>
-                    </div>
-                </div>
                 <p>A link to set a new password will be sent to your email address.</p>
                 <p>Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our </p>
                 <label>
@@ -69,7 +56,7 @@
                     <span for="sign-up-letter">Sign me up for the newsletter!</span>
                 </label>
                 <div class="form_group">
-                        <?php echo $this->Form->button("<span>Register</span>", array('name' => 'submitcreate', 'class' => 'view-button btn', 'type' => 'submit', 'id' => 'submitcreate',  'title' => 'Create an account')); ?>
+                    <?php echo $this->Form->button("<span>Register</span>", array('name' => 'submitcreate', 'class' => 'view-button btn', 'type' => 'submit', 'id' => 'submitcreate',  'title' => 'Create an account')); ?>
                 </div>
                 <?php echo $this->Form->end(); ?>
             </div>
@@ -78,3 +65,27 @@
     </div>
 </section>
 <!-- About Area end -->
+<script>
+    function toggleRemeberMeCheckbox() {
+        const remeberMeCheckbox = document.getElementById('remember-me-check');
+        remeberMeCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                this.value = '1';
+            } else {
+                this.value = '0';
+            }
+        });
+    }
+    function toggleNewsletterCheckbox() {
+		const newsletterCheckbox = document.getElementById('sign-up-letter');
+		newsletterCheckbox.addEventListener('change', function() {
+			if (this.checked) {
+				this.value = '1';
+			} else {
+				this.value = '0';
+			}
+		});
+	}
+    toggleRemeberMeCheckbox();
+    toggleNewsletterCheckbox();
+</script>

@@ -99,45 +99,45 @@ class UsersTable extends Table
 				]
 			]); */
 			
-		$validator->requirePresence('password')
-            ->notEmpty('password', 'please enter  password.')
-			->add('password',[
-                    'matches'=> [
-                        'rule' => function($value, $stuff) {
-                                return $value === $stuff['data']['password'];
-                            },
-                        'message' => 'Password does not match.'
-                    ]
-                ]
-            );
+		// $validator->requirePresence('password')
+        //     ->notEmpty('password', 'please enter  password.')
+		// 	->add('password',[
+        //             'matches'=> [
+        //                 'rule' => function($value, $stuff) {
+        //                         return $value === $stuff['data']['password'];
+        //                     },
+        //                 'message' => 'Password does not match.'
+        //             ]
+        //         ]
+        //     );
 			
-		$validator->requirePresence('confirm_password', 'please enter confirm password.')
-            ->notEmpty('confirm_password', 'please enter confirm password.')
-			->add('confirm_password',[
-                    'matches'=> [
-                        'rule' => function($value, $stuff) {
-                                return $value === $stuff['data']['password'];
-                            },
-                        'message' => 'Password does not match.'
-                    ]
-                ]
-            );	
+		// $validator->requirePresence('confirm_password', 'please enter confirm password.')
+        //     ->notEmpty('confirm_password', 'please enter confirm password.')
+		// 	->add('confirm_password',[
+        //             'matches'=> [
+        //                 'rule' => function($value, $stuff) {
+        //                         return $value === $stuff['data']['password'];
+        //                     },
+        //                 'message' => 'Password does not match.'
+        //             ]
+        //         ]
+        //     );	
 			
-		$validator 
-			->maxLength('first_name', 64)
-			->requirePresence('first_name', 'create')
-			->notEmpty('first_name');
+		// $validator 
+		// 	->maxLength('first_name', 64)
+		// 	->requirePresence('first_name', 'create')
+		// 	->notEmpty('first_name');
 			
-		$validator 
-			->maxLength('last_name', 64)
-			->requirePresence('last_name', 'create')
-			->notEmpty('last_name');
+		// $validator 
+		// 	->maxLength('last_name', 64)
+		// 	->requirePresence('last_name', 'create')
+		// 	->notEmpty('last_name');
 			
-		$validator 
-			->minLength('phone', 10)
-			->maxLength('phone', 20)
-			->requirePresence('phone', 'create')
-			->notEmpty('phone');
+		// $validator 
+		// 	->minLength('phone', 10)
+		// 	->maxLength('phone', 20)
+		// 	->requirePresence('phone', 'create')
+		// 	->notEmpty('phone');
 			
 		$validator  
 			->requirePresence('status', 'create')

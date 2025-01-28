@@ -83,7 +83,7 @@ $shop_Actions = ['shopping', 'rugs', 'cart', 'checkout'];
 						<div class="srch_icon">
 							<ul>
 								<li><a href="#"><i class="bi bi-search"></i></a></li>
-								<li><a href="#"><i class="bi bi-person-fill"></i></a></li>
+								<li><a href="<?php echo $this->Url->build(['controller' => 'Users', 'action' => 'myAccountRedirect']); ?>"><i class="bi bi-person-fill"></i></a></li>
 								<li><a href="#"><i class="bi bi-heart-fill"></i></a></li>
 								<li><a href="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'cart']); ?>"><i class="bi bi-cart-fill"></i><span><?= $cart_count; ?></span></a></li>
 							</ul>
