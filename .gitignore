@@ -3,7 +3,8 @@
 # Ignore vendor directory
 /vendor/*
 
-
+# Ignore sensitive configuration
+/config/app.php
 
 # Ignore tmp directory except for placeholder files
 /tmp/cache/models/*

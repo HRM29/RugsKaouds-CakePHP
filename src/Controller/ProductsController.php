@@ -41,7 +41,7 @@ class ProductsController extends AppController
 		$this->loadComponent('SquarePayment');
 		$this->Auth->allow(['index', 'getFilterParam', 'search', 'rugs', 'rugStyle', 'rugSize', 'rugColor', 'productView', 'addToCart', 'checkCartButton', 'cart', 'checkoutnew', 'deleteCart', 'updateCart', 'removeProduct', 'applyCoupon', 'searchProducts', 'itemUpdate', 'address', 'getstate', 'orderreview', 'orderPlaced', 'getstates', 'insertProductIntoDBJson', 'insertProductIntoDBXml', 'insertProductIntoDBJsonNew', 'shopping', 'addToFaviourite', 'removeFromFaviourite', 'getState', 'checkout', 'removeCoupon']);
 		$this->loadComponent('Paginator');
-		$this->viewBuilder()->setLayout('frontend');
+		$this->viewBuilder()->setLayout('front');
 	}
 	public function beforeFilter(Event $event)
 	{
@@ -338,7 +338,7 @@ class ProductsController extends AppController
 			$productdetail['product_qty']  = 1;
 			$productdetail['sub_total'] = $productdetail['price'];
 			$session = $this->request->getSession();
-
+			$authUser = $session->read('Auth');
 			if (empty($session->read('cart'))) {
 				$product[] = $productdetail;
 				$session->write('cart', $product);
@@ -356,6 +356,13 @@ class ProductsController extends AppController
 				$couponData = $session->read('coupon');
 				$couponCode = $couponData['code'];
 				$couponLogic = $this->couponLogicReturn($couponCode);
+			}
+			if (!empty($authUser['User']['id'])) {
+				$favouritesTable = TableRegistry::getTableLocator()->get('Favourites');
+				$query = $favouritesTable->query();
+				$query->delete()
+					->where(['product_id' => $product_id, 'user_id' => $authUser['User']['id']])
+					->execute();
 			}
 			echo json_encode($cartValue);
 		}
@@ -720,7 +727,7 @@ class ProductsController extends AppController
 							$product_details['product_sku'] = $proSub['sku_no'];
 							$product_details['product_id'] = $proSub['id'];
 							$product_details['qty'] = $proSub['product_qty'];
-							$product_details['price'] = $proSub['selling_price'];
+							$product_details['price'] = $proSub['everyday_price'];
 							$product_details['user_id'] = $mappedData['user_id'];
 							$product_details['unit'] = 'pcs';
 							$product_details['size'] = '';
@@ -1026,8 +1033,8 @@ class ProductsController extends AppController
 	{
 		$this->viewBuilder()->setLayout(false);
 		pr($this->request->data);
-		$checkRug	=	$this->request->data['check_rug'];
-		$productId	=	$this->request->data['product_id'];
+		$checkRug	=	$this->request->getData('check_rug');
+		$productId	=	$this->request->getData('product_id');
 		$session	=	$this->request->getSession();
 		$cartData	=	$session->read('Config.Cart');
 		if (!empty($cartData)) {

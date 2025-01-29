@@ -324,8 +324,8 @@ class AppController extends Controller
         $Table = TableRegistry::get('Countries');
         $query = $Table->find('list', [
             'keyField' => 'id',
-            'valueField' => 'country_name'
-        ])->where(['status' => 1])->order(['country_name' => 'ASC']);
+            'valueField' => 'country'
+        ])->where(['status' => 1])->order(['country' => 'ASC']);
         $country = $query->all();
 
         return json_encode($country);

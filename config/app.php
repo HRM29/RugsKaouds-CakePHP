@@ -214,14 +214,13 @@ return [
     'EmailTransport' => [
         'default' => [
             'className' => 'Mail',
-            // The following keys are used in SMTP transports
-            'host' => 'localhost',
-            'port' => 25,
+            'host' => 'smtp-relay.brevo.com',
+            'port' => 587,
             'timeout' => 30,
-            'username' => 'info@rugsnc.com',
-            'password' => '{u*Q#a?CfIud',
+            'username' => '8202ab001@smtp-brevo.com',
+            'password' => 'xsmtpsib-d5ee7486acb9a176cbee8eb1d7671380a944789d19faabcf3b25c0e1a18c87cd-aEC73nhPv6ILVDSY',
             'client' => null,
-            'tls' => null,
+            'tls' => true,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
         'Smtp' => [

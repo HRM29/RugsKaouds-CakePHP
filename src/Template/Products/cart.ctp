@@ -152,7 +152,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 							<input class="fotm_control" type="text" name="coupon-code" value="<?= $couponCode; ?>" placeholder="Coupon Code">
 						</div>
 						<?php if ($session->check('coupon')): ?>
-							<a href="javascript:void(0);" class="btn remove" id="remove-coupon">&nbsp;&nbsp;&times;&nbsp;&nbsp;</a>
+							<a href="javascript:void(0);" class="btn remove" id="remove-coupon">Remove Coupon</a>
 						<?php else: ?>
 							<a href="javascript:void(0);" class="btn aply" id="apply-coupon-btn">Apply Coupon</a>
 						<?php endif; ?>

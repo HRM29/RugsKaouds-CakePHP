@@ -74,7 +74,7 @@ if ($session->check('coupon')) {
 							<input class="fotm_control" type="text" name="coupon-code" value="<?= $couponCode; ?>" id="coupon-code" placeholder="Enter your coupon code">
 						</div>
 						<?php if ($session->check('coupon')): ?>
-							<a href="javascript:void(0);" class="btn remove" id="remove-coupon">&nbsp;&nbsp;&times;&nbsp;&nbsp;</a>
+							<a href="javascript:void(0);" class="btn remove" id="remove-coupon">Remove Coupon</a>
 						<?php else: ?>
 							<a href="javascript:void(0);" class="btn aply" id="apply-coupon-btn">Apply Coupon</a>
 						<?php endif; ?>

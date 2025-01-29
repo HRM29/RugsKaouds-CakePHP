@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -820,8 +821,9 @@ class UsersController extends AppController
 		foreach ($favouritesData as $favourites => $data) {
 			$favouritesDatas[] = $ProductsTable->find('all')->where(['id' => $data['product_id']])->first();
 		}
+		$cartItems = $this->checkCartButton();
 
-		$this->set(compact('favouritesDatas'));
+		$this->set(compact('favouritesDatas','cartItems'));
 	}
 	public function deleteWishlistItem()
 	{
@@ -839,6 +841,34 @@ class UsersController extends AppController
 				->execute();
 		}
 	}
+	public function myaccountDetails()
+	{
+		$this->viewBuilder()->setLayout('front');
+		$userDetailsTable = TableRegistry::getTableLocator()->get('UserDetails');
+
+		$userDetail = $userDetailsTable->find()
+			->where(['user_id' => $this->Auth->user('id')])
+			->first();
+		$country = parent::countryList();
+		$states = parent::statesList();
+		if ($this->request->is(['patch', 'post', 'put'])) {
+			// echo "<pre>user->UserDetails: ";print_r($user->user_detail);echo "</pre>";
+			// echo "<pre>user->this->request->getData(): ";print_r($this->request->getData());echo "</pre>";
+			// die();
+			$userDetail = $userDetailsTable->patchEntity($userDetail, $this->request->getData());
+			if ($userDetailsTable->save($userDetail)) {
+				$this->Flash->set('The user details has been updated.', ['key' => 'positive_myaccount', 'params' => ['class' => 'alert alert-success']]);
+
+				return $this->redirect(['controller' => 'Users', 'action' => 'myaccountDetails']);
+			} else {
+				$this->Flash->set('Your profile not updated!', ['key' => 'positive_myaccount', 'params' => ['class' => 'alert alert-danger']]);
+				return $this->redirect(['controller' => 'Users', 'action' => 'myaccountDetails']);
+			}
+		}
+
+		$this->set(compact('userDetail', 'country', 'states'));
+	}
+
 	//Cart Operations Start
 	public function addToCart()
 	{
@@ -878,6 +908,39 @@ class UsersController extends AppController
 					->execute();
 			}
 			echo json_encode($cartValue);
+		}
+	}
+	public function checkCartButton()
+	{
+
+		$session = $this->request->getSession();
+		$datases = $session->read('cart');
+		$productcart = array();
+		if ($this->request->is(['post', 'put'])) {
+			$this->autoRender = false;
+			$pr_id = $this->request->getData()['pr_id'];
+			if (!empty($datases)) {
+				foreach ($datases as $new) {
+					$productcart[] = $new['id'];
+				}
+				if (in_array($pr_id, $productcart)) {
+					$exiting_cart = 1;
+				} else {
+					$exiting_cart = 0;
+				}
+			} else {
+
+				$exiting_cart = 0;
+			}
+
+			print_r($exiting_cart);
+		} else {
+			if (!empty($datases)) {
+				foreach ($datases as $new) {
+					$productcart[] = $new['id'];
+				}
+			}
+			return $productcart;
 		}
 	}
 }

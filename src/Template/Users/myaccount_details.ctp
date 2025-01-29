@@ -31,33 +31,57 @@
  				<div class="tab-content" id="v-pills-tabContent">
  					<div class="tab-pane fade show active" id="v-pills-one" role="tabpanel" aria-labelledby="v-pills-one-tab">
  						<?= $this->Flash->render('positive_myaccount') ?>
- 						<?= $this->Form->create($user, ['url' => ['controller' => 'Users', 'action' => 'myaccount'], 'type' => 'file']); ?>
- 						<h3>Dashboard</h3>
+ 						<?php
+							// echo "<pre>states: ";
+							// print_r($states);
+							// echo "</pre>";
+							?>
+ 						<?= $this->Form->create($userDetail, ['url' => ['controller' => 'Users', 'action' => 'myaccountDetails'], 'type' => 'file']); ?>
+ 						<h3>Account Details</h3>
  						<div class="row">
  							<div class="col-md-6">
  								<div class="form_group">
- 									<?= $this->Form->control('first_name', ['type' => 'text', 'placeholder' => 'First Name"', 'label' => false, 'class' => 'fotm_control']); ?>
+ 									<?= $this->Form->control('address', ['type' => 'text', 'placeholder' => 'Address', 'label' => false, 'class' => 'fotm_control']); ?>
  								</div>
  							</div>
  							<div class="col-md-6">
  								<div class="form_group">
- 									<?= $this->Form->control('last_name', ['type' => 'text', 'placeholder' => 'Last Name"', 'label' => false, 'class' => 'fotm_control']); ?>
+ 									<?= $this->Form->control('city', ['type' => 'text', 'placeholder' => 'City"', 'label' => false, 'class' => 'fotm_control']); ?>
  								</div>
  							</div>
  							<div class="col-md-6">
  								<div class="form_group">
- 									<?= $this->Form->control('email-null', ['value' => $user->email, 'type' => 'email', 'placeholder' => 'Email', 'label' => false, 'class' => 'fotm_control', "readonly" => true, "disabled" => true]); ?>
- 									<?= $this->Form->control('email', ['type' => 'hidden', 'label' => false]); ?>
+ 									<?= $this->Form->control('state', [
+											'type' => 'select',
+											'options' => $states,
+											'empty' => 'Select State',
+											'label' => false,
+											'class' => 'fotm_control',
+											'required' => true
+										]); ?>
  								</div>
  							</div>
  							<div class="col-md-6">
  								<div class="form_group">
- 									<?= $this->Form->control('phone', ['type' => 'text', 'placeholder' => 'Phone', 'label' => false, 'class' => 'fotm_control']); ?>
+ 									<?= $this->Form->control('country-null', [
+											'type' => 'select',
+											'options' => [
+												'US' => 'United States',
+											],
+											'empty' => 'Select Country',
+											'label' => false,
+											'class' => 'fotm_control',
+											'required' => true,
+											'value'	=> 'US',
+											"readonly" => true,
+											"disabled" => true
+										]); ?>
+ 									<?= $this->Form->control('country', ['type' => 'hidden', 'label' => false]); ?>
  								</div>
  							</div>
  							<div class="col-md-6">
  								<div class="form_group">
- 									<?= $this->Form->control('company_name', ['type' => 'text', 'placeholder' => 'Company Name', 'label' => false, 'class' => 'fotm_control']); ?>
+ 									<?= $this->Form->control('postal_code', ['type' => 'text', 'placeholder' => 'Postal Code', 'label' => false, 'class' => 'fotm_control', 'required' => true]); ?>
  								</div>
  							</div>
  							<?php echo $this->Form->hidden('password', ['value' => 'nothing']); ?>
@@ -74,3 +98,4 @@
  	</div>
  </section>
  <!--Cart Page Area End-->
+ 

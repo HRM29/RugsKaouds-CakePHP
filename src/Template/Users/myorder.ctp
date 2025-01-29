@@ -3,6 +3,8 @@
 use Cake\Routing\Router;
 
 ?>
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
 <section class="inner_banner shp">
     <div class="container-fluid">
         <div class="row">
@@ -27,19 +29,7 @@ use Cake\Routing\Router;
 <section class="dshbrd">
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link" id="v-pills-one-tab" href="<?php echo Router::url('/', true); ?>users/myaccount">Dashboard</a>
-                    <a class="nav-link active" id="v-pills-two-tab" href="<?php echo Router::url('/', true); ?>users/myorder">Orders</a>
-                    <!-- <button class="nav-link" id="v-pills-three-tab" data-bs-toggle="pill" data-bs-target="#v-pills-three" type="button" role="tab" aria-controls="v-pills-three" aria-selected="false">Download</button> -->
-                    <a class="nav-link" id="v-pills-four-tab" href="<?php echo Router::url('/', true); ?>users/myorder">Address</a>
-                    <!-- <button class="nav-link" id="v-pills-five-tab" data-bs-toggle="pill" data-bs-target="#v-pills-five" type="button" role="tab" aria-controls="v-pills-five" aria-selected="false">Payment Methods</button> -->
-                    <!-- <button class="nav-link" id="v-pills-six-tab" >Account Details</button> -->
-                    <a class="nav-link" id="v-pills-six-tab" href="<?php echo Router::url('/', true); ?>users/changepassword">Change Password</a>
-                    <a class="nav-link" id="v-pills-seven-tab" href="<?php echo Router::url('/', true); ?>users/wishlist">Wishlist</a>
-                    <button class="nav-link" id="v-pills-eight-tab" href="<?php echo Router::url('/', true); ?>users/logout">Logout</button>
-                </div>
-            </div>
+			<?php echo $this->element('front/account_menu'); ?>
             <div class="col-md-9">
                 <div class="about_status" style="padding: 20px;">
                     <strong>Total Orders : <?= count($totalOrders); ?> </strong><br />
@@ -57,7 +47,7 @@ use Cake\Routing\Router;
                                         <th>Total Price</th>
                                         <th>Order Date</th>
                                         <th>Order Status</th>
-                                        <th>View More</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -87,7 +77,7 @@ use Cake\Routing\Router;
                                                 <?= $this->General->getOrderstatus($value->order_status) ?>
                                             </td>
                                             <td>
-                                                <!-- <a href="<?= Router::url(['controller' => 'Users', 'action' => 'orderDetail', $value->id]); ?>" title="View Order">View More</a> -->
+                                                <a href="<?= Router::url(['controller' => 'Users', 'action' => 'orderDetail', $value->id]); ?>" title="View Order">View More</a>
                                             </td>
 
                                         </tr>

@@ -33,7 +33,9 @@ input:focus, .form-control:focus, .accordion-button:focus {
   box-shadow: none;	  
   border-color: none;
 }
-
+.hidden {
+    display: none;
+}
 header {
     background: #881C06;
     padding: 0 70px;
