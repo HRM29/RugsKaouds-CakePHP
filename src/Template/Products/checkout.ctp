@@ -52,7 +52,7 @@ if ($session->check('coupon')) {
 				<?php
 				if (empty($authUser['User']['id'])) {
 				?>
-					<p>Returning customer? <a href="<?php echo $this->Url->build(['controller' => 'User', 'action' => 'login']); ?>">Click here to login</a></p>
+					<p>Returning customer? <a href="<?php echo $this->Url->build(['controller' => 'Users', 'action' => 'login']); ?>">Click here to login</a></p>
 				<?php
 				} else {
 					echo "<p>Welcome, " . $authUser['User']['first_name'] . " " . $authUser['User']['last_name'] . "</p>";
@@ -97,7 +97,7 @@ if ($session->check('coupon')) {
 						</div>
 						<div class="col-md-12">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="billing-company-name" value="<?= $userData->user_detail->company ?>" placeholder="Company Name (Optional)">
+								<input class="fotm_control" type="text" name="billing-company-name" value="<?= $userData->company_name ?>" placeholder="Company Name (Optional)">
 							</div>
 						</div>
 						<div class="col-md-12">
@@ -194,11 +194,6 @@ if ($session->check('coupon')) {
 						<div class="col-md-6 ship-to-different" style="display: none;">
 							<div class="form_group">
 								<input class="fotm_control" type="text" name="delivery-last-name" value="" placeholder="Last Name">
-							</div>
-						</div>
-						<div class="col-md-12 ship-to-different" style="display: none;">
-							<div class="form_group">
-								<input class="fotm_control" type="text" name="delivery-company-name" value="" placeholder="Company Name (Optional)">
 							</div>
 						</div>
 						<div class="col-md-12 ship-to-different" style="display: none;">
@@ -550,7 +545,6 @@ if ($session->check('coupon')) {
 		}
 	});
 	$("#continue_for_guest").click(function() {
-
 		var checkout_method = $("input[name='checkoutOption']:checked").val();
 		if (checkout_method == 'Guest') {
 			$("#delivery_address").attr("data-target", "#collapseTwo");
@@ -881,9 +875,11 @@ if ($session->check('coupon')) {
 			if (this.checked) {
 				this.value = '1';
 				shipDiffAddInput.value = '1';
+				$('.ship-to-different').css('display', 'block');
 			} else {
 				this.value = '0';
 				shipDiffAddInput.value = '0';
+				$('.ship-to-different').css('display', 'none');
 			}
 		});
 	}

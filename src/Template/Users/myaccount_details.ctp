@@ -46,7 +46,7 @@
  							</div>
  							<div class="col-md-6">
  								<div class="form_group">
- 									<?= $this->Form->control('city', ['type' => 'text', 'placeholder' => 'City"', 'label' => false, 'class' => 'fotm_control']); ?>
+ 									<?= $this->Form->control('city', ['type' => 'text', 'placeholder' => 'City', 'label' => false, 'class' => 'fotm_control']); ?>
  								</div>
  							</div>
  							<div class="col-md-6">
@@ -76,7 +76,7 @@
 											"readonly" => true,
 											"disabled" => true
 										]); ?>
- 									<?= $this->Form->control('country', ['type' => 'hidden', 'label' => false]); ?>
+ 									<?= $this->Form->control('country', ['type' => 'hidden', 'label' => false, 'value' => "US"]); ?>
  								</div>
  							</div>
  							<div class="col-md-6">

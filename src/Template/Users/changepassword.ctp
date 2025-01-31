@@ -31,7 +31,7 @@ use Cake\Routing\Router;
                     <div class="tab-pane fade show active" id="v-pills-one" role="tabpanel" aria-labelledby="v-pills-one-tab">
                         <?= $this->Flash->render('positive_changepass') ?>
                         <?= $this->Form->create($user); ?>
-                        <h3 class="heading-title">Change Passowrd</h3>
+                        <h3 class="heading-title">Change Password</h3>
                         <div class="col-md-6">
                             <div class="form_group">
                                 <input placeholder="New Password" class="fotm_control" type="password" name="new_pswd" required>

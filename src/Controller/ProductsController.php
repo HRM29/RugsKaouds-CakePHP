@@ -649,15 +649,15 @@ class ProductsController extends AppController
 					$mappedData['delivery_country'] = $postdata['billing-country-code'];
 					$mappedData['delivery_zip'] = $postdata['billing-zipcode'];
 				} else {
-					$mappedData['delivery_first_name'] = $postdata['billing-first-name'];
-					$mappedData['delivery_last_name'] = $postdata['billing-last-name'];
-					$mappedData['delivery_phone'] = $postdata['billing-phone'];
-					$mappedData['delivery_email'] = $postdata['billing-email'];
-					$mappedData['delivery_street_address'] = $postdata['billing-address-name'];
-					$mappedData['delivery_city'] = $postdata['billing-city-name'];
-					$mappedData['delivery_state'] = $postdata['billing-states-name'];
-					$mappedData['delivery_country'] = $postdata['billing-country-code'];
-					$mappedData['delivery_zip'] = $postdata['billing-zipcode'];
+					$mappedData['delivery_first_name'] = $postdata['delivery-first-name'];
+					$mappedData['delivery_last_name'] = $postdata['delivery-last-name'];
+					$mappedData['delivery_phone'] = $postdata['delivery-phone'];
+					$mappedData['delivery_email'] = $postdata['delivery-email'];
+					$mappedData['delivery_street_address'] = $postdata['delivery-address-name'];
+					$mappedData['delivery_city'] = $postdata['delivery-city-name'];
+					$mappedData['delivery_state'] = $postdata['delivery-states-name'];
+					$mappedData['delivery_country'] = $postdata['delivery-country-code'];
+					$mappedData['delivery_zip'] = $postdata['delivery-zipcode'];
 				}
 				$mappedData['date_purchased'] = date('Y-m-d H:i:s');
 				$mappedData['schedule_date'] = date('Y-m-d H:i:s');
@@ -690,8 +690,6 @@ class ProductsController extends AppController
 				$result['status'] = 'Success';
 				$result['txn_id'] = rand(100000, 999999);
 
-				//echo "<pre>";print_r($result['status']);die;
-
 				if ($result['status'] == 'Success') {
 					$order = $orders->patchEntity($order, $mappedData);
 
@@ -717,7 +715,8 @@ class ProductsController extends AppController
 						$session = $this->request->getSession();
 						$cartdta = $session->read('cart');
 
-
+						// UpdateCoupounRedemption
+						$this->updateCouponRedemption();
 						$product_details = array();
 						foreach ($cartdta as $proSub) {
 							$OrderProduct = $OrderProducts->newEntity();
@@ -2117,7 +2116,7 @@ class ProductsController extends AppController
 			$authUser = $session->read('Auth.User');
 			$userTable = TableRegistry::getTableLocator()->get('Users');
 			$userData = $userTable->find()
-				->select(['Users.id', 'Users.role_id', 'Users.first_name', 'Users.last_name', 'Users.email', 'Users.phone', 'UserDetails.company', 'UserDetails.address', 'UserDetails.country', 'UserDetails.state', 'UserDetails.city', 'UserDetails.postal_code'])
+				->select(['Users.id', 'Users.role_id', 'Users.first_name', 'Users.last_name', 'Users.email', 'Users.phone', 'Users.company_name', 'UserDetails.address', 'UserDetails.country', 'UserDetails.state', 'UserDetails.city', 'UserDetails.postal_code'])
 				->contain(['UserDetails'])
 				->where(['Users.id' => $authUser['id']])
 				->first();
@@ -2263,5 +2262,16 @@ class ProductsController extends AppController
 			'cartGrandTotal' => $cartGrandTotal
 		];
 		return $cartDetails;
+	}
+
+	private function updateCouponRedemption(){
+		$session = $this->request->getSession();
+		$couponData = $session->read('coupon');
+		if(!empty($couponData)){
+			$couponTable =	TableRegistry::getTableLocator()->get('Coupons');
+			$couponEntity = $couponTable->get($couponData['coupon_id']);
+			$couponEntity->use_count = $couponEntity->use_count + 1;
+			$couponTable->save($couponEntity);
+		}
 	}
 }

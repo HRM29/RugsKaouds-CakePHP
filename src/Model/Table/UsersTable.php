@@ -43,7 +43,7 @@ class UsersTable extends Table
 			'hasOne' => [
 				'UserDetails' => [
 					'className' => 'App\Model\Table\UserDetailsTable',
-					'foreignKey'=> 'id'
+					'foreignKey'=> 'user_id'
 				]
 			]
 		]);

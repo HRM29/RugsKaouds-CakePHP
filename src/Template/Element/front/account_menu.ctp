@@ -20,7 +20,7 @@ $controller = $this->request->getParam('controller');
         <a class="nav-link<?= $action == 'myaccount' ? ' active' : '' ?>" id="v-pills-one-tab" href="<?php echo Router::url('/', true); ?>users/myaccount">Dashboard</a>
         <a class="nav-link<?= $action == 'myorder' || $action == 'orderDetail' ? ' active' : '' ?>" id="v-pills-two-tab" href="<?php echo Router::url('/', true); ?>users/myorder">Orders</a>
         <!-- <button class="nav-link" id="v-pills-three-tab" data-bs-toggle="pill" data-bs-target="#v-pills-three" type="button" role="tab" aria-controls="v-pills-three" aria-selected="false">Download</button> -->
-        <a class="nav-link<?= $action == 'myaccountDetails' ? ' active' : '' ?>" id="v-pills-four-tab" href="<?php echo Router::url('/', true); ?>users/myorder">Address</a>
+        <a class="nav-link<?= $action == 'myaccountDetails' ? ' active' : '' ?>" id="v-pills-four-tab" href="<?php echo Router::url('/', true); ?>users/myaccount_details">Address</a>
         <!-- <button class="nav-link" id="v-pills-five-tab" data-bs-toggle="pill" data-bs-target="#v-pills-five" type="button" role="tab" aria-controls="v-pills-five" aria-selected="false">Payment Methods</button> -->
         <!-- <button class="nav-link" id="v-pills-six-tab" >Account Details</button> -->
         <a class="nav-link<?= $action == 'changepassword' ? ' active' : '' ?>" id="v-pills-six-tab" href="<?php echo Router::url('/', true); ?>users/changepassword">Change Password</a>

@@ -36,12 +36,12 @@
  						<div class="row">
  							<div class="col-md-6">
  								<div class="form_group">
- 									<?= $this->Form->control('first_name', ['type' => 'text', 'placeholder' => 'First Name"', 'label' => false, 'class' => 'fotm_control']); ?>
+ 									<?= $this->Form->control('first_name', ['type' => 'text', 'placeholder' => 'First Name', 'label' => false, 'class' => 'fotm_control']); ?>
  								</div>
  							</div>
  							<div class="col-md-6">
  								<div class="form_group">
- 									<?= $this->Form->control('last_name', ['type' => 'text', 'placeholder' => 'Last Name"', 'label' => false, 'class' => 'fotm_control']); ?>
+ 									<?= $this->Form->control('last_name', ['type' => 'text', 'placeholder' => 'Last Name', 'label' => false, 'class' => 'fotm_control']); ?>
  								</div>
  							</div>
  							<div class="col-md-6">

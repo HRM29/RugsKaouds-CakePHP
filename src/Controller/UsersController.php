@@ -855,6 +855,10 @@ class UsersController extends AppController
 			// echo "<pre>user->UserDetails: ";print_r($user->user_detail);echo "</pre>";
 			// echo "<pre>user->this->request->getData(): ";print_r($this->request->getData());echo "</pre>";
 			// die();
+			if(empty($userDetail)){
+				$userDetail = $userDetailsTable->newEntity();
+			}
+			$userDetail->user_id = $this->Auth->user('id');
 			$userDetail = $userDetailsTable->patchEntity($userDetail, $this->request->getData());
 			if ($userDetailsTable->save($userDetail)) {
 				$this->Flash->set('The user details has been updated.', ['key' => 'positive_myaccount', 'params' => ['class' => 'alert alert-success']]);
