@@ -9,10 +9,10 @@
 <h4>Inventory</h4>
 <p>We have an inventory of over 7,000 magnificent rugs displayed in a 18,000 square feet world-class gallery.</p>
 <h4>25 years in Business</h4>
-<p>For 25 years we have been your permanent community Gallery serving more than 10,000 satisfied customers in Wilmington and the Carolina’s. We ship rugs anywhere within the USA.</p>
+<p>For 25 years we have been your permanent community Gallery serving more than 10,000 satisfied customers in Wilton and the Carolina’s. We ship rugs anywhere within the USA.</p>
 <h4>No. 1 Rug Retailer in America Award</h4>
-<p>The Gallery of Oriental Rugs won the nationwide No. 1 Rug Retailer of the Year Award in 2007.</br>
-<a href="http://notosolutions.net/rugsnc/pages/awardwinning"><strong>National Award Winning Oriental Rug Retailer</strong></a></p>
+<p>The Kaoud Carpets & Rugs won the nationwide No. 1 Rug Retailer of the Year Award in 2007.</br>
+<a href="http://notosolutions.net/Kaouds/pages/awardwinning"><strong>National Award Winning Oriental Rug Retailer</strong></a></p>
 <h4>Expertise</h4>
 <p>We are the only certified experts in this area, recognized by insurance companies, universities, interior designers, museums and private collectors.</p>
 <h4>Collections</h4>

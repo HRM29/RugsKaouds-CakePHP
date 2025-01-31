@@ -1,6 +1,6 @@
 <div class="static-page">
 <div class="container p-0">
-<h1>Oriental Rug Repair &amp; Restoration Services – Wilmington NC</h1>
+<h1>Oriental Rug Repair &amp; Restoration Services – Wilton NC</h1>
 <div class="row">
 <div class="col-sm-6">
 <ul class="static-list">

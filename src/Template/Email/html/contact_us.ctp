@@ -28,6 +28,6 @@
 </table>
 
 <p>Best regards,<br />
-GALLERY OF ORIENTAL RUGS </p>
+Kaoud Carpets & Rugs </p>
 
 <p><strong>( ***&nbsp; Please do not reply to this email ***&nbsp; )</strong></p>

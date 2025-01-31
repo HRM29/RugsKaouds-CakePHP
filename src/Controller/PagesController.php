@@ -117,7 +117,7 @@ class PagesController extends AppController
 		$Table = TableRegistry::getTableLocator()->get('ContactUs');
 		$seoTitle = "Contact - Carpets & Rugs";
 		// $seoDescription = "If you have any queries about our products or information, you can contact us at 910.392.2605 or send us a message via contact form.";
-		// $seoKeyword = "oriental wall to wall carpet in wilmington";
+		// $seoKeyword = "oriental wall to wall carpet in Wilton";
 		// $seoH2 = "";
 		// $seoH1 = "Contact Us";
 
@@ -133,7 +133,7 @@ class PagesController extends AppController
 
 		$seoTitle = "Best Place To Get Carpet & Rugs Online in Wilton - Kaouds";
 		$seoDescription = "Shop today & buy high-quality, modern, unique Rugs & Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 
 		$this->set('title_for_layout', $seoTitle);
@@ -169,11 +169,11 @@ class PagesController extends AppController
 
 	public function aboutus()
 	{
-		$seoTitle = "GALLERY OF ORIENTAL RUGS";
-		$seoDescription = "Find at Gallery of Oriental Rugs the huge variety of designer and handmade rugs in Wilmington and North Carolina available at a reasonable price.";
-		$seoKeyword = "rugs in north carolina, oriental rugs wilmington nc, interior design oriental rugs wilmington";
+		$seoTitle = "Kaoud Carpets & Rugs";
+		$seoDescription = "Find at Kaoud Carpets & Rugs the huge variety of designer and handmade rugs in Wilton and North Carolina available at a reasonable price.";
+		$seoKeyword = "rugs in north carolina, oriental rugs Wilton nc, interior design oriental rugs Wilton";
 		$seoH2 = "";
-		$seoH1 = "Oriental Rugs Wilmington";
+		$seoH1 = "Oriental Rugs Wilton";
 
 		$this->set('title_for_layout', $seoTitle);
 		$this->set('keyword_for_layout', $seoKeyword);
@@ -187,9 +187,9 @@ class PagesController extends AppController
 	public function carpet()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Choose Carpet & Stair-Runners | Wall-to-Wall Carpet | Gallery of Oriental Rugs";
-		$seoDescription = "If you are confused about selecting a carpet, so no worries about that. Gallery of Oriental Rugs provides tips about choosing a Wall-to-Wall Carpet according to home.";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoTitle = "Choose Carpet & Stair-Runners | Wall-to-Wall Carpet | Kaoud Carpets & Rugs";
+		$seoDescription = "If you are confused about selecting a carpet, so no worries about that. Kaoud Carpets & Rugs provides tips about choosing a Wall-to-Wall Carpet according to home.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -203,27 +203,23 @@ class PagesController extends AppController
 	public function rugcleaning()
 	{
 
-		$seoKeyword = "area rug cleaning in wilmington, pile oriental rug cleaners wilmington";
-		$seoTitle = "Oriental Rug Cleaning In Wilmington, Nc | Gallery of Oriental Rugs";
-		$seoDescription = "We confer Oriental Rug Cleaning Service in Wilmington, NC. Our professional experts help remove harmful allergens, dust mites, pet stains, and mold at the source.";
-		$seoH2 = "";
-		$seoH1 = "";
-
+		// $seoKeyword = "area rug cleaning in Wilton, pile oriental rug cleaners Wilton";
+		$seoTitle = "Schedule Pickup for Rug Cleaning - Kaoud Carpets & Rugs";
+		// $seoDescription = "We confer Oriental Rug Cleaning Service in Wilton, CT. Our professional experts help remove harmful allergens, dust mites, pet stains, and mold at the source.";
 		$this->set('title_for_layout', $seoTitle);
-		$this->set('keyword_for_layout', $seoKeyword);
-		$this->set('description_for_layout', $seoDescription);
-		$this->set('h2_for_layout', $seoH2);
-		$this->set('h1_for_layout', $seoH1);
-
+		// $this->set('keyword_for_layout', $seoKeyword);
+		// $this->set('description_for_layout', $seoDescription);
 		$this->viewBuilder()->setLayout('front');
+
+		
 	}
 
 	public function rugrepair()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Oriental Rug Repair & Restoration Services In Wilmington | Gallery of Oriental Rugs";
-		$seoDescription = "Are you looking for a Rug Repair service? So, you are at the perfect place. Gallery of Oriental Rugs confers the Carpet Restoration Services in Wilmington, NC. Visit now";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoTitle = "Oriental Rug Repair & Restoration Services In Wilton | Kaoud Carpets & Rugs";
+		$seoDescription = "Are you looking for a Rug Repair service? So, you are at the perfect place. Kaoud Carpets & Rugs confers the Carpet Restoration Services in Wilton, CT. Visit now";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -236,11 +232,11 @@ class PagesController extends AppController
 
 	public function rugappraisal()
 	{
-		$seoKeyword = "oriental rug appraiser wilmington";
-		$seoTitle = "Oriental Rug Appraiser in Wilmington - Gallery of Oriental Rugs";
-		$seoDescription = "Check out the Gallery of Oriental Rugs, we are the ORRA certified oriental rug appraiser in Wilmington. Explore our website to know the details!";
+		$seoKeyword = "oriental rug appraiser Wilton";
+		$seoTitle = "Oriental Rug Appraiser in Wilton - Kaoud Carpets & Rugs";
+		$seoDescription = "Check out the Kaoud Carpets & Rugs, we are the ORRA certified oriental rug appraiser in Wilton. Explore our website to know the details!";
 		$seoH2 = "";
-		$seoH1 = "Oriental Rugs Wilmington";
+		$seoH1 = "Oriental Rugs Wilton";
 
 		$this->set('title_for_layout', $seoTitle);
 		$this->set('keyword_for_layout', $seoKeyword);
@@ -255,9 +251,9 @@ class PagesController extends AppController
 	public function faq()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "FAQ | Gallery of Oriental Rugs";
-		$seoDescription = "Gallery of Oriental Rugs has the exclusive collection of oriental wall to wall carpet in Wilmington. Visit here FAQ section & get all information about us.";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoTitle = "FAQ | Kaoud Carpets & Rugs";
+		$seoDescription = "Kaoud Carpets & Rugs has the exclusive collection of oriental wall to wall carpet in Wilton. Visit here FAQ section & get all information about us.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -270,9 +266,9 @@ class PagesController extends AppController
 	public function returns()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Return Policy | Gallery of Oriental Rugs";
-		$seoDescription = "Gallery of Oriental Rugs offers rugs or carpets for 30 days free home trial on every mat. If you are not happy with the product, you can return it. Browse now!";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoTitle = "Return Policy | Kaoud Carpets & Rugs";
+		$seoDescription = "Kaoud Carpets & Rugs offers rugs or carpets for 30 days free home trial on every mat. If you are not happy with the product, you can return it. Browse now!";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -285,9 +281,9 @@ class PagesController extends AppController
 	public function termsofuse()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Term of Use | Gallery of Oriental Rugs";
+		$seoTitle = "Term of Use | Kaoud Carpets & Rugs";
 		$seoDescription = "By accessing or using the Services, you agree that you have read, understand, and agree to be bound by these Terms, as altered from time to time.";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -300,9 +296,9 @@ class PagesController extends AppController
 	public function privacypolicy()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Privacy Policy | Gallery of Oriental Rugs";
+		$seoTitle = "Privacy Policy | Kaoud Carpets & Rugs";
 		$seoDescription = "We gather personal identification information from Users in many ways, including, but not limited to, when Users visit our site, register on the site.";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -320,9 +316,9 @@ class PagesController extends AppController
 	{
 		$this->viewBuilder()->setLayout('front');
 
-		$seoTitle = "Interior Designers | High-Quality Rugs & Carpet | Gallery of Oriental Rugs";
-		$seoDescription = "If you are looking to design a rug or carpet, you have come to the right place. Gallery of Oriental Rugs provides custom-made rugs for homes and hotels. Explore now!";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoTitle = "Interior Designers | High-Quality Rugs & Carpet | Kaoud Carpets & Rugs";
+		$seoDescription = "If you are looking to design a rug or carpet, you have come to the right place. Kaoud Carpets & Rugs provides custom-made rugs for homes and hotels. Explore now!";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -335,9 +331,9 @@ class PagesController extends AppController
 	public function pairingpatternsorientalrug()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Pairing Patterns With An Authentic Oriental Rug | Gallery of Oriental Rugs";
-		$seoDescription = "If you are looking for Pairing Patterns With An Oriental Rug, so you at the perfect place. Gallery of Oriental Rugs provides tips about Rugs pattern according to home.";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoTitle = "Pairing Patterns With An Authentic Oriental Rug | Kaoud Carpets & Rugs";
+		$seoDescription = "If you are looking for Pairing Patterns With An Oriental Rug, so you at the perfect place. Kaoud Carpets & Rugs provides tips about Rugs pattern according to home.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -350,9 +346,9 @@ class PagesController extends AppController
 	public function awardwinning()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Award Winning | Retailer of the Year Awards | Gallery of Oriental Rugs";
-		$seoDescription = "Check out our award-winning page online at the Gallery of Oriental Rugs. We are the winner of the Rug Retailer Of The Year Award. Explore now!";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoTitle = "Award Winning | Retailer of the Year Awards | Kaoud Carpets & Rugs";
+		$seoDescription = "Check out our award-winning page online at the Kaoud Carpets & Rugs. We are the winner of the Rug Retailer Of The Year Award. Explore now!";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -365,9 +361,9 @@ class PagesController extends AppController
 	public function businesshighlights()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Business Highlights of Rugs & Carpet | Gallery of Oriental Rugs";
-		$seoDescription = "Check out our Business Highlights of certified rugs online at the Gallery of Oriental Rugs. Obtain information about rugs' business process.";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoTitle = "Business Highlights of Rugs & Carpet | Kaoud Carpets & Rugs";
+		$seoDescription = "Check out our Business Highlights of certified rugs online at the Kaoud Carpets & Rugs. Obtain information about rugs' business process.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -380,9 +376,9 @@ class PagesController extends AppController
 	public function frednasseribio()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Fred Nasseri Bio | Gallery of Oriental Rugs";
-		$seoDescription = "Get the information about Mr. Fred Nasseri online at the Gallery of Oriental Rugs. He's a certified rug appraiser that encourages the client to plan rugs for the home.";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoTitle = "Fred Nasseri Bio | Kaoud Carpets & Rugs";
+		$seoDescription = "Get the information about Mr. Fred Nasseri online at the Kaoud Carpets & Rugs. He's a certified rug appraiser that encourages the client to plan rugs for the home.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 
@@ -395,9 +391,9 @@ class PagesController extends AppController
 	public function videos()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Rug Making & Store Commercial Video | Gallery of Oriental Rugs";
-		$seoDescription = "Check out our videos online at the Gallery of Oriental Rugs and get information about rugs making and store commercials. Explore now!";
-		$seoKeyword = "oriental wall to wall carpet in wilmington";
+		$seoTitle = "Rug Making & Store Commercial Video | Kaoud Carpets & Rugs";
+		$seoDescription = "Check out our videos online at the Kaoud Carpets & Rugs and get information about rugs making and store commercials. Explore now!";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$seoH2 = "";
 		$seoH1 = "";
 

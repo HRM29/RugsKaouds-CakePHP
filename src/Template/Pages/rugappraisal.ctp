@@ -2,13 +2,13 @@
 <div class="container p-0">
 <h2>ORRA Certified Rug Appraisal</h2>
 <h4>Estate Valuation</h4>
-<p>The Gallery of Oriental Rugs has the only certified Oriental Rug Retailers of America (ORRA) appraiser in the Eastern Carolina’s. Mr. Fred Nasseri is recognized as an expert in his field and regularly writes rug appraisals to establish fair market value for the purpose of Estate Planning.</p>
+<p>The Kaoud Carpets & Rugs has the only certified Oriental Rug Retailers of America (ORRA) appraiser in the Eastern Carolina’s. Mr. Fred Nasseri is recognized as an expert in his field and regularly writes rug appraisals to establish fair market value for the purpose of Estate Planning.</p>
 <h4>Insurance Documentation</h4>
 <p>The Carolina’s are vunerable to hurricane weather and should your rugs be damaged an ORRA Certified Appraisal will ensure you receive the fair market replacement value for your loss.</p>
 <div class="certificate-section">
 <div class="c-top">
 <img src="../img/rug_appraisal_home01.jpg">
-<h2>Gallery Of Oriental Rugs</h2>
+<h2>Kaoud Carpets & Rugs</h2>
 <p class="text-center">
 Member:</br>
 “ORRA” (Oriental Rug Retailers of America)</br>
@@ -19,7 +19,7 @@ ASID, American Society of Interior Designers (Industry Partner)
 <div class="p-2 bd-highlight">
 <p class="text-left">Mr. &amp; Mrs. Michael Worthington</br>
 301 Turnberry Avenue</br>
-Wilmington, NC 28405
+Wilton, CT 28405
 </p>
 </div>
 <div class="ml-auto p-2 bd-highlight"><p class="text-right">March 1st, 2014</p></div>

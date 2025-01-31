@@ -18,14 +18,14 @@
 <h4>Applicable Law</h4>
 <p>By visiting our site, you agree that the laws of the state of Washington, without regard to principles of conflict of laws, will govern these Terms and any dispute of any sort that might arise between us.</p>
 <h4>Disputes</h4>
-<p>Any dispute relating in any way to your visit to our site or to products or services sold or distributed by us in which the aggregate total claim for relief sought on behalf of one or more parties exceeds $7,500 shall be adjudicated in any state or federal court in New Hanover County, Wilmington, and you consent to exclusive jurisdiction and venue in such courts.</p>
+<p>Any dispute relating in any way to your visit to our site or to products or services sold or distributed by us in which the aggregate total claim for relief sought on behalf of one or more parties exceeds $7,500 shall be adjudicated in any state or federal court in New Hanover County, Wilton, and you consent to exclusive jurisdiction and venue in such courts.</p>
 <h4>Site Policies, Modification, And Severability</h4>
 <p>Please review our other policies, such as our privacy policy, posted on this site. These policies also govern your visit to our site. We reserve the right to make changes to our site, policies, and these Terms at any time. If any of these conditions shall be deemed invalid, void, or for any reason unenforceable, that condition shall be deemed severable and shall not affect the validity and enforceability of any remaining condition.</p>
 <h4>Our Address:</h4>
 <ul class="static-list-2">
-<li>Gallery of Oriental Rugs</li>
+<li>Kaoud Carpets & Rugs</li>
 <li>4101 Oleander Dr.</li>
-<li>Wilmington, NC 28403</li>
+<li>Wilton, CT 28403</li>
 <li>Tel: 910-392-2605</li>
 </ul>
 </div>

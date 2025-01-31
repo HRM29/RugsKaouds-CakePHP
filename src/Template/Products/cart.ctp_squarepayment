@@ -325,7 +325,7 @@ if( Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 													</thead>
 													<tbody>
 													<?php 
-													$from = "Order From: Rugsnc";
+													$from = "Order From: Kaouds";
 													$itemDetails = " and item details are: ";
 													$total_quanty = 0;
 													$sub_total = 0;

@@ -8,10 +8,10 @@
 <?php 
 	
 	$url = 'https://'.$_SERVER['HTTP_HOST']. $_SERVER['REQUEST_URI'];
-	if($url == 'https://rugsnc.com/Products/Oushak/design')
+	if($url == 'https://Kaouds.com/Products/Oushak/design')
 	{
-		$title_for_layout = "Oushak Rugs for Sale - Oushak Rugs in Carolina - Gallery of Oriental Rugs";  
-		$description_for_layout = "Oushak rugs are available for sale in Carolina at the Gallery of Oriental Rugs. These rugs give fabulous design to your home interior. Place order today!" ;
+		$title_for_layout = "Oushak Rugs for Sale - Oushak Rugs in Carolina - Kaoud Carpets & Rugs";  
+		$description_for_layout = "Oushak rugs are available for sale in Carolina at the Kaoud Carpets & Rugs. These rugs give fabulous design to your home interior. Place order today!" ;
 		$keyword_for_layout = "oushak rugs for sale, oushak rugs carolina";
 		$seoH2 = "";
 		$seoH1 = "";
@@ -20,16 +20,16 @@
 
 
 
-		        $title_for_layout = isset($title_for_layout) ? $title_for_layout : 'GALLERY OF ORIENTAL RUGS';
+		        $title_for_layout = isset($title_for_layout) ? $title_for_layout : 'Kaoud Carpets & Rugs';
 		        
 		        if(empty($title_for_layout)){
-		            $title_for_layout = 'GALLERY OF ORIENTAL RUGS';
+		            $title_for_layout = 'Kaoud Carpets & Rugs';
 		        }
 				if(empty($keyword_for_layout)){
-		            $keyword_for_layout = 'oriental wall to wall carpet in wilmington';
+		            $keyword_for_layout = 'oriental wall to wall carpet in Wilton';
 		        }
 		        if(empty($description_for_layout)){
-		            $description_for_layout = 'Gallery of Oriental Rugs has the exclusive collection of oriental wall to wall carpet in Wilmington that will complement your existing walls and furnishings.';
+		            $description_for_layout = 'Kaoud Carpets & Rugs has the exclusive collection of oriental wall to wall carpet in Wilton that will complement your existing walls and furnishings.';
 		        }				
 		       // print_r($title); die;
 ?>

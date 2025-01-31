@@ -24,7 +24,7 @@ use Cake\Routing\Router; ?>
 		$title_for_layout = 'Best Place To Get Carpet & Rugs Online in Wilton - Kaouds';
 	}
 	if (empty($keyword_for_layout)) {
-		$keyword_for_layout = 'oriental wall to wall carpet in wilmington';
+		$keyword_for_layout = 'oriental wall to wall carpet in Wilton';
 	}
 	if (empty($description_for_layout)) {
 		$description_for_layout = 'Shop today & buy high-quality, modern, unique Rugs & Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.';

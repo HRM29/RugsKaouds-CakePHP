@@ -1,12 +1,12 @@
 <div class="static-page">
 <div class="container p-0">
 <h1 class="m-30">Easy Returns and Exchanges</h1>
-<p>Gallery of Oriental Rugs offers a 30-Day Risk-Free In-Home Trial on every rug we sell, except for customized rugs, products sold through Clearance Sales and rug pads that have been opened. If you are unhappy with your purchase for any reason, you may return it – no questions asked. You are responsible for payment of the return shipping charges. </p>
+<p>Kaoud Carpets & Rugs offers a 30-Day Risk-Free In-Home Trial on every rug we sell, except for customized rugs, products sold through Clearance Sales and rug pads that have been opened. If you are unhappy with your purchase for any reason, you may return it – no questions asked. You are responsible for payment of the return shipping charges. </p>
 <h4>Return Shipping</h4>
 <p>Please obtain your return authorization (RA#) by sending an e-mail to info@kaouds.com. Once you receive your Return Authorization Number (RA#) you must attach it to the item wrapped in its original packaging (or equivalent) and use a trackable carrier of your choice (UPS, FedEx, etc.) to ship the item to our warehouse:</p>
-<p>Gallery of Oriental Rugs</br>
+<p>Kaoud Carpets & Rugs</br>
 4101 Oleander Drive</br>
-Wilmington, NC 28403</p>
+Wilton, CT 28403</p>
 <p>IMPORTANT: We highly recommend you insure your return shipment with the carrier you select for its full purchase price to protect against loss or damage in transit. We are not responsible for lost or damaged packages being returned to us. In addition, you are responsible for filing claims with the carrier you use in case of loss or damage. </p>
 <h4>Notes on returns</h4>
 <ul class="static-list">

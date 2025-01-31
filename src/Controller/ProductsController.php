@@ -569,7 +569,7 @@ class ProductsController extends AppController
 					$email_billing = $orders->find('all')->select(['billing_first_name','billing_last_name','billing_email',])->where(['id'=>$last_id])->First();
 					
 					$message = 'Thank you for your order';
-					$subject = 'Order Details at www.rugsnc.com';
+					$subject = 'Order Details at www.Kaouds.com';
 					$email = new Email();
 					
 					$email->transport('default');
@@ -1704,7 +1704,7 @@ class ProductsController extends AppController
 					$saveData['rug_design']			=	$data['ebay_regional_design'];
 					$saveData['material']			=	$data['overstock_material'];
 					$saveData['field_color_exact']	=	$data['product_rugfield_color']; //$this->rugColor($data['product_rugfield_color']);  
-					$saveData['location']			=	"Wilmington, NC";
+					$saveData['location']			=	"Wilton, CT";
 
 					$saveData['status']				=	$data['status'];
 					$saveData['sold_status']		=	$data['sold_status'];
@@ -1756,14 +1756,14 @@ class ProductsController extends AppController
 			date_default_timezone_set("Asia/Calcutta");
 
 
-			$message        =   'Rugsnc Cron Executed on ' . date_default_timezone_get() . " is " . date("d/m/Y H:i:s");
-			$subject        =    'Rugsnc Cron Executed on ' . date_default_timezone_get() . " is " . date("d/m/Y H:i:s");
+			$message        =   'Kaouds Cron Executed on ' . date_default_timezone_get() . " is " . date("d/m/Y H:i:s");
+			$subject        =    'Kaouds Cron Executed on ' . date_default_timezone_get() . " is " . date("d/m/Y H:i:s");
 			$email          =   new Email();
 			$email->transport('default');
 			$to             =   "vipin2vipin@gmail.com";
 
 			//echo Configure::read('EmailFrom'); die(" this is to");
-			$results = $email->setFrom(['info@rugsnc.com' => 'Gallery Of Oriental Rugs'])
+			$results = $email->setFrom(['info@Kaouds.com' => 'Gallery Of Oriental Rugs'])
 				->setTo($to)
 				->setSubject($subject)
 				->send($message);
