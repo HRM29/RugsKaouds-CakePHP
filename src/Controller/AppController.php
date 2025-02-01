@@ -451,6 +451,20 @@ class AppController extends Controller
     }
 
     /**
+     * @getRelatedProducts 
+     *
+     * @throws MethodNotAllowedException
+     * @throws NotFoundException
+     * @param integer $id
+     * @return void
+     */
+    public function getRelatedProducts($categories)
+    {
+        $productTable = TableRegistry::getTableLocator()->get('Products');
+        $relatedProducts = $productTable->find('all')->where(['status' => 1, 'category_id IN' => $categories, 'sold_status' => 0])->contain(['ProductImages'])->limit(5)->order(['id' => 'DESC'])->toArray();
+        return $relatedProducts;
+    }
+    /**
      * @getFutureProducts 
      *
      * @throws MethodNotAllowedException

@@ -21,14 +21,14 @@ use Cake\Core\Configure; ?>
 <section class="ltst_arrvls shop">
 	<div class="container">
 		<div class="row">
-				<div class="col-md-12">
-					<nav aria-label="breadcrumb">
-						<ol class="breadcrumb bg-light p-3 rounded">
-							<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
-							<li class="breadcrumb-item active" aria-current="page"><?= !empty($title) ? $title : 'Shop'; ?></li>
-						</ol>
-					</nav>
-				</div>
+			<div class="col-md-12">
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb bg-light p-3 rounded">
+						<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page"><?= !empty($title) ? $title : 'Shop'; ?></li>
+					</ol>
+				</nav>
+			</div>
 			<?php echo $this->element('front/search_bar'); ?>
 			<div class="col-md-9">
 				<div class="shp_prdcts">
@@ -99,6 +99,10 @@ use Cake\Core\Configure; ?>
 											<p><?= $data->title; ?></p>
 											<span>$<?php echo number_format($data->selling_price, 2); ?></span>
 											<span class="nw_price">$<?php echo number_format($data->everyday_price, 2); ?></span>
+											<div class="sku-container">
+												<span class="sku-label">SKU:</span>
+												<span class="sku-value"><?php echo $data->sku_no; ?></span>
+											</div>
 											<?php
 											if (in_array($data->id, $cartItems)) {
 											?>

@@ -159,7 +159,7 @@
 						?>
 							<div class="item">
 								<div class="arrvl_box">
-									<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
+									<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>">
 										<?php
 										$img_src = Router::url('/', true) . 'uploads/product/';
 
@@ -194,10 +194,14 @@
 										} ?>
 									</a>
 									<div class="arrvl_text">
-										<h3><?php echo $productData->style; ?></h3>
+										<h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>" style="text-decoration: none; color: #000"><?php echo $productData->style; ?></a></h3>
 										<p><?= $productData->title; ?></p>
 										<span>$<?php echo number_format($productData->selling_price, 2); ?></span>
 										<span class="nw_price">$<?php echo number_format($productData->everyday_price, 2); ?></span>
+										<div class="sku-container">
+                                            <span class="sku-label">SKU:</span>
+                                            <span class="sku-value"><?php echo $productData->sku_no; ?></span>
+                                        </div>
 										<?php
 										if (in_array($productData->id, $cartItems)) {
 										?>
@@ -219,41 +223,6 @@
 						<?php
 						}
 						?>
-
-						<div class="item">
-							<div class="arrvl_box">
-								<?php
-								$image = WWW_ROOT . 'uploads' . DS . 'product' . DS . 'arrvl_slide002.jpg';
-								if (file_exists($image)) {
-									echo $this->Html->image('/uploads/product/arrvl_slide002.jpg', ['alt' => 'arrvl_slide002.jpg']);
-								}
-								?>
-								<div class="arrvl_text">
-									<h3>Spring White</h3>
-									<p>2’7″x6’1″ Spring White, 250 KPSI, Hand Knotted, Nain with Center Motif Flower Design, Wool and Silk, Runner, Oriental Rug</p>
-									<span>$2,152.26</span>
-									<span class="nw_price">$1,291.35</span>
-									<a class="btn crt_btn" href="#"><i class="bi bi-bag-plus"></i> Add to Cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="arrvl_box">
-								<?php
-								$image = WWW_ROOT . 'uploads' . DS . 'product' . DS . 'arrvl_slide003.jpg';
-								if (file_exists($image)) {
-									echo $this->Html->image('/uploads/product/arrvl_slide003.jpg', ['alt' => 'arrvl_slide003.jpg']);
-								}
-								?>
-								<div class="arrvl_text">
-									<h3>Uranian Blue</h3>
-									<p>2’8″x6’6″ Uranian Blue, Nain with Large Center Medallion, 250 KPSI, Wool and Silk, Hand Knotted, Runner, Oriental Rug</p>
-									<span>$2,374.19</span>
-									<span class="nw_price">$1,424.51</span>
-									<a class="btn crt_btn" href="#"><i class="bi bi-bag-plus"></i> Add to Cart</a>
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>

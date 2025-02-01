@@ -100,6 +100,10 @@ use Cake\Core\Configure;
 											<p><?= $data->title; ?></p>
 											<span>$<?php echo number_format($data->selling_price, 2); ?></span>
 											<span class="nw_price">$<?php echo number_format($data->everyday_price, 2); ?></span>
+											<div class="sku-container">
+												<span class="sku-label">SKU:</span>
+												<span class="sku-value"><?php echo $data->sku_no; ?></span>
+											</div>
 											<?php
 											if (in_array($data->id, $cartItems)) {
 											?>

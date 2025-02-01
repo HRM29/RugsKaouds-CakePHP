@@ -201,8 +201,7 @@ class ProductsController extends AppController
 		$sku = base64_decode($product_id);
 		$productId		=	base64_decode($product_id);
 		$productDetail	=	$this->Products->find('all')->where(['sku_no' => $sku])->contain(['ProductImages'])->first();
-		// echo $productDetail->seo_title;		
-		// echo "<pre>";print_r($productDetail);
+
 
 		$session = $this->request->getSession();
 		$authUser = $session->read('Auth');
@@ -219,12 +218,14 @@ class ProductsController extends AppController
 		$featuredProductData = $ProductsTable->find('all')->where(['Products.is_future' => 1, 'sku_no !=' => $sku])->contain(['ProductImages'])->toArray();
 		$sku_no = $productDetail->sku_no;
 
+		$relatedProducts = parent::getRelatedProducts($productDetail->category_id);
+		$cartItems = $this->checkCartButton();
 
 		$this->set('title_for_layout', $productDetail->seo_title);
 		$this->set('keyword_for_layout', $productDetail->seo_keywords);
 		$this->set('description_for_layout', $productDetail->seo_description);
 
-		$this->set(compact('productDetail', 'title', 'featuredProductData', 'favouriteData', 'user_id'));
+		$this->set(compact('productDetail', 'title', 'featuredProductData', 'favouriteData', 'user_id', 'relatedProducts', 'cartItems'));
 
 		//echo "<pre>";print_r($productDetail);die;
 	}
@@ -333,7 +334,7 @@ class ProductsController extends AppController
 		if ($this->request->is(['post', 'put'])) {
 			$product_id = $this->request->getData()['product_id'];
 
-			$productdetail = $ProductsTable->find()->select(['id', 'title', 'sku_no', 'selling_price', 'everyday_price', 'category_id', 'shipping_price'])->where(['id' => $product_id])->enableHydration(false)->first();
+			$productdetail = $ProductsTable->find()->select(['id', 'title', 'sku_no', 'selling_price', 'everyday_price', 'category_id', 'shipping_price'])->where(['id' => $product_id, 'sold_status' => 0])->enableHydration(false)->first();
 
 			$productdetail['product_qty']  = 1;
 			$productdetail['sub_total'] = $productdetail['price'];
@@ -364,6 +365,7 @@ class ProductsController extends AppController
 					->where(['product_id' => $product_id, 'user_id' => $authUser['User']['id']])
 					->execute();
 			}
+			$this->checkProductStock();
 			echo json_encode($cartValue);
 		}
 	}
@@ -609,7 +611,7 @@ class ProductsController extends AppController
 		$orders = TableRegistry::getTableLocator()->get('Orders');
 		$order = $orders->newEntity();
 
-
+		$this->checkProductStock();
 		if ($this->request->is('post')) {
 			$postdata = $this->request->getData();
 			$session = $this->request->getSession();
@@ -737,7 +739,7 @@ class ProductsController extends AppController
 
 
 							// update product table
-							//$ProductsTable->updateAll(['sold_status' => 2], ['id' => $proSub['id']]);
+							$ProductsTable->updateAll(['sold_status' => 1], ['id' => $proSub['id']]);
 						}
 
 						$email_billing = $orders->find('all')->select(['billing_first_name', 'billing_last_name', 'billing_email',])->where(['id' => $last_id])->First();
@@ -847,12 +849,17 @@ class ProductsController extends AppController
 				}
 			}
 
-			$session->delete('cart');
-			$session->write('cart', $datases);
-			if ($session->check('coupon')) {
-				$couponData = $session->read('coupon');
-				$couponCode = $couponData['code'];
-				$couponLogic = $this->couponLogicReturn($couponCode);
+			if (!empty($datases)) {
+				$session->delete('cart');
+				$session->write('cart', $datases);
+				if ($session->check('coupon')) {
+					$couponData = $session->read('coupon');
+					$couponCode = $couponData['code'];
+					$couponLogic = $this->couponLogicReturn($couponCode);
+				}
+			} else {
+				$session->delete('cart');
+				$session->delete('coupon');
 			}
 		}
 	}
@@ -2209,6 +2216,8 @@ class ProductsController extends AppController
 					'coupon_id' => $result->id
 				];
 				$session->write('coupon', $discountData);
+			} else {
+				$session->delete('coupon');
 			}
 
 			$response	=	[
@@ -2264,14 +2273,51 @@ class ProductsController extends AppController
 		return $cartDetails;
 	}
 
-	private function updateCouponRedemption(){
+	private function updateCouponRedemption()
+	{
 		$session = $this->request->getSession();
 		$couponData = $session->read('coupon');
-		if(!empty($couponData)){
+		if (!empty($couponData)) {
 			$couponTable =	TableRegistry::getTableLocator()->get('Coupons');
 			$couponEntity = $couponTable->get($couponData['coupon_id']);
 			$couponEntity->use_count = $couponEntity->use_count + 1;
 			$couponTable->save($couponEntity);
 		}
+	}
+
+	public function checkProductStock()
+	{
+		$this->autoRender = false;
+		$session = $this->request->getSession();
+		$cartData = $session->read('cart');
+		$ProductTable = TableRegistry::getTableLocator()->get('Products');
+		$updatedCart = [];
+		$outOfStockProducts = [];
+
+		foreach ($cartData as $item) {
+			$productData = $ProductTable->find('all')->where(['sku_no' => $item['sku_no']])->first();
+			if ($productData && $productData->sold_status == 0 && $productData->status == 1) {
+				$updatedCart[] = $item;
+			} else {
+				$outOfStockProducts[] = $item['sku_no'];
+			}
+		}
+
+		$session->write('cart', $updatedCart);
+
+		if (!empty($outOfStockProducts)) {
+			$response = [
+				'status' => 0,
+				'message' => 'Some products are out of stock and have been removed from the cart.',
+				'outOfStockProducts' => $outOfStockProducts
+			];
+		} else {
+			$response = [
+				'status' => 1,
+				'message' => 'All products are in stock.'
+			];
+		}
+
+		return $response;
 	}
 }

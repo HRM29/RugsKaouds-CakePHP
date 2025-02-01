@@ -2,14 +2,20 @@
 
 use Cake\Routing\Router;
 ?>
-<?php echo $this->Html->script(['jquery.js']); ?>
 <?php echo $this->Html->script(['xzoom.min.js']); ?>
 <?php echo $this->Html->css(array('front/xzoom.css')); ?>
 <section class="inner_banner shp">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12 no_padding">
-				<div class="inr_bnr"></div>
+				<div class="inr_bnr">
+					<?php
+					$image = WWW_ROOT . 'img' . DS . 'conact_us_banner.jpg';
+					if (file_exists($image)) {
+						echo $this->Html->image('/img/' . "conact_us_banner.jpg", ['alt' => "conact_us_banner"]);
+					}
+					?>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -21,7 +27,6 @@ use Cake\Routing\Router;
 				<span class="zoom">
 					<?php
 					$img_src = Router::url('/', true) . 'uploads/product/';
-					// echo "<pre>";print_r($productDetail);
 					$img_name = isset($productDetail->product_images[0]->image) ? $productDetail->product_images[0]->image : '';
 
 					$sku = $productDetail->sku_no;
@@ -44,15 +49,15 @@ use Cake\Routing\Router;
 						<span class="nw_price">$<?php echo number_format($productDetail->everyday_price, 2); ?></span>
 					</div>
 					<div class="qnty">
-						<div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
-						<input type="number" id="number" class="number" value="0">
-						<div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value">+</div>
-						<a href="cart.html" class="btn">Add to Cart</a>
+						<div class="value-button" id="decrease" disabled value="Decrease Value">-</div>
+						<input type="number" id="number" class="number" value="1" readonly>
+						<div class="value-button" id="increase" disabled value="Increase Value">+</div>
+						<a class="btn crt_btn cart-button main_product" data-id=<?php echo $productDetail->id; ?> href="javascript:void(0);"><i class="bi bi-bag-plus"></i> Add to Cart</a>
+						<a style="display:none" id="go_to_cart" href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>" class="btn pdocut-buton">Go To Cart</a>
 					</div>
 					<div class="prdct_meta">
 						<p><strong>SKU:</strong> <?php echo $productDetail->sku_no; ?></p>
 						<p><strong>Categories:</strong> <?php echo $this->General->getCategory($productDetail->category_id); ?></p>
-						<!-- <p><strong>Tags:</strong> All Products, Fine Oriental, Traditional</p> -->
 					</div>
 					<ul class="social">
 						<!-- <li><a href="#"><?php echo $this->Html->image('fcbook.png', ['alt' => 'facebook']); ?></a></li> -->
@@ -78,7 +83,6 @@ use Cake\Routing\Router;
 
 						<?php } else { ?>
 							<a href="<?php echo $this->Url->build(['controller' => 'users', 'action' => 'login']); ?>" style="cursor:pointer;"><i class="fa fa-heart-o"></i>add to favourite</a>
-
 						<?php } ?>
 					</span>
 				</div>
@@ -105,116 +109,19 @@ use Cake\Routing\Router;
 				</div>
 				<input type="hidden" id="p_id" value="<?php echo $productDetail->id; ?>">
 				<input type="hidden" id="u_id" value="<?php echo $user_id; ?>">
-				<div class="pdocut-buton" style="display:none" id="cart-button"><a class="cart-btn" style="cursor: pointer;">Add To Cart</a></div>
-				<div class="pdocut-buton" style="display:none" id="go_to_cart"><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>" class="cart-btn">Go To Cart</a></div>
-
-				<!-- <div class="product-discrip">
-					<ul class="nav nav-tabs" id="myTab" role="tablist">
-						<li class="nav-item">
-							<a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Rug Details</a>
-						</li>
-					</ul>
-					<div class="tab-content" id="myTabContent">
-						<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-							<div class="tt-add-info">
-								<ul>
-									<li class="sku-js">
-										<span>Code:</span>
-										<span><?php echo $productDetail->sku_no; ?></span>
-									</li>
-									<li class="sku-js">
-										<span>Exact Size:</span>
-										<span><?php echo $productDetail->dimension_1_feet . "'" . $productDetail->dimension_1_inches . '" X ' . $productDetail->dimension_2_feet . "'" . $productDetail->dimension_2_inches . '"'; ?></span>
-									</li>
-
-									<?php
-									$price_sh = $productDetail->selling_price / 2.5;
-									$jgor = round($price_sh * 7);
-									?>
-
-									<li class="sku-js">
-										<span>JGOR:</span>
-										<span><?php echo $jgor; ?></span>
-									</li>
-									<li class="sku-js">
-										<span>Shape:</span>
-										<span><?php echo $productDetail->available_shape; ?></span>
-									</li>
-									<li class="sku-js">
-										<span>Origin:</span>
-										<span><?php echo ucfirst(strtolower($productDetail->overstock_origin)); ?></span>
-									</li>
-									<li class="availability">
-										<span>Foundation:</span>
-										<span><?php echo $this->General->getFoundation($productDetail->foundation_id); ?></span>
-									</li>
-									<li class="availability">
-										<span>Pile:</span>
-										<span><?php echo $this->General->getPile($productDetail->pile_id); ?></span>
-									</li>
-									<li class="availability">
-										<span>Construction:</span>
-										<span><?php echo $productDetail->rug_type; ?></span>
-									</li>
-									<li class="availability">
-										<span>Group Color:</span>
-										<span><?php echo $this->General->getColor($productDetail->color_id); ?></span>
-									</li>
-									<li class="availability">
-										<span>Exact Field Color:</span>
-										<span><?php echo $productDetail->field_color_exact; ?></span>
-									</li>
-									<li class="availability">
-										<span>Age:</span>
-										<span><?php echo $productDetail->age; ?></span>
-									</li>
-									<li class="availability">
-										<span>Border Color:</span>
-										<span><?php echo $productDetail->border_color; ?></span>
-									</li>
-									<li class="availability">
-										<span>Rug Style:</span>
-										<span><?php echo $productDetail->style; ?></span>
-									</li>
-									<li class="availability">
-										<span>Pattern:</span>
-										<span><?php echo $productDetail->pattern; ?></span>
-									</li>
-									<li class="availability">
-										<span>Design:</span>
-										<span><?php echo $productDetail->rug_design; ?></span>
-									</li>
-									<li class="availability">
-										<span>Category:</span>
-										<span><?php echo $this->General->getCategory($productDetail->category_id); ?></span>
-									</li>
-
-									<li class="availability">
-										<span>Sale Price:</span>
-										<span>$ <?php echo number_format($productDetail->selling_price, 2); ?></span>
-									</li>
-
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div> -->
-
-
 			</div>
 		</div>
 	</div>
 </section>
-
+<?php echo $this->element('front/related_products'); ?>
 <?php echo $this->Html->script(['setup.js']); ?>
 <script type="text/javascript">
 	$(document).ready(function() {
 		checkCartButton();
 
-		$('#cart-button').click(function() {
+		$('.cart-button').click(function() {
 
-			var product_id = $('#p_id').val();
-			//var csrfToken = $("[name='_csrfToken']").val();
+			var product_id = $(this).attr('data-id');
 			var csrfToken = <?php echo json_encode($this->request->getParam('_csrfToken')) ?>;
 			var url = '<?php echo $this->Url->build(['controller' => 'products', 'action' => 'addToCart']); ?>';
 			$.ajax({
@@ -225,10 +132,7 @@ use Cake\Routing\Router;
 				},
 				url: url,
 				success: function(data) {
-					//console.log(data); 
-					//cartdata();
 					window.location.replace('<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>');
-					//checkCartButton();
 				}
 			});
 		});
@@ -247,10 +151,10 @@ use Cake\Routing\Router;
 				url: url,
 				success: function(result) {
 					if (result == 0) {
-						$("#cart-button").show();
+						$(".main_product").show();
 						$("#go_to_cart").hide();
 					} else {
-						$("#cart-button").hide();
+						$(".main_product").hide();
 						$("#go_to_cart").show();
 					}
 				}

@@ -16,7 +16,7 @@ $slug = $this->request->getParam('slug');
 $controller = $this->request->getParam('controller');
 
 $aboutUs_Slugs = ['kaoud-carpets-rugs', 'our-brands-inventory', 'community', 'asid'];
-$shop_Actions = ['shopping', 'rugs', 'cart', 'checkout'];
+$shop_Actions = ['shopping', 'rugs', 'cart', 'checkout', 'productView'];
 $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 ?>
 

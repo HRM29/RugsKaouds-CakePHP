@@ -1467,3 +1467,26 @@ footer .cpyrght p {
     border-color: #881c06;
     box-shadow: 0 0 5px rgba(136, 28, 6, 0.3);
 }
+
+.sku-container {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    border-radius: 5px;
+    background: #f8f8f8;
+}
+
+.sku-label {
+    color: #555;
+    font-weight: 600;
+    text-decoration: none !important;
+}
+
+.sku-value {
+    color: #007bff;
+    text-decoration: none !important;
+}
