@@ -50,7 +50,7 @@ class PagesController extends AppController
 	public function beforeFilter(Event $event)
 	{
 		parent::beforeFilter($event);
-		$this->Auth->allow(['portfolio1', 'videos', 'frednasseribio', 'businesshighlights', 'awardwinning', 'pairingpatternsorientalrug', 'interiordesign', 'index', 'portfolio', 'privacypolicy', 'contactUs', 'carpet', 'rugcleaning', 'aboutus', 'rugrepair', 'rugappraisal', 'faq', 'returns', 'termsofuse', 'testmail', 'subscribeLetter', 'collectionMenu', 'projects']);
+		$this->Auth->allow(['portfolio1', 'videos', 'frednasseribio', 'businesshighlights', 'awardwinning', 'pairingpatternsorientalrug', 'interiordesign', 'index', 'portfolio', 'privacypolicy', 'contactUs', 'carpet', 'rugcleaning', 'aboutus', 'rugrepair', 'rugappraisal', 'faq', 'returns', 'termsofuse', 'testmail', 'subscribeLetter', 'collectionMenu', 'projects', 'rugsellus']);
 
 
 		if ($this->Auth->user('role_id') == 1) {
@@ -212,16 +212,16 @@ class PagesController extends AppController
 
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
-			$email = new Email('default');
-			$email->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
-				->setTo($data['email'])
-				->setSubject('Kaoud Carpets & Rugs - Rug Cleaning Request')
-				->setEmailFormat('html')
-				->setTemplate('rug_cleaning_customer')
-				->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'actual_message' => "Thank you for your rug cleaning request. We have received your request and will get back to you shortly.", "header_message" => "Rug Cleaning Request Received"])
-				->send();
-
 			if (!empty($data['email']) && !empty($data['rug_condition'])) {
+				$email = new Email('default');
+				$email->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+					->setTo($data['email'])
+					->setSubject('Kaoud Carpets & Rugs - Rug Cleaning Request')
+					->setEmailFormat('html')
+					->setTemplate('rug_cleaning_customer')
+					->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'actual_message' => "Thank you for your rug cleaning request. We have received your request and will get back to you shortly.", "header_message" => "Rug Cleaning Request Received"])
+					->send();
+
 				$email = new Email();
 				$email->setTransport('default')
 					->setFrom([Configure::read("App.EmailFrom") => 'Admin'])
@@ -262,16 +262,18 @@ class PagesController extends AppController
 
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
-			$clientEmail = new Email('default');
-			$clientEmail->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
-				->setTo($data['email'])
-				->setSubject('Kaoud Carpets & Rugs - Rug Repair Request')
-				->setEmailFormat('html')
-				->setTemplate('rug_cleaning_customer')
-				->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'actual_message' => "Thank you for your rug repair request. We have received your request and will get back to you shortly.", "header_message" => "Rug Repair Request Received"])
-				->send();
 
 			if (!empty($data['email']) && !empty($data['rug_condition'])) {
+
+				$clientEmail = new Email('default');
+				$clientEmail->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+					->setTo($data['email'])
+					->setSubject('Kaoud Carpets & Rugs - Rug Repair Request')
+					->setEmailFormat('html')
+					->setTemplate('rug_cleaning_customer')
+					->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'actual_message' => "Thank you for your rug repair request. We have received your request and will get back to you shortly.", "header_message" => "Rug Repair Request Received"])
+					->send();
+
 				$adminEmail = new Email();
 				$adminEmail->setTransport('default')
 					->setFrom([Configure::read("App.EmailFrom") => 'Admin'])
@@ -291,7 +293,7 @@ class PagesController extends AppController
 					]);
 				}
 				$adminEmail->send();
-				$this->Flash->set('Thank you for your rug cleaning request. We will get back to you shortly!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-success']]);
+				$this->Flash->set('Thank you for your rug repair request. We will get back to you shortly!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-success']]);
 			} else {
 				$this->Flash->set('Please fill all the required fields!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
 			}
@@ -313,20 +315,21 @@ class PagesController extends AppController
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
 
-			$clientEmail = new Email('default');
-			$clientEmail->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
-				->setTo($data['email'])
-				->setSubject('Kaoud Carpets & Rugs - Rug Appraisal Request')
-				->setEmailFormat('html')
-				->setTemplate('rug_appraisal_customer')
-				->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'data' => $data])
-				->send();
-
 			if (!empty($data['preferred_date']) && !empty($data['alternate_date']) && !empty($data['rug_request_problem'])) {
+
+				$clientEmail = new Email('default');
+				$clientEmail->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+					->setTo($data['email'])
+					->setSubject('Kaoud Carpets & Rugs - Rug Appraisal Request')
+					->setEmailFormat('html')
+					->setTemplate('rug_appraisal_customer')
+					->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'data' => $data])
+					->send();
+
 				$adminEmail = new Email();
 				$adminEmail->setTransport('default')
 					->setFrom([Configure::read("App.EmailFrom") => 'Admin'])
-					->setTo([Configure::read("App.EmailFrom"),'harshit@racknap.com'])
+					->setTo([Configure::read("App.EmailFrom"), 'harshit@racknap.com'])
 					->setSubject('Kaoud Carpets & Rugs - Rug Appraisal Request')
 					->setEmailFormat('html')
 					->setTemplate('rug_appraisal_admin')
@@ -342,7 +345,7 @@ class PagesController extends AppController
 					]);
 				}
 				$adminEmail->send();
-				$this->Flash->set('Thank you for your rug cleaning request. We will get back to you shortly!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-success']]);
+				$this->Flash->set('Thank you for your rug appraisal request. We will get back to you shortly!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-success']]);
 			} else {
 				$this->Flash->set('Please fill all the required fields!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
 			}
@@ -351,6 +354,46 @@ class PagesController extends AppController
 		}
 	}
 
+	public function rugsellus()
+	{
+		// $seoKeyword = "area rug Repair in Wilton, pile oriental rug cleaners Wilton";
+		$seoTitle = "Schedule Sell Us - Carpets & Rugs";
+		// $seoDescription = "We confer Oriental Rug Repair Service in Wilton, CT. Our professional experts help remove harmful allergens, dust mites, pet stains, and mold at the source.";
+		$this->set('title_for_layout', $seoTitle);
+		$this->viewBuilder()->setLayout('front');
+		$states = parent::statesList();
+		$this->set(compact('states'));
+
+		if ($this->request->is('post')) {
+			$data = $this->request->getData();
+			if (!empty($data['email']) && !empty($data['phone_number'])) {
+				$adminEmail = new Email();
+				$adminEmail->setTransport('default')
+					->setFrom([Configure::read("App.EmailFrom") => 'Admin'])
+					->setTo([Configure::read("App.EmailFrom"), 'harshit@racknap.com'])
+					->setSubject('Kaoud Carpets & Rugs - Rug Sell Request')
+					->setEmailFormat('html')
+					->setTemplate('rug_sell_admin')
+					->setViewVars(['data' => $data]);
+
+				// Check if the file exists before attaching
+				if (!empty($data['rug_image']['tmp_name']) && is_uploaded_file($data['rug_image']['tmp_name'])) {
+					$adminEmail->setAttachments([
+						basename($data['rug_image']['name']) => [
+							'file' => $data['rug_image']['tmp_name'],
+							'mimetype' => mime_content_type($data['rug_image']['tmp_name']) // Auto-detect MIME type
+						]
+					]);
+				}
+				$adminEmail->send();
+				$this->Flash->set('Thank you for your rug selling request. We will get back to you shortly!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-success']]);
+			} else {
+				$this->Flash->set('Please fill all the required fields!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
+			}
+
+			return $this->redirect(['action' => 'rugsellus']);
+		}
+	}
 	public function faq()
 	{
 		$this->viewBuilder()->setLayout('front');

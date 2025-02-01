@@ -27,7 +27,7 @@ use Cake\Routing\Router; ?>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form_group">
-                            <?php echo  $this->Form->control('email', ["name" => "email", 'label' => false, "placeholder" => "Username or Email", "class" => "fotm_control", "div" => false]); ?>
+                            <?php echo  $this->Form->control('email', ["name" => "email", 'label' => false, "placeholder" => "Username or Email", "class" => "fotm_control", "div" => false, "required" => true]); ?>
                         </div>
                     </div>
                     <div class="form_group">

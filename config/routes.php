@@ -93,6 +93,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/rug-cleaning-form/', ['controller' => 'Pages', 'action' => 'rugcleaning']);
     $routes->connect('/schedule-pickup-for-rug-repair/', ['controller' => 'Pages', 'action' => 'rugrepair']);
     $routes->connect('/schedule-insurance-appraisal/', ['controller' => 'Pages', 'action' => 'rugappraisal']);
+    $routes->connect('/schedule-sell-us/', ['controller' => 'Pages', 'action' => 'rugsellus']);
 
     /**
      * ...and connect the rest of 'Pages' controller's URLs.

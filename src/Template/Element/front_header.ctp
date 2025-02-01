@@ -17,7 +17,7 @@ $controller = $this->request->getParam('controller');
 
 $aboutUs_Slugs = ['kaoud-carpets-rugs', 'our-brands-inventory', 'community', 'asid'];
 $shop_Actions = ['shopping', 'rugs', 'cart', 'checkout'];
-$services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal'];
+$services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 ?>
 
 <?php echo $this->Html->script(['jquery-3.7.1.min.js']); ?>
@@ -61,7 +61,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal'];
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>rug-cleaning-form">Schedule Rug Cleaning</a></li>
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>schedule-pickup-for-rug-repair">Schedule Rug Repair</a></li>
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>schedule-insurance-appraisal">Schedule Appraisal</a></li>
-										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>rug-cleaning-form">Schedule Sell Us</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>schedule-sell-us">Schedule Sell Us</a></li>
 									</ul>
 								</li>
 								<li class="nav-item"><a class="nav-link <?= $slug == 'rug-care' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>rug-care">Rug Care</a></li>
