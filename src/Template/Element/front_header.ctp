@@ -17,6 +17,7 @@ $controller = $this->request->getParam('controller');
 
 $aboutUs_Slugs = ['kaoud-carpets-rugs', 'our-brands-inventory', 'community', 'asid'];
 $shop_Actions = ['shopping', 'rugs', 'cart', 'checkout'];
+$services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal'];
 ?>
 
 <?php echo $this->Html->script(['jquery-3.7.1.min.js']); ?>
@@ -55,12 +56,12 @@ $shop_Actions = ['shopping', 'rugs', 'cart', 'checkout'];
 								<li class="nav-item"><a class="nav-link <?= in_array($action, $shop_Actions) ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li>
 								<li class="nav-item dropdown">
-									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+									<a class="nav-link dropdown-toggle <?= in_array($action, $services_Actions) ? 'active'  : ''; ?>" href="javascript:void(0)" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<li><a class="dropdown-item" href="#">Schedule Rug Cleaning</a></li>
-										<li><a class="dropdown-item" href="#">Schedule Rug Repair</a></li>
-										<li><a class="dropdown-item" href="#">Schedule Appraisal</a></li>
-										<li><a class="dropdown-item" href="#">Schedule Sell Us</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>rug-cleaning-form">Schedule Rug Cleaning</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>schedule-pickup-for-rug-repair">Schedule Rug Repair</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>schedule-insurance-appraisal">Schedule Appraisal</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>rug-cleaning-form">Schedule Sell Us</a></li>
 									</ul>
 								</li>
 								<li class="nav-item"><a class="nav-link <?= $slug == 'rug-care' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>rug-care">Rug Care</a></li>

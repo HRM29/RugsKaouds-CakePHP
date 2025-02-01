@@ -1,7 +1,6 @@
 <?php
 
 use Cake\Routing\Router;
-use Cake\Core\Configure;
 ?>
 <section class="inner_banner shp">
     <div class="container-fluid">

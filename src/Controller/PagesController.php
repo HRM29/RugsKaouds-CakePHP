@@ -202,50 +202,153 @@ class PagesController extends AppController
 
 	public function rugcleaning()
 	{
-
 		// $seoKeyword = "area rug cleaning in Wilton, pile oriental rug cleaners Wilton";
 		$seoTitle = "Schedule Pickup for Rug Cleaning - Kaoud Carpets & Rugs";
 		// $seoDescription = "We confer Oriental Rug Cleaning Service in Wilton, CT. Our professional experts help remove harmful allergens, dust mites, pet stains, and mold at the source.";
 		$this->set('title_for_layout', $seoTitle);
-		// $this->set('keyword_for_layout', $seoKeyword);
-		// $this->set('description_for_layout', $seoDescription);
 		$this->viewBuilder()->setLayout('front');
+		$states = parent::statesList();
+		$this->set(compact('states'));
 
-		
+		if ($this->request->is('post')) {
+			$data = $this->request->getData();
+			$email = new Email('default');
+			$email->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+				->setTo($data['email'])
+				->setSubject('Kaoud Carpets & Rugs - Rug Cleaning Request')
+				->setEmailFormat('html')
+				->setTemplate('rug_cleaning_customer')
+				->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'actual_message' => "Thank you for your rug cleaning request. We have received your request and will get back to you shortly.", "header_message" => "Rug Cleaning Request Received"])
+				->send();
+
+			if (!empty($data['email']) && !empty($data['rug_condition'])) {
+				$email = new Email();
+				$email->setTransport('default')
+					->setFrom([Configure::read("App.EmailFrom") => 'Admin'])
+					->setTo([Configure::read("App.EmailFrom")])
+					->setSubject('Kaoud Carpets & Rugs - Rug Cleaning Request')
+					->setEmailFormat('html')
+					->setTemplate('rug_cleaning_admin')
+					->setViewVars(['data' => $data, 'intro_message' => "A new rug cleaning request has been submitted with the following details:", "header_message" => "New Rug Cleaning Request"]);
+
+				// Check if the file exists before attaching
+				if (!empty($data['rug_image']['tmp_name']) && is_uploaded_file($data['rug_image']['tmp_name'])) {
+					$email->setAttachments([
+						basename($data['rug_image']['name']) => [
+							'file' => $data['rug_image']['tmp_name'],
+							'mimetype' => mime_content_type($data['rug_image']['tmp_name']) // Auto-detect MIME type
+						]
+					]);
+				}
+				$email->send();
+				$this->Flash->set('Thank you for your rug cleaning request. We will get back to you shortly!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-success']]);
+			} else {
+				$this->Flash->set('Please fill all the required fields!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
+			}
+
+			return $this->redirect(['action' => 'rugcleaning']);
+		}
 	}
 
 	public function rugrepair()
 	{
-		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Oriental Rug Repair & Restoration Services In Wilton | Kaoud Carpets & Rugs";
-		$seoDescription = "Are you looking for a Rug Repair service? So, you are at the perfect place. Kaoud Carpets & Rugs confers the Carpet Restoration Services in Wilton, CT. Visit now";
-		$seoKeyword = "oriental wall to wall carpet in Wilton";
-		$seoH2 = "";
-		$seoH1 = "";
-
+		// $seoKeyword = "area rug Repair in Wilton, pile oriental rug cleaners Wilton";
+		$seoTitle = "Schedule Pickup for Rug Repair- Kaoud Carpets & Rugs";
+		// $seoDescription = "We confer Oriental Rug Repair Service in Wilton, CT. Our professional experts help remove harmful allergens, dust mites, pet stains, and mold at the source.";
 		$this->set('title_for_layout', $seoTitle);
-		$this->set('keyword_for_layout', $seoKeyword);
-		$this->set('description_for_layout', $seoDescription);
-		$this->set('h2_for_layout', $seoH2);
-		$this->set('h1_for_layout', $seoH1);
+		$this->viewBuilder()->setLayout('front');
+		$states = parent::statesList();
+		$this->set(compact('states'));
+
+		if ($this->request->is('post')) {
+			$data = $this->request->getData();
+			$clientEmail = new Email('default');
+			$clientEmail->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+				->setTo($data['email'])
+				->setSubject('Kaoud Carpets & Rugs - Rug Repair Request')
+				->setEmailFormat('html')
+				->setTemplate('rug_cleaning_customer')
+				->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'actual_message' => "Thank you for your rug repair request. We have received your request and will get back to you shortly.", "header_message" => "Rug Repair Request Received"])
+				->send();
+
+			if (!empty($data['email']) && !empty($data['rug_condition'])) {
+				$adminEmail = new Email();
+				$adminEmail->setTransport('default')
+					->setFrom([Configure::read("App.EmailFrom") => 'Admin'])
+					->setTo([Configure::read("App.EmailFrom")])
+					->setSubject('Kaoud Carpets & Rugs - Rug Repair Request')
+					->setEmailFormat('html')
+					->setTemplate('rug_cleaning_admin')
+					->setViewVars(['data' => $data, 'intro_message' => "A new rug repair request has been submitted with the following details:", "header_message" => "New Rug Repair Request"]);
+
+				// Check if the file exists before attaching
+				if (!empty($data['rug_image']['tmp_name']) && is_uploaded_file($data['rug_image']['tmp_name'])) {
+					$adminEmail->setAttachments([
+						basename($data['rug_image']['name']) => [
+							'file' => $data['rug_image']['tmp_name'],
+							'mimetype' => mime_content_type($data['rug_image']['tmp_name']) // Auto-detect MIME type
+						]
+					]);
+				}
+				$adminEmail->send();
+				$this->Flash->set('Thank you for your rug cleaning request. We will get back to you shortly!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-success']]);
+			} else {
+				$this->Flash->set('Please fill all the required fields!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
+			}
+
+			return $this->redirect(['action' => 'rugrepair']);
+		}
 	}
 
 	public function rugappraisal()
 	{
-		$seoKeyword = "oriental rug appraiser Wilton";
-		$seoTitle = "Oriental Rug Appraiser in Wilton - Kaoud Carpets & Rugs";
-		$seoDescription = "Check out the Kaoud Carpets & Rugs, we are the ORRA certified oriental rug appraiser in Wilton. Explore our website to know the details!";
-		$seoH2 = "";
-		$seoH1 = "Oriental Rugs Wilton";
-
+		// $seoKeyword = "area rug Repair in Wilton, pile oriental rug cleaners Wilton";
+		$seoTitle = "Schedule Insurance Appraisal - Carpets & Rugs";
+		// $seoDescription = "We confer Oriental Rug Repair Service in Wilton, CT. Our professional experts help remove harmful allergens, dust mites, pet stains, and mold at the source.";
 		$this->set('title_for_layout', $seoTitle);
-		$this->set('keyword_for_layout', $seoKeyword);
-		$this->set('description_for_layout', $seoDescription);
-		$this->set('h2_for_layout', $seoH2);
-		$this->set('h1_for_layout', $seoH1);
-
-
 		$this->viewBuilder()->setLayout('front');
+		$states = parent::statesList();
+		$this->set(compact('states'));
+
+		if ($this->request->is('post')) {
+			$data = $this->request->getData();
+
+			$clientEmail = new Email('default');
+			$clientEmail->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+				->setTo($data['email'])
+				->setSubject('Kaoud Carpets & Rugs - Rug Appraisal Request')
+				->setEmailFormat('html')
+				->setTemplate('rug_appraisal_customer')
+				->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'data' => $data])
+				->send();
+
+			if (!empty($data['preferred_date']) && !empty($data['alternate_date']) && !empty($data['rug_request_problem'])) {
+				$adminEmail = new Email();
+				$adminEmail->setTransport('default')
+					->setFrom([Configure::read("App.EmailFrom") => 'Admin'])
+					->setTo([Configure::read("App.EmailFrom"),'harshit@racknap.com'])
+					->setSubject('Kaoud Carpets & Rugs - Rug Appraisal Request')
+					->setEmailFormat('html')
+					->setTemplate('rug_appraisal_admin')
+					->setViewVars(['data' => $data]);
+
+				// Check if the file exists before attaching
+				if (!empty($data['rug_image']['tmp_name']) && is_uploaded_file($data['rug_image']['tmp_name'])) {
+					$adminEmail->setAttachments([
+						basename($data['rug_image']['name']) => [
+							'file' => $data['rug_image']['tmp_name'],
+							'mimetype' => mime_content_type($data['rug_image']['tmp_name']) // Auto-detect MIME type
+						]
+					]);
+				}
+				$adminEmail->send();
+				$this->Flash->set('Thank you for your rug cleaning request. We will get back to you shortly!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-success']]);
+			} else {
+				$this->Flash->set('Please fill all the required fields!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
+			}
+
+			return $this->redirect(['action' => 'rugappraisal']);
+		}
 	}
 
 	public function faq()

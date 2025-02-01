@@ -246,9 +246,9 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => 'app@mailinator.com',
-            //'charset' => 'utf-8',
-            //'headerCharset' => 'utf-8',
+            'from' => 'mathharshit@gmail.com',
+            'charset' => 'utf-8',
+            'headerCharset' => 'utf-8',
         ],
     ],
 

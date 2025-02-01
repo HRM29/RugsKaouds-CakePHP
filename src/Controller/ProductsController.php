@@ -759,7 +759,7 @@ class ProductsController extends AppController
 							// CC email with fallback
 							$cc = 'mathharshit2916@gmail.com'; // Default fallback email
 							if (!empty(Configure::read("App.EmailFrom")) && filter_var(Configure::read("App.EmailFrom"), FILTER_VALIDATE_EMAIL)) {
-								//$cc = Configure::read("App.EmailFrom"); // Set the actual EmailFrom config value if it's valid
+								$cc = Configure::read("App.EmailFrom"); // Set the actual EmailFrom config value if it's valid
 							}
 
 							// Set email parameters

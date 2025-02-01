@@ -90,6 +90,10 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/my-account-2', ['controller' => 'Users', 'action' => 'myaccount']);
     $routes->connect('/my-account/lost-password/', ['controller' => 'Users', 'action' => 'forgotPassword']);
 
+    $routes->connect('/rug-cleaning-form/', ['controller' => 'Pages', 'action' => 'rugcleaning']);
+    $routes->connect('/schedule-pickup-for-rug-repair/', ['controller' => 'Pages', 'action' => 'rugrepair']);
+    $routes->connect('/schedule-insurance-appraisal/', ['controller' => 'Pages', 'action' => 'rugappraisal']);
+
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
