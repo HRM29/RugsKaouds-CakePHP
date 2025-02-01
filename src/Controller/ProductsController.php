@@ -39,7 +39,7 @@ class ProductsController extends AppController
 		parent::initialize();
 		//$this->loadComponent('PaypalPro');
 		$this->loadComponent('SquarePayment');
-		$this->Auth->allow(['index', 'getFilterParam', 'search', 'rugs', 'rugStyle', 'rugSize', 'rugColor', 'productView', 'addToCart', 'checkCartButton', 'cart', 'checkoutnew', 'deleteCart', 'updateCart', 'removeProduct', 'applyCoupon', 'searchProducts', 'itemUpdate', 'address', 'getstate', 'orderreview', 'orderPlaced', 'getstates', 'insertProductIntoDBJson', 'insertProductIntoDBXml', 'insertProductIntoDBJsonNew', 'shopping', 'addToFaviourite', 'removeFromFaviourite', 'getState', 'checkout', 'removeCoupon']);
+		$this->Auth->allow(['index', 'getFilterParam', 'search', 'rugs', 'rugStyle', 'rugSize', 'rugColor', 'productView', 'addToCart', 'checkCartButton', 'cart', 'checkoutnew', 'deleteCart', 'updateCart', 'removeProduct', 'applyCoupon', 'searchProducts', 'itemUpdate', 'address', 'getstate', 'orderreview', 'orderPlaced', 'getstates', 'insertProductIntoDBJson', 'insertProductIntoDBXml', 'insertProductIntoDBJsonNew', 'shopping', 'addToFaviourite', 'removeFromFaviourite', 'getState', 'checkout', 'removeCoupon', 'searchProductByNameOrSku']);
 		$this->loadComponent('Paginator');
 		$this->viewBuilder()->setLayout('front');
 	}
@@ -2373,5 +2373,41 @@ class ProductsController extends AppController
 			$this->Flash->set('The user could not be saved. Please, try again.', ['key' => 'positive_register', 'params' => ['class' => 'alert alert-danger']]);
 			return false;
 		}
+	}
+
+	public function searchProductByNameOrSku()
+	{
+		$this->autoRender = false;
+		$response = ['status' => 0, 'message' => 'Invalid request', 'data' => []];
+
+		if ($this->request->is(['post', 'put'])) {
+			$searchTerm = $this->request->getData('search_term');
+			if (!empty($searchTerm)) {
+				$productTable = TableRegistry::getTableLocator()->get('Products');
+				$query = $productTable->find()
+					->select(['id', 'title', 'sku_no'])
+					->where([
+						'OR' => [
+							'Products.title LIKE' => '%' . $searchTerm . '%',
+							'Products.sku_no LIKE' => '%' . $searchTerm . '%'
+						],
+						'Products.status' => 1,
+						'Products.sold_status' => 0
+					])
+					->limit(10);
+
+				$products = $query->all()->toArray();
+				if (!empty($products)) {
+					$response = ['status' => 1, 'message' => 'Products found', 'data' => $products];
+				} else {
+					$response = ['status' => 0, 'message' => 'No products found', 'data' => []];
+				}
+			} else {
+				$response = ['status' => 0, 'message' => 'Search term is empty', 'data' => []];
+			}
+		}
+
+		echo json_encode($response);
+		exit;
 	}
 }

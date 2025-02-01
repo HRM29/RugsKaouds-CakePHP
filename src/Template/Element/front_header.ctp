@@ -83,7 +83,11 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 						</div>
 						<div class="srch_icon">
 							<ul>
-								<li><a href="#"><i class="bi bi-search"></i></a></li>
+								<li>
+									<a href="javascript:void(0);" id="toggleSearch">
+										<i class="bi bi-search"></i>
+									</a>
+								</li>
 								<li><a href="<?php echo $this->Url->build(['controller' => 'Users', 'action' => 'myAccountRedirect']); ?>"><i class="bi bi-person-fill"></i></a></li>
 								<li><a href="<?php echo Router::url('/', true); ?>users/wishlist"><i class="bi bi-heart-fill"></i></a></li>
 								<li><a href="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'cart']); ?>"><i class="bi bi-cart-fill"></i><span><?= $cart_count; ?></span></a></li>
@@ -95,6 +99,11 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 		</div>
 	</div>
 </header>
+<!-- Search Bar (Initially Hidden) -->
+<div class="search-container" id="searchContainer">
+	<input type="text" id="searchInput" class="search-bar" placeholder="Search products...">
+	<div class="search-results" id="searchResults"></div>
+</div>
 <script>
 	if (document.getElementById('search-details')) {
 		document.getElementById('search-details').addEventListener('keyup', function(event) {
@@ -159,4 +168,81 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 	function hideLoadingModal() {
 		document.getElementById('loadingModal').style.display = 'none';
 	}
+
+	document.getElementById("toggleSearch").addEventListener("click", function() {
+		let searchContainer = document.getElementById("searchContainer");
+
+		if (searchContainer.style.display === "block") {
+			searchContainer.style.display = "none";
+		} else {
+			searchContainer.style.display = "block";
+			document.getElementById("searchInput").focus(); // Auto-focus on input
+		}
+	});
+
+	// Close search bar when clicking outside
+	document.addEventListener("click", function(event) {
+		let searchContainer = document.getElementById("searchContainer");
+		let toggleButton = document.getElementById("toggleSearch");
+
+		if (!searchContainer.contains(event.target) && !toggleButton.contains(event.target)) {
+			searchContainer.style.display = "none";
+		}
+	});
+
+	function debounce(func, wait) {
+		let timeout;
+		return function(...args) {
+			const context = this;
+			clearTimeout(timeout);
+			timeout = setTimeout(() => func.apply(context, args), wait);
+		};
+	}
+
+	function performSearch(query) {
+		let searchResults = document.getElementById("searchResults");
+		var csrfToken = $("[name='_csrfToken']").val();
+		$.ajax({
+			headers: {
+				'X-CSRF-Token': csrfToken
+			},
+			url: '<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'searchProductByNameOrSku']); ?>', // Replace with your controller and action
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				search_term: query
+			},
+			success: function(response) {
+				if (response.status === 1 && response.data.length > 0) {
+					searchResults.innerHTML = response.data.map(item =>
+						`<div class="result-item" onclick="selectResult('${item.sku_no}')">
+                            ${item.title} - <span style="color: #881C06;">${item.sku_no}</span>
+                        </div>`
+					).join("");
+					searchResults.style.display = "block";
+				} else {
+					searchResults.innerHTML = `<div class="result-item">No results found</div>`;
+					searchResults.style.display = "block";
+				}
+			},
+			error: function() {
+				searchResults.innerHTML = `<div class="result-item">Error retrieving results</div>`;
+				searchResults.style.display = "block";
+			}
+		});
+	}
+
+	function selectResult(SKUID) {
+		const PRODUCT_URL = '<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'productView']); ?>' + '/' + btoa(SKUID);
+		window.location.href = PRODUCT_URL;
+	}
+
+	document.getElementById("searchInput").addEventListener("input", debounce(function() {
+		let query = this.value.trim();
+		if (query) {
+			performSearch(query);
+		} else {
+			document.getElementById("searchResults").style.display = "none";
+		}
+	}, 300));
 </script>
