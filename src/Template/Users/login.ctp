@@ -35,6 +35,7 @@
                     </div>
                     <p class="lst_pswrd"><a rel="nofollow" href="<?php echo $this->Url->build(['controller' => 'users', 'action' => 'forgotPassword']); ?>">Lost Your Password?</a></p>
                 </div>
+                <?= $this->Form->control('g-recaptcha-response', ["type" => "hidden", "class" => "g-recaptcha-response", "id" => false]); ?>
                 <?php echo $this->Form->end(); ?>
             </div>
             <div class="col-md-6">
@@ -58,6 +59,7 @@
                 <div class="form_group">
                     <?php echo $this->Form->button("<span>Register</span>", array('name' => 'submitcreate', 'class' => 'view-button btn', 'type' => 'submit', 'id' => 'submitcreate',  'title' => 'Create an account')); ?>
                 </div>
+                <?= $this->Form->control('g-recaptcha-response', ["type" => "hidden", "class" => "g-recaptcha-response", "id" => false]); ?>
                 <?php echo $this->Form->end(); ?>
             </div>
 

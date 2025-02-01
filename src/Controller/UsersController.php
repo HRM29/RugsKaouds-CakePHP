@@ -60,14 +60,10 @@ class UsersController extends AppController
 			$user = $userTable->patchEntity($user, $postdata);
 			$user->status = 2;
 			if (!$user->getErrors()) {
-
 				$user->role_id = 3;
-				$user->first_name = $this->request->getData()["email"];
 				unset($user->confirm_password);
-				//echo '<pre>';print_r($user);die;
 
 				if ($userTable->save($user)) {
-
 					$emailId = $this->request->getData()["email"];
 					$username = ucfirst($user->first_name);
 					$activation_link = Router::url('/', true) . 'users/activate/' . base64_encode($user->id);
@@ -84,6 +80,14 @@ class UsersController extends AppController
 						$message = $mailMessage;
 						if (parent::sendMailTo($to, $subject, $message)) {
 							$this->Flash->set('Please check your email for Account Activation!', ['key' => 'positive_register', 'params' => ['class' => 'alert alert-success']]);
+							if ($postdata['sign-up-letter'] == 1) {
+								$subsPostData = [];
+								$subsPostData['subscriber_name'] = $postdata['email'];
+								$subsPostData['email'] = $postdata['email'];
+								$subsPostData['subscribe-type'] = 'newsletter';
+								$subsPostData['g-recaptcha-response'] = $postdata['g-recaptcha-response'];
+								parent::subscribeLetterMethod($subsPostData);
+							}
 						}
 						$this->redirect(array('action' => 'login'));
 					} catch (Exception $e) {
@@ -823,7 +827,7 @@ class UsersController extends AppController
 		}
 		$cartItems = $this->checkCartButton();
 
-		$this->set(compact('favouritesDatas','cartItems'));
+		$this->set(compact('favouritesDatas', 'cartItems'));
 	}
 	public function deleteWishlistItem()
 	{
@@ -855,7 +859,7 @@ class UsersController extends AppController
 			// echo "<pre>user->UserDetails: ";print_r($user->user_detail);echo "</pre>";
 			// echo "<pre>user->this->request->getData(): ";print_r($this->request->getData());echo "</pre>";
 			// die();
-			if(empty($userDetail)){
+			if (empty($userDetail)) {
 				$userDetail = $userDetailsTable->newEntity();
 			}
 			$userDetail->user_id = $this->Auth->user('id');

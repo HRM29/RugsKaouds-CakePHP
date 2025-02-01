@@ -336,6 +336,7 @@ if ($session->check('coupon')) {
 								<?php echo $this->Form->hidden('total_price', ['value' => $total_price]); ?>
 								<?php echo $this->Form->hidden('total_qty', ['value' => $total_quanty]); ?>
 								<?php echo $this->Form->hidden('checkout_option', ['value' => 0, 'id' => 'checkout_option']); ?>
+								<?= $this->Form->control('g-recaptcha-response', ["type" => "hidden", "class" => "g-recaptcha-response", "id" => false]); ?>
 							</tbody>
 							<?= $this->Form->end(); ?>
 						</table>

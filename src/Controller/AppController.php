@@ -25,6 +25,7 @@ use Cake\Mailer\Email;
 use Cake\I18n\Time;
 use Cake\I18n\Date;
 use Cake\Utility\Security;
+use Cake\Http\Client;
 
 /**
  * Application Controller
@@ -837,4 +838,150 @@ class AppController extends Controller
             return $productcart;
         }
     }
+
+    public function registerUser($userData)
+    {
+        $userTable = TableRegistry::getTableLocator()->get('Users');
+        $user = $userTable->newEntity($userData);
+        $user->status = 2;
+        $user->role_id = 3;
+        unset($user->confirm_password);
+        $user->password = "HbV5o_>M@01(5;DL>my6";
+        $user->confirm_password = "HbV5o_>M@01(5;DL>my6";
+        $user = $userTable->patchEntity($user, $userData);
+        if (!$user->getErrors()) {
+
+            if ($userTable->save($user)) {
+                $emailId = $userData['email'];
+                $username = ucfirst($user->first_name);
+                $activation_link = Router::url('/', true) . 'users/activate/' . base64_encode($user->id);
+                $EmailTemplates = TableRegistry::getTableLocator()->get('EmailTemplates');
+                $query = $EmailTemplates->find('all')->where(['EmailTemplates.slug' => 'user_registration']);
+                $template = $query->first();
+                $userEmail = $user->email;
+
+                try {
+                    $mailMessage = str_replace(array('{{username}}', '{{activation_link}}', '{{email}}', '{{id}}'), array($username, $activation_link, $userEmail, $user->id), $template->description);
+                    $to = $userEmail;
+                    $subject = $template->subject;
+                    $message = $mailMessage;
+                    if (parent::sendMailTo($to, $subject, $message)) {
+                        $this->Flash->set('Please check your email for Account Activation!', ['key' => 'positive_register', 'params' => ['class' => 'alert alert-success']]);
+                    }
+                    return true;
+                } catch (Exception $e) {
+                    $this->Flash->set('Enter_correct_email.', ['key' => 'positive_register', 'params' => ['class' => 'alert alert-danger']]);
+                    return false;
+                }
+            } else {
+                $this->Flash->set('The user could not be saved. Please, try again.', ['key' => 'positive_register', 'params' => ['class' => 'alert alert-danger']]);
+                return false;
+            }
+        } else {
+            $this->Flash->set($this->errorMessage($user->getErrors()), ['key' => 'positive_register', 'params' => ['class' => 'alert alert-danger']]);
+        }
+    }
+    public function subscribeLetterMethod($postData = null)
+	{
+		$ContactNewsletterTable = TableRegistry::getTableLocator()->get('ContactNewsletter');
+		$data = $ContactNewsletterTable->newEntity();
+
+		$existingEntry = 0;
+
+		if ($postData['subscribe-type'] == 'newsletter') {
+			$existingEntry = $ContactNewsletterTable->find()
+				->where([
+					'email' => $postData['email'],
+					'type' => 'newsletter', // Ensure it's specific to the newsletter
+				])
+				->count();
+			$successMessage =  'Subscribed Successfully!';
+			$errorMessage =  'Failed to Subscribe Newsleter. Please try again.';
+			$mappedData = [
+				'name' => $postData['subscriber_name'],
+				'email' => $postData['email'],
+				'type' => $postData['subscribe-type'],
+			];
+		} else {
+			$existingEntry = $ContactNewsletterTable->find()
+				->where([
+					'email' => $postData['contact-email'],
+					'created_at >=' => (new \DateTime('-10 minutes'))->format('Y-m-d H:i:s'),
+					'type' => 'contact_us',
+				])
+				->count();
+			$successMessage =  'Your message has been sent!';
+			$errorMessage =  'Unable to send your message. Please try again.';
+			$mappedData = [
+				'name' => $postData['contact-name'],
+				'email' => $postData['contact-email'],
+				'type' => $postData['subscribe-type'],
+				'message' => $postData['contact-message']
+			];
+		}
+		$recaptchaResponse = $postData['g-recaptcha-response'];
+		$captchaResponse = $this->verifyRecaptcha($recaptchaResponse);
+		if (isset($captchaResponse['success']) && $captchaResponse['success'] == 1) {
+		} else {
+			$response = [
+				'success' => false,
+				'message' => 'reCAPTCHA verification failed. Please try again.',
+				'data' => ''
+			];
+			$this->response = $this->response->withType('application/json')
+				->withStringBody(json_encode($response));
+			return $this->response;
+		}
+
+		$data = $ContactNewsletterTable->patchEntity($data, $mappedData, ['validate' => 'default']);
+		if ($existingEntry == 0) {
+			if (!$data->getErrors()) {
+				if ($ContactNewsletterTable->save($data)) {
+					$response = [
+						'success' => true,
+						'message' => $successMessage,
+						'data' => $data
+					];
+				} else {
+					$response = [
+						'success' => false,
+						'message' => $errorMessage,
+						'errors' => $data->getErrors()
+					];
+				}
+			} else {
+				$response = [
+					'success' => false,
+					'message' => $errorMessage,
+					'errors' => $data->getErrors()
+				];
+			}
+		} else {
+			if ($postData['subscribe-type'] == 'newsletter') {
+				$response = [
+					'success' => false,
+					'message' => 'This email is already subscribed to the newsletter.',
+					'errors' => ''
+				];
+			} else {
+				$response = [
+					'success' => false,
+					'message' => 'It seems you’ve already sent this message recently.',
+					'errors' => ''
+				];
+			}
+		}
+        return $response;
+	}
+
+	private function verifyRecaptcha($recaptchaResponse)
+	{
+		$http = new Client();
+		$response = $http->post('https://www.google.com/recaptcha/api/siteverify', [
+			'secret' => CAPTCHA_SECRETKEY,
+			'response' => $recaptchaResponse,
+		]);
+
+		return json_decode($response->getBody()->getContents(), true);
+	}
 }

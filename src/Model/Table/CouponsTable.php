@@ -34,9 +34,17 @@ class CouponsTable extends Table
             ->notEmpty('title');
 			
         $validator
-                ->requirePresence('code')
-				->notEmpty('code', 'No code found.')
-				->add('code', 'unique', ['rule' => ['validateUnique'], 'provider' => 'table','message' => 'Code already exists']);
+          ->requirePresence('code')
+          ->notEmpty('code', 'No code found.')
+          ->add('code', 'unique', [
+              'rule' => function ($value, $context) {
+            $existing = $this->find()
+                ->where(['LOWER(code) LIKE' => strtolower($value)])
+                ->first();
+            return empty($existing);
+              },
+              'message' => 'Code already exists'
+          ]);
 				
 				
             $validator 

@@ -601,102 +601,12 @@ class PagesController extends AppController
 		exit;
 	}
 
-	public function subscribeLetter()
+	public function subscribeLetter($postData = null)
 	{
-		$this->request->allowMethod(['post']); // Allow only POST requests
-		$this->autoRender = false;
-
-		$ContactNewsletterTable = TableRegistry::getTableLocator()->get('ContactNewsletter');
-		$data = $ContactNewsletterTable->newEntity();
-
-		$postData = $this->request->getData();
-		// Check for duplicate email
-		$existingEntry = 0;
-
-		if ($postData['subscribe-type'] == 'newsletter') {
-			$existingEntry = $ContactNewsletterTable->find()
-				->where([
-					'email' => $postData['email'],
-					'type' => 'newsletter', // Ensure it's specific to the newsletter
-				])
-				->count();
-			$successMessage =  'Subscribed Successfully!';
-			$errorMessage =  'Failed to Subscribe Newsleter. Please try again.';
-			$mappedData = [
-				'name' => $postData['subscriber_name'],
-				'email' => $postData['email'],
-				'type' => $postData['subscribe-type'],
-			];
-		} else {
-			$existingEntry = $ContactNewsletterTable->find()
-				->where([
-					'email' => $postData['contact-email'],
-					'created_at >=' => (new \DateTime('-10 minutes'))->format('Y-m-d H:i:s'),
-					'type' => 'contact_us',
-				])
-				->count();
-			$successMessage =  'Your message has been sent!';
-			$errorMessage =  'Unable to send your message. Please try again.';
-			$mappedData = [
-				'name' => $postData['contact-name'],
-				'email' => $postData['contact-email'],
-				'type' => $postData['subscribe-type'],
-				'message' => $postData['contact-message']
-			];
+		$response = [];
+		if ($this->request->is('post')) {
+			$response = parent::subscribeLetterMethod($this->request->getData());
 		}
-		$recaptchaResponse = $postData['g-recaptcha-response'];
-		$captchaResponse = $this->verifyRecaptcha($recaptchaResponse);
-		if (isset($captchaResponse['success']) && $captchaResponse['success'] == 1) {
-		} else {
-			$response = [
-				'success' => false,
-				'message' => 'reCAPTCHA verification failed. Please try again.',
-				'data' => ''
-			];
-			$this->response = $this->response->withType('application/json')
-				->withStringBody(json_encode($response));
-			return $this->response;
-		}
-
-		$data = $ContactNewsletterTable->patchEntity($data, $mappedData, ['validate' => 'default']);
-		if ($existingEntry == 0) {
-			if (!$data->getErrors()) {
-				if ($ContactNewsletterTable->save($data)) {
-					$response = [
-						'success' => true,
-						'message' => $successMessage,
-						'data' => $data
-					];
-				} else {
-					$response = [
-						'success' => false,
-						'message' => $errorMessage,
-						'errors' => $data->getErrors()
-					];
-				}
-			} else {
-				$response = [
-					'success' => false,
-					'message' => $errorMessage,
-					'errors' => $data->getErrors()
-				];
-			}
-		} else {
-			if ($postData['subscribe-type'] == 'newsletter') {
-				$response = [
-					'success' => false,
-					'message' => 'This email is already subscribed to the newsletter.',
-					'errors' => ''
-				];
-			} else {
-				$response = [
-					'success' => false,
-					'message' => 'It seems you’ve already sent this message recently.',
-					'errors' => ''
-				];
-			}
-		}
-
 		// Explicitly return the response as JSON
 		$this->response = $this->response->withType('application/json')
 			->withStringBody(json_encode($response));

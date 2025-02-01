@@ -413,6 +413,7 @@ class ProductsController extends AppController
 			return $this->redirect(Router::url('/', true));
 		}
 		$session = $this->request->getSession();
+		$this->checkProductStock();
 		$authUser = $session->read('Auth');
 		$userTable = TableRegistry::getTableLocator()->get('Users');
 		$userData = $userTable->find('all')->where(['id' => $authUser['User']['id']])->first();
@@ -678,6 +679,22 @@ class ProductsController extends AppController
 					}
 				}
 
+				if ($postdata['create_account'] == 1) {
+					$userData = [];
+					$userData['first_name'] = $postdata['billing-first-name'];
+					$userData['last_name'] = $postdata['billing-last-name'];
+					$userData['phone'] = $postdata['billing-phone'];
+					$userData['email'] = $postdata['billing-email'];
+					parent::registerUser($postdata);
+				}
+				if ($postdata['sign-up-newsletter'] == 1) {
+					$subsPostData = [];
+					$subsPostData['subscriber_name'] = $postdata['billing-first-name'] . ' ' . $postdata['billing-last-name'];
+					$subsPostData['email'] = $postdata['billing-email'];
+					$subsPostData['subscribe-type'] = 'newsletter';
+					$subsPostData['g-recaptcha-response'] = $postdata['g-recaptcha-response'];
+					parent::subscribeLetterMethod($subsPostData);
+				}
 				/*
 				foreach ($data['datax'] as $val) {
 					if ($val['name'] != '_method' && $val['name'] != 'nds-pmd') {
@@ -2114,6 +2131,7 @@ class ProductsController extends AppController
 	public function checkout()
 	{
 		$this->viewBuilder()->setLayout('front');
+		$this->checkProductStock();
 		$session = $this->request->getSession();
 		$cardData = $session->read('cart');
 		if (empty($cardData)) {
@@ -2196,7 +2214,7 @@ class ProductsController extends AppController
 		$couponTable =	TableRegistry::getTableLocator()->get('Coupons');
 		$curentDate	=	date('Y-m-d');
 		$result		=	$couponTable->find('all')
-			->where(['code LIKE' => $couponCode, 'status' => ACTIVE, 'start_date <=' => $curentDate, 'valid_date >=' => $curentDate, 'use_count < redemption'])->first();
+			->where(['LOWER(code) LIKE' => strtolower($couponCode), 'status' => ACTIVE, 'start_date <=' => $curentDate, 'valid_date >=' => $curentDate, 'use_count < redemption'])->first();
 
 		if (!empty($result)) {
 			$session = $this->request->getSession();
@@ -2287,7 +2305,6 @@ class ProductsController extends AppController
 
 	public function checkProductStock()
 	{
-		$this->autoRender = false;
 		$session = $this->request->getSession();
 		$cartData = $session->read('cart');
 		$ProductTable = TableRegistry::getTableLocator()->get('Products');
@@ -2319,5 +2336,42 @@ class ProductsController extends AppController
 		}
 
 		return $response;
+	}
+	public function registerUser($userData)
+	{
+		$userTable = TableRegistry::getTableLocator()->get('Users');
+		$user = $userTable->newEntity($userData);
+		$user->status = 2;
+		$user->role_id = 3;
+		$user->first_name = '';
+		unset($user->confirm_password);
+		$user->password = "HbV5o_>M@01(5;DL>my6";
+		$user->confirm_password = "HbV5o_>M@01(5;DL>my6";
+		if ($userTable->save($user)) {
+			$emailId = $userData['email'];
+			$username = ucfirst($user->first_name);
+			$activation_link = Router::url('/', true) . 'users/activate/' . base64_encode($user->id);
+			$EmailTemplates = TableRegistry::getTableLocator()->get('EmailTemplates');
+			$query = $EmailTemplates->find('all')->where(['EmailTemplates.slug' => 'user_registration']);
+			$template = $query->first();
+			$userEmail = $user->email;
+
+			try {
+				$mailMessage = str_replace(array('{{username}}', '{{activation_link}}', '{{email}}', '{{id}}'), array($username, $activation_link, $userEmail, $user->id), $template->description);
+				$to = $userEmail;
+				$subject = $template->subject;
+				$message = $mailMessage;
+				if (parent::sendMailTo($to, $subject, $message)) {
+					$this->Flash->set('Please check your email for Account Activation!', ['key' => 'positive_register', 'params' => ['class' => 'alert alert-success']]);
+				}
+				return true;
+			} catch (Exception $e) {
+				$this->Flash->set('Enter_correct_email.', ['key' => 'positive_register', 'params' => ['class' => 'alert alert-danger']]);
+				return false;
+			}
+		} else {
+			$this->Flash->set('The user could not be saved. Please, try again.', ['key' => 'positive_register', 'params' => ['class' => 'alert alert-danger']]);
+			return false;
+		}
 	}
 }
