@@ -757,6 +757,7 @@ class ProductsController extends AppController
 
 							// update product table
 							$ProductsTable->updateAll(['sold_status' => 1], ['id' => $proSub['id']]);
+							$ProductsTable->updateAll(['status' => 0], ['id' => $proSub['id']]);
 						}
 
 						$email_billing = $orders->find('all')->select(['billing_first_name', 'billing_last_name', 'billing_email',])->where(['id' => $last_id])->First();
@@ -2389,7 +2390,7 @@ class ProductsController extends AppController
 					->where([
 						'OR' => [
 							'Products.title LIKE' => '%' . $searchTerm . '%',
-							'Products.sku_no LIKE' => '%' . $searchTerm . '%'
+							'Products.sku_no' =>  $searchTerm
 						],
 						'Products.status' => 1,
 						'Products.sold_status' => 0

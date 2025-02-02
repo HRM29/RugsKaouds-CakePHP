@@ -882,106 +882,117 @@ class AppController extends Controller
         }
     }
     public function subscribeLetterMethod($postData = null)
-	{
-		$ContactNewsletterTable = TableRegistry::getTableLocator()->get('ContactNewsletter');
-		$data = $ContactNewsletterTable->newEntity();
+    {
+        $ContactNewsletterTable = TableRegistry::getTableLocator()->get('ContactNewsletter');
+        $data = $ContactNewsletterTable->newEntity();
 
-		$existingEntry = 0;
+        $existingEntry = 0;
 
-		if ($postData['subscribe-type'] == 'newsletter') {
-			$existingEntry = $ContactNewsletterTable->find()
-				->where([
-					'email' => $postData['email'],
-					'type' => 'newsletter', // Ensure it's specific to the newsletter
-				])
-				->count();
-			$successMessage =  'Subscribed Successfully!';
-			$errorMessage =  'Failed to Subscribe Newsleter. Please try again.';
-			$mappedData = [
-				'name' => $postData['subscriber_name'],
-				'email' => $postData['email'],
-				'type' => $postData['subscribe-type'],
-			];
-		} else {
-			$existingEntry = $ContactNewsletterTable->find()
-				->where([
-					'email' => $postData['contact-email'],
-					'created_at >=' => (new \DateTime('-10 minutes'))->format('Y-m-d H:i:s'),
-					'type' => 'contact_us',
-				])
-				->count();
-			$successMessage =  'Your message has been sent!';
-			$errorMessage =  'Unable to send your message. Please try again.';
-			$mappedData = [
-				'name' => $postData['contact-name'],
-				'email' => $postData['contact-email'],
-				'type' => $postData['subscribe-type'],
-				'message' => $postData['contact-message']
-			];
-		}
-		$recaptchaResponse = $postData['g-recaptcha-response'];
-		$captchaResponse = $this->verifyRecaptcha($recaptchaResponse);
-		if (isset($captchaResponse['success']) && $captchaResponse['success'] == 1) {
-		} else {
-			$response = [
-				'success' => false,
-				'message' => 'reCAPTCHA verification failed. Please try again.',
-				'data' => ''
-			];
-			$this->response = $this->response->withType('application/json')
-				->withStringBody(json_encode($response));
-			return $this->response;
-		}
+        if ($postData['subscribe-type'] == 'newsletter') {
+            $existingEntry = $ContactNewsletterTable->find()
+                ->where([
+                    'email' => $postData['email'],
+                    'type' => 'newsletter', // Ensure it's specific to the newsletter
+                ])
+                ->count();
+            $successMessage =  'Subscribed Successfully!';
+            $errorMessage =  'Failed to Subscribe Newsleter. Please try again.';
+            $mappedData = [
+                'name' => $postData['subscriber_name'],
+                'email' => $postData['email'],
+                'type' => $postData['subscribe-type'],
+            ];
+        } else {
+            $existingEntry = $ContactNewsletterTable->find()
+                ->where([
+                    'email' => $postData['contact-email'],
+                    'created_at >=' => (new \DateTime('-10 minutes'))->format('Y-m-d H:i:s'),
+                    'type' => 'contact_us',
+                ])
+                ->count();
+            $successMessage =  'Your message has been sent!';
+            $errorMessage =  'Unable to send your message. Please try again.';
+            $mappedData = [
+                'name' => $postData['contact-name'],
+                'email' => $postData['contact-email'],
+                'type' => $postData['subscribe-type'],
+                'message' => $postData['contact-message'] ?? $postData['contact-comment']
+            ];
+            $viewData = [];
+            $viewData['name'] = $postData['contact-name'];
+            $viewData['email'] = $postData['contact-email'];
+            $viewData['message'] = $postData['contact-message'] ?? $postData['contact-comment'];
+            $viewData['website'] = $postData['contact-website'] ?? ''; 
+            $clientEmail = new Email('default');
+            $clientEmail->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+                ->setTo([Configure::read("App.EmailFrom"), 'harshit@racknap.com'])
+                ->setSubject('Kaoud Carpets & Rugs - New Contact Inquiry')
+                ->setEmailFormat('html')
+                ->setTemplate('contact_us')
+                ->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'data' => $viewData])
+                ->send();
+        }
+        $recaptchaResponse = $postData['g-recaptcha-response'];
+        $captchaResponse = $this->verifyRecaptcha($recaptchaResponse);
+        if (isset($captchaResponse['success']) && $captchaResponse['success'] == 1) {
+        } else {
+            $response = [
+                'success' => false,
+                'message' => 'reCAPTCHA verification failed. Please try again.',
+                'data' => ''
+            ];
+            return $response;
+        }
 
-		$data = $ContactNewsletterTable->patchEntity($data, $mappedData, ['validate' => 'default']);
-		if ($existingEntry == 0) {
-			if (!$data->getErrors()) {
-				if ($ContactNewsletterTable->save($data)) {
-					$response = [
-						'success' => true,
-						'message' => $successMessage,
-						'data' => $data
-					];
-				} else {
-					$response = [
-						'success' => false,
-						'message' => $errorMessage,
-						'errors' => $data->getErrors()
-					];
-				}
-			} else {
-				$response = [
-					'success' => false,
-					'message' => $errorMessage,
-					'errors' => $data->getErrors()
-				];
-			}
-		} else {
-			if ($postData['subscribe-type'] == 'newsletter') {
-				$response = [
-					'success' => false,
-					'message' => 'This email is already subscribed to the newsletter.',
-					'errors' => ''
-				];
-			} else {
-				$response = [
-					'success' => false,
-					'message' => 'It seems you’ve already sent this message recently.',
-					'errors' => ''
-				];
-			}
-		}
+        $data = $ContactNewsletterTable->patchEntity($data, $mappedData, ['validate' => 'default']);
+        if ($existingEntry == 0) {
+            if (!$data->getErrors()) {
+                if ($ContactNewsletterTable->save($data)) {
+                    $response = [
+                        'success' => true,
+                        'message' => $successMessage,
+                        'data' => $data
+                    ];
+                } else {
+                    $response = [
+                        'success' => false,
+                        'message' => $errorMessage,
+                        'errors' => $data->getErrors()
+                    ];
+                }
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => $errorMessage,
+                    'errors' => $data->getErrors()
+                ];
+            }
+        } else {
+            if ($postData['subscribe-type'] == 'newsletter') {
+                $response = [
+                    'success' => false,
+                    'message' => 'This email is already subscribed to the newsletter.',
+                    'errors' => ''
+                ];
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'It seems you’ve already sent this message recently.',
+                    'errors' => ''
+                ];
+            }
+        }
         return $response;
-	}
+    }
 
-	private function verifyRecaptcha($recaptchaResponse)
-	{
-		$http = new Client();
-		$response = $http->post('https://www.google.com/recaptcha/api/siteverify', [
-			'secret' => CAPTCHA_SECRETKEY,
-			'response' => $recaptchaResponse,
-		]);
+    private function verifyRecaptcha($recaptchaResponse)
+    {
+        $http = new Client();
+        $response = $http->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => CAPTCHA_SECRETKEY,
+            'response' => $recaptchaResponse,
+        ]);
 
-		return json_decode($response->getBody()->getContents(), true);
-	}
+        return json_decode($response->getBody()->getContents(), true);
+    }
 }
