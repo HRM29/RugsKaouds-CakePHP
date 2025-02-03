@@ -28,17 +28,18 @@ use Cake\Routing\Router;
 					<?php
 					$img_src = Router::url('/', true) . 'uploads/product/';
 					$img_name = isset($productDetail->product_images[0]->image) ? $productDetail->product_images[0]->image : '';
+					$img_Type = isset($productDetail->product_images[0]->image_type) ? $productDetail->product_images[0]->image_type : 'Single';
 
 					$sku = $productDetail->sku_no;
 
 					$inFolder = $this->General->__get_picture_folder($sku);
 
 					$filePath =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . $img_name;
-					$filePath21 =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . str_replace('jpg', 'JPG', $img_name);
+					$filePath21 =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . str_replace('jpg', 'jpg', $img_name);
 
 					$fileUrl = $img_name;
 					?>
-					<img id="xzoom-default" src="<?php echo $fileUrl; ?>" xoriginal="<?php echo $fileUrl; ?>" width="430" height="390" />
+					<img id="xzoom-default" src="<?php echo $img_Type == 'Link' ? $fileUrl : $filePath21; ?>" xoriginal="<?php echo $fileUrl; ?>" width="430" height="390" />
 				</span>
 			</div>
 			<div class="col-md-7">

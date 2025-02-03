@@ -50,7 +50,9 @@ use Cake\Core\Configure; ?>
 								<input type="hidden" name="sort_type" id="sort_type" value="<?= $this->request->getQuery('sort') ?>">
 							</div>
 							<?php
+							// echo "<pre>ProductData: ";print_r($ProductData);echo "</pre>";
 							foreach ($ProductData as $data) {
+
 								if (!empty($data['product_images'])) {
 									$image_data = $data['product_images'][0];
 									$imageURL = $image_data->image;
@@ -64,6 +66,7 @@ use Cake\Core\Configure; ?>
 												$img_src = Router::url('/', true) . 'uploads/product/';
 
 												$img_name = isset($data->product_images[0]->image) ? $data->product_images[0]->image : '';
+												$img_Type = isset($data->product_images[0]->image_type) ? $data->product_images[0]->image_type : 'Single';
 
 												// $img_name = $data->sku_no."a.jpg";
 												$img_name_a = substr($data->sku_no, 3) . "a.jpg";
@@ -82,11 +85,11 @@ use Cake\Core\Configure; ?>
 												$fileUrl = $img_src . $inFolder . "/" . $img_name;
 												$fileUrl_A = $img_src . $inFolder . "/" . $img_name_a;
 
-												$fileUr2l = $img_src . $inFolder . "/" . str_replace('jpg', 'JPG', $img_name);
+												$fileUr2l = $img_src . $inFolder . "/" . str_replace('jpg', 'jpg', $img_name);
 
 												if ($img_name != '') {
 												?>
-													<img src="<?php echo $img_name; ?>" alt="<?= $data->title; ?>" width="400" />
+													<img src="<?php echo $img_Type == 'Link' ? $img_name : $fileUr2l; ?>" alt="<?= $data->title; ?>" width="400" />
 
 												<?php } else { ?>
 													<img src="<?php echo Router::url('/', true); ?>img/no-image.png" alt="<?php echo $data->title; ?>" style="height:250px;" />
@@ -97,7 +100,13 @@ use Cake\Core\Configure; ?>
 										<div class="arrvl_text">
 											<h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>"><?= $data->style; ?></a></h3>
 											<p><?= $data->title; ?></p>
-											<span>$<?php echo number_format($data->selling_price, 2); ?></span>
+											<?php
+											if ($data->everyday_price <  $data->selling_price) {
+											?>
+												<span>$<?php echo number_format($data->selling_price, 2); ?></span>
+											<?php
+											}
+											?>
 											<span class="nw_price">$<?php echo number_format($data->everyday_price, 2); ?></span>
 											<div class="sku-container">
 												<span class="sku-label">SKU:</span>

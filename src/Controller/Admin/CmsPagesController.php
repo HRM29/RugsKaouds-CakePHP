@@ -173,7 +173,7 @@ class CmsPagesController extends AppController
 			 
 			 
 			
-			$data->slug = Text::slug($this->request->getData('title'));
+			$data->slug = strtolower(Text::slug($this->request->getData('title')));
 			$data = $cmsTable->patchEntity($data, $this->request->getData(),['validate'=>'default']);
 			if (!$data->getErrors()){
 				if ($templat = $cmsTable->save($data)) {

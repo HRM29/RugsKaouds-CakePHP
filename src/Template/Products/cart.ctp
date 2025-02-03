@@ -104,7 +104,6 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 					</table>
 					<div class="btns">
 						<a href="<?php echo Router::url('/', true) ?>shop" class="btn">Continue Shopping</a>
-						<button class="btn update-cart" disabled>Update Cart</button>
 					</div>
 				</div>
 			</div>

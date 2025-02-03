@@ -18,7 +18,7 @@ use Cake\Core\Configure; ?>
 				<div class="box-header with-border">
 					<h3 class="box-title">Add <?= $title; ?></h3>
 				</div><!-- /.box-header -->
-				<?= $this->Form->create($product, ['type' => 'file']) ?>
+				<?= $this->Form->create($product, ['type' => 'file', "id" => 'add_product']) ?>
 				<div class="box-body">
 					<div class="form-group row">
 						<div class="col-xs-5">
@@ -33,7 +33,7 @@ use Cake\Core\Configure; ?>
 
 					<div class="form-group row">
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Title<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Title<span style="color:red;">*</span></label>
 							<?= $this->Form->control('title', ['placeholder' => 'Title', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
 						</div>
 						<div class="col-xs-5">
@@ -44,53 +44,53 @@ use Cake\Core\Configure; ?>
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Dimension 1 Feet<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Dimension 1 Feet<span style="color:red;">*</span></label>
 							<?php $dimension1_feet = Configure::read('dimension1_feet') ?>
 							<?= $this->Form->control('dimension_1_feet', ['options' => $dimension1_feet, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Rug Dimension', 'required' => true]); ?>
 						</div>
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Dimension 1 Inches<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Dimension 1 Inches<span style="color:red;">*</span></label>
 							<?php $dimension1_inches = Configure::read('dimension1_inches') ?>
 							<?= $this->Form->control('dimension_1_inches', ['options' => $dimension1_inches, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Rug Dimension', 'required' => true]); ?>
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Dimension 2 Feet<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Dimension 2 Feet<span style="color:red;">*</span></label>
 							<?php $dimension2_feet = Configure::read('dimension2_feet') ?>
 							<?= $this->Form->control('dimension_2_feet', ['options' => $dimension2_feet, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Rug Dimension', 'required' => true]); ?>
 						</div>
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Dimension 2 Inches<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Dimension 2 Inches<span style="color:red;">*</span></label>
 							<?php $dimension2_inches = Configure::read('dimension2_inches') ?>
 							<?= $this->Form->control('dimension_2_inches', ['options' => $dimension2_inches, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Rug Dimension', 'required' => true]); ?>
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Dimension<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Dimension<span style="color:red;">*</span></label>
 
 							<?= $this->Form->control('dimension_id', ['options' => $dimension, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Dimension', 'required' => true]); ?>
 						</div>
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Dimension Total sq. Feet<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Dimension Total sq. Feet<span style="color:red;">*</span></label>
 							<?= $this->Form->control('total_square_ft', ['placeholder' => 'Dimension Total sq. Feet', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Color<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Color<span style="color:red;">*</span></label>
 
 							<?= $this->Form->control('color_id', ['options' => $color, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Color', 'required' => true]); ?>
 						</div>
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Rug Border Color<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Rug Border Color<span style="color:red;">*</span></label>
 							<?= $this->Form->control('border_color', ['placeholder' => 'Rug Border Color', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Other Color<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Other Color<span style="color:red;">*</span></label>
 
 							<?php //= $this->Form->control('color', ['options'=>$color,'label'=>false,'class'=>'form-control','empty'=>'Select Color']);
 							?>
@@ -100,7 +100,7 @@ use Cake\Core\Configure; ?>
 							?>
 						</div>
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Style<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Style<span style="color:red;">*</span></label>
 							<?php $style = Configure::read('style') ?>
 							<?= $this->Form->control('style', ['options' => $style, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Style', 'required' => true]); ?>
 						</div>
@@ -108,32 +108,32 @@ use Cake\Core\Configure; ?>
 
 					<div class="form-group row">
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Available Shape<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Available Shape<span style="color:red;">*</span></label>
 							<?= $this->Form->control('available_shape', ['placeholder' => 'Available Shape', 'label' => false, 'class' => 'form-control', 'required' => true]);
 							/*  $availableShape=Configure::read('availableShape');
 							 echo $this->Form->control('available_shape', ['options'=>$availableShape,'label'=>false,'class'=>'form-control','empty'=>'Select Available Shape']);  */ ?>
 						</div>
 
 						<div class="col-xs-5">
-							<label for="normal" class="control-label">Size<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Size<span style="color:red;">*</span></label>
 							<?= $this->Form->control('size', ['placeholder' => 'Size', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
 						</div>
 					</div>
 					<div class="form-group row">
-						<div class="col-xs-5">
-							<label for="normal" class="control-label">Foundation<span class="required_field">*</span></label>
+						<!-- <div class="col-xs-5">
+							<label for="normal" class="control-label">Foundation<span style="color:red;">*</span></label>
 							<?= $this->Form->control('foundation_id', ['options' => $foundations, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Foundation', 'required' => true]); ?>
-						</div>
-						<div class="col-xs-5">
-							<label for="normal" class="control-label">Pile<span class="required_field">*</span></label>
+						</div> -->
+						<!-- <div class="col-xs-5">
+							<label for="normal" class="control-label">Pile<span style="color:red;">*</span></label>
 							<?= $this->Form->control('pile_id', ['options' => $pile, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Pile', 'required' => true]); ?>
-						</div>
+						</div> -->
 
 					</div>
 
 					<div class="form-group row">
 						<!--div class="col-xs-5">
-							<label for="normal" class="control-label">Product Type<span class="required_field">*</span></label>
+							<label for="normal" class="control-label">Product Type<span style="color:red;">*</span></label>
 							<?php // $this->Form->control('product_type', ['placeholder'=> 'Product Type','label'=>false,'class'=>'form-control']);
 							?>
 						</div-->
@@ -141,56 +141,57 @@ use Cake\Core\Configure; ?>
 							<label for="normal" class="control-label">Pattern<span style="color:red;">*</span></label>
 							<?= $this->Form->control('pattern', ['options' => Configure::read('OverstockPattern'), 'empty' => 'Select Pattern', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
 						</div>
-						<div class="col-xs-5">
+						<!-- <div class="col-xs-5">
 							<label for="normal" class="control-label">Design<span style="color:red;">*</span></label>
 							<?= $this->Form->control('rug_design', ['options' => Configure::read('rugDesign'), 'empty' => 'Design', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
-						</div>
-					</div>
-					<div class="form-group row">
+						</div> -->
 						<div class="col-xs-5">
 							<label for="normal" class="control-label">Material<span style="color:red;">*</span></label>
 							<?= $this->Form->control('material', ['options' => Configure::read('rugMaterial'), 'empty' => 'Material', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
 						</div>
+					</div>
+					<div class="form-group row">
 						<div class="col-xs-5">
 							<label for="normal" class="control-label">Field Color Exact<span style="color:red;">*</span></label>
 							<?= $this->Form->control('field_color_exact', ['placeholder' => 'Field Color Exact', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
 						</div>
-					</div>
-
-					<div class="form-group row">
-						<div class="col-xs-3">
-							<label for="normal" class="control-label">Selling Price<span style="color:red;">*</span></label>
-							<?= $this->Form->control('selling_price', ['placeholder' => 'Selling Price', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
-						</div>
-						<div class="col-xs-3">
-							<label for="normal" class="control-label">Listing Price<span style="color:red;">*</span></label>
-							<?= $this->Form->control('everyday_price', ['placeholder' => 'Listing Price', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
-						</div>
-						<div class="col-xs-4">
-							<label for="normal">Rugpad Price<span style="color:red;">*</span></label>
-							<?= $this->Form->control('rug_pad', ['placeholder' => 'Rugpad Price', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
-						</div>
-
-
-					</div>
-					<div class="form-group row">
-						<div class="col-xs-3">
-							<label for="normal">Shipping Rate<span style="color:red;">*</span></label>
-							<?= $this->Form->control('shipping_price', ['placeholder' => 'Shipping Rate', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
-						</div>
-
-						<div class="col-xs-3">
+						<div class="col-xs-5">
 							<label for="normal" class="control-label">Age</label>
 							<div class="controls">
 								<?= $this->Form->control('age', ['placeholder' => 'Age', 'label' => false, 'type' => 'text', 'class' => 'form-control']); ?>
 							</div>
 						</div>
-						<div class="col-xs-4">
+					</div>
+
+					<div class="form-group row">
+						<div class="col-xs-5">
+							<label for="normal" class="control-label">Selling Price<span style="color:red;">*</span></label>
+							<?= $this->Form->control('selling_price', ['placeholder' => 'Selling Price', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
+						</div>
+						<div class="col-xs-5">
+							<label for="normal" class="control-label">Listing Price<span style="color:red;">*</span></label>
+							<?= $this->Form->control('everyday_price', ['placeholder' => 'Listing Price', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
+						</div>
+						<!-- <div class="col-xs-4">
+							<label for="normal">Rugpad Price<span style="color:red;">*</span></label>
+							<?= $this->Form->control('rug_pad', ['placeholder' => 'Rugpad Price', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
+						</div> -->
+
+
+					</div>
+					<div class="form-group row">
+						<!-- <div class="col-xs-3">
+							<label for="normal">Shipping Rate<span style="color:red;">*</span></label>
+							<?= $this->Form->control('shipping_price', ['placeholder' => 'Shipping Rate', 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
+						</div> -->
+
+
+						<!-- <div class="col-xs-4">
 							<label for="normal" class="control-label">Is Featured</label>
 							<div class="controls">
 								<?php echo $this->Form->control('is_future', ['type' => 'checkbox', 'label' => false, 'style' => array('margin-left:0px')]); ?>
 							</div>
-						</div>
+						</div> -->
 					</div>
 					<!--div class="form-group row">
 						<div class="">
@@ -248,13 +249,14 @@ use Cake\Core\Configure; ?>
 							<?php $options = array(Active => "Sold", 0 => "Available"); ?>
 							<?= $this->Form->control('sold_status', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Sold Status', 'required' => true]); ?>
 						</div>
+
+					</div>
+					<div class="form-group row">
 						<div class="col-xs-5">
 							<label for="Password">Status<span style="color:red;">*</span></label>
 							<?php $options = array(Active => "Active", Inactive => "Inactive"); ?>
 							<?= $this->Form->control('status', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status', 'required' => true]); ?>
 						</div>
-					</div>
-					<div class="form-group row">
 						<div class="col-xs-5">
 							<label for="normal" class="control-label">Image</label>
 							<?php //echo $this->Form->input('image',['type'=>'file','label'=>false]);

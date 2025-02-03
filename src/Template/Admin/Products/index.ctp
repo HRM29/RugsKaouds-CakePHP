@@ -81,10 +81,12 @@
 					); */ 
 					?> 
 					<?php 
+					/*
 					 echo $this->Html->link('<i class="fa fa-trash"></i> Update URL',
 					array('controller' => 'Products','action'=>'updateurlall'),
 					array('escape' => false,'class'=>"btn btn-danger btn-sm btnDeleteAll","title"=>__("UpdateURL Products",true))
 					);  
+					*/
 					?> 
                      <?php echo $this->Html->link('<i class="fa fa-reply"></i> Back',
 					array('controller' => 'users','action'=>'index'),
@@ -156,7 +158,7 @@
 									<td><?php echo $product->title; ?></td>
 									<td><?php echo $product->sku_no; ?></td>
 									<td><?php echo $product->total_square_ft; ?></td>
-									<td><?php echo number_format($product->selling_price,2); ?></td>
+									<td><?php echo number_format($product->everyday_price,2); ?></td>
 									<td class="actions">
 										<?php 
 											echo $this->Html->link('<i class="fa fa-eye"></i> View',
@@ -203,6 +205,7 @@
 		$('#title').val('');
 	});
 	$(".btnDeleteAll").click(function(e){  
+		/*
 		e.preventDefault();
 		var favorite = [];
 		$.each($("input[name='user_chk[]']:checked"), function(){            
@@ -210,13 +213,14 @@
 		});
 		// alert(favorite); 
 		if(favorite.length < 1){
-			 alert("Please Select atleast one Food Products");
+			 alert("Please Select atleast one Products");
 		}
-		if(confirm('Are you sure you want to delete the selected Food Products?')){
+		if(confirm('Are you sure you want to delete the selected Products?')){
 			if(favorite.length > 0){
 				$('#listForm').submit();
 			}
 		}  
+			*/
 	});
 	$("#select_chkbx").change(function () {
 	      $("input:checkbox").prop('checked', $(this).prop("checked"));

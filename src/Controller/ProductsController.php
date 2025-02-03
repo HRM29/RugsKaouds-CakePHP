@@ -200,9 +200,12 @@ class ProductsController extends AppController
 
 		$sku = base64_decode($product_id);
 		$productId		=	base64_decode($product_id);
-		$productDetail	=	$this->Products->find('all')->where(['sku_no' => $sku])->contain(['ProductImages'])->first();
+		$productDetail	=	$this->Products->find('all')->where(['sku_no' => $sku, 'sold_status' => 0, 'status' => 1])->contain(['ProductImages'])->first();
 
-
+		if (empty($productDetail)) {
+			$this->render('/Products/product'); // Path to the product.ctp view
+			return;
+		}
 		$session = $this->request->getSession();
 		$authUser = $session->read('Auth');
 
@@ -295,7 +298,9 @@ class ProductsController extends AppController
 				$order['id'] = 'DESC';
 			}
 		}
-
+		if(!isset($order)){
+			$order['id'] = 'DESC';
+		}
 		$filters = [
 			'Products.status' => 1,
 			'Products.sold_status' => 0,
@@ -307,7 +312,7 @@ class ProductsController extends AppController
 
 		$ProductData = $this->paginate($ProductsTable, [
 			'limit' => Configure::read('App.pageRecord'),
-			'conditions' => [$finalConditions],
+			'conditions' => $finalConditions,
 			'contain' => ['ProductImages'],
 			'order' => $order
 		]);
@@ -2390,7 +2395,7 @@ class ProductsController extends AppController
 					->where([
 						'OR' => [
 							'Products.title LIKE' => '%' . $searchTerm . '%',
-							'Products.sku_no' =>  $searchTerm
+							'Products.sku_no LIKE' =>  $searchTerm
 						],
 						'Products.status' => 1,
 						'Products.sold_status' => 0

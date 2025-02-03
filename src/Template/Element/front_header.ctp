@@ -101,7 +101,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 </header>
 <!-- Search Bar (Initially Hidden) -->
 <div class="search-container" id="searchContainer">
-	<input type="text" id="searchInput" class="search-bar" placeholder="Search products...">
+	<input type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off">
 	<div class="search-results" id="searchResults"></div>
 </div>
 <script>
