@@ -353,7 +353,7 @@ if ($session->check('coupon')) {
 						<ul class="rug_checkbox">
 							<li class="rug_typ">
 								<input name="payment-terms-conditions" type="checkbox" value="" id="terms-conditions">
-								<label for="terms-conditions">I have read and agree to the website terms and conditions.</label>
+								<label for="terms-conditions">I have read and agree to the website <a href="<?php echo Router::url('/', true) ?>terms-and-condition">terms and conditions</a>.</label>
 							</li>
 						</ul>
 						<a href="javascript:void(0);" class="btn pay payment-1" style="display: none;"><img src="/Kaouds/img/pay.png" alt="pay"></a>
