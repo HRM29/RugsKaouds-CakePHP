@@ -50,7 +50,7 @@ class PagesController extends AppController
 	public function beforeFilter(Event $event)
 	{
 		parent::beforeFilter($event);
-		$this->Auth->allow(['portfolio1', 'videos', 'frednasseribio', 'businesshighlights', 'awardwinning', 'pairingpatternsorientalrug', 'interiordesign', 'index', 'portfolio', 'privacypolicy', 'contactUs', 'carpet', 'rugcleaning', 'aboutus', 'rugrepair', 'rugappraisal', 'faq', 'returns', 'termsofuse', 'testmail', 'subscribeLetter', 'collectionMenu', 'projects', 'rugsellus']);
+		$this->Auth->allow(['portfolio1', 'videos', 'frednasseribio', 'businesshighlights', 'awardwinning', 'pairingpatternsorientalrug', 'interiordesign', 'index', 'portfolio', 'privacypolicy', 'contactUs', 'carpet', 'rugcleaning', 'aboutus', 'rugrepair', 'rugappraisal', 'faq', 'returns', 'termsofuse', 'testmail', 'subscribeLetter', 'collectionMenu', 'projects', 'rugsellus', 'viewMediaLib']);
 
 
 		if ($this->Auth->user('role_id') == 1) {
@@ -613,16 +613,6 @@ class PagesController extends AppController
 		return $this->response;
 	}
 
-	private function verifyRecaptcha($recaptchaResponse)
-	{
-		$http = new Client();
-		$response = $http->post('https://www.google.com/recaptcha/api/siteverify', [
-			'secret' => CAPTCHA_SECRETKEY,
-			'response' => $recaptchaResponse,
-		]);
-
-		return json_decode($response->getBody()->getContents(), true);
-	}
 	public function collectionMenu($slug = null)
 	{
 		$this->viewBuilder()->setLayout('front');
@@ -668,5 +658,17 @@ class PagesController extends AppController
 			->toList();
 		$this->set('title_for_layout', $seoTitle);
 		$this->set('projects', $projects);
+	}
+
+	public function viewMediaLib($filename)
+	{
+		$filePath = WWW_ROOT . 'uploads' . DS . 'media-library' . DS . $filename;
+		if (file_exists($filePath)) {
+			$this->response = $this->response->withFile($filePath);
+			return $this->response;
+		} else {
+			$this->Flash->error(__('File not found.'));
+			return $this->redirect(['action' => 'list']);
+		}
 	}
 }

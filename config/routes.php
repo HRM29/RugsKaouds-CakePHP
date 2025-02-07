@@ -55,7 +55,6 @@ Router::scope('/', function (RouteBuilder $routes) {
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'home']);
     $routes->connect('/Products/', ['controller' => 'Products', 'action' => 'search']);
     $routes->connect(
@@ -94,7 +93,12 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/schedule-pickup-for-rug-repair/', ['controller' => 'Pages', 'action' => 'rugrepair']);
     $routes->connect('/schedule-insurance-appraisal/', ['controller' => 'Pages', 'action' => 'rugappraisal']);
     $routes->connect('/schedule-sell-us/', ['controller' => 'Pages', 'action' => 'rugsellus']);
-
+    $routes->connect(
+        '/media/view/:filename',
+        ['controller' => 'Pages', 'action' => 'viewMediaLib'],
+        ['pass' => ['filename'], 'filename' => '.*']
+    );
+    
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */

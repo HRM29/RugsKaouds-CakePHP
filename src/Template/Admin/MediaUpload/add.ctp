@@ -3,11 +3,11 @@
 use Cake\Routing\Router; ?>
 <section class="content-header">
 	<h1>
-		Manage Projects
+		Manage Media Upload
 	</h1>
 	<ol class="breadcrumb">
 		<li><a href="<?php echo Router::url('/', true); ?>admin/Banners"><i class="fa fa-dashboard"></i> Home</a></li>
-		<li class="active">Add Project</li>
+		<li class="active">Add Media</li>
 	</ol>
 </section>
 <section class="content">
@@ -15,28 +15,21 @@ use Cake\Routing\Router; ?>
 		<div class="col-md-12">
 			<div class="box box-primary">
 				<div class="box-header with-border">
-					<h3 class="box-title">Add Project</h3>
+					<h3 class="box-title">Add Media</h3>
 				</div><!-- /.box-header -->
-				<?= $this->Form->create($data, ['type' => 'file']) ?>
+				<?php if (!empty($mediaUrl)): ?>
+					<div class="alert alert-success mt-3">
+						File uploaded successfully! <br>
+						<a href="<?= $mediaUrl ?>" target="_blank"><?= $mediaUrl ?></a>
+					</div>
+				<?php endif; ?>
+				<?= $this->Form->create(null, ['type' => 'file']) ?>
 				<div class="box-body">
 					<div class="form-group row">
 						<div class="col-xs-5">
-							<label for="Name">Label</label>
-							<?= $this->Form->control('title', ['placeholder' => 'Label', 'label' => false, 'class' => 'form-control']); ?>
-						</div>
-						<div class="col-xs-5">
-							<label class="control-label info-details"> Image </label>
+							<label class="control-label info-details"> Media </label>
 							<div class="">
-								<?php echo $this->Form->control('image', array("type" => "file", 'label' => false, 'required' => true, 'id' => 'carImage', 'multiple' => true)); ?></br>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="row mb-3">
-							<div class="col-md-5">
-								<label for="Password">Status</label>
-								<?php $options = array(Active => "Active", Inactive => "Inactive"); ?>
-								<?= $this->Form->control('status', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
+								<?php echo $this->Form->control('media-file', array("type" => "file", 'label' => false, 'required' => true, 'id' => 'carImage', 'multiple' => false)); ?></br>
 							</div>
 						</div>
 					</div>

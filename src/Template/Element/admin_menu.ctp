@@ -386,17 +386,17 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 		</li-->
 
 			<!-- Manage Coupons -->
-		<li class="treeview <?php echo ($controller == 'Coupons' && (in_array($action,$defaulActions)))?'active':'';?>">
-		  <a href="#">
-			<i class="fa fa-gift"></i>
-			<span>Manage Coupons</span>
-			<i class="fa fa-angle-left pull-right"></i>
-		  </a>
-		  <ul class="treeview-menu">
-			<li><a href="<?php echo Router::url('/', true); ?>admin/coupons"><i class="fa fa-list-alt"></i>Coupons  List</a></li>
-			<li><a href="<?php echo Router::url('/', true); ?>admin/coupons/add"><i class="fa fa-plus"></i> Add Coupons</a></li> 
-		  </ul>
-		</li>
+			<li class="treeview <?php echo ($controller == 'Coupons' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
+				<a href="#">
+					<i class="fa fa-gift"></i>
+					<span>Manage Coupons</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo Router::url('/', true); ?>admin/coupons"><i class="fa fa-list-alt"></i>Coupons List</a></li>
+					<li><a href="<?php echo Router::url('/', true); ?>admin/coupons/add"><i class="fa fa-plus"></i> Add Coupons</a></li>
+				</ul>
+			</li>
 			<!-- Manage Product -->
 
 			<li class="treeview <?php echo ($controller == 'Products' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
@@ -438,7 +438,18 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 					<li><a href="<?php echo Router::url('/', true); ?>admin/orders"><i class="fa fa-list-alt"></i> Orders List</a></li>
 				</ul>
 			</li>
-
+			<!-- Manage Media Upload -->
+			<li class="treeview <?php echo ($controller == 'MediaUpload' && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">
+				<a href="#">
+					<i class="fa fa-file-archive-o"></i>
+					<span>Manage Media Upload </span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+				<li><a href="<?php echo Router::url('/', true); ?>admin/MediaUpload"><i class="fa fa-list-alt"></i> Media List</a></li>
+				<li><a href="<?php echo Router::url('/', true); ?>admin/MediaUpload/add"><i class="fa fa-plus"></i> Upload Media</a></li>
+				</ul>
+			</li>
 			<!-- Manage Reports -->
 			<?php $rep_controller = array('subscribes', 'reviews', 'UserLoginLogs') ?>
 			<li class="treeview <?php echo (in_array($controller, $rep_controller) && (in_array($action, $defaulActions))) ? 'active' : ''; ?>">

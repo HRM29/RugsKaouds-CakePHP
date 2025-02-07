@@ -29,3 +29,4 @@ webroot/uploads/
 webroot/uploads/
 webroot/uploads/
 .vscode/sftp.json
+config/app.php
