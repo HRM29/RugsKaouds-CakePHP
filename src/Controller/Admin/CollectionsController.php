@@ -115,7 +115,7 @@ class CollectionsController extends AppController
                 'title' => $postData['title'],
                 'status' => $postData['status']
             ];
-            if ($postData['collection-type'] == 'page') {
+            if ($postData['collection-type'] == '2') {
                 $mappedData['page_url'] = $postData['page_link'];
                 $mappedData['meta_title'] = $postData['meta_title'];
                 $mappedData['meta_description'] = $postData['meta_description'];
@@ -125,7 +125,7 @@ class CollectionsController extends AppController
             $collectionsTable->patchEntity($collection, $mappedData);
 
             $saveImage = false;
-            if ($postData['collection-type'] == 'page') {
+            if ($postData['collection-type'] == '2') {
                 $imageData    =    isset($postData['image']) ? $postData['image'] : '';
                 if (!empty($imageData)) {
                     $result = $this->My->verifyImage($imageData);
@@ -139,9 +139,9 @@ class CollectionsController extends AppController
                 }
             }
             if (!$collection->getErrors()) {
-                if ($postData['collection-type'] == 'category') {
+                if ($postData['collection-type'] == '1') {
                     $collection->parent_id = 0;
-                } else if ($postData['collection-type'] == 'page') {
+                } else if ($postData['collection-type'] == '2') {
                     if (isset($postData['collection-category']) && !empty($postData['collection-category'])) {
                         $collection->parent_id = $postData['collection-category'];
                     } else {
@@ -189,7 +189,7 @@ class CollectionsController extends AppController
                 'status' => $postData['status'],
                 'parent_id' => 0
             ];
-            if ($postData['collection-type'] == 'page') {
+            if ($postData['collection-type'] == '2') {
                 $mappedData['meta_title'] = $postData['meta_title'];
                 $mappedData['meta_description'] = $postData['meta_description'];
                 $mappedData['meta_keywords'] = $postData['meta_keywords'];
@@ -198,7 +198,7 @@ class CollectionsController extends AppController
 
             $collectionsTable->patchEntity($collection, $mappedData);
             $saveImage = false;
-            if ($postData['collection-type'] == 'page') {
+            if ($postData['collection-type'] == '2') {
                 $imageData    =    isset($postData['image']) ? $postData['image'] : '';
                 if (!empty($imageData)) {
                     $result = $this->My->verifyImage($imageData);

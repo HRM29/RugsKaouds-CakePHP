@@ -26,7 +26,7 @@ use Cake\Routing\Router; ?>
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="collection-type">Collection Type<span class="required">*</span></label>
-								<?php $collectionTypes = ['category' => 'Category', 'page' => 'Page'] ?>
+								<?php $collectionTypes = ['1' => 'Category', '2' => 'Sub-Category'] ?>
 								<?php echo $this->Form->control('collection-type', ['options' => $collectionTypes, 'label' => false, 'class' => 'form-control', 'required' => true]); ?>
 							</div>
 						</div>
@@ -45,7 +45,7 @@ use Cake\Routing\Router; ?>
 						</div>
 						<div class="col-md-6 page-input">
 							<div class="form-group">
-								<label for="page_link">Page Link<span class="required">*</span></label>
+								<label for="page_link">Sub-Category Link<span class="required">*</span></label>
 								<?php echo $this->Form->control('page_link', ['placeholder' => 'Page Link', 'label' => false, 'class' => 'form-control']); ?>
 							</div>
 						</div>
@@ -106,15 +106,15 @@ use Cake\Routing\Router; ?>
 			const pageInputs = document.querySelectorAll('.page-input');
 
 			function toggleInputs(value) {
-				if (value === 'category') {
+				if (value === '1') {
 					const titleLabel = "Category Name";
 					collectionTitle.firstChild.nodeValue = titleLabel;
 					collectionTitleInput.setAttribute('placeholder', titleLabel);
 					categoryInputs.forEach(element => element.style.display = 'block');
 					pageInputs.forEach(element => element.style.display = 'none');
 					setPageElements(false);
-				} else if (value === 'page') {
-					const titleLabel = "Page Name";
+				} else if (value === '2') {
+					const titleLabel = "Sub-Category Name";
 					collectionTitle.firstChild.nodeValue = titleLabel;
 					collectionTitleInput.setAttribute('placeholder', titleLabel);
 					pageInputs.forEach(element => element.style.display = 'block');

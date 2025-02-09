@@ -8,20 +8,11 @@ $controller = $this->request->getParam('controller');
 $authUser = $session->read('Auth');
 ?>
 <section class="inner_banner shp">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
-			<div class="col-md-12 no_padding">
-				<div class="inr_bnr">
-					<div class="col-md-12 no_padding">
-						<div class="inr_bnr">
-							<?php
-							$image = WWW_ROOT . 'img' . DS . 'conact_us_banner.jpg';
-							if (file_exists($image)) {
-								echo $this->Html->image('/img/' . "conact_us_banner.jpg", ['alt' => "conact_us_banner"]);
-							}
-							?>
-						</div>
-					</div>
+			<div class="col-md-12">
+				<div class="heading">
+					<h1>Wishlist</h1>
 				</div>
 			</div>
 		</div>
@@ -54,7 +45,6 @@ $authUser = $session->read('Auth');
 										foreach ($favouritesDatas as $key => $data) {
 									?>
 											<tr>
-												<a class="float-right remove-cart delete" data1="<?= $data->id; ?>" style="cursor: pointer;"><i class="bi bi-x"></i></a>
 												<td>
 													<?php
 													$img_src = 'https://shrugs.com/rug_pictures/';
@@ -98,9 +88,10 @@ $authUser = $session->read('Auth');
 													<?php
 													if (!in_array($data['id'], $cartItems)) {
 													?>
-														<div class="pdocut-buton-wishlist cart-button" id="cart-button" data1="<?= $data['id']; ?>"><a class="cart-btn" style="cursor: pointer;">Add To Cart</a></div>
+														<div class="pdocut-buton-wishlist cart-button btn" id="cart-button" data1="<?= $data['id']; ?>"><a class="cart-btn" style="cursor: pointer;">Add To Cart</a></div>
 													<?php
 													} ?>
+													<a class="float-right remove-cart delete btn" data1="<?= $data->id; ?>" style="cursor: pointer;">Remove</a>
 												</td>
 											</tr>
 										<?php }

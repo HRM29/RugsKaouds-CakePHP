@@ -40,11 +40,11 @@ use Cake\Routing\Router; ?>
 				?>
 				<div class="box-body">
 					<div class="col-sm-3">
-						<label for="title">Page/Category Name</label>
+						<label for="title">Category/Sub-Category Name</label>
 						<?= $this->Form->control('title', ['placeholder' => 'Page/Category Name', 'label' => false, 'class' => 'form-control', 'value' => isset($savesearch['title']) ? $savesearch['title'] : '', 'required' => false]); ?>
 					</div>
 					<div class="col-sm-3">
-						<label for="parent_id">Category</label>
+						<label for="parent_id">Parent Category</label>
 						<?= $this->Form->control('parent_id', ['empty' => 'Select category', 'label' => false, 'class' => 'form-control', 'value' => isset($savesearch['parent_id']) ? $savesearch['parent_id'] : '', 'required' => false, 'options' => $categoryOption]); ?>
 					</div>
 					<div class="col-sm-3">
@@ -98,8 +98,8 @@ use Cake\Routing\Router; ?>
 							<th>
 								<?php echo $this->Form->control('select_checkbox', array('type' => "checkbox", "label" => false, 'div' => false, 'class' => "select_checkbox tableflat", "id" => "select_chkbx")); ?>
 							</th>
-							<th><?= $this->Paginator->sort('id') ?></th>
-							<th><?= $this->Paginator->sort('title', 'Page/Category Name') ?></th>
+							<th><?= $this->Paginator->sort('id', "S.No") ?></th>
+							<th><?= $this->Paginator->sort('title', 'Category/Sub-Category Name') ?></th>
 							<th><?= $this->Paginator->sort('collection_type') ?></th>
 							<th><?= $this->Paginator->sort('parent_id', 'Parent Category') ?></th>
 							<th><?= $this->Paginator->sort('status') ?></th>
@@ -124,7 +124,7 @@ use Cake\Routing\Router; ?>
 
 								<td><?= $this->Number->format(++$key) ?></td>
 								<td><?= h($category->title) ?></td>
-								<td><?= h(ucwords($category->collection_type)) ?></td>
+								<td><?= h(ucwords($category->collection_type == 1 ? 'Parent Category' : 'Sub-Category')) ?></td>
 								<td><?= $category->parent_id > 0 ? $parentData['Collection2']['title'] : ''; ?></td>
 								<td><?= $this->General->getAdminStatus($category->status) ?></td>
 								<td><?= h($category->created) ?></td>
@@ -133,14 +133,14 @@ use Cake\Routing\Router; ?>
 									echo $this->Html->link(
 										'<i class="fa fa-eye"></i> View',
 										array('controller' => 'collections', 'action' => 'view', $category->id),
-										array('escape' => false, 'class' => "btn btn-primary btn-sm", "title" => __("View", true))
+										array('escape' => false, 'class' => "btn btn-primary btn-xs", "title" => __("View", true))
 									);
 									?>
 									<?php
 									echo $this->Html->link(
 										'<i class="fa fa-pencil"></i> Edit',
 										array('controller' => 'collections', 'action' => 'edit', $category->id),
-										array('escape' => false, 'class' => "btn btn-info btn-sm", "title" => __("Edit", true))
+										array('escape' => false, 'class' => "btn btn-info btn-xs", "title" => __("Edit", true))
 									);
 									?>
 									<?php
@@ -148,7 +148,7 @@ use Cake\Routing\Router; ?>
 										echo $this->Html->link(
 											'<i class="fa fa-trash"></i> Delete',
 											array('controller' => 'collections', 'action' => 'delete', $category->id),
-											array('escape' => false, 'class' => "btn btn-danger btn-sm", "title" => __("Delete", true), 'confirm' => __('Are you sure you want to delete # {0}?', $category->id))
+											array('escape' => false, 'class' => "btn btn-danger btn-xs", "title" => __("Delete", true), 'confirm' => __('Are you sure you want to delete ?'))
 										);
 									}
 									?>

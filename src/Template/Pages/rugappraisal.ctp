@@ -1,7 +1,10 @@
 <section class="inner_banner shp">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
-            <div class="col-md-12 no_padding">
+            <div class="col-md-12">
+                <div class="heading">
+                    <h1>Appraisal Request Form</h1>
+                </div>
             </div>
         </div>
     </div>
@@ -13,7 +16,7 @@
                 <div class="heading">
                     <h2></h2>
                 </div>
-                <h3>Appraisal Request Form</h3>
+                <h3></h3>
                 <?= $this->Flash->render('positive_forgot') ?>
                 <?php
                 echo $this->Form->create(null, ['id' => 'rugAppraisalForm', 'url' => ['controller' => 'Pages', 'action' => 'rugappraisal'], 'type' => 'file']);

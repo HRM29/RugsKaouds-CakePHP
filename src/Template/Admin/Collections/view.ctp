@@ -28,10 +28,10 @@
 						<div class="box box-success">
 							<div class="box-header with-border">
 								<h3 class="box-title"><?php
-														if ($collection->collection_type == 'category') {
-															echo "Category Name";
+														if ($collection->collection_type == '1') {
+															echo "Category";
 														} else {
-															echo "Page Name";
+															echo "Sub-Category";
 														}
 														?></h3>
 								<div class="box-tools pull-right">
@@ -57,7 +57,7 @@
 								if (!empty($parentData)) {
 									echo $parentData['Collection2']['title'];
 								} else {
-									echo 'Main Parent';
+									echo '-';
 								}
 								?>
 							</div>

@@ -160,6 +160,7 @@ class AppController extends Controller
             $categoryList    =    $this->getCategoryList();
             $hot_sale        =    $this->getHotSalesProducts();
             $cmspage        =    $this->getCmspage();
+            $collectionCategoriesData = $this->returnCollectionCategoryData();
             //$sizesLIst	    =	$this->getSizesLIst();
             $rememberMeCookie = $this->request->getCookie('RememberMe');
             if (empty($authUser) && $rememberMeCookie) {
@@ -781,7 +782,7 @@ class AppController extends Controller
         $collectionsTable = TableRegistry::getTableLocator()->get('Collections');
         $collectionCategory = $collectionsTable->find('all')
             ->select(['id', 'title'])
-            ->where(['collection_type' => 'category', 'status' => 1])
+            ->where(['collection_type' => '1', 'status' => 1])
             ->distinct(['title'])
             ->toList();
 
@@ -922,7 +923,7 @@ class AppController extends Controller
             $viewData['name'] = $postData['contact-name'];
             $viewData['email'] = $postData['contact-email'];
             $viewData['message'] = $postData['contact-message'] ?? $postData['contact-comment'];
-            $viewData['website'] = $postData['contact-website'] ?? ''; 
+            $viewData['website'] = $postData['contact-website'] ?? '';
             $clientEmail = new Email('default');
             $clientEmail->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
                 ->setTo([Configure::read("App.EmailFrom"), 'harshit@racknap.com'])
@@ -994,5 +995,58 @@ class AppController extends Controller
         ]);
 
         return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function returnCollectionCategoryData()
+    {
+        $collectionActualData = [];
+        $collectionCategories = $this->returnCollectionCategory();
+        foreach ($collectionCategories as $collKey => $collName) {
+            $subCategoriesData = $this->returnSubCategoryBasedOnParentID($collKey);
+            if($subCategoriesData['isCollectionValid'] && !empty($subCategoriesData['subCategoriesData'])){
+                $collectionActualData[$collKey]['ParentName'] = $collName;
+                $collectionActualData[$collKey]['SubCategory'] = $subCategoriesData['subCategoriesData'];
+            }
+        }
+        return $collectionActualData;
+    }
+
+    public function returnSubCategoryBasedOnParentID($parentID)
+    {
+        $returnData = ['isCollectionValid' => 0, 'subCategoriesData' => []];
+        $collectionsTable = TableRegistry::getTableLocator()->get('Collections');
+        $subcollectionCategory = $collectionsTable->find('all')
+            ->select(['id', 'title', 'page_url'])
+            ->where(['collection_type' => 2, 'status' => 1, 'parent_id' => $parentID])
+            ->toList();
+
+        $subcollectionCategoryArray = [];
+        if (!empty($subcollectionCategory)) {
+            $subCategoryCheck = 0;
+            foreach ($subcollectionCategory as $item) {
+                if ($this->checkSubCategoryValid($item->id)) {
+                    $subCategoryCheck = 1;
+                    $subcollectionCategoryArray[$item->id]['SubCategoryName'] = $item->title;
+                    $subcollectionCategoryArray[$item->id]['SubCategorySlug'] = $item->page_url;
+                }
+            }
+            if ($subCategoryCheck) {
+                $returnData['isCollectionValid'] = 1;
+                $returnData['subCategoriesData'] = $subcollectionCategoryArray;
+            }
+        }
+        return $returnData;
+    }
+
+    private function checkSubCategoryValid($subCategoryID)
+    {
+        $collImagesTable = TableRegistry::getTableLocator()->get('CollectionImages');
+        $subcollectionImages = $collImagesTable->find('all')
+            ->where(['associated_id' => $subCategoryID])
+            ->toList();
+        if (!empty($subcollectionImages)) {
+            return true;
+        }
+        return false;
     }
 }

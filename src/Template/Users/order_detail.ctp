@@ -1,22 +1,17 @@
+<?php
+
+use Cake\Routing\Router;
+?>
 <section class="inner_banner shp">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 no_padding">
-                <div class="inr_bnr">
-                    <div class="col-md-12 no_padding">
-                        <div class="inr_bnr">
-                            <?php
-                            $image = WWW_ROOT . 'img' . DS . 'conact_us_banner.jpg';
-                            if (file_exists($image)) {
-                                echo $this->Html->image('/img/' . "conact_us_banner.jpg", ['alt' => "conact_us_banner"]);
-                            }
-                            ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="heading">
+					<h1>Order Details</h1>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 <!--Cart Page Area Start-->
 <section class="dshbrd">

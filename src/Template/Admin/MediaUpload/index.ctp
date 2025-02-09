@@ -82,13 +82,13 @@ use Cake\Routing\Router; ?>
 								<tr>
 									<td><?= $count++; ?></td>
 									<td><?= h($file['name']); ?></td>
-									<td><button class="btn btn-info btn-sm copy-url-btn" data-url="<?= Router::url('/', true) . $file['url']; ?>">Copy URL</button></td>
+									<td><button class="btn btn-info btn-xs copy-url-btn" data-url="<?= Router::url('/', true) . $file['url']; ?>">Copy URL</button></td>
 									<td class="actions">
 										<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $file['name']], [
 											'confirm' => __('Are you sure you want to delete # {0}?', $file['name']),
-											'class' => 'btn btn-sm btn-danger'
+											'class' => 'btn btn-xs btn-danger'
 										]); ?>
-										<?= $this->Html->link('Download', ['action' => 'download', $file['name']], ['class' => 'btn btn-sm btn-primary']); ?>
+										<?= $this->Html->link('Download', ['action' => 'download', $file['name']], ['class' => 'btn btn-xs btn-primary']); ?>
 									</td>
 								</tr>
 							<?php endforeach; ?>

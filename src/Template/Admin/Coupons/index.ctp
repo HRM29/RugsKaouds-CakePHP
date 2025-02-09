@@ -120,21 +120,21 @@ use Cake\Routing\Router; ?>
 									echo $this->Html->link(
 										'<i class="fa fa-eye"></i> View',
 										array('controller' => 'coupons', 'action' => 'view', base64_encode($page->id)),
-										array('escape' => false, 'class' => "btn btn-primary btn-sm", "title" => __("View", true))
+										array('escape' => false, 'class' => "btn btn-primary btn-xs", "title" => __("View", true))
 									);
 									?>
 									<?php
 									echo $this->Html->link(
 										'<i class="fa fa-pencil"></i> Edit',
 										array('controller' => 'coupons', 'action' => 'edit', base64_encode($page->id)),
-										array('escape' => false, 'class' => "btn btn-info btn-sm", "title" => __("Edit", true))
+										array('escape' => false, 'class' => "btn btn-info btn-xs", "title" => __("Edit", true))
 									);
 									?>
 									<?php
 									echo $this->Html->link(
 										'<i class="fa fa-trash"></i> Delete',
 										array('controller' => 'coupons', 'action' => 'delete', base64_encode($page->id)),
-										array('escape' => false, 'class' => "btn btn-danger btn-sm", "title" => __("Delete", true), 'confirm' => __('Are you sure you want to delete # {0}?', $page->id))
+										array('escape' => false, 'class' => "btn btn-danger btn-xs", "title" => __("Delete", true), 'confirm' => __('Are you sure you want to delete # {0}?', $page->id))
 									);
 									?>
 								</td>

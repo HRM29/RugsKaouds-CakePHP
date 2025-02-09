@@ -1,7 +1,10 @@
 <section class="inner_banner shp">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
-            <div class="col-md-12 no_padding">
+            <div class="col-md-12">
+                <div class="heading">
+                    <h1>Schedule Rug Repair</h1>
+                </div>
             </div>
         </div>
     </div>
@@ -11,9 +14,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="heading">
-                    <h2>Schedule Rug Repair</h2>
+                    <h2></h2>
                 </div>
-                <p>We take rug repair and restoration very seriously. We specialize in the highest quality rug reweaving, re-binding, overcasting, re-fringing, and more. You can trust our family to take great care in making your rugs look like new again! Kindly fill out this form and try to be as descriptive as possible so we may better serve you with your repair needs. <br/><br/> Whether its loose binding or a giant hole, we can help!</p>
+                <p>We take rug repair and restoration very seriously. We specialize in the highest quality rug reweaving, re-binding, overcasting, re-fringing, and more. You can trust our family to take great care in making your rugs look like new again! Kindly fill out this form and try to be as descriptive as possible so we may better serve you with your repair needs. <br /><br /> Whether its loose binding or a giant hole, we can help!</p>
                 <h3>Schedule Rug Repair Pickup</h3>
                 <?= $this->Flash->render('positive_forgot') ?>
                 <?php

@@ -1,7 +1,11 @@
 <section class="inner_banner shp">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
-			<div class="col-md-12 no_padding">
+			<div class="col-md-12">
+				<div class="heading">
+					<h1>Schedule Rug Cleaning</h1>
+					<p>Kaoud cleaning and repair in Wilton, CT. utilizes 100% natural cleaning solutions and hand washing techniques to get your carpets and rugs clean. It’s free and easy to schedule a rug cleaning pickup. Kindly fill out this form and be as descriptive as you can so we can better serve you.</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -10,10 +14,6 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="heading">
-					<h2>Schedule Rug Cleaning</h2>
-				</div>
-				<p>Kaoud cleaning and repair in Wilton, CT. utilizes 100% natural cleaning solutions and hand washing techniques to get your carpets and rugs clean. It’s free and easy to schedule a rug cleaning pickup. Kindly fill out this form and be as descriptive as you can so we can better serve you.</p>
 				<h3>Schedule Rug Cleaning Pickup</h3>
 				<?= $this->Flash->render('positive_forgot') ?>
 				<?php
@@ -231,9 +231,9 @@
 		});
 	});
 
-    $('#preferred_date, #alternate_date').on('keydown', function(event) {
-        event.preventDefault();
-    });
+	$('#preferred_date, #alternate_date').on('keydown', function(event) {
+		event.preventDefault();
+	});
 
 	$('#preferred_date, #alternate_date').on('blur', function() {
 		var inputDate = new Date($(this).val());
@@ -283,22 +283,22 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#preferred_date, #alternate_date').datepicker({
-            format: 'yyyy-mm-dd',
-            startDate: new Date(),
-            autoclose: true,
-            todayHighlight: true,
-            templates: {
-                leftArrow: '&laquo;',
-                rightArrow: '&raquo;'
-            },
-            beforeShowDay: function(date) {
-                var day = date.getDay();
-                return [(day != 0 && day != 6), ''];
-            },
-            clearBtn: true,
+	$(document).ready(function() {
+		$('#preferred_date, #alternate_date').datepicker({
+			format: 'yyyy-mm-dd',
+			startDate: new Date(),
+			autoclose: true,
+			todayHighlight: true,
+			templates: {
+				leftArrow: '&laquo;',
+				rightArrow: '&raquo;'
+			},
+			beforeShowDay: function(date) {
+				var day = date.getDay();
+				return [(day != 0 && day != 6), ''];
+			},
+			clearBtn: true,
 			orientation: "bottom auto"
-        });
-    });
+		});
+	});
 </script>

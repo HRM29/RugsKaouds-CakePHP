@@ -35,10 +35,10 @@ use Cake\Routing\Router; ?>
 							<div class="form-group">
 								<label for="collection-type">Collection Type<span class="required">*</span></label>
 								<?php
-								if ($collection->collection_type == 'category') {
-									$collectionTypes = ['category' => 'Category'];
+								if ($collection->collection_type == 1) {
+									$collectionTypes = [1 => 'Category'];
 								} else {
-									$collectionTypes = ['page' => 'Page'];
+									$collectionTypes = [2 => 'Sub Category'];
 								}
 								?>
 								<?php echo $this->Form->control('collection-type', ['options' => $collectionTypes, 'label' => false, 'class' => 'form-control', 'required' => true, 'value' => $collection->collection_type]); ?>
@@ -59,7 +59,7 @@ use Cake\Routing\Router; ?>
 						</div>
 						<div class="col-md-6 page-input">
 							<div class="form-group">
-								<label for="page_link">Page Slug<span class="required">*</span></label>
+								<label for="page_link">Sub-Category Slug<span class="required">*</span></label>
 								<?php echo $this->Form->control('page_slug', ['placeholder' => 'Page Link', 'label' => false, 'class' => 'form-control', 'value' => $collection->page_url, 'disabled']); ?>
 							</div>
 						</div>
@@ -164,15 +164,15 @@ use Cake\Routing\Router; ?>
 			const pageInputs = document.querySelectorAll('.page-input');
 
 			function toggleInputs(value) {
-				if (value === 'category') {
+				if (value === '1') {
 					const titleLabel = "Category Name";
 					collectionTitle.firstChild.nodeValue = titleLabel;
 					collectionTitleInput.setAttribute('placeholder', titleLabel);
 					categoryInputs.forEach(element => element.style.display = 'block');
 					pageInputs.forEach(element => element.style.display = 'none');
 					setPageElements(false);
-				} else if (value === 'page') {
-					const titleLabel = "Page Name";
+				} else if (value === '2') {
+					const titleLabel = "Sub-Category Name";
 					collectionTitle.firstChild.nodeValue = titleLabel;
 					collectionTitleInput.setAttribute('placeholder', titleLabel);
 					pageInputs.forEach(element => element.style.display = 'block');

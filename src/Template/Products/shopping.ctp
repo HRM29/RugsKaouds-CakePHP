@@ -3,18 +3,13 @@
 use Cake\Routing\Router;
 use Cake\Core\Configure; ?>
 <section class="inner_banner shp">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
-			<!-- <div class="col-md-12 no_padding">
-				<div class="inr_bnr">
-					<?php
-					$image = WWW_ROOT . 'img' . DS . 'conact_us_banner.jpg';
-					if (file_exists($image)) {
-						echo $this->Html->image('/img/' . "conact_us_banner.jpg", ['alt' => "conact_us_banner"]);
-					}
-					?>
+			<div class="col-md-12">
+				<div class="heading">
+					<h1></h1>
 				</div>
-			</div> -->
+			</div>
 		</div>
 	</div>
 </section>
@@ -25,7 +20,7 @@ use Cake\Core\Configure; ?>
 				<nav aria-label="breadcrumb">
 					<ol class="breadcrumb bg-light p-3 rounded">
 						<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
-						<li class="breadcrumb-item active" aria-current="page"><?= !empty($title) ? $title : 'Shop'; ?></li>
+						<li class="breadcrumb-item active" aria-current="page"><?= !empty($title) ? $title : 'All Products'; ?></li>
 					</ol>
 				</nav>
 			</div>
@@ -58,7 +53,7 @@ use Cake\Core\Configure; ?>
 									$imageURL = $image_data->image;
 								}
 							?>
-								<div class="col-md-4">
+								<div class="col-md-3">
 									<div class="arrvl_box">
 										<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
 											<div class="product-thumb">
@@ -95,19 +90,10 @@ use Cake\Core\Configure; ?>
 													<img src="<?php echo Router::url('/', true); ?>img/no-image.png" alt="<?php echo $data->title; ?>" style="height:250px;" />
 												<?php
 												} ?>
+												<span>Sale!</span>
 											</div>
 										</a>
 										<div class="arrvl_text">
-											<h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>"><?= $data->style; ?></a></h3>
-											<p><?= $data->title; ?></p>
-											<?php
-											if ($data->everyday_price <  $data->selling_price) {
-											?>
-												<span>$<?php echo number_format($data->selling_price, 2); ?></span>
-											<?php
-											}
-											?>
-											<span class="nw_price">$<?php echo number_format($data->everyday_price, 2); ?></span>
 											<div class="sku-container">
 												<span class="sku-label">SKU:</span>
 												<span class="sku-value"><?php echo $data->sku_no; ?></span>
@@ -127,6 +113,16 @@ use Cake\Core\Configure; ?>
 											<?php
 											}
 											?>
+											<p><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>" style="text-decoration: none;"><?= $data->title; ?></a></p>
+											<?php
+											if ($data->everyday_price <  $data->selling_price) {
+											?>
+												<span>$<?php echo number_format($data->selling_price, 2); ?></span>
+											<?php
+											}
+											?>
+											<span class="nw_price">$<?php echo number_format($data->everyday_price, 2); ?></span>
+
 										</div>
 									</div>
 								</div>

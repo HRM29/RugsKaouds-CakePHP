@@ -624,17 +624,23 @@ class PagesController extends AppController
 			$PageType = 'CollectionPage';
 			$collection = $CollectionTable->find()
 				->contain(['CollectionImages'])
-				->where(['Collections.collection_type' => "page", 'Collections.status' => 1, 'Collections.page_url' => trim($slug)])
+				->where(['Collections.collection_type' => "2", 'Collections.status' => 1, 'Collections.page_url' => trim($slug)])
 				->enableHydration(false)
 				->first();
 		} else {
+			$parentCategoriesData = parent::returnCollectionCategoryData();
+			// echo "<pre>parentCategories: ";print_r($parentCategoriesData);echo "</pre>";
+			// if(!empty($parentCategoriesData)){
+				
+
+			// }
 			$collection = $CollectionTable->find()
 				->contain([
 					'CollectionImages' => function ($q) {
 						return $q->order(['created_at' => 'DESC']); // Fetch only the last image
 					},
 				])
-				->where(['Collections.collection_type' => "page", 'Collections.status' => 1])
+				->where(['Collections.collection_type' => "2", 'Collections.status' => 1])
 				->enableHydration(false)
 				->toList();
 		}

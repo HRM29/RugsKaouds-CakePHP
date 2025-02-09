@@ -4,25 +4,17 @@ use Cake\Routing\Router;
 ?>
 <?php echo $this->Html->script(['xzoom.min.js']); ?>
 <?php echo $this->Html->css(array('front/xzoom.css')); ?>
-<section class="inner_banner shp">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12 no_padding">
-				<div class="inr_bnr">
-					<?php
-					$image = WWW_ROOT . 'img' . DS . 'conact_us_banner.jpg';
-					if (file_exists($image)) {
-						echo $this->Html->image('/img/' . "conact_us_banner.jpg", ['alt' => "conact_us_banner"]);
-					}
-					?>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
 <section class="shop_dtls">
 	<div class="container">
 		<div class="row">
+			<div class="col-md-12">
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb bg-light p-3 rounded">
+						<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page"><a href="<?php echo Router::url('/', true) ?>shop"><?= !empty($title) ? $title : 'All Products'; ?></a></li>
+					</ol>
+				</nav>
+			</div>
 			<div class="col-md-5">
 				<span class="zoom">
 					<?php
@@ -55,6 +47,19 @@ use Cake\Routing\Router;
 						<div class="value-button" id="increase" disabled value="Increase Value">+</div>
 						<a class="btn crt_btn cart-button main_product" data-id=<?php echo $productDetail->id; ?> href="javascript:void(0);"><i class="bi bi-bag-plus"></i> Add to Cart</a>
 						<a style="display:none" id="go_to_cart" href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>" class="btn pdocut-buton">Go To Cart</a>
+						<span class="social-share">
+							<?php
+							if ($user_id != 0) {
+								if (!empty($favouriteData)) { ?>
+									<a id="remove_from_favourite" data-value="<?php echo $productDetail->id; ?>" style="cursor:pointer;"><i class="fa fa-heart" style="color:#881C06;"></i></a>
+								<?php } else { ?>
+									<a id="add_to_favourite" data-value="<?php echo $productDetail->id; ?>" style="cursor:pointer;"><i class="fa fa-heart-o"></i></a>
+								<?php }	?>
+
+							<?php } else { ?>
+								<a href="<?php echo $this->Url->build(['controller' => 'users', 'action' => 'login']); ?>" style="cursor:pointer;"><i class="fa fa-heart-o"></i></a>
+							<?php } ?>
+						</span>
 					</div>
 					<div class="prdct_meta">
 						<p><strong>SKU:</strong> <?php echo $productDetail->sku_no; ?></p>
@@ -71,22 +76,6 @@ use Cake\Routing\Router;
 				</div>
 			</div>
 			<div class="col-md-12">
-
-				<div class="cart-subtotal-products">
-					<span class="social-share pull-right"><!--a href="#"><i class="fa fa-share-alt"></i>Share</a-->
-						<?php
-						if ($user_id != 0) {
-							if (!empty($favouriteData)) { ?>
-								<a id="remove_from_favourite" data-value="<?php echo $productDetail->id; ?>" style="cursor:pointer;"><i class="fa fa-heart-o" style="color:#dcbb72;"></i>Remove from favourite</a>
-							<?php } else { ?>
-								<a id="add_to_favourite" data-value="<?php echo $productDetail->id; ?>" style="cursor:pointer;"><i class="fa fa-heart-o"></i>add to favourite</a>
-							<?php }	?>
-
-						<?php } else { ?>
-							<a href="<?php echo $this->Url->build(['controller' => 'users', 'action' => 'login']); ?>" style="cursor:pointer;"><i class="fa fa-heart-o"></i>add to favourite</a>
-						<?php } ?>
-					</span>
-				</div>
 				<div class="adtnl_infrm">
 					<h4>Additional Information</h4>
 					<div class="table-responsive infrm">

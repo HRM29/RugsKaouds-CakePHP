@@ -56,7 +56,7 @@ class CollectionsTable extends Table
         // Page link validation (only for collection-type = page)
         $validator
             ->notEmpty('page_link', 'Page link is required.', function ($context) {
-                return isset($context['data']['collection-type']) && $context['data']['collection-type'] === 'page';
+                return isset($context['data']['collection-type']) && $context['data']['collection-type'] === '2';
             })
             ->add('page_link', 'unique', [
                 'rule' => ['validateUnique'],
@@ -67,7 +67,7 @@ class CollectionsTable extends Table
         // Meta title validation (only for collection-type = page)
         $validator
             ->notEmpty('meta_title', 'Meta title is required.', function ($context) {
-                return isset($context['data']['collection-type']) && $context['data']['collection-type'] === 'page';
+                return isset($context['data']['collection-type']) && $context['data']['collection-type'] === '2';
             });
 
         return $validator;

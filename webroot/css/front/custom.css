@@ -40,8 +40,8 @@ header {
     background: #881C06;
     padding: 0 70px;
     box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.4);
-    position: absolute;
-    top: 0;
+    /*position: absolute;
+    top: 0;*/
     width: 100%;
 	z-index:11;
 }
@@ -1540,4 +1540,25 @@ footer .cpyrght p {
 
 .result-item:hover {
     background: #f8f9fa;
+}
+
+.rgs_type .block_type_side.owl-theme .item .arrvl_box {
+    position: relative;
+}
+.rgs_type .block_type_side.owl-theme .item .arrvl_box:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    content: "";
+    height: 100%;
+}
+.rgs_type .block_type_side.owl-theme .owl-nav [class*="owl-"] {
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    width: 43px;
+    height: 43px;
+    line-height: 39px;
 }

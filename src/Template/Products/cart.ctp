@@ -23,16 +23,11 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 </script>
 <?php echo $this->Html->css(array('front/sq-payment-form')); ?>
 <section class="inner_banner shp">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
-			<div class="col-md-12 no_padding">
-				<div class="inr_bnr">
-					<?php
-					$image = WWW_ROOT . 'img' . DS . 'Rug-Rolls-scaled.jpg';
-					if (file_exists($image)) {
-						echo $this->Html->image('/img/' . "Rug-Rolls-scaled.jpg", ['alt' => "Rug-Rolls-scaled"]);
-					}
-					?>
+			<div class="col-md-12">
+				<div class="heading">
+					<h1>Cart</h1>
 				</div>
 			</div>
 		</div>
@@ -151,7 +146,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 							<input class="fotm_control" type="text" name="coupon-code" value="<?= $couponCode; ?>" placeholder="Coupon Code">
 						</div>
 						<?php if ($session->check('coupon')): ?>
-							<a href="javascript:void(0);" class="btn remove" id="remove-coupon">Remove Coupon</a>
+							<a href="javascript:void(0);" class="remove" id="remove-coupon">&times;</a>
 						<?php else: ?>
 							<a href="javascript:void(0);" class="btn aply" id="apply-coupon-btn">Apply Coupon</a>
 						<?php endif; ?>

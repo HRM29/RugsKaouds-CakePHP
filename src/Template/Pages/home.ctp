@@ -37,29 +37,32 @@
 		<section class="rgs_type">
 			<div class="container">
 				<div class="row">
-					<?php
-					foreach ($HomeBlocks['Block2'] as $block2Data) {
-					?>
-						<div class="col-md-3">
-							<div class="typ_box">
-								<div class="typ_box_imag">
-									<?php
-									$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $block2Data['image'];
-									if (file_exists($image)) {
-										echo $this->Html->link(
-											$this->Html->image('/uploads/banner/' . $block2Data['image'], ['alt' => $block2Data['image'], "class" => "zoom-image"]),
-											$block2Data['link'],
-											['escape' => false]
-										);
-									}
-									?>
+					<div class="col-md-12">
+						<div class="block_type_side owl-carousel owl-theme">
+							<?php
+							foreach ($HomeBlocks['Block2'] as $block2Data) {
+							?>
+
+								<div class="typ_box block_box item">
+									<div class="typ_box_imag arrvl_box">
+										<?php
+										$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $block2Data['image'];
+										if (file_exists($image)) {
+											echo $this->Html->link(
+												$this->Html->image('/uploads/banner/' . $block2Data['image'], ['alt' => $block2Data['image'], "class" => "zoom-image"]),
+												'/' . $block2Data['link'],
+												['escape' => false]
+											);
+										}
+										?>
+									</div>
+									<h4><?= $block2Data['title'] ?></h4>
 								</div>
-								<h4><?= $block2Data['title'] ?></h4>
-							</div>
+							<?php
+							}
+							?>
 						</div>
-					<?php
-					}
-					?>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -193,15 +196,16 @@
 										<?php
 										} ?>
 									</a>
+									<span>Sale!</span>
 									<div class="arrvl_text">
 										<h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>" style="text-decoration: none; color: #000"><?php echo $productData->style; ?></a></h3>
 										<p><?= $productData->title; ?></p>
 										<span>$<?php echo number_format($productData->selling_price, 2); ?></span>
 										<span class="nw_price">$<?php echo number_format($productData->everyday_price, 2); ?></span>
 										<div class="sku-container">
-                                            <span class="sku-label">SKU:</span>
-                                            <span class="sku-value"><?php echo $productData->sku_no; ?></span>
-                                        </div>
+											<span class="sku-label">SKU:</span>
+											<span class="sku-value"><?php echo $productData->sku_no; ?></span>
+										</div>
 										<?php
 										if (in_array($productData->id, $cartItems)) {
 										?>
@@ -451,10 +455,10 @@
 					items: 1
 				},
 				768: {
-					items: 2
+					items: 3
 				},
 				1200: {
-					items: 3
+					items: 4
 				}
 			}
 		});
@@ -517,5 +521,26 @@
 					window.location.replace('<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>');
 				}
 			});
+		});
+
+		$('.block_type_side').owlCarousel({
+			loop: true,
+			margin: 30,
+			nav: true,
+			dots: false,
+			autoplay: true,
+			autoplayTimeout: 5000,
+			navText: ['<?php echo $this->Html->image('prev.png', ['alt' => 'prev']); ?>', '<?php echo $this->Html->image('next.png', ['alt' => 'next']); ?>'],
+			responsive: {
+				0: {
+					items: 1
+				},
+				768: {
+					items: 3
+				},
+				1200: {
+					items: 4
+				}
+			}
 		});
 	</script>
