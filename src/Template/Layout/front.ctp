@@ -35,14 +35,14 @@ use Cake\Routing\Router; ?>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title><?php echo $title_for_layout; ?></title>
-	<!-- <meta name="keywords" content="<?php echo $keyword_for_layout; ?>" /> -->
+	<meta name="keywords" content="<?php echo $keyword_for_layout; ?>" />
 	<meta name="description" content="<?php echo $description_for_layout; ?>">
 	<link href="<?php echo Router::url('/', true) . "img/favicon.jpeg"; ?>" type="image/x-icon" rel="icon" />
 	<link href="<?php echo Router::url('/', true) . "img/favicon.jpeg"; ?>" type="image/x-icon" rel="shortcut icon" />
 	<meta name="facebook-domain-verification" content="3rrn0glngylfceooaifricmhzex1j9" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<?php echo $this->Html->css(array('front/bootstrap.min.css?ver=1.0', 'front/bootstrap-icons.min.css?ver=1.0', 'front/owl.carousel.min', 'front/owl.theme.default.min', 'front/custom.css?ver=1.0270', 'front/responsive.css?ver=1.0A', 'front/sweetalert2.min.css?ver=1.0', 'front/fancybox.umd.css?ver=0.1')); ?>
+	<?php echo $this->Html->css(array('front/bootstrap.min.css?ver=1.0', 'front/bootstrap-icons.min.css?ver=1.0', 'front/owl.carousel.min', 'front/owl.theme.default.min', 'front/custom.css?ver=1.0271', 'front/responsive.css?ver=1.0A', 'front/sweetalert2.min.css?ver=1.0', 'front/fancybox.umd.css?ver=0.1')); ?>
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-J34YWES5NL"></script>
 

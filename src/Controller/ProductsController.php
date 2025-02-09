@@ -235,8 +235,13 @@ class ProductsController extends AppController
 	public function shopping()
 	{
 		$this->viewBuilder()->setLayout('front');
-		$seoTitle = "Best Place To Get Carpet & Rugs Online in Wilton - Kaouds";
+		$seoTitle = "Shop - Carpets & Rugs";
 		$this->set('title_for_layout', $seoTitle);
+		$seoDescription = "Shop today & buy high-quality, modern, unique Rugs &amp; Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.";
+		$this->set('description_for_layout', $seoDescription);
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
+		$this->set('keyword_for_layout', $seoKeyword);
+
 		$filterDataOptions = $this->returnFilterDataOptions();
 		if (!empty($filterDataOptions)) {
 			$enabledCategories = $filterDataOptions['enabledCategories'];
@@ -1522,6 +1527,13 @@ class ProductsController extends AppController
 
 	public function rugs($categorySlug = null)
 	{
+		$seoTitle = "Shop - Carpets & Rugs";
+		$this->set('title_for_layout', $seoTitle);
+		$seoDescription = "Shop today & buy high-quality, modern, unique Rugs &amp; Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.";
+		$this->set('description_for_layout', $seoDescription);
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
+		$this->set('keyword_for_layout', $seoKeyword);
+
 		$categoriesTable	=	TableRegistry::getTableLocator()->get('Categories');
 		$dimensionsTable	=	TableRegistry::getTableLocator()->get('Dimensions');
 		$colorsTable	=	TableRegistry::getTableLocator()->get('Colors');

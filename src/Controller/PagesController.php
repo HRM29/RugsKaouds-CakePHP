@@ -87,13 +87,22 @@ class PagesController extends AppController
 			$subpage = $path[1];
 		}
 
+		$seoTitle = "Best Place To Get Carpet & Rugs Online in Wilton - Kaouds";
+		$seoDescription = "Shop today & buy high-quality, modern, unique Rugs &amp; Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		try {
 
 			$cmsPageTable = TableRegistry::getTableLocator()->get('CmsPages');
 
-			$contentData = $cmsPageTable->find('all')
-				->where(['CmsPages.slug' => $page])->first();
+			$contentData = $cmsPageTable->find('all')->where(['CmsPages.slug' => $page])->first();
 
+			$seoTitle = !empty($contentData['meta_title']) ? $contentData['meta_title'] : $seoTitle;
+			$seoDescription = !empty($contentData['meta_description']) ? $contentData['meta_description'] : $seoDescription;
+			$seoKeyword = !empty($contentData['meta_keywords']) ? $contentData['meta_keywords'] : $seoKeyword;
+
+			$this->set('title_for_layout', $seoTitle);
+			$this->set('keyword_for_layout', $seoKeyword);
+			$this->set('description_for_layout', $seoDescription);
 			if (empty($contentData)) {
 				throw new NotFoundException;
 			}
@@ -132,9 +141,8 @@ class PagesController extends AppController
 	{
 
 		$seoTitle = "Best Place To Get Carpet & Rugs Online in Wilton - Kaouds";
-		$seoDescription = "Shop today & buy high-quality, modern, unique Rugs & Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.";
+		$seoDescription = "Shop today & buy high-quality, modern, unique Rugs &amp; Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.";
 		$seoKeyword = "oriental wall to wall carpet in Wilton";
-		$seoH2 = "";
 
 		$this->set('title_for_layout', $seoTitle);
 		$this->set('keyword_for_layout', $seoKeyword);
@@ -204,11 +212,15 @@ class PagesController extends AppController
 	{
 		// $seoKeyword = "area rug cleaning in Wilton, pile oriental rug cleaners Wilton";
 		$seoTitle = "Schedule Pickup for Rug Cleaning - Kaoud Carpets & Rugs";
-		// $seoDescription = "We confer Oriental Rug Cleaning Service in Wilton, CT. Our professional experts help remove harmful allergens, dust mites, pet stains, and mold at the source.";
+		$seoDescription = "We provide affordable rug cleaning services in Wilton, CT. Schedule your rug cleaning pickup today by filling out this simple form. Visit us here at Kaoud now!";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$this->set('title_for_layout', $seoTitle);
+		$this->set('keyword_for_layout', $seoKeyword);
+		$this->set('description_for_layout', $seoDescription);
 		$this->viewBuilder()->setLayout('front');
 		$states = parent::statesList();
 		$this->set(compact('states'));
+
 
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
@@ -252,10 +264,12 @@ class PagesController extends AppController
 
 	public function rugrepair()
 	{
-		// $seoKeyword = "area rug Repair in Wilton, pile oriental rug cleaners Wilton";
 		$seoTitle = "Schedule Pickup for Rug Repair- Kaoud Carpets & Rugs";
-		// $seoDescription = "We confer Oriental Rug Repair Service in Wilton, CT. Our professional experts help remove harmful allergens, dust mites, pet stains, and mold at the source.";
+		$seoDescription = "Schedule pickup for rug repair today and get benefited from our high end services. Feel free to visit us here at Kaoud for getting your rugs cleaned.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$this->set('title_for_layout', $seoTitle);
+		$this->set('keyword_for_layout', $seoKeyword);
+		$this->set('description_for_layout', $seoDescription);
 		$this->viewBuilder()->setLayout('front');
 		$states = parent::statesList();
 		$this->set(compact('states'));
@@ -304,10 +318,12 @@ class PagesController extends AppController
 
 	public function rugappraisal()
 	{
-		// $seoKeyword = "area rug Repair in Wilton, pile oriental rug cleaners Wilton";
 		$seoTitle = "Schedule Insurance Appraisal - Carpets & Rugs";
-		// $seoDescription = "We confer Oriental Rug Repair Service in Wilton, CT. Our professional experts help remove harmful allergens, dust mites, pet stains, and mold at the source.";
+		$seoDescription = "Being one of the best industrial carpet cleaners, we at Kaoud take pride in offering the best possible services. Click here to know more about our services.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$this->set('title_for_layout', $seoTitle);
+		$this->set('keyword_for_layout', $seoKeyword);
+		$this->set('description_for_layout', $seoDescription);
 		$this->viewBuilder()->setLayout('front');
 		$states = parent::statesList();
 		$this->set(compact('states'));
@@ -356,10 +372,12 @@ class PagesController extends AppController
 
 	public function rugsellus()
 	{
-		// $seoKeyword = "area rug Repair in Wilton, pile oriental rug cleaners Wilton";
 		$seoTitle = "Schedule Sell Us - Carpets & Rugs";
-		// $seoDescription = "We confer Oriental Rug Repair Service in Wilton, CT. Our professional experts help remove harmful allergens, dust mites, pet stains, and mold at the source.";
+		$seoDescription = "Being one of the best industrial carpet cleaners, we at Kaoud take pride in offering the best possible services. Click here to know more about our services.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$this->set('title_for_layout', $seoTitle);
+		$this->set('keyword_for_layout', $seoKeyword);
+		$this->set('description_for_layout', $seoDescription);
 		$this->viewBuilder()->setLayout('front');
 		$states = parent::statesList();
 		$this->set(compact('states'));
@@ -617,7 +635,8 @@ class PagesController extends AppController
 	{
 		$this->viewBuilder()->setLayout('front');
 		$seoTitle = "Our Collection - Kaoud Carpets & Rugs";
-
+		$seoDescription = "Check out our unique collection of vintage style rugs, outdoor jute rug, stair rug pads, natural stair runners, sisal runner rugs & more here at Kaoud.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$CollectionTable = TableRegistry::getTableLocator()->get('Collections');
 		$PageType = 'Collections';
 		if ($slug !== null && !empty($slug)) {
@@ -627,11 +646,14 @@ class PagesController extends AppController
 				->where(['Collections.collection_type' => "2", 'Collections.status' => 1, 'Collections.page_url' => trim($slug)])
 				->enableHydration(false)
 				->first();
+			$seoTitle = !empty($collection['meta_title']) ? $collection['meta_title'] : $seoTitle;
+			$seoDescription = !empty($collection['meta_description']) ? $collection['meta_description'] : $seoDescription;
+			$seoKeyword = !empty($collection['meta_keywords']) ? $collection['meta_keywords'] : $seoKeyword;
 		} else {
 			$parentCategoriesData = parent::returnCollectionCategoryData();
 			// echo "<pre>parentCategories: ";print_r($parentCategoriesData);echo "</pre>";
 			// if(!empty($parentCategoriesData)){
-				
+
 
 			// }
 			$collection = $CollectionTable->find()
@@ -645,6 +667,8 @@ class PagesController extends AppController
 				->toList();
 		}
 		$this->set('title_for_layout', $seoTitle);
+		$this->set('keyword_for_layout', $seoKeyword);
+		$this->set('description_for_layout', $seoDescription);
 		$this->set('collection', $collection);
 		$this->set('PageType', $PageType);
 	}
@@ -653,6 +677,8 @@ class PagesController extends AppController
 	{
 		$this->viewBuilder()->setLayout('front');
 		$seoTitle = "Projects - Kaoud Carpets & Rugs";
+		$seoDescription = "Check out our recently completed jobs of area rugs and carpets for your viewing. To know more and to get a clear idea of our projects, visit us here at Kaoud.";
+		$seoKeyword = "oriental wall to wall carpet in Wilton";
 
 		$ProjectsTable = TableRegistry::getTableLocator()->get('Projects');
 
@@ -663,6 +689,8 @@ class PagesController extends AppController
 			->enableHydration(false)
 			->toList();
 		$this->set('title_for_layout', $seoTitle);
+		$this->set('keyword_for_layout', $seoKeyword);
+		$this->set('description_for_layout', $seoDescription);
 		$this->set('projects', $projects);
 	}
 

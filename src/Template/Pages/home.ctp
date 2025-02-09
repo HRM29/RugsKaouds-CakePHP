@@ -287,7 +287,6 @@
 					?>
 						<div class="col-lg-4 col-md-12">
 							<div class="rvw_box">
-								<p style="height: 378px;"><?php echo $reviewData['review_text'] ?></p>
 								<div class="rvw_prfl">
 									<?php
 									if (!empty($reviewData['reviewer_image'])) {
@@ -327,6 +326,7 @@
 
 									</div>
 								</div>
+								<p class="mt-3"><?php echo $reviewData['review_text'] ?></p>
 							</div>
 						</div>
 					<?php
@@ -528,7 +528,7 @@
 			margin: 30,
 			nav: true,
 			dots: false,
-			autoplay: true,
+			autoplay: false,
 			autoplayTimeout: 5000,
 			navText: ['<?php echo $this->Html->image('prev.png', ['alt' => 'prev']); ?>', '<?php echo $this->Html->image('next.png', ['alt' => 'next']); ?>'],
 			responsive: {

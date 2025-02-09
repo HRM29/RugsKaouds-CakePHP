@@ -1550,8 +1550,6 @@ footer .cpyrght p {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    content: "";
     height: 100%;
 }
 .rgs_type .block_type_side.owl-theme .owl-nav [class*="owl-"] {
