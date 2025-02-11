@@ -358,6 +358,8 @@ if ($session->check('coupon')) {
 								<label for="terms-conditions">I have read and agree to the website <a href="<?php echo Router::url('/', true) ?>terms-and-condition" target="_blank">terms and conditions</a>.</label>
 							</li>
 						</ul>
+						<div id="paypal-button-container" class="paypal-button-container" style="display: none;"></div>
+						<div id="paypal-card-container" class="paypal-card-container" style="display: none;"></div>
 						<a href="javascript:void(0);" class="btn pay payment-1" style="display: none;"><img src="/Kaouds/img/pay.png" alt="pay"></a>
 						<a href="javascript:void(0);" class="btn pay payment-2" style="display: none;"><strong>Place Order</strong></a>
 						<p>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.</p>
@@ -501,6 +503,10 @@ if ($session->check('coupon')) {
 		//paymentForm.build(); 
 	});
 </script>
+<!-- Initialize the JS-SDK -->
+<script
+	src="https://www.paypal.com/sdk/js?client-id=ARJczXHx_46kAZdcvl3kQaPcJxKtseZUncJcKt6VpozYTpEtVMedJdLodK-j7xHhHoRruCae_X57B8IT&buyer-country=US&currency=USD&components=buttons&disable-funding=venmo,paylater"
+	data-sdk-integration-source="developer-studio"></script>
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
 <script>
 	$(":input").inputmask();
@@ -894,15 +900,11 @@ if ($session->check('coupon')) {
 		paymentOptions.forEach(option => {
 			option.addEventListener('change', function() {
 				if (this.value === '1') {
-					document.querySelector('.payment-1').style.display = 'block';
-					document.querySelector('.payment-1').classList.add('pay-now');
-					document.querySelector('.payment-2').style.display = 'none';
-					document.querySelector('.payment-2').classList.remove('pay-now');
+					document.querySelector('.paypal-button-container').style.display = 'block';
+					document.querySelector('.paypal-card-container').style.display = 'none';
 				} else {
-					document.querySelector('.payment-1').style.display = 'none';
-					document.querySelector('.payment-1').classList.remove('pay-now');
-					document.querySelector('.payment-2').style.display = 'block';
-					document.querySelector('.payment-2').classList.add('pay-now');
+					document.querySelector('.paypal-button-container').style.display = 'none';
+					document.querySelector('.paypal-card-container').style.display = 'block';
 				}
 				checkoutOptionInput.value = this.value;
 			});
@@ -912,9 +914,9 @@ if ($session->check('coupon')) {
 	updateCheckoutOption();
 	toggleNewsletterCheckbox();
 	toggleShipToDiffAddressCheckbox();
+	checkEmail();
 
 	function sendEncryptedData() {
-		const csrfToken = $("[name='_csrfToken']").val();
 		const formDataPaypal = new FormData(document.getElementById("form_paypal"));
 		const formDataPayment = new FormData(document.getElementById("payment-details"));
 
@@ -976,6 +978,11 @@ if ($session->check('coupon')) {
 			showAlert('Please fill in all required fields and agree to the terms and conditions.');
 			return;
 		}
+		paymentServicePromise(data);
+	}
+
+	function paymentServicePromise(formData) {
+		const csrfToken = $("[name='_csrfToken']").val();
 		showLoadingModal();
 		fetch('<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'checkoutnew']); ?>', {
 				method: 'POST',
@@ -983,14 +990,13 @@ if ($session->check('coupon')) {
 					'X-CSRF-Token': csrfToken,
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(data)
+				body: JSON.stringify(formData)
 			})
 			.then(response => response.json())
 			.then(data => {
 				if (data.status === 'Success') {
 					var redirect_url = $('#redirect_url').val();
-
-					// window.location = redirect_url;
+					window.location = redirect_url;
 				} else {
 					hideLoadingModal();
 					Swal.fire({
@@ -1148,4 +1154,229 @@ if ($session->check('coupon')) {
 			couponSection.style.display = 'none';
 		}
 	});
+</script>
+<script>
+	window.paypal
+		.Buttons({
+			style: {
+				shape: "pill",
+				layout: "vertical",
+				color: "gold",
+				label: "pay",
+			},
+			fundingSource: paypal.FUNDING.PAYPAL,
+			onClick() {
+				const formDataPaypal = new FormData(document.getElementById("form_paypal"));
+				const formDataPayment = new FormData(document.getElementById("payment-details"));
+
+				// Combine both FormData objects
+				for (let [key, value] of formDataPayment.entries()) {
+					formDataPaypal.append(key, value);
+				}
+				// Convert FormData to JSON object
+				let data = {};
+				formDataPaypal.forEach((value, key) => {
+					data[key] = value;
+				});
+				// Validation
+				const requiredFields = [
+					'billing-first-name', 'billing-last-name', 'billing-address-name', 'billing-city-name', 'billing-states-name', 'billing-zipcode', 'billing-phone', 'billing-email'
+				];
+				let isValid = true;
+				requiredFields.forEach(field => {
+					const fieldElement = document.querySelector(`[name="${field}"]`);
+					if (!data[field] || data[field].trim() === '') {
+						isValid = false;
+						fieldElement.style.border = '1px solid red';
+						if (isValid === false) {
+							fieldElement.focus();
+						}
+					} else {
+						fieldElement.style.border = '1px solid #ced4da';
+					}
+				});
+				// Validate delivery address if "Ship to a different address" is checked
+				if (data['ship-to-different'] === '1') {
+					const deliveryFields = [
+						'delivery-first-name', 'delivery-last-name', 'delivery-address-name', 'delivery-city-name', 'delivery-states-name', 'delivery-zipcode', 'delivery-phone', 'delivery-email'
+					];
+					deliveryFields.forEach(field => {
+						const fieldElement = document.querySelector(`[name="${field}"]`);
+						if (!data[field] || data[field].trim() === '') {
+							isValid = false;
+							fieldElement.style.border = '1px solid red';
+							if (isValid === false) {
+								fieldElement.focus();
+							}
+						} else {
+							fieldElement.style.border = '1px solid #ced4da';
+						}
+					});
+				}
+
+				// Validate terms and conditions
+				const termsConditions = document.querySelector('[name="payment-terms-conditions"]');
+				if (!termsConditions.checked) {
+					isValid = false;
+					termsConditions.nextElementSibling.style.color = 'red';
+				} else {
+					termsConditions.nextElementSibling.style.color = 'inherit';
+				}
+
+				if (!isValid) {
+					showAlert('Please fill in all required fields and agree to the terms and conditions.');
+					return false;
+				}
+			},
+			createOrder: function(data, actions) {
+				// Set the amount dynamically
+				//const amount = $('#total_amount').val(); // Replace with your desired amount
+				return actions.order.create({
+					purchase_units: [{
+						amount: {
+							currency_code: "USD",
+							value: <?php echo $total_price; ?>, // Final total amount
+						},
+					}],
+				});
+			},
+			onApprove: function(data, actions) {
+				// Handle when the payment is approved
+				return actions.order.capture().then(function(details) {
+					// Show a success message to the user
+					const transaction = details.purchase_units[0].payments.captures[0];
+					const formDataPaypal = new FormData(document.getElementById("form_paypal"));
+					const formDataPayment = new FormData(document.getElementById("payment-details"));
+
+					// Combine both FormData objects
+					for (let [key, value] of formDataPayment.entries()) {
+						formDataPaypal.append(key, value);
+					}
+					// Convert FormData to JSON object
+					let data = {};
+					formDataPaypal.forEach((value, key) => {
+						data[key] = value;
+					});
+					data['paypal-button-response'] = JSON.stringify(transaction);
+					paymentServicePromise(data);
+				});
+			},
+			onError: function(error) {
+				// Handle errors and display an error message to the user
+				console.log(error);
+				alert(error + 'An error occurred while processing the payment. Please try again later.');
+			},
+		})
+		.render('.paypal-button-container');
+	// Render the PayPal button in the specified container
+
+	paypal.Buttons({
+		style: {
+			shape: "pill",
+		},
+		fundingSource: paypal.FUNDING.CARD, // This ensures the button is only for credit/debit cards
+		onClick() {
+			const formDataPaypal = new FormData(document.getElementById("form_paypal"));
+			const formDataPayment = new FormData(document.getElementById("payment-details"));
+
+			// Combine both FormData objects
+			for (let [key, value] of formDataPayment.entries()) {
+				formDataPaypal.append(key, value);
+			}
+			// Convert FormData to JSON object
+			let data = {};
+			formDataPaypal.forEach((value, key) => {
+				data[key] = value;
+			});
+			// Validation
+			const requiredFields = [
+				'billing-first-name', 'billing-last-name', 'billing-address-name', 'billing-city-name', 'billing-states-name', 'billing-zipcode', 'billing-phone', 'billing-email'
+			];
+			let isValid = true;
+			requiredFields.forEach(field => {
+				const fieldElement = document.querySelector(`[name="${field}"]`);
+				if (!data[field] || data[field].trim() === '') {
+					isValid = false;
+					fieldElement.style.border = '1px solid red';
+					if (isValid === false) {
+						fieldElement.focus();
+					}
+				} else {
+					fieldElement.style.border = '1px solid #ced4da';
+				}
+			});
+			// Validate delivery address if "Ship to a different address" is checked
+			if (data['ship-to-different'] === '1') {
+				const deliveryFields = [
+					'delivery-first-name', 'delivery-last-name', 'delivery-address-name', 'delivery-city-name', 'delivery-states-name', 'delivery-zipcode', 'delivery-phone', 'delivery-email'
+				];
+				deliveryFields.forEach(field => {
+					const fieldElement = document.querySelector(`[name="${field}"]`);
+					if (!data[field] || data[field].trim() === '') {
+						isValid = false;
+						fieldElement.style.border = '1px solid red';
+						if (isValid === false) {
+							fieldElement.focus();
+						}
+					} else {
+						fieldElement.style.border = '1px solid #ced4da';
+					}
+				});
+			}
+
+			// Validate terms and conditions
+			const termsConditions = document.querySelector('[name="payment-terms-conditions"]');
+			if (!termsConditions.checked) {
+				isValid = false;
+				termsConditions.nextElementSibling.style.color = 'red';
+			} else {
+				termsConditions.nextElementSibling.style.color = 'inherit';
+			}
+
+			if (!isValid) {
+				showAlert('Please fill in all required fields and agree to the terms and conditions.');
+				return false;
+			}
+		},
+		createOrder: function(data, actions) {
+			let subtotal = 100;
+			let shippingCost = 10;
+			let finalTotal = subtotal + shippingCost;
+
+			return actions.order.create({
+				purchase_units: [{
+					amount: {
+						currency_code: "USD",
+						value: finalTotal.toFixed(2),
+					},
+				}],
+
+				application_context: {
+					shipping_preference: "NO_SHIPPING",
+					locale: "en-US",
+					user_action: "PAY_NOW",
+				}
+			});
+		},
+		onApprove: function(data, actions) {
+			return actions.order.capture().then(function(details) {
+				// Show a success message to the user
+				const transaction = details.purchase_units[0].payments.captures[0];
+				const formDataPaypal = new FormData(document.getElementById("form_paypal"));
+				const formDataPayment = new FormData(document.getElementById("payment-details"));
+
+				// Combine both FormData objects
+				for (let [key, value] of formDataPayment.entries()) {
+					formDataPaypal.append(key, value);
+				}
+				// Convert FormData to JSON object
+				let data = {};
+				formDataPaypal.forEach((value, key) => {
+					data[key] = value;
+				});
+				data['paypal-cards-response'] = JSON.stringify(transaction);
+				paymentServicePromise(data);
+			});
+		}
+	}).render(".paypal-card-container");
 </script>

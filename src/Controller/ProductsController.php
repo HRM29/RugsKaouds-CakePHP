@@ -303,7 +303,7 @@ class ProductsController extends AppController
 				$order['id'] = 'DESC';
 			}
 		}
-		if(!isset($order)){
+		if (!isset($order)) {
 			$order['id'] = 'DESC';
 		}
 		$filters = [
@@ -717,18 +717,25 @@ class ProductsController extends AppController
 				$result = $this->SquarePayment->doDirectPayment($data, $shop);
 				*/
 				$result['status'] = 'Success';
-				$result['txn_id'] = rand(100000, 999999);
 
 				if ($result['status'] == 'Success') {
 					$order = $orders->patchEntity($order, $mappedData);
 
-					$order->payment_status = 1;
 					$order->order_status = 0;
-					$order->trans_id = $result['txn_id'];
 					if ($postdata['checkout_option'] == 2) {
+						$result['txn_id'] = rand(100000, 999999);
 						$order->payment_method = "Card";
+						$order->trans_id = $result['txn_id'];
 					} elseif ($postdata['checkout_option'] == 1) {
 						$order->payment_method = "Paypal";
+						$paypalResponse = json_decode($postdata['paypal-button-response'], true);
+						if (isset($paypalResponse['id']) && isset($paypalResponse['status']) && $paypalResponse['status'] == 'COMPLETED') {
+							$order->payment_status = 1;
+							$result['txn_id'] = $order->trans_id = $paypalResponse['id'];
+						} else {
+							$order->payment_status = 0;
+							$order->trans_id = '0';
+						}
 					}
 					//Order save to orders table	
 
@@ -767,7 +774,7 @@ class ProductsController extends AppController
 
 							// update product table
 							$ProductsTable->updateAll(['sold_status' => 1], ['id' => $proSub['id']]);
-							$ProductsTable->updateAll(['status' => 0], ['id' => $proSub['id']]);
+							$ProductsTable->updateAll(['status' => 2], ['id' => $proSub['id']]);
 						}
 
 						$email_billing = $orders->find('all')->select(['billing_first_name', 'billing_last_name', 'billing_email',])->where(['id' => $last_id])->First();
