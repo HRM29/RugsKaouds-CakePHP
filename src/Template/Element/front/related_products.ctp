@@ -55,6 +55,7 @@ if (count($relatedProducts) > 0) {
                                         <?php
                                         } ?>
                                     </a>
+									<span class="sale">Sale!</span>
                                     <div class="arrvl_text">
                                         <h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>" style="text-decoration: none; color: #000;"><?php echo $productData->style; ?></a></h3>
                                         <p><?= $productData->title; ?></p>

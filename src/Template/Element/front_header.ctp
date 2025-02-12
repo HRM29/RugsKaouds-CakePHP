@@ -60,7 +60,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 				</div>
 			</div>
 		</div>
-	</div>	
+	</div>
 </div>
 
 <header id="myHeader">
@@ -81,7 +81,47 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 								<button onclick="sdbr_close()" class="close">&times;</button>
 								<li class="nav-item"><a class="nav-link <?= in_array($action, $shop_Actions) ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li>
+								<!--li class="nav-item"><a class="nav-link <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li-->
+								<?php
+								if (isset($collectionCategoriesData) && !empty($collectionCategoriesData)) {
+								?>
+									<li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Collections</a>
+										<div class="dropdown-menu mega" aria-labelledby="navbarDropdown">
+											<div class="container">
+												<div class="row">
+													<?php
+													foreach ($collectionCategoriesData as $parentKey => $parendData) {
+													?>
+														<div class="col-md-2 no_padding">
+															<h4><?php echo $parendData['ParentName']; ?></h4>
+															<?php
+															if (isset($parendData['SubCategory']) && !empty($parendData['SubCategory'])) {
+															?>
+																<ul class="nav flex-column">
+																	<?php
+																	foreach ($parendData['SubCategory'] as $subCategoryKey => $subCategoryValue) {
+																	?>
+																		<li class="nav-item"> <a class="nav-link" href="<?php echo Router::url('/', true) . "collections/" . $subCategoryValue['SubCategorySlug']; ?>"><?php echo $subCategoryValue['SubCategoryName'] ?></a> </li>
+																	<?php
+																	}
+																	?>
+																</ul>
+															<?php
+															}
+															?>
+														</div>
+													<?php
+													}
+													?>
+
+												</div>
+											</div>
+										</div>
+									</li>
+								<?php
+								}
+								?>
+
 								<li class="nav-item dropdown">
 									<a class="nav-link dropdown-toggle <?= in_array($action, $services_Actions) ? 'active'  : ''; ?>" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">

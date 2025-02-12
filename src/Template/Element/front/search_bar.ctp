@@ -7,8 +7,10 @@ $priceFilters = isset($price_range) ? $price_range : array();
 $sizeFilters = isset($size_range) ? $size_range : array();
 ?>
 <div class="col-md-3">
-	<button id="shop-sidebar">Filters</button>
-	<div class="sidebar" id="shop-filter-bars">
+	<button id="shop-sidebar">
+		<img src="<?php echo Router::url('/', true); ?>img/filter-icon.jpg" alt="icon" width="20" height="20">
+		Filters</button>
+	<div class="sidebar" id="shop-filter-bars" style="display: none;">
 
 		<?php
 		if (isset($enabledCategories) && !empty($enabledCategories)) {
@@ -271,10 +273,10 @@ $sizeFilters = isset($size_range) ? $size_range : array();
 	const filterButton = document.getElementById('shop-sidebar');
 	filterButton.addEventListener('click', function() {
 		let filterSection = document.getElementById("shop-filter-bars");
-		if (filterSection.style.display === "none" || filterSection.style.display === "") {
+		if (filterSection.style.display === "none") {
 			filterSection.style.display = "block";
 		} else {
-			filterSection.style.display = "none"; 
+			filterSection.style.display = "none";
 		}
-	})
+	});
 </script>

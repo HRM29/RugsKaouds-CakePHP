@@ -153,7 +153,7 @@ use Cake\Routing\Router; ?>
 			} else {
 				formData.append('linkValue', linkValue);
 			}
-			if (collectionType.value === 'page') {
+			if (collectionType.value === '2') {
 				$.ajax({
 					headers: {
 						'X-CSRF-Token': csrfToken

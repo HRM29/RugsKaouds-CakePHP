@@ -176,7 +176,7 @@ class AppController extends Controller
                     }
                 }
             }
-            $this->set(compact('categories', 'latestProducts', 'is_future', 'is_special', 'is_best', 'new_arival', 'newProducts', 'captionFront', 'captionBack', 'bannersList', 'MostViewsList', 'hot_sale', 'cmspage'));
+            $this->set(compact('categories', 'latestProducts', 'is_future', 'is_special', 'is_best', 'new_arival', 'newProducts', 'captionFront', 'captionBack', 'bannersList', 'MostViewsList', 'hot_sale', 'cmspage', 'collectionCategoriesData'));
         }
     }
 
@@ -1003,7 +1003,7 @@ class AppController extends Controller
         $collectionCategories = $this->returnCollectionCategory();
         foreach ($collectionCategories as $collKey => $collName) {
             $subCategoriesData = $this->returnSubCategoryBasedOnParentID($collKey);
-            if($subCategoriesData['isCollectionValid'] && !empty($subCategoriesData['subCategoriesData'])){
+            if ($subCategoriesData['isCollectionValid'] && !empty($subCategoriesData['subCategoriesData'])) {
                 $collectionActualData[$collKey]['ParentName'] = $collName;
                 $collectionActualData[$collKey]['SubCategory'] = $subCategoriesData['subCategoriesData'];
             }
@@ -1018,8 +1018,8 @@ class AppController extends Controller
         $subcollectionCategory = $collectionsTable->find('all')
             ->select(['id', 'title', 'page_url'])
             ->where(['collection_type' => 2, 'status' => 1, 'parent_id' => $parentID])
+            ->order(['id' => 'DESC'])
             ->toList();
-
         $subcollectionCategoryArray = [];
         if (!empty($subcollectionCategory)) {
             $subCategoryCheck = 0;

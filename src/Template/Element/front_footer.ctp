@@ -57,7 +57,7 @@ $controller = $this->request->getParam('controller');
                     <div class="ftr_menus">
                         <ul>
                             <li><a class="<?= $action; ?>" href="<?php echo Router::url('/', true) ?>about-us">About</a></li>
-                            <li><a href="#">Our Stores</a></li>
+                            <li><a href="<?php echo Router::url('/', true) ?>our-stores">Our Stores</a></li>
                             <li><a href="#">Blog</a></li>
                             <li><a href="<?php echo Router::url('/', true) ?>faqs">Faqs</a></li>
                             <li><a href="<?php echo Router::url('/', true) ?>privacy-policy">Privacy Policy</a></li>
