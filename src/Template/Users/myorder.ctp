@@ -6,21 +6,12 @@ use Cake\Routing\Router;
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 <section class="inner_banner shp">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
-            <div class="col-md-12 no_padding">
-                <div class="inr_bnr">
-                    <div class="col-md-12 no_padding">
-                        <div class="inr_bnr">
-                            <?php
-                            $image = WWW_ROOT . 'img' . DS . 'conact_us_banner.jpg';
-                            if (file_exists($image)) {
-                                echo $this->Html->image('/img/' . "conact_us_banner.jpg", ['alt' => "conact_us_banner"]);
-                            }
-                            ?>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-md-12">
+     			<div class="heading">
+		    		<h3>Orders</h3>
+	    		</div>
             </div>
         </div>
     </div>
@@ -30,8 +21,8 @@ use Cake\Routing\Router;
     <div class="container">
         <div class="row">
 			<?php echo $this->element('front/account_menu'); ?>
-            <div class="col-md-9">
-                <div class="about_status" style="padding: 20px;">
+            <div class="col-md-9 no_padding">
+                <div class="about_status">
                     <strong>Total Orders : <?= count($totalOrders); ?> </strong><br />
                     <strong>Payment Status (Pending) : <?= count($PendingListing); ?> </strong><br />
                     <strong>Payment Status (Completed) : <?= count($CompleteListing); ?> </strong>

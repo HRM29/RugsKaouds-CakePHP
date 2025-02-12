@@ -12,7 +12,7 @@ $authUser = $session->read('Auth');
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
-					<h1>Wishlist</h1>
+					<h3>Wishlist</h3>
 				</div>
 			</div>
 		</div>
@@ -22,7 +22,7 @@ $authUser = $session->read('Auth');
 	<div class="container">
 		<div class="row">
 			<?php echo $this->element('front/account_menu'); ?>
-			<div class="col-md-9">
+			<div class="col-md-9 no_padding">
 				<div class="tab-content" id="v-pills-tabContent">
 					<div class="tab-pane fade show active" id="v-pills-seven" role="tabpanel" aria-labelledby="v-pills-seven-tab">
 						<div class="table-responsive crt_tbl">

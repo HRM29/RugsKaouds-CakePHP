@@ -7,7 +7,8 @@ $priceFilters = isset($price_range) ? $price_range : array();
 $sizeFilters = isset($size_range) ? $size_range : array();
 ?>
 <div class="col-md-3">
-	<div class="sidebar">
+	<button id="shop-sidebar">Filters</button>
+	<div class="sidebar" id="shop-filter-bars">
 
 		<?php
 		if (isset($enabledCategories) && !empty($enabledCategories)) {
@@ -267,8 +268,13 @@ $sizeFilters = isset($size_range) ? $size_range : array();
 			updateFilters();
 		});
 	});
-
-	$(document).ready(function() {
-
-	});
+	const filterButton = document.getElementById('shop-sidebar');
+	filterButton.addEventListener('click', function() {
+		let filterSection = document.getElementById("shop-filter-bars");
+		if (filterSection.style.display === "none" || filterSection.style.display === "") {
+			filterSection.style.display = "block";
+		} else {
+			filterSection.style.display = "none"; 
+		}
+	})
 </script>

@@ -15,7 +15,7 @@ $action = $this->request->getParam('action');
 $slug = $this->request->getParam('slug');
 $controller = $this->request->getParam('controller');
 ?>
-<div class="col-md-3">
+<div class="col-md-3 dshbrd_col no_padding">
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         <a class="nav-link<?= $action == 'myaccount' ? ' active' : '' ?>" id="v-pills-one-tab" href="<?php echo Router::url('/', true); ?>users/myaccount">Dashboard</a>
         <a class="nav-link<?= $action == 'myorder' || $action == 'orderDetail' ? ' active' : '' ?>" id="v-pills-two-tab" href="<?php echo Router::url('/', true); ?>users/myorder">Orders</a>

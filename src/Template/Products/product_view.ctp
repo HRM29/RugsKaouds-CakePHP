@@ -9,7 +9,7 @@ use Cake\Routing\Router;
 		<div class="row">
 			<div class="col-md-12">
 				<nav aria-label="breadcrumb">
-					<ol class="breadcrumb bg-light p-3 rounded">
+					<ol class="breadcrumb">
 						<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
 						<li class="breadcrumb-item active" aria-current="page"><a href="<?php echo Router::url('/', true) ?>shop"><?= !empty($title) ? $title : 'All Products'; ?></a></li>
 					</ol>

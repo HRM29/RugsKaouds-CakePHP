@@ -35,6 +35,34 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 <?php echo $this->Html->script(['fancybox.umd.js']); ?>
 <script src="https://www.google.com/recaptcha/api.js?render=<?= CAPTCHA_SITEKEY ?>"></script>
 
+<div class="topbar">
+	<div class="container-fluid">
+		<div class="row align-items-center">
+			<div class="col-md-7">
+				<div class="tpbr_nav">
+					<ul>
+						<li>Kaouds Carpet & Rugs</li>
+						<li>Family Since 1954</li>
+						<li>Serving Tri-State</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-5">
+				<div class="social">
+					<ul>
+						<li><a href="https://www.facebook.com/profile.php?id=100063498433021#" target="_blank"><i class="bi bi-facebook"></i></a></li>
+						<li><a href="https://www.instagram.com/kaoudcarpetandrugs/" target="_blank"><i class="bi bi-instagram"></i></a></li>
+						<li><a href="https://x.com/KaoudCarpets?mx=2" target="_blank"><i class="bi bi-twitter-x"></i></a></li>
+						<li><a href="https://x.com/KaoudCarpets?mx=2" target="_blank"><i class="bi bi-linkedin"></i></a></li>
+						<li><a href="mailto:info@kaouds.com" target="_blank"><i class="bi bi-envelope-fill"></i></a></li>
+						<li><a href="tel:203.762.0376" target="_blank"><i class="bi bi-telephone-fill"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>
+
 <header id="myHeader">
 	<div class="container-fluid">
 		<div class="row align-items-center">

@@ -18,7 +18,7 @@ $controller = $this->request->getParam('controller');
     <section class="grnt_nws" style="background-image: url( <?= $newsletterImg; ?>);">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-12 no_padding">
+                <div class="col-lg-6 col-md-12">
                     <div class="grntee">
                         <div class="heading">
                             <h2>Customer Feedback & Comments</h2>
@@ -27,7 +27,7 @@ $controller = $this->request->getParam('controller');
                         <p>If for any reason after the sale you are not completely satisfied within 30 days of your purchase, we will gladly take your rug back and exchange it for the rug of your choice.</p>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12 no_padding">
+                <div class="col-lg-6 col-md-12">
                     <div class="nwsltr">
                         <div class="heading">
                             <h2>Newsletter</h2>

@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
-					<h1>Collections</h1>
+					<h3>Collections</h3>
 				</div>
 			</div>
 		</div>
@@ -26,7 +26,7 @@ if (isset($collection) && !empty($collection)) {
                     <?php
                     foreach ($collection as $collectionData) {
                     ?>
-                        <div class="col-md-2">
+                        <div class="col-lg-2 col-md-3">
                             <div class="clctns">
                                 <a href="<?php echo Router::url('/', true) . "collections/" . $collectionData['page_url']; ?>">
                                     <?php
@@ -62,7 +62,7 @@ if (isset($collection) && !empty($collection)) {
                         foreach ($collectionImages as $imagesData) {
                             $imageURL = $this->Url->build('/uploads/collection/' . $imagesData['file_path']);
                     ?>
-                            <div class="col-md-2">
+                            <div class="col-lg-2 col-md-3">
                                 <div class="clctns">
                                     <a href="<?php echo $imageURL; ?>" data-fancybox="gallery" data-src="<?php echo $imageURL; ?>">
                                         <?php

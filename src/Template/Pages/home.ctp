@@ -20,6 +20,12 @@
 											echo $this->Html->image('/uploads/banner/' . $Block1Data['image'], ['alt' => $Block1Data['image'], "class" => "carousel-image"]);
 										}
 										?>
+										<div class="sldr_text">
+											<h1>Latest Trends</h1>
+											<span>For Today's Decor</span> 
+											<p>We Search the globe so you don't have to</p>
+											<a href="shop.html" class="btn">Browse</a>
+										</div>
 									</div>
 								</div>
 							<?php
@@ -196,12 +202,9 @@
 										<?php
 										} ?>
 									</a>
-									<span>Sale!</span>
+									<span class="sale">Sale!</span>
 									<div class="arrvl_text">
-										<h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>" style="text-decoration: none; color: #000"><?php echo $productData->style; ?></a></h3>
-										<p><?= $productData->title; ?></p>
-										<span>$<?php echo number_format($productData->selling_price, 2); ?></span>
-										<span class="nw_price">$<?php echo number_format($productData->everyday_price, 2); ?></span>
+										<!--h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>" style="text-decoration: none; color: #000"><?php echo $productData->style; ?></a></h3-->									
 										<div class="sku-container">
 											<span class="sku-label">SKU:</span>
 											<span class="sku-value"><?php echo $productData->sku_no; ?></span>
@@ -221,6 +224,12 @@
 										<?php
 										}
 										?>
+										
+										<p><?= $productData->title; ?></p>
+										<span>$<?php echo number_format($productData->selling_price, 2); ?></span>
+										<span class="nw_price">$<?php echo number_format($productData->everyday_price, 2); ?></span>
+										
+										
 									</div>
 								</div>
 							</div>
@@ -526,7 +535,7 @@
 		$('.block_type_side').owlCarousel({
 			loop: true,
 			margin: 30,
-			nav: true,
+			nav: false,     
 			dots: false,
 			autoplay: false,
 			autoplayTimeout: 5000,

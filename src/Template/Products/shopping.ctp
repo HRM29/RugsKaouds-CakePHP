@@ -7,7 +7,7 @@ use Cake\Core\Configure; ?>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
-					<h1></h1>
+					<h3>Shop</h3>
 				</div>
 			</div>
 		</div>
@@ -18,7 +18,7 @@ use Cake\Core\Configure; ?>
 		<div class="row">
 			<div class="col-md-12">
 				<nav aria-label="breadcrumb">
-					<ol class="breadcrumb bg-light p-3 rounded">
+					<ol class="breadcrumb">
 						<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
 						<li class="breadcrumb-item active" aria-current="page"><?= !empty($title) ? $title : 'All Products'; ?></li>
 					</ol>
@@ -53,7 +53,7 @@ use Cake\Core\Configure; ?>
 									$imageURL = $image_data->image;
 								}
 							?>
-								<div class="col-md-3">
+								<div class="col-xl-3 col-lg-4 col-md-6">
 									<div class="arrvl_box">
 										<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
 											<div class="product-thumb">
@@ -90,7 +90,7 @@ use Cake\Core\Configure; ?>
 													<img src="<?php echo Router::url('/', true); ?>img/no-image.png" alt="<?php echo $data->title; ?>" style="height:250px;" />
 												<?php
 												} ?>
-												<span>Sale!</span>
+												<span class="sale">Sale!</span>
 											</div>
 										</a>
 										<div class="arrvl_text">
