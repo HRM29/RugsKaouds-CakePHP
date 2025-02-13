@@ -28,6 +28,7 @@ use Cake\Controller\Component\PaginatorComponent;
 use Cake\Network\Request;
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
+use Cake\Routing\Router;
 
 /**
  * Static content controller
@@ -148,7 +149,7 @@ class MediaUploadController extends AppController
 			foreach ($paginatedFiles as $file) {
 				$mediaFiles[] = [
 					'name' => $file,
-					'url' => $this->request->getAttribute('webroot') . 'media/view/' . $file
+					'url' => Router::url('/', true) . 'media/view/media-file/' . $file
 				];
 			}
 
@@ -192,7 +193,7 @@ class MediaUploadController extends AppController
 
 				if (move_uploaded_file($file['tmp_name'], $filePath)) {
 					// Generate custom URL
-					$mediaUrl = $this->request->getAttribute('webroot') . 'media/view/' . $customName;
+					$mediaUrl = $this->request->getAttribute('webroot') . 'media/view/media-file/' . $customName;
 					$this->set(compact('mediaUrl'));
 					$this->Flash->success(__('File uploaded successfully.'));
 				} else {
@@ -251,5 +252,20 @@ class MediaUploadController extends AppController
 
 		// Redirect to the media index page after deletion
 		return $this->redirect(['action' => 'index']);
+	}
+	public function viewMediaLib($mediaslug, $filename)
+	{
+		$folder_slug = [
+			'media-file' => 'media-library',
+			'footer-file' => 'header_footer'
+		];
+		$filePath = WWW_ROOT . 'uploads' . DS . $folder_slug[$mediaslug] . DS . $filename;
+		if (file_exists($filePath)) {
+			$this->response = $this->response->withFile($filePath);
+			return $this->response;
+		} else {
+			$this->Flash->error(__('File not found.'));
+			return $this->redirect(['action' => 'list']);
+		}
 	}
 }

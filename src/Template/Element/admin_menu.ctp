@@ -446,8 +446,8 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 					<i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-				<li><a href="<?php echo Router::url('/', true); ?>admin/MediaUpload"><i class="fa fa-list-alt"></i> Media List</a></li>
-				<li><a href="<?php echo Router::url('/', true); ?>admin/MediaUpload/add"><i class="fa fa-plus"></i> Upload Media</a></li>
+					<li><a href="<?php echo Router::url('/', true); ?>admin/MediaUpload"><i class="fa fa-list-alt"></i> Media List</a></li>
+					<li><a href="<?php echo Router::url('/', true); ?>admin/MediaUpload/add"><i class="fa fa-plus"></i> Upload Media</a></li>
 				</ul>
 			</li>
 			<!-- Manage Reports -->
@@ -473,7 +473,19 @@ $defaulActions = array('index', 'add', 'edit', 'view');
 				</a>
 			</li>
 
-
+			<?php 
+			$headerFooterAction = ['manageFooter'];
+			?>
+			<li class="treeview <?php echo ($controller == 'HeaderFooter' && (in_array($action, $headerFooterAction))) ? 'active' : ''; ?>">
+				<a href="#">
+					<i class="fa fa-shopping-cart"></i>
+					<span>Manage Footer </span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo Router::url('/', true); ?>admin/configuration/manage-footer"><i class="fa fa-list-alt"></i> Manage Footer</a></li>
+				</ul>
+			</li>
 		</ul>
 	</section>
 	<!-- /.sidebar -->

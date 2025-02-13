@@ -94,10 +94,10 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/schedule-insurance-appraisal/', ['controller' => 'Pages', 'action' => 'rugappraisal']);
     $routes->connect('/schedule-sell-us/', ['controller' => 'Pages', 'action' => 'rugsellus']);
     $routes->connect(
-        '/media/view/:filename',
+        '/media/view/:mediaslug/:filename',
         ['controller' => 'Pages', 'action' => 'viewMediaLib'],
-        ['pass' => ['filename'], 'filename' => '.*']
-    );
+        ['pass' => ['mediaslug', 'filename'], 'mediaslug' => '.*', 'filename' => '.*']
+    );    
     
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
@@ -128,5 +128,11 @@ Router::prefix('admin', function ($routes) {
 
     $routes->connect('/forgot', ['controller' => 'Users', 'action' => 'forgot']);
     $routes->connect('/users/dashboard', ['controller' => 'Users', 'action' => 'index']);
+    $routes->connect('/configuration/manage-footer', ['controller' => 'HeaderFooter', 'action' => 'manageFooter']);
+    $routes->connect(
+        '/admin-media/admin-view/:mediaslug/:filename',
+        ['controller' => 'MediaUpload', 'action' => 'viewMediaLib'],
+        ['pass' => ['mediaslug', 'filename'], 'mediaslug' => '.*', 'filename' => '.*']
+    );  
     $routes->fallbacks('DashedRoute');
 });

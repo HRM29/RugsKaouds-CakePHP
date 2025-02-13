@@ -10,21 +10,20 @@ $controller = $this->request->getParam('controller');
 ?>
 <section class="footer">
     <?php
-    $image = WWW_ROOT . 'img' . DS . "nwsltr_bg.jpg";
-    if (file_exists($image)) {
-        $newsletterImg = Router::url('/', true) . 'img/' . "nwsltr_bg.jpg";
+    $footer_image = WWW_ROOT . '/uploads/header_footer' . DS . $footerData->background_image;
+    if (file_exists($footer_image)) {
+        $footerImg = Router::url('/', true) . 'media/view/footer-file/' . $footerData->background_image;
     }
     ?>
-    <section class="grnt_nws" style="background-image: url( <?= $newsletterImg; ?>);">
+    <section class="grnt_nws" style="background-image: url(<?= $footerImg; ?>);">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="grntee">
                         <div class="heading">
-                            <h2>Customer Feedback & Comments</h2>
+                            <h2><?php echo $footerData->heading; ?></h2>
                         </div>
-                        <p>We guarantee our products and services. Our handmade rugs are guaranteed to be made from the finest of materials without any defect. We guarantee that under normal conditions and with proper care, your Kaoud Hand Knotted Carpet will last a lifetime.</p>
-                        <p>If for any reason after the sale you are not completely satisfied within 30 days of your purchase, we will gladly take your rug back and exchange it for the rug of your choice.</p>
+                        <p><?php echo $footerData->description; ?></p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
@@ -66,7 +65,7 @@ $controller = $this->request->getParam('controller');
                 </div>
                 <div class="col-md-6">
                     <div class="cpyrght">
-                        <p>Copyright <?= date('Y')?> © Kaoud Carpets & Rugs</p>
+                        <p>Copyright <?= date('Y') ?> © Kaoud Carpets & Rugs</p>
                     </div>
                 </div>
             </div>

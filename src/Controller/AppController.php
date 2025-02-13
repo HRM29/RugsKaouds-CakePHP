@@ -110,8 +110,8 @@ class AppController extends Controller
             $allCms                    =    $this->getCmsPage();
             $allPrice                =    $this->getFilterPrice();
             $allPriceSort            =    $this->getFilterPriceSort();
-            //	echo '<pre>'; print_r($specialdimension); die;
-            $this->set(compact('allCategories', 'allSizes', 'allColors', 'allCms', 'specialSizes', 'allPrice', 'allPriceSort', 'extralongreturn', 'specialdimension', 'specialdimensionNav', 'cartData'));
+            $footerData = $this->returnFrontFooter();
+            $this->set(compact('allCategories', 'allSizes', 'allColors', 'allCms', 'specialSizes', 'allPrice', 'allPriceSort', 'extralongreturn', 'specialdimension', 'specialdimensionNav', 'cartData', 'footerData'));
         }
         // Allow the display action so our PagesController
         // continues to work. Also enable the read only actions.
@@ -1048,5 +1048,14 @@ class AppController extends Controller
             return true;
         }
         return false;
+    }
+    public function returnFrontFooter()
+    {
+        $HeaderFooterTable = TableRegistry::getTableLocator()->get('HeaderFooter');
+        $FooterData = $HeaderFooterTable->find('all')
+            ->where(['type' => 'footer', 'status' => 'active'])
+            ->first();
+
+        return $FooterData;
     }
 }

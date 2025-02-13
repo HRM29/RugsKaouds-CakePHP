@@ -694,9 +694,13 @@ class PagesController extends AppController
 		$this->set('projects', $projects);
 	}
 
-	public function viewMediaLib($filename)
+	public function viewMediaLib($mediaslug, $filename)
 	{
-		$filePath = WWW_ROOT . 'uploads' . DS . 'media-library' . DS . $filename;
+		$folder_slug = [
+			'media-file' => 'media-library',
+			'footer-file' => 'header_footer'
+		];
+		$filePath = WWW_ROOT . 'uploads' . DS . $folder_slug[$mediaslug] . DS . $filename;
 		if (file_exists($filePath)) {
 			$this->response = $this->response->withFile($filePath);
 			return $this->response;
