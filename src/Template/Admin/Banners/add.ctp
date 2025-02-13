@@ -71,6 +71,12 @@ use Cake\Routing\Router; ?>
 	</div> <!-- /.row -->
 </section><!-- /.content -->
 <?php echo $this->Html->script('ckeditor/ckeditor'); ?>
+<script>
+	CKEDITOR.replace('description', {
+		extraAllowedContent: 'span[*]{*};',
+		allowedContent: 'span;' 
+	});
+</script>
 <script type="text/javascript">
 	function clear_form_elements(jquery_obj) {
 

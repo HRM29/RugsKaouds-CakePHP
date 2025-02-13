@@ -82,9 +82,9 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 										<td>$<?= number_format($data['everyday_price'], 2); ?></td>
 										<td>
 											<div class="qnty">
-												<div class="value-button" id="decrease" disabled value="Decrease Value">-</div>
+												<!-- <div class="value-button" id="decrease" disabled value="Decrease Value">-</div> -->
 												<input type="number" name="<?= $data['id']; ?>_qnty" class="number" id="<?= $data['id']; ?>_number" value="<?= $data['product_qty']; ?>" readonly />
-												<div class="value-button" id="increase" disabled value="Increase Value">+</div>
+												<!-- <div class="value-button" id="increase" disabled value="Increase Value">+</div> -->
 											</div>
 										</td>
 										<td>$<?= number_format(($data['everyday_price'] * $data['product_qty']), 2); ?></td>

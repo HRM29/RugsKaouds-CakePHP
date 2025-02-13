@@ -19,13 +19,28 @@
 										if (file_exists($image)) {
 											echo $this->Html->image('/uploads/banner/' . $Block1Data['image'], ['alt' => $Block1Data['image'], "class" => "carousel-image"]);
 										}
+
+										if (!empty($Block1Data['description']) || !empty($Block1Data['link'])) {
 										?>
-										<div class="sldr_text">
+											<div class="sldr_text">
+												<?php
+												if (!empty($Block1Data['description'])) {
+													echo $Block1Data['description'];
+												}
+												if (!empty($Block1Data['link'] && !empty($Block1Data['link_name']))) {
+												?>
+													<a href="<?php echo $Block1Data['link']; ?>" class="btn"><?php echo $Block1Data['link_name']; ?></a>
+												<?php
+												}
+												?>
+											</div>
+										<?php } ?>
+										<!-- <div class="sldr_text">
 											<h1>Latest Trends</h1>
 											<span>For Today's Decor</span> 
 											<p>We Search the globe so you don't have to</p>
 											<a href="shop.html" class="btn">Browse</a>
-										</div>
+										</div> -->
 									</div>
 								</div>
 							<?php
@@ -204,7 +219,7 @@
 									</a>
 									<span class="sale">Sale!</span>
 									<div class="arrvl_text">
-										<!--h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>" style="text-decoration: none; color: #000"><?php echo $productData->style; ?></a></h3-->									
+										<!--h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>" style="text-decoration: none; color: #000"><?php echo $productData->style; ?></a></h3-->
 										<div class="sku-container">
 											<span class="sku-label">SKU:</span>
 											<span class="sku-value"><?php echo $productData->sku_no; ?></span>
@@ -212,24 +227,22 @@
 										<?php
 										if (in_array($productData->id, $cartItems)) {
 										?>
-											<div class="pdocut-buton cart-button" data-id=<?php echo $productData->id; ?>>
+											<div class="pdocut-buton" data-id=<?php echo $productData->id; ?>>
 												<a class="btn crt_btn cart-button" data-id=<?php echo $productData->id; ?> href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>"><i class="bi bi-bag-plus"></i> Added to Cart</a>
 											</div>
 										<?php
 										} else {
 										?>
-											<div class="pdocut-buton cart-button" data-id=<?php echo $productData->id; ?>>
+											<div class="pdocut-buton" data-id=<?php echo $productData->id; ?>>
 												<a class="btn crt_btn cart-button" data-id=<?php echo $productData->id; ?> href="javascript:void(0);"><i class="bi bi-bag-plus"></i> Add to Cart</a>
 											</div>
 										<?php
 										}
 										?>
-										
+
 										<p><?= $productData->title; ?></p>
 										<span>$<?php echo number_format($productData->selling_price, 2); ?></span>
 										<span class="nw_price">$<?php echo number_format($productData->everyday_price, 2); ?></span>
-										
-										
 									</div>
 								</div>
 							</div>
@@ -520,6 +533,9 @@
 			var csrfToken = <?php echo json_encode($this->request->getParam('_csrfToken')) ?>;
 			var url = '<?php echo $this->Url->build(['controller' => 'products', 'action' => 'addToCart']); ?>';
 			$.ajax({
+				headers: {
+					'X-CSRF-Token': csrfToken
+				},
 				type: 'POST',
 				data: {
 					product_id: product_id,
@@ -527,7 +543,7 @@
 				},
 				url: url,
 				success: function(data) {
-					window.location.replace('<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>');
+					// window.location.replace('<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>');
 				}
 			});
 		});
@@ -535,7 +551,7 @@
 		$('.block_type_side').owlCarousel({
 			loop: true,
 			margin: 30,
-			nav: false,     
+			nav: false,
 			dots: false,
 			autoplay: false,
 			autoplayTimeout: 5000,

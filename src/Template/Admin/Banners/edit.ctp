@@ -96,6 +96,12 @@ use Cake\Routing\Router; ?>
 </section><!-- /.content -->
 <?php echo $this->Html->script('ckeditor/ckeditor'); ?>
 <script>
+	CKEDITOR.replace('description', {
+		allowedContent: 'h1; p; span; strong; em;', // Allow specific tags
+		extraAllowedContent: 'span[*]{*};' // Allow span tags with any attributes
+	});
+</script>
+<script>
 	function clear_form_elements(jquery_obj) {
 		jquery_obj.find(':input').each(function() {
 			$(this).timepicker({

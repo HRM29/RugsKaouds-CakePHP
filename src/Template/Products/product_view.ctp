@@ -42,9 +42,9 @@ use Cake\Routing\Router;
 						<span class="nw_price">$<?php echo number_format($productDetail->everyday_price, 2); ?></span>
 					</div>
 					<div class="qnty">
-						<div class="value-button" id="decrease" disabled value="Decrease Value">-</div>
+						<!-- <div class="value-button" id="decrease" disabled value="Decrease Value">-</div> -->
 						<input type="number" id="number" class="number" value="1" readonly>
-						<div class="value-button" id="increase" disabled value="Increase Value">+</div>
+						<!-- <div class="value-button" id="increase" disabled value="Increase Value">+</div> -->
 						<a class="btn crt_btn cart-button main_product" data-id=<?php echo $productDetail->id; ?> href="javascript:void(0);"><i class="bi bi-bag-plus"></i> Add to Cart</a>
 						<a style="display:none" id="go_to_cart" href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>" class="btn pdocut-buton">Go To Cart</a>
 						<span class="social-share">
