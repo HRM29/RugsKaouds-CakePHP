@@ -26,15 +26,12 @@ if ($session->check('coupon')) {
 	$couponCode = $couponData['code'];
 }
 ?>
-<script type="text/javascript" src="<?php echo $squareJsUrl; ?>">
-</script>
-<?php echo $this->Html->css(array('front/sq-payment-form')); ?>
 <section class="inner_banner shp">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
-					<h1>Checkout</h1>
+					<h3>Checkout</h3>
 				</div>
 			</div>
 		</div>
@@ -65,7 +62,7 @@ if ($session->check('coupon')) {
 				}
 				?>
 				<form action="#" name="form_paypal" id="form_paypal">
-					<div id="coupon-section" style="display: none;">
+					<div id="coupon-section" style="display: none;" class="mb-3">
 						<?php
 						if ($couponCode == '') {
 							echo "<p>If you have a coupon code, please apply it below.</p>";

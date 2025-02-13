@@ -53,7 +53,7 @@ use Cake\Core\Configure; ?>
 									$imageURL = $image_data->image;
 								}
 							?>
-								<div class="col-xl-3 col-lg-4 col-md-6">
+								<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6">
 									<div class="arrvl_box">
 										<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
 											<div class="product-thumb">

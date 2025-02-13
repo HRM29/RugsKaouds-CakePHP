@@ -73,8 +73,9 @@ use Cake\Routing\Router; ?>
 <?php echo $this->Html->script('ckeditor/ckeditor'); ?>
 <script>
 	CKEDITOR.replace('description', {
-		extraAllowedContent: 'span[*]{*};',
-		allowedContent: 'span;' 
+		allowedContent: true, // Allow <p>, <span> with any attributes, and <a> with href and title
+		extraAllowedContent: 'span(style);', // Allow inline style attribute in <span>
+		disallowedContent: '' // Ensure nothing is explicitly disallowed
 	});
 </script>
 <script type="text/javascript">

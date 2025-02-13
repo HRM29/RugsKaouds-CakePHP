@@ -43,7 +43,7 @@ use Cake\Routing\Router;
 					</div>
 					<div class="qnty">
 						<!-- <div class="value-button" id="decrease" disabled value="Decrease Value">-</div> -->
-						<input type="number" id="number" class="number" value="1" readonly>
+						<input type="text" id="number" class="number" value="1" readonly>
 						<!-- <div class="value-button" id="increase" disabled value="Increase Value">+</div> -->
 						<a class="btn crt_btn cart-button main_product" data-id=<?php echo $productDetail->id; ?> href="javascript:void(0);"><i class="bi bi-bag-plus"></i> Add to Cart</a>
 						<a style="display:none" id="go_to_cart" href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>" class="btn pdocut-buton">Go To Cart</a>
@@ -87,7 +87,7 @@ use Cake\Routing\Router;
 								</tr>
 								<tr>
 									<th scope="row"><strong>Dimensions</strong></th>
-									<td><?php echo $productDetail->dimension_1_feet . "'" . $productDetail->dimension_1_inches . '" X ' . $productDetail->dimension_2_feet . "'" . $productDetail->dimension_2_inches . '"'; ?> in</td>
+									<td><?php echo (((int)$productDetail->dimension_1_feet * 12) + (int)$productDetail->dimension_1_inches) . ' X ' . (((int)$productDetail->dimension_2_feet * 12) + (int)$productDetail->dimension_2_inches); ?> in</td>
 								</tr>
 								<tr>
 									<th scope="row"><strong>UWCF Sizes</strong></th>
