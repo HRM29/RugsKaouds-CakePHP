@@ -720,18 +720,27 @@ class ProductsController extends AppController
 
 				if ($result['status'] == 'Success') {
 					$order = $orders->patchEntity($order, $mappedData);
-
+					$isPaymentSucessfull = 0;
 					$order->order_status = 0;
 					if ($postdata['checkout_option'] == 2) {
-						$result['txn_id'] = rand(100000, 999999);
-						$order->payment_method = "Card";
-						$order->trans_id = $result['txn_id'];
+						$paypalResponse = json_decode($postdata['paypal-cards-response'], true);
+						if (isset($paypalResponse['id']) && isset($paypalResponse['status']) && $paypalResponse['status'] == 'COMPLETED') {
+							$order->payment_status = 1;
+							$result['txn_id'] = $order->trans_id = $paypalResponse['id'];
+							$order->payment_method = "Card";
+							$order->trans_id = $result['txn_id'];
+							$isPaymentSucessfull = 1;
+						} else {
+							$order->payment_status = 0;
+							$order->trans_id = '0';
+						}
 					} elseif ($postdata['checkout_option'] == 1) {
 						$order->payment_method = "Paypal";
 						$paypalResponse = json_decode($postdata['paypal-button-response'], true);
 						if (isset($paypalResponse['id']) && isset($paypalResponse['status']) && $paypalResponse['status'] == 'COMPLETED') {
 							$order->payment_status = 1;
 							$result['txn_id'] = $order->trans_id = $paypalResponse['id'];
+							$isPaymentSucessfull = 1;
 						} else {
 							$order->payment_status = 0;
 							$order->trans_id = '0';
@@ -742,112 +751,121 @@ class ProductsController extends AppController
 					$tr_id = array("tr_id" => $result['txn_id'], "status" => $result['status']);
 
 					$session->write('tr_id', $tr_id);
+					if ($isPaymentSucessfull == 1) {
+						if ($last_id = $orders->save($order)->id) {
 
-					if ($last_id = $orders->save($order)->id) {
+							$OrderProducts = TableRegistry::getTableLocator()->get('orderDetails');
 
-						$OrderProducts = TableRegistry::getTableLocator()->get('orderDetails');
+							$session->write('is_success', 1);
+							$session = $this->request->getSession();
+							$cartdta = $session->read('cart');
 
+							// UpdateCoupounRedemption
+							$this->updateCouponRedemption();
+							$product_details = array();
+							foreach ($cartdta as $proSub) {
+								$OrderProduct = $OrderProducts->newEntity();
 
-						$session = $this->request->getSession();
-						$cartdta = $session->read('cart');
+								$product_details['order_id'] = $last_id;
+								$product_details['product_name'] = $proSub['title'];
+								$product_details['product_sku'] = $proSub['sku_no'];
+								$product_details['product_id'] = $proSub['id'];
+								$product_details['qty'] = $proSub['product_qty'];
+								$product_details['price'] = $proSub['everyday_price'];
+								$product_details['user_id'] = $mappedData['user_id'];
+								$product_details['unit'] = 'pcs';
+								$product_details['size'] = '';
 
-						// UpdateCoupounRedemption
-						$this->updateCouponRedemption();
-						$product_details = array();
-						foreach ($cartdta as $proSub) {
-							$OrderProduct = $OrderProducts->newEntity();
-
-							$product_details['order_id'] = $last_id;
-							$product_details['product_name'] = $proSub['title'];
-							$product_details['product_sku'] = $proSub['sku_no'];
-							$product_details['product_id'] = $proSub['id'];
-							$product_details['qty'] = $proSub['product_qty'];
-							$product_details['price'] = $proSub['everyday_price'];
-							$product_details['user_id'] = $mappedData['user_id'];
-							$product_details['unit'] = 'pcs';
-							$product_details['size'] = '';
-
-							$orderDetails = $OrderProducts->patchEntity($OrderProduct, $product_details);
-							//Order details save to database
-							$OrderProducts->save($orderDetails);
+								$orderDetails = $OrderProducts->patchEntity($OrderProduct, $product_details);
+								//Order details save to database
+								$OrderProducts->save($orderDetails);
 
 
-							// update product table
-							$ProductsTable->updateAll(['sold_status' => 1], ['id' => $proSub['id']]);
-							$ProductsTable->updateAll(['status' => 2], ['id' => $proSub['id']]);
-						}
-
-						$email_billing = $orders->find('all')->select(['billing_first_name', 'billing_last_name', 'billing_email',])->where(['id' => $last_id])->First();
-
-						$message = 'Thank you for your order';
-						$subject = 'Order Details at Kaouds.com';
-						$email = new Email();
-
-						try {
-							// Set email transport configuration
-							$email->setTransport('default');
-
-							// Recipient email validation
-							$to = $email_billing->billing_email;
-							if (empty($to) || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
-								throw new \InvalidArgumentException('Invalid recipient email address');
+								// update product table
+								$ProductsTable->updateAll(['sold_status' => 1], ['id' => $proSub['id']]);
+								$ProductsTable->updateAll(['status' => 2], ['id' => $proSub['id']]);
 							}
 
-							// CC email with fallback
-							$cc = 'mathharshit2916@gmail.com'; // Default fallback email
-							if (!empty(Configure::read("App.EmailFrom")) && filter_var(Configure::read("App.EmailFrom"), FILTER_VALIDATE_EMAIL)) {
-								$cc = Configure::read("App.EmailFrom"); // Set the actual EmailFrom config value if it's valid
-							}
+							$email_billing = $orders->find('all')->select(['billing_first_name', 'billing_last_name', 'billing_email',])->where(['id' => $last_id])->First();
 
-							// Set email parameters
-							$email->setFrom(Configure::read("App.EmailFrom"))
-								->setTo($to)
-								->setCc($cc)
-								->setEmailFormat('html')
-								->setTemplate('orderemail')
-								->setViewVars([
-									'content' => $cartdta,
-									'order_id' => $last_id,
-									'user_info' => $email_billing,
-									'returnCartDetails' => $returnCartDetails
-								])
-								->setSubject($subject);
+							$message = 'Thank you for your order';
+							$subject = 'Order Details at Kaouds.com';
+							$email = new Email();
 
-							// Send the email
-							$result = $email->send();
+							try {
+								// Set email transport configuration
+								$email->setTransport('default');
 
-							if ($result) {
+								// Recipient email validation
+								$to = $email_billing->billing_email;
+								if (empty($to) || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
+									throw new \InvalidArgumentException('Invalid recipient email address');
+								}
+
+								// CC email with fallback
+								$cc = 'mathharshit2916@gmail.com'; // Default fallback email
+								if (!empty(Configure::read("App.EmailFrom")) && filter_var(Configure::read("App.EmailFrom"), FILTER_VALIDATE_EMAIL)) {
+									$cc = Configure::read("App.EmailFrom"); // Set the actual EmailFrom config value if it's valid
+								}
+
+								// Set email parameters
+								$email->setFrom(Configure::read("App.EmailFrom"))
+									->setTo($to)
+									->setCc($cc)
+									->setEmailFormat('html')
+									->setTemplate('orderemail')
+									->setViewVars([
+										'content' => $cartdta,
+										'order_id' => $last_id,
+										'user_info' => $email_billing,
+										'returnCartDetails' => $returnCartDetails
+									])
+									->setSubject($subject);
+
+								// Send the email
+								$result = $email->send();
+
+								if ($result) {
+									$response = array(
+										"msg" => "Payment successful.",
+										"status" => "Success",
+										'data' => 'Email sent successfully',
+										"code" => 200
+									);
+								} else {
+									$response = array(
+										"msg" => "Payment successful. Email failed to send.",
+										"status" => "Success",
+										'data' => 'Email sending failed',
+										"code" => 200
+									);
+								}
+							} catch (\InvalidArgumentException $e) {
+								$this->Flash->error(__('Invalid email address. Unable to send email.'));
 								$response = array(
-									"msg" => "Payment successful.",
+									"msg" => "Payment successful. Failed to send email due to invalid email.",
 									"status" => "Success",
-									'data' => 'Email sent successfully',
-									"code" => 200
+									'data' => 'Invalid email address',
+									"code" => 400
 								);
-							} else {
+							} catch (\Exception $e) {
+								$this->Flash->error(__('Unable to send email. Please try again later.'));
 								$response = array(
-									"msg" => "Payment successful. Email failed to send.",
+									"msg" => "Payment successful. Failed to send email.",
 									"status" => "Success",
-									'data' => 'Email sending failed',
-									"code" => 200
+									'data' => 'Failed to send email due to a server issue',
+									"code" => 500
 								);
 							}
-						} catch (\InvalidArgumentException $e) {
-							$this->Flash->error(__('Invalid email address. Unable to send email.'));
-							$response = array(
-								"msg" => "Payment successful. Failed to send email due to invalid email.",
-								"status" => "Success",
-								'data' => 'Invalid email address',
-								"code" => 400
-							);
-						} catch (\Exception $e) {
-							$this->Flash->error(__('Unable to send email. Please try again later.'));
-							$response = array(
-								"msg" => "Payment successful. Failed to send email.",
-								"status" => "Success",
-								'data' => 'Failed to send email due to a server issue',
-								"code" => 500
-							);
 						}
+					} else {
+						$this->Flash->error(__('Unable to send email. Please try again later.'));
+						$response = array(
+							"msg" => "Payment failed.",
+							"status" => "Failed",
+							'data' => 'Payment Failed, please retry again.',
+							"code" => 500
+						);
 					}
 				} else {
 					$response = array(
