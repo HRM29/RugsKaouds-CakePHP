@@ -3,17 +3,6 @@
 use Cake\Routing\Router;
 use Cake\Core\Configure;
 ?>
-<section class="inner_banner shp">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="heading">
-					<h1></h1>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
 <?php
 if (isset($projects) && !empty($projects)) {
 ?>
@@ -31,7 +20,7 @@ if (isset($projects) && !empty($projects)) {
                 foreach ($projects as $projectsimages) {
                     $imageURL = $this->Url->build('/uploads/projects/' . $projectsimages['image_url']);
                 ?>
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-6">
                         <div class="clctns">
                             <a href="<?php echo $imageURL; ?>" data-fancybox="gallery" data-src="<?php echo $imageURL; ?>" data-caption="<?= $projectsimages['label']; ?>">
                                 <?php

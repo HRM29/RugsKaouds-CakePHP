@@ -205,6 +205,9 @@ class CouponsController extends AppController
 				$this->Flash->set($this->errorMessage($Coupon->getErrors()), ['key' => 'positive', 'params' => ['class' => 'alert alert-danger']]);
 			}
 		}
+
+		// $Coupon_start_date_obj = DateTime::createFromFormat('d/m/Y', $Coupon->start_date);
+		// $Coupon_valid_date_obj = DateTime::createFromFormat('d/m/Y', $Coupon->valid_date);
 		$Coupon->from_to_date = $Coupon->start_date->format('d-m-Y') . ' - ' . $Coupon->valid_date->format('d-m-Y');
 		$this->set(compact('Coupon', 'title'));
 	}

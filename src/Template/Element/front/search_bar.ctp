@@ -8,7 +8,7 @@ $sizeFilters = isset($size_range) ? $size_range : array();
 ?>
 <div class="col-md-3">
 	<button id="shop-sidebar">
-		<img src="<?php echo Router::url('/', true); ?>img/filter-icon.jpg" alt="icon" width="20" height="20">
+		<img src="<?php echo Router::url('/', true); ?>img/fltr_icn.png" alt="icon">
 		Filters</button>
 	<div class="sidebar" id="shop-filter-bars" style="display: none;">
 

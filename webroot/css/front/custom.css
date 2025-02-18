@@ -40,7 +40,7 @@ a {
     text-decoration: none;
 }
 .topbar {
-    background: #510800;
+    background: #700b00;
     padding: 7px 0;
 }
 .topbar .tpbr_nav li {
@@ -60,8 +60,14 @@ a {
     color: #fff;
     font-size: 14px;
 }
+.announcement{
+    text-align:center;
+color:#fff;
+text-decoration:bold;
+font-size:16px;    
+}
 header {
-    background: #700b00;
+    background: #fff;
     padz-index:11;
 }
 header .menus .navbar .navbar-collapse .navbar-nav .close {
@@ -72,16 +78,22 @@ header.sticky {
     top: 0;
     z-index: 111;
     width: 100%;
-	background: #700b00;
+	background: #fff;
 }
 header .menus .navbar .tpbr_nav {
     display: none;
+}
+header .logo .mbl {
+    display: none;
+}
+header .logo img {
+    width: 80%;
 }
 header .menus .navbar {
     padding: 0;
 }
 header .menus .navbar .navbar-collapse .navbar-nav .nav-item .nav-link {
-    color: #fff;
+    color: #700b00;
     font-size: 17px;
     padding: 24px 10px;
     font-weight: 500;
@@ -151,39 +163,36 @@ header .menus .navbar .navbar-collapse .navbar-nav .dropdown-menu.submenu.show l
     font-size: 19px;
     font-weight: 700;
 }
-header .menus .navbar .srch_icon {
-    margin: 0 10px 0 0;
-}
 header .menus .navbar .srch_icon li {
     display: inline-block;
     list-style: none;
-    margin: 0 0 0 15px;
+    margin: 0 0 0 6px;
 	position: relative;
 }
 header .menus .navbar .srch_icon li a {
-    color: #fff;
-    font-size: 23px;
+    color: #700b00;
+    font-size: 19px;
 }
 header .menus .navbar .srch_icon li:last-child a {
     font-size: 17px;
 }
 header .menus .navbar .srch_icon li:last-child {
-    border: 1px solid #fff;
+    border: 1px solid #700b00;
 	border-radius: 100%;
 	height: 37px;
 	width: 37px;
 	line-height: 37px;
 	text-align: center;	 
-	margin: 0 0 0 20px;
+	margin: 0 0 0 6px;
 }
 header .menus .navbar .srch_icon li span {
     position: absolute;
     top: -7px;
-    background: #fff;
+    background: #700b00;
     width: 20px;
     height: 20px;
     border-radius: 100%;
-    color: #700b00;
+    color: #fff;
     font-size: 14px;
     text-align: center;
     line-height: 20px;
@@ -425,8 +434,12 @@ header .menus .navbar .srch_icon li span {
 .ltst_arrvls.shop .shp_prdcts .arrvl_box .arrvl_text span.nw_price {
     color: #000;
     text-decoration: auto;
+	-webkit-text-decoration: auto;
     margin: 0 30px 0 12px;
     font-weight: 600;
+}
+.ltst_arrvls.shop .shp_prdcts .arrvl_box .arrvl_text span.nw_price {
+	margin: 0 30px 0 0;
 }
 .ltst_arrvls .arrvls_slide.owl-theme .item .arrvl_box .arrvl_text .btn.crt_btn,
 .ltst_arrvls.shop .shp_prdcts .arrvl_box .arrvl_text .btn.crt_btn {
@@ -1633,10 +1646,10 @@ footer .cpyrght p {
 /* Search Bar Container */
 .search-container {
     position: absolute;
-    top: 74px;
+    top: 142px;
     width: 100%;
     background: white;
-    border: 1px solid #ddd;
+    border: 1px solid #700b00;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 7px 70px;
     display: none;
@@ -1650,6 +1663,7 @@ footer .cpyrght p {
     outline: none;
     font-size: 14px;
     border-radius: 20px;
+    color:#700b00;
 }
 /* Search Results */
 .search-results {

@@ -121,7 +121,7 @@
                                 </ul>
                                 <h4 class="rg_cndtn"></h4>
                                 <div class="form_group">
-                                    <input type="file" id="rug_image" name="rug_image">
+                                    <input type="file" class="fotm_control" id="rug_image" name="rug_image">
                                 </div>
                             </div>
                         </div>

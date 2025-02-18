@@ -43,11 +43,10 @@ class PaymentsController extends AppController {
 		$session = $this->request->getSession();
 		$cartitems = $session->read('cart'); 
 		$tr_data = $session->read('tr_id'); 
-		$is_success = $session->read('is_success'); 
 		$payment_status = $tr_data['status'];
 		$orderstable = TableRegistry::getTableLocator()->get("Orders");
 		
-		if(!empty($tr_data) && $is_success == 1){
+		if(!empty($tr_data)){
 			
 			//Order Email to user -- start//
 			$session = $this->request->getSession();
@@ -73,19 +72,14 @@ class PaymentsController extends AppController {
 			} */
 			$session->delete('cart');
 			$session->delete('coupon');
-			$session->delete('is_success');
-
-			$orderid = $orderstable->find()->where(['trans_id'=>$tr_data['tr_id']])->first();
-		
-			$orderitems = $OrderProductsTable->find()->where(['order_id'=>$orderid->id])->contain(['products'=>['ProductImages']])->toArray();
-			
-			$totalPrice = $orderstable->find()->select(['total_price'])->where(['id'=>$orderid->id])->first();
-			
-			$this->set(compact('orderid','orderitems','totalPrice','payment_status'));
-		} else {
-			$this->redirect(['controller' => 'products', 'action' => 'shopping']);
 		}
-
+		$orderid = $orderstable->find()->where(['trans_id'=>$tr_data['tr_id']])->first();
+		
+		$orderitems = $OrderProductsTable->find()->where(['order_id'=>$orderid->id])->contain(['products'=>['ProductImages']])->toArray();
+		
+		$totalPrice = $orderstable->find()->select(['total_price'])->where(['id'=>$orderid->id])->first();
+		
+		$this->set(compact('orderid','orderitems','totalPrice','payment_status'));
 	}
 	public function cancel(){
 	}

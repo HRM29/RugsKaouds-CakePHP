@@ -2431,8 +2431,8 @@ class ProductsController extends AppController
 					->select(['id', 'title', 'sku_no'])
 					->where([
 						'OR' => [
-							'Products.title LIKE' => '%' . $searchTerm . '%',
-							'Products.sku_no LIKE' =>  $searchTerm
+							'LOWER(Products.title) LIKE' => '%' . strtolower($searchTerm) . '%',
+							'LOWER(Products.sku_no) LIKE' =>  '%' . strtolower($searchTerm) . '%'
 						],
 						'Products.status' => 1,
 						'Products.sold_status' => 0

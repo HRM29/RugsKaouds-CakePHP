@@ -14,7 +14,7 @@
           <span class="logo-mini"><b><?php echo $this->Html->image('/img/logo.jpg', ['alt' => Configure::read('App.HeaderName')]); ?></b></span>
           <!-- logo for regular state and mobile devices -->
           <span class="logo-lg"><?php
-           echo $this->Html->image('/img/logo.jpg', ['alt' => Configure::read('App.meta')]);
+           echo $this->Html->image('/img/mbl_logo.jpg', ['alt' => Configure::read('App.meta')]);
           ?></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->

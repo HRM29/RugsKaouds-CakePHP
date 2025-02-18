@@ -1,6 +1,7 @@
 <?php
 
 use Cake\Routing\Router;
+use Cake\Core\Configure;
 
 $session = $this->request->getSession();
 $authUser = $session->read('Auth');
@@ -26,24 +27,23 @@ $controller = $this->request->getParam('controller');
                         <p><?php echo $footerData->description; ?></p>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
-                    <div class="nwsltr">
+                <div class="col-lg-6 col-md-12" style="z-index: 110;">
+                    <div class="grntee">
                         <div class="heading">
-                            <h2>Newsletter</h2>
+                            <h2>Store Location</h2>
                         </div>
-                        <?= $this->Form->create(null, ['url' => "javscript:void(0)", 'id' => "subscribe-newsletter"]) ?>
-                        <div class="form_group">
-                            <?= $this->Form->control('subscriber_name', ['placeholder' => 'Your Name*', 'class' => 'fotm_control', "required", 'label' => false]) ?>
+                        <a href="https://www.google.com/maps/place/Kaoud+Carpets+%26+Rugs/@41.1638658,-73.4211357,17z/data=!3m1!4b1!4m5!3m4!1s0x89e81d1fe79dcc0f:0x60cd628477e28356!8m2!3d41.1638658!4d-73.418947">
+                            <p><?php echo Configure::read("App.Address"); ?></p>
+                        </a>
+                        <a href="tel:<?php echo Configure::read("App.phone"); ?>">
+                            <i class="icon-phone" style="font-size:16px;"></i>
+                            <p>Tel: <?php echo Configure::read("App.phone"); ?></p>
+                        </a>
+                        <p class="announcement" style="text-align: justify;">Monday to Saturday: 9:30am to 5:30pm</p>
+                        <p class="announcement" style="text-align: justify;">Sunday: 12pm to 4pm</p>
+                        <div class="heading mt-5">
+                            <a href="https://www.bbb.org/us/ct/wilton/profile/carpet-and-rugs/kaoud-carpets-rugs-0111-87015755/#sealclick" target="_blank" rel="nofollow"><img src="https://seal-ct.bbb.org/seals/blue-seal-200-42-whitetxt-bbb-87015755.png" style="border: 0;" alt="Kaoud Carpets & Rugs BBB Business Review" /></a>
                         </div>
-                        <div class="form_group my-1">
-                            <?= $this->Form->control('email', ['placeholder' => 'Your Email*', 'class' => 'fotm_control', 'label' => false, "required"]) ?>
-                            <?= $this->Form->control('subscribe-type', ["type" => "hidden", 'value' => "newsletter"]) ?>
-                        </div>
-                        <div class="form_group">
-                            <?= $this->Form->control('Sign Up', ['type' => 'button', 'class' => 'btn subscribe-newsletter', 'label' => false, "required"]) ?>
-                        </div>
-                        <?= $this->Form->control('g-recaptcha-response', ["type" => "hidden", "class" => "g-recaptcha-response", "id" => false]); ?>
-                        <?= $this->Form->end() ?>
                     </div>
                 </div>
             </div>
@@ -121,96 +121,6 @@ $controller = $this->request->getParam('controller');
             byrow: false,
         });
     }
-
-    $(document).ready(function() {
-        $(".subscribe-newsletter").on("click", function(event) {
-            let isValid = true;
-
-            // Get form values
-            let name = $("#subscriber-name").val().trim();
-            let email = $("#email").val().trim();
-
-            // Clear previous error messages
-            $(".error").remove();
-
-            // Name validation
-            if (name === "") {
-                isValid = false;
-                $("#subscriber-name").after('<span class="error" style="color: red;">Name is required.</span>');
-            }
-
-            // Email validation
-            if (email === "") {
-                isValid = false;
-                $("#email").after('<span class="error" style="color: red;">Email is required.</span>');
-            } else if (!validateEmail(email)) {
-                isValid = false;
-                $("#email").after('<span class="error" style="color: red;">Enter a valid email address.</span>');
-            }
-
-            if (isValid) {
-                const newsLetterForm = document.getElementById("subscribe-newsletter");
-                let formData = new FormData(newsLetterForm);
-                const csrfToken = $("[name='_csrfToken']").val();
-
-                $.ajax({
-                    headers: {
-                        'X-CSRF-Token': csrfToken
-                    },
-                    url: "<?php echo Router::url(['controller' => 'Pages', 'action' => 'subscribeLetter']); ?>", // Form action URL
-                    type: "POST", // HTTP method
-                    data: formData,
-                    processData: false, // Don't process the FormData
-                    contentType: false, // Don't set content type
-                    success: function(response) {
-                        // Handle success response
-                        if (response.success) {
-                            Swal.fire({
-                                title: "Success!",
-                                text: response.message,
-                                icon: "success",
-                                confirmButtonText: "OK",
-                                customClass: {
-                                    popup: "small-alert", // Apply custom class to the popup
-                                },
-                            }).then(() => {
-                                // Optionally reset the form or redirect
-                                $("#subscribe-newsletter")[0].reset();
-                            });
-                        } else {
-                            Swal.fire({
-                                title: "Error!",
-                                text: response.message,
-                                icon: "error",
-                                confirmButtonText: "OK",
-                                customClass: {
-                                    popup: "small-alert", // Apply custom class to the popup
-                                },
-
-                            });
-                        }
-                    },
-                    error: function(xhr) {
-                        // Handle error response
-                        Swal.fire({
-                            title: "An Error Occurred!",
-                            text: `Error Code: ${xhr.status}, ${xhr.statusText}`,
-                            icon: "error",
-                            confirmButtonText: "OK",
-                            customClass: {
-                                popup: "small-alert", // Apply custom class to the popup
-                            },
-                        });
-                    },
-                });
-            }
-        });
-
-        function validateEmail(email) {
-            let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return regex.test(email);
-        }
-    });
 
     function refreshToken() {
         grecaptcha.execute("<?= CAPTCHA_SITEKEY ?>", {

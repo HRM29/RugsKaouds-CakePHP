@@ -1,6 +1,7 @@
 <?php
 
 use Cake\Routing\Router;
+use Cake\Core\Configure;
 
 $session = $this->request->getSession();
 $session = $this->request->getSession();
@@ -37,15 +38,10 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 
 <div class="topbar">
 	<div class="container-fluid">
-		<div class="row align-items-center">
-			<div class="col-md-7">
-				<div class="tpbr_nav">
-					<ul>
-						<li>Kaouds Carpet & Rugs</li>
-						<li>Family Since 1954</li>
-						<li>Serving Tri-State</li>
-					</ul>
-				</div>
+		<div class="row align-items-center announcement">
+			<p><?php echo Configure::read("App.site-announcement"); ?></p>
+
+			<!-- <div class="col-md-7">
 			</div>
 			<div class="col-md-5">
 				<div class="social">
@@ -58,7 +54,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 						<li><a href="tel:203.762.0376" target="_blank"><i class="bi bi-telephone-fill"></i></a></li>
 					</ul>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
@@ -66,12 +62,16 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 <header id="myHeader">
 	<div class="container-fluid">
 		<div class="row align-items-center">
-			<div class="col-md-1">
-				<div class="logo">
-					<a href="/Kaouds/"><?php echo $this->Html->image('logo.jpg', ['alt' => 'logo']); ?></a>
+			<div class="col-md-2">
+				<div class="logo" style="padding: 5px;">
+					<a href="/Kaouds/">
+						<!--?php echo $this->Html->image('logo.jpg', ['alt' => 'logo']); ?-->
+						<img src="<?php echo LOGO_URL; ?>" alt="logo">
+						<img class="mbl" src="img/mbl_logo.jpg" alt="logo">
+					</a>
 				</div>
 			</div>
-			<div class="col-md-11">
+			<div class="col-md-10">
 				<div class="menus">
 					<nav class="navbar navbar-expand-lg navbar-light">
 						<button class="navbar-toggler" type="button" onclick="sdbr_open()">
@@ -140,7 +140,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/kaoud-carpets-rugs">Kaoud Carpets & Rugs</a></li>
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/our-brands-inventory">Our Brands & Inventory</a></li>
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/community">Community</a></li>
-										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/asid">Asid</a></li>
+										<?php /* ?>	<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/asid">Asid</a></li>	<?php */ ?>
 									</ul>
 								</li>
 								<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
@@ -268,7 +268,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 
 	function performSearch(query) {
 		let searchResults = document.getElementById("searchResults");
-		var csrfToken = $("[name='_csrfToken']").val();
+		var csrfToken = <?php echo json_encode($this->request->getParam('_csrfToken')) ?>;
 		$.ajax({
 			headers: {
 				'X-CSRF-Token': csrfToken

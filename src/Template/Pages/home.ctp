@@ -70,10 +70,12 @@ if (isset($HomeBlocks['Block2']) && !empty($HomeBlocks['Block2'])) {
 									$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $block2Data['image'];
 									if (file_exists($image)) {
 										echo $this->Html->link(
-											$this->Html->image('/uploads/banner/' . $block2Data['image'], ['alt' => $block2Data['image'], "class" => "zoom-image"]),
+										    
+										$this->Html->image('/uploads/banner/' . $block2Data['image'], [ 'alt' => $block2Data['image'], "class" => "zoom-image"]),
 											$block2Data['link'],
-											['escape' => false]
-										);
+											 array('target'=>'_blank','escape'=>false)
+   
+										) ;
 									}
 									?>
 								</div>

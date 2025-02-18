@@ -161,7 +161,7 @@
                                     <textarea class="fotm_control" name="rug_condition" id="rug_condition" placeholder="Message" required></textarea>
                                 </div>
                                 <div class="form_group">
-                                    <input type="file" id="rug_image" name="rug_image">
+                                    <input type="file" class="fotm_control" id="rug_image" name="rug_image">
                                 </div>
                                 <span>Show us the condition of your rug if you like so we can better assist you.</span>
                             </div>

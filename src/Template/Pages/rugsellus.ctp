@@ -80,20 +80,16 @@
                             <input class="fotm_control" type="text" name="zip_code" id="zip_code" placeholder="Zip Code" required>
                         </div>
                     </div>
-                </div>
-                <div class="pckup_dtls">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="type_rug">
-                                <h4 class="rg_cndtn"></h4>
-                                <div class="form_group">
-                                    <input type="file" name="rug_image" id="rug_image" multiple accept="image/*">
-                                </div>
+                    <div class="col-md-12">
+                        <div class="type_rug">
+                            <h4 class="rg_cndtn"></h4>
+                            <div class="form_group">
+                                <input type="file" name="rug_image" class="fotm_control" id="rug_image" multiple accept="image/*">
                             </div>
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="form_group">
                     <button class="btn" type="submit">Submit</button>
                 </div>
