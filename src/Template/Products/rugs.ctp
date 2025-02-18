@@ -4,7 +4,7 @@ use Cake\Routing\Router;
 use Cake\Core\Configure;
 ?>
 <section class="inner_banner shp">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
@@ -15,7 +15,7 @@ use Cake\Core\Configure;
 	</div>
 </section>
 <section class="ltst_arrvls shop">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<nav aria-label="breadcrumb">
@@ -43,6 +43,7 @@ use Cake\Core\Configure;
 									<option value="low-to-high" <?= $this->request->getQuery('sort') == 'low-to-high' ? 'selected' : '' ?>>Price: Low to High</option>
 									<option value="high-to-low" <?= $this->request->getQuery('sort') == 'high-to-low' ? 'selected' : '' ?>>Price: High to Low</option>
 								</select>
+								<input type="hidden" name="sort_type" id="sort_type" value="<?= $this->request->getQuery('sort') ?>">
 							</div>
 							<?php
 							foreach ($result as $data) {
@@ -51,7 +52,7 @@ use Cake\Core\Configure;
 									$imageURL = $image_data->image;
 								}
 							?>
-								<div class="col-md-3 col-lg-4 col-md-6">
+								<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6">
 									<div class="arrvl_box">
 										<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
 											<div class="product-thumb">
@@ -93,7 +94,7 @@ use Cake\Core\Configure;
 											</div>
 										</a>
 										<div class="arrvl_text">
-											<div class="sku-container">
+											<div class="sku-container-fluid">
 												<span class="sku-label">SKU:</span>
 												<span class="sku-value"><?php echo $data->sku_no; ?></span>
 											</div>
@@ -155,7 +156,6 @@ use Cake\Core\Configure;
 				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 </section>
 <script>

@@ -11,22 +11,26 @@ h2 {
     padding: 6px 20px;
 }
 header .menus .navbar .navbar-collapse .navbar-nav .nav-item .nav-link {
-  padding: 24px 6px;
+  padding: 14px 6px 34px;
   font-size: 15px;
 }
+header .menus .navbar .search {
+    top: 40px;
+}
 header .menus .navbar .srch_icon li a {
-    font-size: 19px;
+    font-size: 15px;
+}
+header .menus .navbar .srch_icon li {
+    margin: 0 0 0 3px;
 }
 header .menus .navbar .srch_icon li:last-child {
     height: 29px;
     width: 29px;
     line-height: 29px;
+	margin: 0 0 0 6px;
 }
 header .menus .navbar .srch_icon li:last-child a {
     font-size: 15px;
-}
-header .menus .navbar .srch_icon {
-    margin: 0 15px 0 0;
 }
 .wrks .wrk_box .wrk_icn .wrk_icn_inr {
 	height: 62px;
@@ -65,6 +69,7 @@ header .menus .navbar .navbar-toggler {
 header .menus .navbar .srch_icon {
 	position: absolute;
 	right: 82px;
+	margin: 0;
 }
 header .menus .navbar .navbar-collapse .navbar-nav .close {
   display: block;
@@ -232,6 +237,15 @@ header .menus .navbar .navbar-collapse .navbar-nav .dropdown-menu.mega .nav-item
     border: 4px solid #e6e6e6;
     padding: 0;
 }
+header .menus .navbar .search {
+	top: -14px;
+	right: 170px;
+}
+.grnt_nws .grntee.lctn {
+    margin: 40px 0 0;
+}
+
+
 }
 @media screen and (max-width: 767px) {
 	
@@ -419,6 +433,20 @@ header .menus .navbar .tpbr_nav li {
 .ltst_arrvls.shop .shp_prdcts .arrvl_box {
     margin: 0 0 15px;
 }
+header .logo img {
+    display: none;
+}
+header .logo .mbl {
+    display: block;
+}
+header .logo img {
+    width: auto;
+}
+.stores .strs_txt {
+    margin: 30px 0 0;
+}
+
+
 }
 @media screen and (max-width: 575px) {
 .main_banner .mn_slide.owl-theme .owl-nav .owl-prev {
@@ -481,7 +509,19 @@ header .menus .navbar .tpbr_nav li {
 .shop-bottom-section {
     float: none;
 }
+
 }
+@media screen and (max-width: 460px) {
+header .menus .navbar .search {
+	top: 6px;
+	right: 74px;
+}
+header .menus .navbar .srch_icon {
+	top: -27px;
+}
+
+}
+
 @media screen and (min-width: 768px) {
 .ltst_arrvls.shop .sidebar#shop-filter-bars {
     display: block !important;
@@ -489,4 +529,5 @@ header .menus .navbar .tpbr_nav li {
 .ltst_arrvls.shop #shop-sidebar {
 	display: none;
 }
+
 }

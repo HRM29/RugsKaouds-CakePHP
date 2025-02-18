@@ -17,7 +17,7 @@ $controller = $this->request->getParam('controller');
     }
     ?>
     <section class="grnt_nws" style="background-image: url(<?= $footerImg; ?>);">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="grntee">
@@ -28,7 +28,7 @@ $controller = $this->request->getParam('controller');
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12" style="z-index: 110;">
-                    <div class="grntee">
+                    <div class="grntee lctn">
                         <div class="heading">
                             <h2>Store Location</h2>
                         </div>
@@ -50,7 +50,7 @@ $controller = $this->request->getParam('controller');
         </div>
     </section>
     <footer>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
                     <div class="ftr_menus">

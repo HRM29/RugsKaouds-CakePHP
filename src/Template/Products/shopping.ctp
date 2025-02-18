@@ -3,7 +3,7 @@
 use Cake\Routing\Router;
 use Cake\Core\Configure; ?>
 <section class="inner_banner shp">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
@@ -14,7 +14,7 @@ use Cake\Core\Configure; ?>
 	</div>
 </section>
 <section class="ltst_arrvls shop">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<nav aria-label="breadcrumb">
@@ -94,7 +94,7 @@ use Cake\Core\Configure; ?>
 											</div>
 										</a>
 										<div class="arrvl_text">
-											<div class="sku-container">
+											<div class="sku-container-fluid">
 												<span class="sku-label">SKU:</span>
 												<span class="sku-value"><?php echo $data->sku_no; ?></span>
 											</div>

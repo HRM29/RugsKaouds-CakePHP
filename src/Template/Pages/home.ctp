@@ -56,7 +56,7 @@ if (isset($HomeBlocks['Block1']) && !empty($HomeBlocks['Block1'])) {
 if (isset($HomeBlocks['Block2']) && !empty($HomeBlocks['Block2'])) {
 ?>
 	<section class="rgs_type">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="block_type_side owl-carousel owl-theme">
@@ -70,12 +70,12 @@ if (isset($HomeBlocks['Block2']) && !empty($HomeBlocks['Block2'])) {
 									$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $block2Data['image'];
 									if (file_exists($image)) {
 										echo $this->Html->link(
-										    
-										$this->Html->image('/uploads/banner/' . $block2Data['image'], [ 'alt' => $block2Data['image'], "class" => "zoom-image"]),
+
+											$this->Html->image('/uploads/banner/' . $block2Data['image'], ['alt' => $block2Data['image'], "class" => "zoom-image"]),
 											$block2Data['link'],
-											 array('target'=>'_blank','escape'=>false)
-   
-										) ;
+											array('target' => '_blank', 'escape' => false)
+
+										);
 									}
 									?>
 								</div>
@@ -97,7 +97,7 @@ if (isset($HomeBlocks['Block3']) && !empty($HomeBlocks['Block3'])) {
 	foreach ($HomeBlocks['Block3'] as $Block3Data) {
 ?>
 		<section class="rgs_abt">
-			<div class="container">
+			<div class="container-fluid">
 				<div class="row align-items-center">
 					<div class="col-md-6">
 						<div class="rgs_abt_txt">
@@ -126,12 +126,12 @@ if (isset($HomeBlocks['Block3']) && !empty($HomeBlocks['Block3'])) {
 if (isset($HomeBlocks['Block4']) && !empty($HomeBlocks['Block4'])) {
 	?>
 	<section class="rgs_srvc">
-		<div class="container">
-			<div class="row">
+		<div class="container-fluid">
+			<div class="row justify-content-center">
 				<?php
 				foreach ($HomeBlocks['Block4'] as $Block4Data) {
 				?>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="srvc_box">
 							<div class="srvc_box_imag">
 								<?php
@@ -169,7 +169,7 @@ if (count($latestProducts) > 0) {
 }
 ?>
 <section class="ltst_arrvls">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
@@ -222,7 +222,7 @@ if (count($latestProducts) > 0) {
 								<span class="sale">Sale!</span>
 								<div class="arrvl_text">
 									<!--h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>" style="text-decoration: none; color: #000"><?php echo $productData->style; ?></a></h3-->
-									<div class="sku-container">
+									<div class="sku-container-fluid">
 										<span class="sku-label">SKU:</span>
 										<span class="sku-value"><?php echo $productData->sku_no; ?></span>
 									</div>
@@ -260,7 +260,7 @@ if (count($latestProducts) > 0) {
 if (isset($HomeBlocks['Block5']) && !empty($HomeBlocks['Block5'])) {
 ?>
 	<section class="wrks">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="heading">
@@ -299,16 +299,14 @@ if (isset($HomeBlocks['Block5']) && !empty($HomeBlocks['Block5'])) {
 if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
 ?>
 	<section class="rvws">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="heading">
 						<h2>Rave Reviews</h2>
 					</div>
 				</div>
-				<?php
-				foreach ($HomeBlocks['BlockReviews'] as $reviewData) {
-				?>
+				<?php foreach ($HomeBlocks['BlockReviews'] as $reviewData): ?>
 					<div class="col-lg-4 col-md-12">
 						<div class="rvw_box">
 							<div class="rvw_prfl">
@@ -318,44 +316,36 @@ if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
 									if (file_exists($image)) {
 										echo $this->Html->image('/uploads/reviewers/' . $reviewData['reviewer_image'], ['alt' => $reviewData['reviewer_image'], "class" => "circular-image"]);
 									} else {
-										$image = WWW_ROOT . 'img' . DS . 'user-img.jpg';
 										echo $this->Html->image('/img/user-img.jpg', ['alt' => 'user-img.jpg', "class" => "circular-image"]);
 									}
 								} else {
-									$image = WWW_ROOT . 'img' . DS . 'user-img.jpg';
 									echo $this->Html->image('/img/user-img.jpg', ['alt' => 'user-img.jpg', "class" => "circular-image"]);
 								}
 								?>
 								<div class="rvw_text">
-									<h3><?php echo $reviewData['reviewer_name'] ?></h3>
+									<h3><?= h($reviewData['reviewer_name']) ?></h3>
 									<?php
-									$totalStars = 5;
 									$rating = $reviewData['rating'];
 									$emptyStars = 5 - $rating;
 									?>
 									<div class="star-rating">
-										<?php
-										for ($fullStar = 0; $fullStar < $rating; $fullStar++) {
-										?>
+										<?php for ($i = 0; $i < $rating; $i++): ?>
 											<i class="bi bi-star-fill"></i>
-										<?php
-										}
-										for ($emptyStar = 0; $emptyStar < $emptyStars; $emptyStar++) {
-										?>
+										<?php endfor; ?>
+										<?php for ($i = 0; $i < $emptyStars; $i++): ?>
 											<i class="bi bi-star"></i>
-										<?php
-										}
-										?>
+										<?php endfor; ?>
 									</div>
-
 								</div>
 							</div>
-							<p class="mt-3"><?php echo $reviewData['review_text'] ?></p>
+							<!-- Review text container -->
+							<div class="review-text">
+								<?= nl2br(h($reviewData['review_text'])) ?>
+							</div>
+							<button class="toggle-review">Show More</button>
 						</div>
 					</div>
-				<?php
-				}
-				?>
+				<?php endforeach; ?>
 			</div>
 		</div>
 	</section>
@@ -363,7 +353,7 @@ if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
 }
 ?>
 <section class="blogs">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
@@ -572,5 +562,32 @@ if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
 				items: 4
 			}
 		}
+	});
+	document.addEventListener('DOMContentLoaded', function() {
+		// Select all toggle buttons
+		const toggleButtons = document.querySelectorAll('.toggle-review');
+
+		toggleButtons.forEach(function(button) {
+			button.addEventListener('click', function() {
+				// Find the corresponding review-text container
+				const reviewText = this.previousElementSibling;
+				const isExpanded = reviewText.classList.contains('expanded');
+
+				if (isExpanded) {
+					// Collapse: animate from current height to 60px
+					reviewText.style.maxHeight = reviewText.scrollHeight + 'px'; // set current height explicitly
+					// Force reflow to ensure the new maxHeight is taken into account
+					reviewText.offsetHeight;
+					reviewText.style.maxHeight = '60px';
+					reviewText.classList.remove('expanded');
+					this.textContent = 'Show More';
+				} else {
+					// Expand: animate from 60px to the element's scrollHeight
+					reviewText.style.maxHeight = reviewText.scrollHeight + 'px';
+					reviewText.classList.add('expanded');
+					this.textContent = 'Show Less';
+				}
+			});
+		});
 	});
 </script>

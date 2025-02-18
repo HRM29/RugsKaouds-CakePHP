@@ -39,7 +39,13 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 <div class="topbar">
 	<div class="container-fluid">
 		<div class="row align-items-center announcement">
-			<p><?php echo Configure::read("App.site-announcement"); ?></p>
+			<div class="col-md-4">
+				<a href="tel:<?php echo Configure::read("App.phone"); ?>"><?php echo Configure::read("App.phone"); ?></a>
+				<a href="https://www.google.com/maps/place/Kaoud+Carpets+%26+Rugs/@41.1638658,-73.4211357,17z/data=!3m1!4b1!4m5!3m4!1s0x89e81d1fe79dcc0f:0x60cd628477e28356!8m2!3d41.1638658!4d-73.418947"><?php echo Configure::read("App.Address"); ?></a>
+			</div>
+			<div class="col-md-8">
+				<p><?php echo Configure::read("App.site-announcement"); ?></p>
+			</div>
 
 			<!-- <div class="col-md-7">
 			</div>
@@ -150,15 +156,18 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 						</div>
 						<div class="srch_icon">
 							<ul>
-								<li>
-									<a href="javascript:void(0);" id="toggleSearch">
-										<i class="bi bi-search"></i>
-									</a>
-								</li>
+								<li><a href="<?php echo Router::url('/', true) ?>shop" class="btn">Shop Now</a></li>
 								<li><a href="<?php echo $this->Url->build(['controller' => 'Users', 'action' => 'myAccountRedirect']); ?>"><i class="bi bi-person-fill"></i></a></li>
 								<li><a href="<?php echo Router::url('/', true); ?>users/wishlist"><i class="bi bi-heart-fill"></i></a></li>
 								<li><a href="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'cart']); ?>"><i class="bi bi-cart-fill"></i><span><?= $cart_count; ?></span></a></li>
 							</ul>
+						</div>
+						<div class="search">
+							<form>
+								<input type="text" type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off" />
+								<div class="search-results" id="searchResults"></div>
+								<button class="search-btn" type="button"><i class="bi bi-search"></i></button>
+							</form>
 						</div>
 					</nav>
 				</div>
@@ -167,10 +176,9 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 	</div>
 </header>
 <!-- Search Bar (Initially Hidden) -->
-<div class="search-container" id="searchContainer">
+<!-- <div class="search-container" id="searchContainer">
 	<input type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off">
-	<div class="search-results" id="searchResults"></div>
-</div>
+</div> -->
 <script>
 	if (document.getElementById('search-details')) {
 		document.getElementById('search-details').addEventListener('keyup', function(event) {
@@ -236,26 +244,26 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 		document.getElementById('loadingModal').style.display = 'none';
 	}
 
-	document.getElementById("toggleSearch").addEventListener("click", function() {
-		let searchContainer = document.getElementById("searchContainer");
+	// document.getElementById("toggleSearch").addEventListener("click", function() {
+	// 	let searchContainer = document.getElementById("searchContainer");
 
-		if (searchContainer.style.display === "block") {
-			searchContainer.style.display = "none";
-		} else {
-			searchContainer.style.display = "block";
-			document.getElementById("searchInput").focus(); // Auto-focus on input
-		}
-	});
+	// 	if (searchContainer.style.display === "block") {
+	// 		searchContainer.style.display = "none";
+	// 	} else {
+	// 		searchContainer.style.display = "block";
+	// 		document.getElementById("searchInput").focus(); // Auto-focus on input
+	// 	}
+	// });
 
-	// Close search bar when clicking outside
-	document.addEventListener("click", function(event) {
-		let searchContainer = document.getElementById("searchContainer");
-		let toggleButton = document.getElementById("toggleSearch");
+	// // Close search bar when clicking outside
+	// document.addEventListener("click", function(event) {
+	// 	let searchContainer = document.getElementById("searchContainer");
+	// 	let toggleButton = document.getElementById("toggleSearch");
 
-		if (!searchContainer.contains(event.target) && !toggleButton.contains(event.target)) {
-			searchContainer.style.display = "none";
-		}
-	});
+	// 	if (!searchContainer.contains(event.target) && !toggleButton.contains(event.target)) {
+	// 		searchContainer.style.display = "none";
+	// 	}
+	// });
 
 	function debounce(func, wait) {
 		let timeout;
@@ -286,11 +294,13 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
                             ${item.title} - <span style="color: #881C06;">${item.sku_no}</span>
                         </div>`
 					).join("");
-					searchResults.style.display = "block";
 				} else {
 					searchResults.innerHTML = `<div class="result-item">No results found</div>`;
 					searchResults.style.display = "block";
 				}
+				searchResults.style.position = 'absolute';
+				searchResults.style.display = 'block';
+				searchResults.style.zIndex = '10';
 			},
 			error: function() {
 				searchResults.innerHTML = `<div class="result-item">Error retrieving results</div>`;
@@ -306,6 +316,15 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 
 	document.getElementById("searchInput").addEventListener("input", debounce(function() {
 		let query = this.value.trim();
+		if (query) {
+			performSearch(query);
+		} else {
+			document.getElementById("searchResults").style.display = "none";
+		}
+	}, 300));
+
+	document.querySelector(".search-btn").addEventListener("click", debounce(function() {
+		let query = document.getElementById("searchInput").value.trim();
 		if (query) {
 			performSearch(query);
 		} else {
