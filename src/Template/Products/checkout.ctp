@@ -1336,15 +1336,12 @@ if ($session->check('coupon')) {
 			}
 		},
 		createOrder: function(data, actions) {
-			let subtotal = 100;
-			let shippingCost = 10;
-			let finalTotal = subtotal + shippingCost;
 
 			return actions.order.create({
 				purchase_units: [{
 					amount: {
 						currency_code: "USD",
-						value: finalTotal.toFixed(2),
+						value: <?php echo $total_price; ?>,
 					},
 				}],
 

@@ -223,7 +223,7 @@ echo $this->Form->end();
 
 <div style="display: none" id="curcuren"><?= $getcur; ?></div>
 <script>
-	subtotall();
+	// subtotall();
 	var total_quantity = 0;
 
 	$(".qty").change(function() {

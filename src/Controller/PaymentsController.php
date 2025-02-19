@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -18,36 +19,40 @@ use Cake\Mailer\TransportFactory;
  *
  * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class PaymentsController extends AppController {
+class PaymentsController extends AppController
+{
 
-	public function initialize() {
+	public function initialize()
+	{
 		parent::initialize();
-		$this->Auth->allow(['success','cancel']);
-		
+		$this->Auth->allow(['success', 'cancel']);
+
 		$this->viewBuilder()->setLayout('front');
 	}
-	public function beforeFilter(Event $event) {
+	public function beforeFilter(Event $event)
+	{
 		parent::beforeFilter($event);
-		$action = $this->request->getParam('action'); 
+		$action = $this->request->getParam('action');
 		if (in_array($action, [''])) {
-            $this->getEventManager()->off($this->Csrf);
-        } 
-		
+			$this->getEventManager()->off($this->Csrf);
+		}
 	}
 
-	
-	public function success(){
+
+	public function success()
+	{
 		$OrderProductsTable = TableRegistry::get('OrderDetails');
-		
+
 		$ProductsTable = TableRegistry::get('Products');
 		$session = $this->request->getSession();
-		$cartitems = $session->read('cart'); 
-		$tr_data = $session->read('tr_id'); 
+		$cartitems = $session->read('cart');
+		$tr_data = $session->read('tr_id');
+		$is_success = $session->read('is_success');
 		$payment_status = $tr_data['status'];
 		$orderstable = TableRegistry::getTableLocator()->get("Orders");
-		
-		if(!empty($tr_data)){
-			
+
+		if (!empty($tr_data) && $is_success == 1) {
+
 			//Order Email to user -- start//
 			$session = $this->request->getSession();
 			$cartdta = $session->read('cart');
@@ -72,16 +77,20 @@ class PaymentsController extends AppController {
 			} */
 			$session->delete('cart');
 			$session->delete('coupon');
-		}
-		$orderid = $orderstable->find()->where(['trans_id'=>$tr_data['tr_id']])->first();
-		
-		$orderitems = $OrderProductsTable->find()->where(['order_id'=>$orderid->id])->contain(['products'=>['ProductImages']])->toArray();
-		
-		$totalPrice = $orderstable->find()->select(['total_price'])->where(['id'=>$orderid->id])->first();
-		
-		$this->set(compact('orderid','orderitems','totalPrice','payment_status'));
-	}
-	public function cancel(){
-	}
+			$session->delete('is_success');
 
+			$orderid = $orderstable->find()->where(['trans_id' => $tr_data['tr_id']])->first();
+
+			$orderitems = $OrderProductsTable->find()->where(['order_id' => $orderid->id])->contain(['products' => ['ProductImages']])->toArray();
+
+			$totalPrice = $orderstable->find()->select(['total_price'])->where(['id' => $orderid->id])->first();
+
+			$this->set(compact('orderid', 'orderitems', 'totalPrice', 'payment_status'));
+		} else {
+			$this->redirect(['controller' => 'products', 'action' => 'shopping']);
+		}
+	}
+	public function cancel() {
+		$this->redirect(['controller' => 'products', 'action' => 'shopping']);
+	}
 }
