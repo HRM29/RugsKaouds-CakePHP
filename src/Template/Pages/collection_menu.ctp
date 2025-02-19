@@ -4,7 +4,7 @@ use Cake\Routing\Router;
 use Cake\Core\Configure;
 ?>
 <section class="inner_banner shp">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
@@ -18,7 +18,7 @@ use Cake\Core\Configure;
 if (isset($collection) && !empty($collection)) {
 ?>
     <section class="collections">
-        <div class="container">
+        <div class="container-fluid">
             <?php
             if ($PageType == 'Collections') {
             ?>

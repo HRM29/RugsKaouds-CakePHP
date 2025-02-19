@@ -63,7 +63,7 @@ if( Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 <?php echo $this->Html->css(array('front/sq-payment-form')); ?>	
 
 <section class="checkout-page section-padding">
-         <div class="container p-0">
+         <div class="container-fluid p-0">
             <div class="row">
                <div class="col-md-8">
 			   <?= $this->Flash->render('ordrrpositive') ?>
@@ -371,7 +371,7 @@ if( Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
                                     <div class="row"> 
 										<div id="square_div">
 											<h5><legend>Credit Card Details</h5>
-											<div id="form-container">
+											<div id="form-container-fluid">
 												<div class="sq-field">
 													<label class="sq-label">Card Number</label>
 													<div id="sq-card-number"></div>

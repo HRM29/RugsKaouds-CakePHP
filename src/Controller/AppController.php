@@ -460,10 +460,14 @@ class AppController extends Controller
      * @param integer $id
      * @return void
      */
-    public function getRelatedProducts($categories)
+    public function getRelatedProducts($categories, $productID = null)
     {
         $productTable = TableRegistry::getTableLocator()->get('Products');
-        $relatedProducts = $productTable->find('all')->where(['status' => 1, 'category_id IN' => $categories, 'sold_status' => 0])->contain(['ProductImages'])->limit(5)->order(['id' => 'DESC'])->toArray();
+        $conditionArr = ['status' => 1, 'category_id IN' => $categories, 'sold_status' => 0];
+        if (!is_null($productID)) {
+            $conditionArr['id !='] = $productID;
+        }
+        $relatedProducts = $productTable->find('all')->where($conditionArr)->contain(['ProductImages'])->limit(5)->order(['id' => 'DESC'])->toArray();
         return $relatedProducts;
     }
     /**

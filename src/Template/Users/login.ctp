@@ -8,7 +8,7 @@
 </section>
 <!-- About Area start -->
 <section class="rg_clng acount">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
                 <?= $this->Flash->render('positive_login') ?>

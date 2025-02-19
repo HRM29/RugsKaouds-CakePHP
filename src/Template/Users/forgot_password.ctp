@@ -18,7 +18,7 @@ use Cake\Routing\Router; ?>
     </div>
 </section>
 <section class="rg_clng lst_pswrd">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row forgot-password">
             <div class="account-details forgot-password-form">
                 <p>Lost your password? Please enter your username or email address. You will receive a link to create a new password via email.</p>

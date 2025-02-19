@@ -39,11 +39,11 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 <div class="topbar">
 	<div class="container-fluid">
 		<div class="row align-items-center announcement">
-			<div class="col-md-4">
-				<a href="tel:<?php echo Configure::read("App.phone"); ?>"><?php echo Configure::read("App.phone"); ?></a>
-				<a href="https://www.google.com/maps/place/Kaoud+Carpets+%26+Rugs/@41.1638658,-73.4211357,17z/data=!3m1!4b1!4m5!3m4!1s0x89e81d1fe79dcc0f:0x60cd628477e28356!8m2!3d41.1638658!4d-73.418947"><?php echo Configure::read("App.Address"); ?></a>
+			<div class="col-md-6">
+				<a href="tel:<?php echo Configure::read("App.phone"); ?>">Call Us</a>
+				<a href="https://www.google.com/maps/place/Kaoud+Carpets+%26+Rugs/@41.1638658,-73.4211357,17z/data=!3m1!4b1!4m5!3m4!1s0x89e81d1fe79dcc0f:0x60cd628477e28356!8m2!3d41.1638658!4d-73.418947" target="_blank">Visit Us</a>
 			</div>
-			<div class="col-md-8">
+			<div class="col-md-6">
 				<p><?php echo Configure::read("App.site-announcement"); ?></p>
 			</div>
 
@@ -69,7 +69,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 	<div class="container-fluid">
 		<div class="row align-items-center">
 			<div class="col-md-2">
-				<div class="logo" style="padding: 5px;">
+				<div class="logo" style="padding: 5px 0;">
 					<a href="/Kaouds/">
 						<!--?php echo $this->Html->image('logo.jpg', ['alt' => 'logo']); ?-->
 						<img src="<?php echo LOGO_URL; ?>" alt="logo">
@@ -149,8 +149,8 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 										<?php /* ?>	<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/asid">Asid</a></li>	<?php */ ?>
 									</ul>
 								</li>
-								<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action == 'projects' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>completed-projects">Projects</a></li>
+								<li class="nav-item"><a class="nav-link" href="<?php echo Router::url('/', true) ?>blog" target="_blank">Latest News</a></li>
+								<li class="nav-item"><a class="nav-link <?= $action == 'projects' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>completed-projects">Inspiration</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
 							</ul>
 						</div>

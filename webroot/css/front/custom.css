@@ -55,6 +55,8 @@ a {
 }
 .topbar p {
     margin: 0;
+	float: right;
+	line-height: 17px;
 }
 .topbar .tpbr_nav li {
     display: inline-block;
@@ -74,10 +76,8 @@ a {
     font-size: 14px;
 }
 .announcement{
-    text-align:center;
-color:#fff;
-text-decoration:bold;
-font-size:16px;    
+    color:#fff;
+	font-size:16px;    
 }
 header {
     background: #fff;
@@ -661,7 +661,7 @@ header .menus .navbar .search form button {
     background-position: center center;
     background-size: cover;
     position: relative;
-    padding: 70px 0 90px;
+    padding: 70px 0 50px;
 }
 .grnt_nws::after{
     position: absolute;
@@ -678,7 +678,7 @@ header .menus .navbar .search form button {
 }
 .grnt_nws .grntee .heading h2, .grnt_nws .nwsltr h2 {
     color: #fff;
-    margin: 0 0 57px 0;
+    margin: 0 0 15px 0;
 }
 .grnt_nws .grntee p {
     margin: 0 0 6px;
@@ -688,6 +688,28 @@ header .menus .navbar .search form button {
     line-height: 23px;
     padding: 0 110px 0 0;
 }
+.grnt_nws .grntee.lctn p {
+    padding: 0 0 7px 0;
+	display: block;
+	text-align: left;
+}
+.grnt_nws .grntee.lctn p i {
+    margin: 0 7px 0 0;
+}
+.grnt_nws .grntee.scl li {
+    display: block;
+    list-style: none;
+}
+.grnt_nws .grntee.scl li a {
+    color: #fff;
+    font-size: 16px;
+    margin: 0 0 13px;
+    display: inline-block;
+}
+.grnt_nws .grntee.scl li i {
+    margin: 0 7px 0 0;
+}
+
 .grnt_nws .nwsltr {
     padding: 0 0 0 90px;	
 	position: relative;
@@ -1422,7 +1444,19 @@ footer .cpyrght p {
 	width: 100%;
 }
 .rgs_abt.crpt_rgs .cmunty_slide.owl-theme .owl-nav [class*="owl-"] {
-	background: transparent;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    border-radius: 100%;
+    height: 53px;
+    width: 53px;
+    line-height: 47px;
+    text-align: center;
+}
+.rgs_abt.crpt_rgs .cmunty_slide.owl-theme .owl-nav .owl-prev {
+	left: 0;
+}
+.rgs_abt.crpt_rgs .cmunty_slide.owl-theme .owl-nav .owl-next {
+	right: 0;
 }
 .rgs_abt.crpt_rgs form {
 	background: #eee;

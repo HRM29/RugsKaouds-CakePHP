@@ -21,7 +21,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 ?>
 
 <section class="inner_banner shp">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
@@ -32,7 +32,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 	</div>
 </section>
 <section class="cart">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-8">
 				<div class="table-responsive crt_tbl">

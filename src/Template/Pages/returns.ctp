@@ -1,5 +1,5 @@
 <div class="static-page">
-<div class="container p-0">
+<div class="container-fluid p-0">
 <h1 class="m-30">Easy Returns and Exchanges</h1>
 <p>Kaoud Carpets & Rugs offers a 30-Day Risk-Free In-Home Trial on every rug we sell, except for customized rugs, products sold through Clearance Sales and rug pads that have been opened. If you are unhappy with your purchase for any reason, you may return it – no questions asked. You are responsible for payment of the return shipping charges. </p>
 <h4>Return Shipping</h4>

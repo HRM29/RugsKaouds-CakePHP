@@ -560,7 +560,8 @@ Configure::write('rugMaterial', array("Cotton"=>"Cotton",
 $siteFolder	= dirname(dirname($_SERVER['SCRIPT_NAME']));
 define('SITE_URL', 'http://' . $_SERVER['HTTP_HOST'] . $siteFolder);
 define('webroot', SITE_URL.'/webroot/');
-
+define('LOGO_URL', SITE_URL.'/img/logo.jpg');
+define('MBL_LOGO_URL', SITE_URL.'/img/mbl_logo.jpg');
 
 /* get pattern data */
 $data1 = TableRegistry::get('Patterns');

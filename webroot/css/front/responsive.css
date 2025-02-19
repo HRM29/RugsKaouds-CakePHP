@@ -1,4 +1,15 @@
-@media screen and (max-width: 1320px) {	
+@media screen and (max-width: 1290px) {	
+header .menus .navbar .srch_icon li:first-child a.btn {
+	position: absolute;
+	top: 20px;
+	right: 85px;
+	width: 110px;
+	padding: 2px 12px;
+}
+header .menus .navbar .navbar-collapse .navbar-nav .nav-item .nav-link {
+	padding:18px 10px 34px;
+}
+
 }
 @media screen and (max-width: 1199px) {
 h1 {
@@ -60,11 +71,20 @@ header .menus .navbar .navbar-collapse .navbar-nav .dropdown-menu.mega .nav-item
 	font-size: 12px;
     line-height: 13px;
 }
+header .menus .navbar .srch_icon li:first-child a.btn {
+	right: 102px;
 }
+.grnt_nws .grntee p {
+	padding: 0;
+}
+	
+}
+
 @media screen and (max-width: 991px) {
 header .menus .navbar .navbar-toggler {
 	position: absolute;
 	right: 0;
+	padding: 0;
 }
 header .menus .navbar .srch_icon {
 	position: absolute;
@@ -241,8 +261,12 @@ header .menus .navbar .search {
 	top: -14px;
 	right: 170px;
 }
-.grnt_nws .grntee.lctn {
+.grnt_nws .grntee.lctn, .grnt_nws .grntee.scl {
     margin: 40px 0 0;
+}
+header .menus .navbar .srch_icon li:first-child a.btn {
+	top: -13px;
+	right: 200px;
 }
 
 
@@ -445,9 +469,17 @@ header .logo img {
 .stores .strs_txt {
     margin: 30px 0 0;
 }
+.announcement{
+    text-align: center;
+}
+.topbar p {
+    margin: 7px 0 0;
+    float: none;
+}
 
 
 }
+
 @media screen and (max-width: 575px) {
 .main_banner .mn_slide.owl-theme .owl-nav .owl-prev {
     left: 7px;
@@ -509,17 +541,28 @@ header .logo img {
 .shop-bottom-section {
     float: none;
 }
-
-}
-@media screen and (max-width: 460px) {
 header .menus .navbar .search {
 	top: 6px;
-	right: 74px;
+	right: 50px;
 }
 header .menus .navbar .srch_icon {
 	top: -27px;
 }
+header .menus .navbar .srch_icon li:first-child a.btn {
+	right: 0;
+}
 
+}
+
+@media screen and (max-width: 370px) {
+header .menus .navbar .srch_icon li:first-child a.btn {
+	top: -11px;
+	right: -3px;
+	width: 80px;
+	font-size: 14px;
+	padding: 0px;
+}
+	
 }
 
 @media screen and (min-width: 768px) {

@@ -13,7 +13,7 @@ if (count($relatedProducts) > 0) {
                     </div>
                     <div class="arrvls_slide owl-carousel owl-theme">
                         <?php
-                        foreach ($latestProducts as $productkeys => $productData) {
+                        foreach ($relatedProducts as $productkeys => $productData) {
                             if (!empty($productData['product_images'])) {
                                 $image_data = $productData['product_images'][0];
                                 $imageURL = $image_data->image;

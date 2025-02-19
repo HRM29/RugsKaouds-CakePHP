@@ -21,7 +21,7 @@ use Cake\Routing\Router;
 	</div>
 </section>
 <section class="shop_dtls">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-7">
 				<div class="dtls_cont">

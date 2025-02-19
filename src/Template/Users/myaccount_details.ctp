@@ -3,7 +3,7 @@
 	use Cake\Routing\Router;
 	?>
  <section class="inner_banner shp">
- 	<div class="container">
+ 	<div class="container-fluid">
  		<div class="row">
  			<div class="col-md-12">
   				<div class="heading">
@@ -15,7 +15,7 @@
  </section>
  <!--Cart Page Area Start-->
  <section class="dshbrd">
- 	<div class="container">
+ 	<div class="container-fluid">
  		<div class="row">
  			<?php echo $this->element('front/account_menu'); ?>
  			<div class="col-md-9 no_padding">

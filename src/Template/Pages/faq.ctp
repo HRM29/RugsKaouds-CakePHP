@@ -1,5 +1,5 @@
 <div class="static-page">
-<div class="container p-0">
+<div class="container-fluid p-0">
 <h1>Shipping Information</h1>
 <h4>Delivery Time</h4>
 <p>Area rugs are processed within 24 to 72 hours of the time orders are placed. All rugs are shipped via ground freight which then takes an additional 3 to 10 days for transit depending on the geographical location of your delivery address. For more information please contact our toll free number 800.999.2605.</p>

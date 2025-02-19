@@ -1,5 +1,5 @@
 <div class="static-page">
-<div class="container p-0">
+<div class="container-fluid p-0">
 <div class="designer-info">
 <h1>Fred Nasseri, (CRA) Certified Rug Appraiser</h1>
 <div class="designer-pic">

@@ -3,7 +3,7 @@
 use Cake\Routing\Router;
 ?>
 <section class="inner_banner shp">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="heading">
@@ -14,7 +14,7 @@ use Cake\Routing\Router;
     </div>
 </section>
 <section class="dshbrd">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <?php echo $this->element('front/account_menu'); ?>
             <div class="col-md-9 no_padding">
@@ -47,7 +47,7 @@ use Cake\Routing\Router;
 </section>
 <!--Cart Page Area Start-->
 <div class="check-out-area">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
 
 

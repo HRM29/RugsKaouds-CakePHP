@@ -5,7 +5,7 @@ use Cake\Routing\Router;
 <?php echo $this->Html->script(['xzoom.min.js']); ?>
 <?php echo $this->Html->css(array('front/xzoom.css')); ?>
 <section class="shop_dtls">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<nav aria-label="breadcrumb">

@@ -1,5 +1,5 @@
 <div class="static-page">
-<div class="container p-0">
+<div class="container-fluid p-0">
 <div class="img-static">
 <img src="../img/rolledorientalrugs01.jpg">
 </div>

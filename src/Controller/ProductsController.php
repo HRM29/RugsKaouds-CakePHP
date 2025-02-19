@@ -221,7 +221,7 @@ class ProductsController extends AppController
 		$featuredProductData = $ProductsTable->find('all')->where(['Products.is_future' => 1, 'sku_no !=' => $sku])->contain(['ProductImages'])->toArray();
 		$sku_no = $productDetail->sku_no;
 
-		$relatedProducts = parent::getRelatedProducts($productDetail->category_id);
+		$relatedProducts = parent::getRelatedProducts($productDetail->category_id, $productDetail->id);
 		$cartItems = $this->checkCartButton();
 
 		$this->set('title_for_layout', $productDetail->seo_title);

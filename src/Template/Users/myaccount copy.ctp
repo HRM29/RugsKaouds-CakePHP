@@ -24,7 +24,7 @@
  </section>
  <!--Cart Page Area Start-->
  <section class="dshbrd">
- 	<div class="container">
+ 	<div class="container-fluid">
  		<div class="row">
  			<?php echo $this->element('front/account_menu'); ?>
  			<div class="col-md-9">

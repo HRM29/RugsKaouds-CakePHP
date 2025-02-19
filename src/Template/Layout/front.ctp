@@ -32,7 +32,7 @@ use Cake\Routing\Router; ?>
 	// print_r($title); die;
 	?>
 	<style>
-		body {
+		/* body {
 			user-select: none;
 			-webkit-user-select: none;
 			-moz-user-select: none;
@@ -42,7 +42,7 @@ use Cake\Routing\Router; ?>
 		* {
 			-webkit-user-drag: none;
 			user-drag: none;
-		}
+		} */
 	</style>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -54,7 +54,7 @@ use Cake\Routing\Router; ?>
 	<meta name="facebook-domain-verification" content="3rrn0glngylfceooaifricmhzex1j9" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<?php echo $this->Html->css(array('front/bootstrap.min.css?ver=1.0', 'front/bootstrap-icons.min.css?ver=1.0', 'front/owl.carousel.min', 'front/owl.theme.default.min', 'front/custom.css?ver=1.0380', 'front/responsive.css?ver=1.136', 'front/sweetalert2.min.css?ver=1.0', 'front/fancybox.umd.css?ver=0.1')); ?>
+	<?php echo $this->Html->css(array('front/bootstrap.min.css?ver=1.0', 'front/bootstrap-icons.min.css?ver=1.0', 'front/owl.carousel.min', 'front/owl.theme.default.min', 'front/custom.css?ver=1.0391', 'front/responsive.css?ver=1.148', 'front/sweetalert2.min.css?ver=1.0', 'front/fancybox.umd.css?ver=0.1')); ?>
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-J34YWES5NL"></script>
 
@@ -68,32 +68,32 @@ use Cake\Routing\Router; ?>
 		gtag('config', 'G-J34YWES5NL');
 	</script>
 	<script>
-		document.addEventListener('contextmenu', function(e) {
-			e.preventDefault(); // Disable right-click
-		});
+		// document.addEventListener('contextmenu', function(e) {
+		// 	e.preventDefault(); // Disable right-click
+		// });
 
-		document.addEventListener('keydown', function(e) {
-			// Disable F12 (DevTools)
-			if (e.keyCode === 123) {
-				e.preventDefault();
-			}
-			// Disable Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (Inspect Element)
-			if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
-				e.preventDefault();
-			}
-			// Disable Ctrl+U (View Source)
-			if (e.ctrlKey && e.keyCode === 85) {
-				e.preventDefault();
-			}
-		});
+		// document.addEventListener('keydown', function(e) {
+		// 	// Disable F12 (DevTools)
+		// 	if (e.keyCode === 123) {
+		// 		e.preventDefault();
+		// 	}
+		// 	// Disable Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (Inspect Element)
+		// 	if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+		// 		e.preventDefault();
+		// 	}
+		// 	// Disable Ctrl+U (View Source)
+		// 	if (e.ctrlKey && e.keyCode === 85) {
+		// 		e.preventDefault();
+		// 	}
+		// });
 		
-		document.addEventListener('dragstart', function(e) {
-			e.preventDefault();
-		});
+		// document.addEventListener('dragstart', function(e) {
+		// 	e.preventDefault();
+		// });
 		
-		document.addEventListener('drop', function(e) {
-			e.preventDefault();
-		});
+		// document.addEventListener('drop', function(e) {
+		// 	e.preventDefault();
+		// });
 	</script>
 
 </head>

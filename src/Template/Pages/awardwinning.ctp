@@ -1,5 +1,5 @@
 <div class="static-page">
-<div class="container p-0">
+<div class="container-fluid p-0">
 <h1>Rug Retailer of the Year</h1>
 <div class="awards">
 <img src="../img/roya_award.jpg">

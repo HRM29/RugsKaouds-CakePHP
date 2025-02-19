@@ -1,5 +1,5 @@
 <div class="static-page">
-<div class="container p-0">
+<div class="container-fluid p-0">
 <h1>Terms Of Use</h1>
 <p>Welcome to our shopping site. We provide this site to you subject to the following terms of use (“Terms”). If you visit or shop at this site, you accept these Terms. Please read them carefully.</p>
 <h4>Copyright</h4>

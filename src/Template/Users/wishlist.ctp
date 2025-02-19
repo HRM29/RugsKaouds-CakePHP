@@ -8,7 +8,7 @@ $controller = $this->request->getParam('controller');
 $authUser = $session->read('Auth');
 ?>
 <section class="inner_banner shp">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
@@ -19,7 +19,7 @@ $authUser = $session->read('Auth');
 	</div>
 </section>
 <section class="dshbrd">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<?php echo $this->element('front/account_menu'); ?>
 			<div class="col-md-9 no_padding">

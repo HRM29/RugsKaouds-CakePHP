@@ -27,7 +27,7 @@ if ($session->check('coupon')) {
 }
 ?>
 <section class="inner_banner shp">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
@@ -38,7 +38,7 @@ if ($session->check('coupon')) {
 	</div>
 </section>
 <section class="rg_clng chkout">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-7">
 				<?php

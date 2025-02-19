@@ -1,5 +1,5 @@
 <section class="inner_banner shp">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="heading">
@@ -10,7 +10,7 @@
     </div>
 </section>
 <section class="rg_clng">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="heading">

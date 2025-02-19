@@ -1,5 +1,5 @@
 <div class="static-page">
-<div class="container p-0">
+<div class="container-fluid p-0">
 <h1>Privacy Policy</h1>
 <p>We appreciate the trust you place in Kaoud Carpets & Rugs, and we are committed to respecting your privacy and the security of your personal information. Our privacy policy describes the information we collect and how we use it. Every effort has been made to check our information for accuracy. Descriptive or typographical errors are subject to correction.</p>
 <p>We always welcome your questions and feedback. For privacy-related issues, please contact us at:</p>

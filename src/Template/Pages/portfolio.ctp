@@ -1,6 +1,6 @@
 <?php use Cake\Routing\Router;?>
 <div class="static-page portfolio-page">
-<div class="container p-0">
+<div class="container-fluid p-0">
 <h2>Every Project Tells a Story</h2>
 <p>From the most intimate residence to the grandest hotel, The Kaoud Carpets & Rugs projects are elegant, luxurious and sophisticated collaborations of color, texture and personality. Seeking out the perfect rug or carpet, the Kaoud Carpets & Rugs creates environments that reflect the lifestyles of their clients.</p>
 <div class="row">
