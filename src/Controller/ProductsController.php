@@ -718,7 +718,7 @@ class ProductsController extends AppController
 				*/
 				$result['status'] = 'Success';
 
-				if ($result['status'] == 'Success') {
+				if (!empty($postdata)) {
 					$order = $orders->patchEntity($order, $mappedData);
 					$isPaymentSucessfull = 0;
 					$order->order_status = 0;
