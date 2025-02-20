@@ -546,7 +546,7 @@ if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
 	$('.block_type_side').owlCarousel({
 		loop: true,
 		margin: 30,
-		nav: false,
+		nav: true,
 		dots: false,
 		autoplay: false,
 		autoplayTimeout: 5000,
@@ -554,6 +554,9 @@ if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
 		responsive: {
 			0: {
 				items: 1
+			},
+			576: {
+				items: 2
 			},
 			768: {
 				items: 3
