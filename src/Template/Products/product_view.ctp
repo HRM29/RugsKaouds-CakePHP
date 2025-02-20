@@ -16,23 +16,56 @@ use Cake\Routing\Router;
 				</nav>
 			</div>
 			<div class="col-md-5">
-				<span class="zoom">
+				<div class="xzoom-container">
 					<?php
+
+					// Base Image Directory
 					$img_src = Router::url('/', true) . 'uploads/product/';
-					$img_name = isset($productDetail->product_images[0]->image) ? $productDetail->product_images[0]->image : '';
-					$img_Type = isset($productDetail->product_images[0]->image_type) ? $productDetail->product_images[0]->image_type : 'Single';
 
+					// Fetching Main Image
+					$img_name = !empty($productDetail->product_images[0]->image) ? $productDetail->product_images[0]->image : '';
+					$img_Type = !empty($productDetail->product_images[0]->image_type) ? $productDetail->product_images[0]->image_type : 'Single';
 					$sku = $productDetail->sku_no;
-
 					$inFolder = $this->General->__get_picture_folder($sku);
 
-					$filePath =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . $img_name;
-					$filePath21 =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . str_replace('jpg', 'jpg', $img_name);
+					// Constructing Paths
+					$filePath = WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . $img_name;
+					$fileUrl = $img_Type == 'Link' ? $img_name : Router::url('/uploads/product/' . $inFolder . '/' . $img_name, true);
 
-					$fileUrl = $img_name;
+					// Check if File Exists (Fallback to Placeholder)
+					if ($img_Type == 'Link') {
+						$displayImage = $img_name;
+					} else {
+						$displayImage = (file_exists($filePath) && !empty($img_name)) ? $fileUrl : Router::url('/img/placeholder.jpg', true);
+					}
 					?>
-					<img id="xzoom-default" src="<?php echo $img_Type == 'Link' ? $fileUrl : $filePath21; ?>" xoriginal="<?php echo $fileUrl; ?>" width="430" height="390" />
-				</span>
+
+					<!-- Main Zoomable Image -->
+					<img id="xzoom-default" class="xzoom" src="<?= h($displayImage); ?>" xoriginal="<?= h($displayImage); ?>" width="430" height="390" />
+
+					<div class="xzoom-thumbs">
+						<?php
+						$imagesArr = $productDetail->product_images;
+
+						if (!empty($imagesArr)) {
+							foreach ($imagesArr as $imgs) {
+								if ($imgs->image_type == 'Link') {
+									$thumbPath = $imgs->image;
+									$thumbUrl = $imgs->image;
+								} else {
+									$thumbPath = WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . $imgs->image;
+									$thumbUrl = !empty($imgs->image) ? Router::url('/uploads/product/' . $inFolder . '/' . $imgs->image, true) : Router::url('/img/placeholder.jpg', true);
+								}
+						?>
+								<a href="<?= h($thumbUrl); ?>">
+									<img class="xzoom-gallery" width="80" src="<?= h($thumbUrl); ?>" alt="<?= h($productDetail->title); ?>" class="img-fluid img-center">
+								</a>
+						<?php
+							}
+						}
+						?>
+					</div>
+				</div>
 			</div>
 			<div class="col-md-7">
 				<div class="dtls_cont">

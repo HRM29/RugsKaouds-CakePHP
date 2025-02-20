@@ -464,7 +464,7 @@ use Cake\Core\Configure; ?>
 	$(".remove_image").click(function() {
 		var id = $(this).attr('data');
 		var csrfToken = $("[name='_csrfToken']").val();
-		var url = '<?php echo SITE_URL . '/admin/products/remove_image'; ?>';
+		var url = '<?php echo Router::url(['controller' => 'Products', 'action' => 'removeImage']); ?>';
 		if (confirm('Are you sure?')) {
 			$.ajax({
 				type: 'POST',

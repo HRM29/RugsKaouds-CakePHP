@@ -1,6 +1,8 @@
 <?php
 
-use Cake\Routing\Router; ?>
+use Cake\Routing\Router;
+use Cake\Core\Configure;
+?>
 <!doctype html>
 <html class="no-js" lang="">
 
@@ -30,20 +32,25 @@ use Cake\Routing\Router; ?>
 		$description_for_layout = 'Shop today & buy high-quality, modern, unique Rugs & Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.';
 	}
 	// print_r($title); die;
+	if (Configure::read("App.content-protection") == 1) {
 	?>
-	<style>
-		/* body {
-			user-select: none;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-		}
+		<style>
+			body {
+				user-select: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+			}
 
-		* {
-			-webkit-user-drag: none;
-			user-drag: none;
-		} */
-	</style>
+			* {
+				-webkit-user-drag: none;
+				user-drag: none;
+			}
+		</style>
+	<?php
+	}
+	?>
+
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title><?php echo $title_for_layout; ?></title>
@@ -67,35 +74,39 @@ use Cake\Routing\Router; ?>
 		gtag('js', new Date());
 		gtag('config', 'G-J34YWES5NL');
 	</script>
-	<script>
-		// document.addEventListener('contextmenu', function(e) {
-		// 	e.preventDefault(); // Disable right-click
-		// });
+	<?php
+	if (Configure::read("App.content-protection") == 1) {
+	?>
+		<script>
+			document.addEventListener('contextmenu', function(e) {
+				e.preventDefault(); // Disable right-click
+			});
 
-		// document.addEventListener('keydown', function(e) {
-		// 	// Disable F12 (DevTools)
-		// 	if (e.keyCode === 123) {
-		// 		e.preventDefault();
-		// 	}
-		// 	// Disable Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (Inspect Element)
-		// 	if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
-		// 		e.preventDefault();
-		// 	}
-		// 	// Disable Ctrl+U (View Source)
-		// 	if (e.ctrlKey && e.keyCode === 85) {
-		// 		e.preventDefault();
-		// 	}
-		// });
-		
-		// document.addEventListener('dragstart', function(e) {
-		// 	e.preventDefault();
-		// });
-		
-		// document.addEventListener('drop', function(e) {
-		// 	e.preventDefault();
-		// });
-	</script>
+			document.addEventListener('keydown', function(e) {
+				// Disable F12 (DevTools)
+				if (e.keyCode === 123) {
+					e.preventDefault();
+				}
+				// Disable Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (Inspect Element)
+				if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+					e.preventDefault();
+				}
+				// Disable Ctrl+U (View Source)
+				if (e.ctrlKey && e.keyCode === 85) {
+					e.preventDefault();
+				}
+			});
 
+			document.addEventListener('dragstart', function(e) {
+				e.preventDefault();
+			});
+
+			document.addEventListener('drop', function(e) {
+				e.preventDefault();
+			});
+		</script>
+	<?php
+	} ?>
 </head>
 
 <body>

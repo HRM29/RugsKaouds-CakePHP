@@ -163,7 +163,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 							</ul>
 						</div>
 						<div class="search">
-							<form>
+							<form disabled>
 								<input type="text" type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off" />
 								<div class="search-results" id="searchResults"></div>
 								<button class="search-btn" type="button"><i class="bi bi-search"></i></button>

@@ -42,7 +42,7 @@ $sizeFilters = isset($size_range) ? $size_range : array();
 							$checked = false;
 						}
 					?>
-						<li><input data-name="<?= $dimensionData['title']; ?>" <?= $checked ? 'checked' : ''; ?> data-slug-id="<?= $dimensionData['id']; ?>" class="size-filter" type="checkbox" value="<?= $dimensionData['slug']; ?>"><label for="bapf_1_2543"><?= $dimensionData['title']; ?></label></li>
+						<li><input data-name="<?= $dimensionData['title']; ?>" <?= $checked ? 'checked' : ''; ?> data-slug-id="<?= $dimensionData['id']; ?>" class="size-filter" type="checkbox" value="<?= $dimensionData['slug']; ?>" id="<?= $dimensionData['id']; ?>"><label for="<?= $dimensionData['id']; ?>"><?= $dimensionData['title']; ?></label></li>
 					<?php
 					}
 					?>

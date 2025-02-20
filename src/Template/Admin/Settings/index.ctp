@@ -40,7 +40,9 @@ use Cake\Core\Configure;
 						$options = '';
 						if ($settingdata->slug == "PaypalAccountMode") {
 							$options = array(Configure::read("Paypal.mode.sandbox") => __("sandbox", true), Configure::read("Paypal.mode.live") => __("live", true));
-						}
+						} else  if ($settingdata->slug == "content-protection") {
+							$options = array(1 => __("Enabled", true), 0 => __("Disabled", true));
+						} 
 					?>
 						<div class="input-group">
 							<label for="<?php echo $settingdata->slug; ?>"><?php echo $settingdata->title; ?></label>
