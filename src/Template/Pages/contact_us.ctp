@@ -1,5 +1,6 @@
 <?php
 
+use Cake\Core\Configure;
 use Cake\Routing\Router;
 ?>
 <section class="rg_clng">
@@ -9,7 +10,7 @@ use Cake\Routing\Router;
 				<div class="cntct_prfl">
 					<p>
 						<img src="<?php echo Router::url('/', true); ?>img/cntct_prfl.jpg" alt="cntct_prfl">
-						It should say this - next to our picture profile image - Meet the Family. Fred & Joanne have been following in the family footsteps for years providing the same top level friendly and personable service as our original founders. We would love to hear from you. Leave us a note.
+						<?php echo Configure::read('App.contact-us-description'); ?>
 					</p>
 				</div>
 			</div>
