@@ -39,11 +39,11 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 <div class="topbar">
 	<div class="container-fluid">
 		<div class="row align-items-center announcement">
-			<div class="col-md-6">
+			<div class="col-md-5">
 				<a href="tel:<?php echo Configure::read("App.phone"); ?>">Call Us</a>
 				<a href="https://www.google.com/maps/place/Kaoud+Carpets+%26+Rugs/@41.1638658,-73.4211357,17z/data=!3m1!4b1!4m5!3m4!1s0x89e81d1fe79dcc0f:0x60cd628477e28356!8m2!3d41.1638658!4d-73.418947" target="_blank">Visit Us</a>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-7">
 				<p><?php echo Configure::read("App.site-announcement"); ?></p>
 			</div>
 
@@ -73,7 +73,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 					<a href="/Kaouds/">
 						<!--?php echo $this->Html->image('logo.jpg', ['alt' => 'logo']); ?-->
 						<img src="<?php echo LOGO_URL; ?>" alt="logo">
-						<img class="mbl" src="img/mbl_logo.jpg" alt="logo">
+						<img class="mbl" src="img/mbl_logo.jpg?ver=1" alt="logo">
 					</a>
 				</div>
 			</div>
@@ -149,7 +149,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 										<?php /* ?>	<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/asid">Asid</a></li>	<?php */ ?>
 									</ul>
 								</li>
-								<li class="nav-item"><a class="nav-link" href="<?php echo Router::url('/', true) ?>blog" target="_blank">Latest News</a></li>
+								<li class="nav-item"><a class="nav-link" href="<?php echo Router::url('/', true) ?>blog">Latest News</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action == 'projects' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>completed-projects">Inspiration</a></li>
 								<li class="nav-item"><a class="nav-link <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
 							</ul>
@@ -163,7 +163,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 							</ul>
 						</div>
 						<div class="search">
-							<form disabled>
+							<form>
 								<input type="text" type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off" />
 								<div class="search-results" id="searchResults"></div>
 								<button class="search-btn" type="button"><i class="bi bi-search"></i></button>

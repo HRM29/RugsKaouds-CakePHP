@@ -464,7 +464,7 @@ header .logo .mbl {
     display: block;
 }
 header .logo img {
-    width: auto;
+    width: 8%;
 }
 .stores .strs_txt {
     margin: 30px 0 0;
@@ -555,6 +555,16 @@ header .menus .navbar .srch_icon {
 }
 header .menus .navbar .srch_icon li:first-child a.btn {
 	right: 0;
+}
+.rg_clng .cntct_prfl img {
+    margin: 0 0 15px;
+    width: 100%;
+}
+.rg_clng .cntct_prfl p {
+    line-height: 23px;
+}
+header .logo img {
+	width: 16%;
 }
 
 }

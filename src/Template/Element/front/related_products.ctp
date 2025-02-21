@@ -5,7 +5,7 @@ use Cake\Routing\Router;
 if (count($relatedProducts) > 0) {
 ?>
     <section class="ltst_arrvls">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="heading">

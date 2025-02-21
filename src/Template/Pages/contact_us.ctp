@@ -4,8 +4,15 @@ use Cake\Routing\Router;
 ?>
 <section class="rg_clng">
     <div class="container-fluid">
-        <div class="row">
-
+        <div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="cntct_prfl">
+					<p>
+						<img src="<?php echo Router::url('/', true); ?>img/cntct_prfl.jpg" alt="cntct_prfl">
+						It should say this - next to our picture profile image - Meet the Family. Fred & Joanne have been following in the family footsteps for years providing the same top level friendly and personable service as our original founders. We would love to hear from you. Leave us a note.
+					</p>
+				</div>
+			</div>
             <div class="col-md-6">
                 <?= $this->Form->create(null, ['url' => "javscript:void(0)", 'id' => "contact-us"]) ?>
                 <h3>Contact Us</h3>
