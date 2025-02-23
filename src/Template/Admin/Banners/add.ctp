@@ -70,9 +70,13 @@ use Cake\Routing\Router; ?>
 		</div> <!-- /.row -->
 	</div> <!-- /.row -->
 </section><!-- /.content -->
-<?php echo $this->Html->script('ckeditor/ckeditor'); ?>
+<?php echo $this->Html->script('ckeditor/ckeditor.js?ver=0.12'); ?>
 <script>
 	CKEDITOR.replace('description', {
+		height: 300,
+		filebrowserBrowseUrl: "<?= $this->Url->build('/js/ckfinder/ckfinder.html'); ?>",
+		filebrowserImageBrowseUrl: "<?= $this->Url->build('/js/ckfinder/ckfinder.html?type=Images'); ?>",
+		
 		allowedContent: true, // Allow <p>, <span> with any attributes, and <a> with href and title
 		extraAllowedContent: 'span(style);', // Allow inline style attribute in <span>
 		disallowedContent: '' // Ensure nothing is explicitly disallowed

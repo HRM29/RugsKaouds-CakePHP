@@ -42,6 +42,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 			<div class="col-md-5">
 				<a href="tel:<?php echo Configure::read("App.phone"); ?>">Call Us</a>
 				<a href="https://www.google.com/maps/place/Kaoud+Carpets+%26+Rugs/@41.1638658,-73.4211357,17z/data=!3m1!4b1!4m5!3m4!1s0x89e81d1fe79dcc0f:0x60cd628477e28356!8m2!3d41.1638658!4d-73.418947" target="_blank">Visit Us</a>
+				<a href="mailto:<?php echo Configure::read("App.EmailFrom"); ?>"><i class="bi bi-envelope-fill"></i></a>
 			</div>
 			<div class="col-md-7">
 				<p><?php echo Configure::read("App.site-announcement"); ?></p>
@@ -73,7 +74,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 					<a href="/Kaouds/">
 						<!--?php echo $this->Html->image('logo.jpg', ['alt' => 'logo']); ?-->
 						<img src="<?php echo LOGO_URL; ?>" alt="logo">
-						<img class="mbl" src="img/mbl_logo.jpg?ver=1" alt="logo">
+						<img class="mbl" src="<?php echo MBL_LOGO_URL; ?>" alt="logo">
 					</a>
 				</div>
 			</div>
@@ -163,8 +164,8 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 							</ul>
 						</div>
 						<div class="search">
-							<form>
-								<input type="text" type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off" />
+							<form id="search-details">
+								<input type="text" type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off" value="<?= !empty($this->request->getQuery('searchq')) ? $this->request->getQuery('searchq') : '' ?>" />
 								<div class="search-results" id="searchResults"></div>
 								<button class="search-btn" type="button"><i class="bi bi-search"></i></button>
 							</form>
@@ -180,11 +181,46 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 	<input type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off">
 </div> -->
 <script>
+	function updateSearchFilters() {
+		let searchq = [];
+		let sort = $('#sort_type').val();
+
+		// Get all selected sizes
+		$('#searchInput').each(function() {
+			searchq.push($(this).val());
+		});
+
+		// Construct the URL
+		let url = new URL("<?php echo Router::url('/', true) ?>shop");
+
+		// Add sizes to URL
+		if (searchq.length > 0) {
+			url.searchParams.set('searchq', searchq.join('~'));
+		} else {
+			url.searchParams.delete('searchq');
+		}
+
+		// Add sorting to URL
+		if (sort) {
+			url.searchParams.set('sort', sort);
+		} else {
+			url.searchParams.delete('sort');
+		}
+
+		window.location.href = url.toString();
+	}
 	if (document.getElementById('search-details')) {
-		document.getElementById('search-details').addEventListener('keyup', function(event) {
-			if (event.code === 'Enter') {
-				event.preventDefault();
-				document.querySelector('form').submit();
+		$('#search-details').on('keypress', function(e) {
+			var keyCode = e.keyCode || e.which;
+			if (keyCode === 13) {
+				e.preventDefault();
+				let query = document.getElementById("searchInput").value.trim();
+				if (query) {
+					updateSearchFilters();
+				} else {
+					document.getElementById("searchResults").style.display = "none";
+				}
+				return false;
 			}
 		});
 	}
@@ -317,7 +353,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 	document.getElementById("searchInput").addEventListener("input", debounce(function() {
 		let query = this.value.trim();
 		if (query) {
-			performSearch(query);
+			//performSearch(query);
 		} else {
 			document.getElementById("searchResults").style.display = "none";
 		}
@@ -326,7 +362,8 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 	document.querySelector(".search-btn").addEventListener("click", debounce(function() {
 		let query = document.getElementById("searchInput").value.trim();
 		if (query) {
-			performSearch(query);
+			// performSearch(query);
+			updateSearchFilters();
 		} else {
 			document.getElementById("searchResults").style.display = "none";
 		}

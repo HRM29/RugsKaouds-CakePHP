@@ -930,7 +930,7 @@ class AppController extends Controller
             $viewData['website'] = $postData['contact-website'] ?? '';
             $clientEmail = new Email('default');
             $clientEmail->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
-                ->setTo([Configure::read("App.EmailFrom"), 'harshit@racknap.com', 'tacokay156@codverts.com'])
+                ->setTo([Configure::read("App.EmailFrom")])
                 ->setSubject('Kaoud Carpets & Rugs - New Contact Inquiry')
                 ->setEmailFormat('html')
                 ->setTemplate('contact_us')

@@ -73,7 +73,7 @@ if (isset($HomeBlocks['Block2']) && !empty($HomeBlocks['Block2'])) {
 
 											$this->Html->image('/uploads/banner/' . $block2Data['image'], ['alt' => $block2Data['image'], "class" => "zoom-image"]),
 											$block2Data['link'],
-											array('target' => '_blank', 'escape' => false)
+											array('escape' => false)
 
 										);
 									}
@@ -362,70 +362,78 @@ if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
 				<div class="blg_slide owl-carousel owl-theme">
 					<div class="item">
 						<div class="blg_box">
-							<div class="blg_imag">
-								<?php
-								$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog001.jpg';
-								if (file_exists($image)) {
-									echo $this->Html->image('/img/blogs/' . 'blog001.jpg', ['alt' => 'blog001.jpg']);
-								}
-								?>
-								<span>01 Oct, 2024</span>
-							</div>
-							<div class="blg_text">
-								<h3>Celebrating our 68th Year!</h3>
-								<p>We have been selling and servicing our wonderful clients for 68 years with some of [...]</p>
-							</div>
+							<a href="https://whitelabelledsolutions.com/Kaouds/webroot/blog/celebrating-our-68th-year/" style="text-decoration: none;">
+								<div class="blg_imag">
+									<?php
+									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog001.jpg';
+									if (file_exists($image)) {
+										echo $this->Html->image('/img/blogs/' . 'blog001.jpg', ['alt' => 'blog001.jpg']);
+									}
+									?>
+									<span>October 1, 2022</span>
+								</div>
+								<div class="blg_text">
+									<h3>Celebrating our 68th Year!</h3>
+									<p>We have been selling and servicing our wonderful clients for 68 years with some of [...]</p>
+								</div>
+							</a>
 						</div>
 					</div>
 					<div class="item">
 						<div class="blg_box">
-							<div class="blg_imag">
-								<?php
-								$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog002.jpg';
-								if (file_exists($image)) {
-									echo $this->Html->image('/img/blogs/' . 'blog002.jpg', ['alt' => 'blog002.jpg']);
-								}
-								?>
-								<span>25 Jul, 2024</span>
-							</div>
-							<div class="blg_text">
-								<h3>We do love doing stairs!</h3>
-								<p>Gorgeous Wool & Viscose woven modern pattern on this stair and landing project. Product is [...]</p>
-							</div>
+							<a href="https://whitelabelledsolutions.com/Kaouds/webroot/blog/we-do-love-doing-stairs/" style="text-decoration: none;">
+								<div class="blg_imag">
+									<?php
+									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog002.jpg';
+									if (file_exists($image)) {
+										echo $this->Html->image('/img/blogs/' . 'blog002.jpg', ['alt' => 'blog002.jpg']);
+									}
+									?>
+									<span>25 Jul, 2020</span>
+								</div>
+								<div class="blg_text">
+									<h3>We do love doing stairs!</h3>
+									<p>Gorgeous Wool & Viscose woven modern pattern on this stair and landing project. Product is [...]</p>
+								</div>
+							</a>
 						</div>
 					</div>
 					<div class="item">
 						<div class="blg_box">
-							<div class="blg_imag">
-								<?php
-								$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog003.jpg';
-								if (file_exists($image)) {
-									echo $this->Html->image('/img/blogs/' . 'blog003.jpg', ['alt' => 'blog003.jpg']);
-								}
-								?>
-								<span>24 Jun, 2024</span>
-							</div>
-							<div class="blg_text">
-								<h3>Another Stair Creation!</h3>
-								<p>Deerfield Mushroom Animal cut pile print with custom stair rods finish off this multi-level staircase [...]</p>
-							</div>
+							<a href="https://whitelabelledsolutions.com/Kaouds/webroot/blog/another-stair-creation/" style="text-decoration: none;">
+								<div class="blg_imag">
+									<?php
+									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog003.jpg';
+									if (file_exists($image)) {
+										echo $this->Html->image('/img/blogs/' . 'blog003.jpg', ['alt' => 'blog003.jpg']);
+									}
+									?>
+									<span>24 Jun, 2020</span>
+								</div>
+								<div class="blg_text">
+									<h3>Another Stair Creation!</h3>
+									<p>Deerfield Mushroom Animal cut pile print with custom stair rods finish off this multi-level staircase [...]</p>
+								</div>
+							</a>
 						</div>
 					</div>
 					<div class="item">
 						<div class="blg_box">
-							<div class="blg_imag">
-								<?php
-								$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog002.jpg';
-								if (file_exists($image)) {
-									echo $this->Html->image('/img/blogs/' . 'blog002.jpg', ['alt' => 'blog002.jpg']);
-								}
-								?>
-								<span>25 Jul, 2024</span>
-							</div>
-							<div class="blg_text">
-								<h3>We do love doing stairs!</h3>
-								<p>Gorgeous Wool & Viscose woven modern pattern on this stair and landing project. Product is [...]</p>
-							</div>
+							<a href="https://whitelabelledsolutions.com/Kaouds/webroot/blog/our-latest-creation-darien-ct-residence/" style="text-decoration: none;">
+								<div class="blg_imag">
+									<?php
+									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog004.jpg';
+									if (file_exists($image)) {
+										echo $this->Html->image('/img/blogs/' . 'blog004.jpg', ['alt' => 'blog004.jpg']);
+									}
+									?>
+									<span>31 Jul, 2019</span>
+								</div>
+								<div class="blg_text">
+									<h3>Our Latest Creation…Darien, CT Residence</h3>
+									<p>Sophisticated, Regal Luxury with this multi-level custom staircase broadloom installation [...]</p>
+								</div>
+							</a>
 						</div>
 					</div>
 				</div>

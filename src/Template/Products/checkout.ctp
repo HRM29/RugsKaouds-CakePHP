@@ -502,8 +502,7 @@ if ($session->check('coupon')) {
 </script>
 <!-- Initialize the JS-SDK -->
 <script
-	src="https://www.paypal.com/sdk/js?client-id=ARJczXHx_46kAZdcvl3kQaPcJxKtseZUncJcKt6VpozYTpEtVMedJdLodK-j7xHhHoRruCae_X57B8IT&buyer-country=US&currency=USD&components=buttons&disable-funding=venmo,paylater"
-	data-sdk-integration-source="developer-studio"></script>
+	src="https://www.paypal.com/sdk/js?client-id=AQpI6C-uv_8JjPYOTAvTN6LCnzolPlx4Iq6bQFZTvV32FbScX12OMBqWhImcV-gWO-gGpxVImYU5jMuQ&currency=USD&components=buttons&disable-funding=venmo,paylater"></script>
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
 <script>
 	$(":input").inputmask();

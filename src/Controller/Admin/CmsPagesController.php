@@ -181,6 +181,7 @@ class CmsPagesController extends AppController
 			$postData['slug'] = strtolower(Text::slug($this->request->getData('title')));
 
 			$data = $cmsTable->patchEntity($data, $postData, ['validate' => 'default']);
+
 			if (!$data->getErrors()) {
 				if ($templat = $cmsTable->save($data)) {
 
@@ -219,7 +220,6 @@ class CmsPagesController extends AppController
 
 			$data = $cmsTable->patchEntity($data, $this->request->getData(), ['validate' => 'default']);
 			if (!$data->getErrors()) {
-
 				//$data->slug = Inflector::slug($this->request->getData()['title']);;
 				if ($templat = $cmsTable->save($data)) {
 					$this->Flash->set('CMS page updated successfully.', ['key' => 'positive', 'params' => ['class' => 'alert alert-success']]);

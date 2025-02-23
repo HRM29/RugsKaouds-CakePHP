@@ -21,7 +21,7 @@ if (count($relatedProducts) > 0) {
                         ?>
                             <div class="item">
                                 <div class="arrvl_box">
-                                    <a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($data->sku_no)]); ?>">
+                                    <a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>">
                                         <?php
                                         $img_src = Router::url('/', true) . 'uploads/product/';
 

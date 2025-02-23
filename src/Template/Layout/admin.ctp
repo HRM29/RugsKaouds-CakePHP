@@ -65,6 +65,8 @@ $cakeDescription = Configure::read('App.meta');
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
+	<meta name="csrf-token" content="<?= $this->request->getParam('_csrfToken') ?>">
+
 	<div class="wrapper">
 		<?= $this->element('admin_header'); ?>
 		<?= $this->element('admin_menu'); ?>
@@ -74,7 +76,7 @@ $cakeDescription = Configure::read('App.meta');
 		</div>
 		<footer class="main-footer">
 			<strong><?= Configure::read('App.copyright') ?></strong>
-			<?php echo $this->Html->script(array('../plugins/bootstrap/js/bootstrap.min.js', 'admin/jquery-ui.min.js')); ?>
+			<?php echo $this->Html->script(array('../plugins/bootstrap/js/bootstrap.min.js', 'admin/jquery-ui.min.js?ver0.1')); ?>
 			<!-- jQuery UI 1.11.4 -->
 
 			<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -83,6 +85,27 @@ $cakeDescription = Configure::read('App.meta');
 			</script>
 
 			<?php echo $this->Html->script(array('admin/app.min.js')); ?>
+			<?php echo $this->Html->script('ckeditor/ckeditor.js?ver=0.12'); ?>
+			<script>
+				CKEDITOR.on('dialogDefinition', function(e) {
+					dialogName = e.data.name;
+					dialogDefinition = e.data.definition;
+					if (dialogName == 'image') {
+						dialogDefinition.removeContents('Link');
+						dialogDefinition.removeContents('advanced');
+						var tabContent = dialogDefinition.getContents('info');
+						tabContent.remove('txtBorder');
+						tabContent.remove('txtHSpace');
+						tabContent.remove('txtVSpace');
+						tabContent.remove('cmbAlign');
+						tabContent.remove('txtAlt');
+						tabContent.remove('txtBorder');
+						tabContent.remove('ratioLock'); // Remove Lock Ratio
+						tabContent.remove('resetSize');
+					}
+				});
+			</script>
+		</footer>
 	</div>
 </body>
 

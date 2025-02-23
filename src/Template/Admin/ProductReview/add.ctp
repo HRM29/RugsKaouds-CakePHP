@@ -60,7 +60,6 @@ use Cake\Routing\Router; ?>
 		</div> <!-- /.row -->
 	</div> <!-- /.row -->
 </section><!-- /.content -->
-<?php echo $this->Html->script('ckeditor/ckeditor'); ?>
 <script type="text/javascript">
 	function clear_form_elements(jquery_obj) {
 

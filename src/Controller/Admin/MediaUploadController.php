@@ -29,6 +29,8 @@ use Cake\Network\Request;
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
 use Cake\Routing\Router;
+use Cake\Http\Exception\BadRequestException;
+use Cake\Event\EventInterface;
 
 /**
  * Static content controller
@@ -58,6 +60,8 @@ class MediaUploadController extends AppController
 	{
 		$this->viewBuilder()->setLayout('admin');
 		parent::beforeFilter($event);
+		$this->getEventManager()->off($this->Csrf);
+
 	}
 
 
@@ -266,6 +270,40 @@ class MediaUploadController extends AppController
 		} else {
 			$this->Flash->error(__('File not found.'));
 			return $this->redirect(['action' => 'list']);
+		}
+	}
+
+	public function uploadEditorFile()
+	{
+		$this->autoRender = false; // Disable CakePHP's default view rendering
+
+		if ($this->request->is('post')) {
+			$postdata = $this->request->getData();
+			echo "<pre>postdata: ";print_r($postdata);echo "</pre>";
+
+			$file = $this->request->getData('upload');
+
+			if ($file && $file['error'] == 0) {
+				$uploadPath = WWW_ROOT . 'uploads' . DS;
+				$fileName = time() . '_' . $file['name']; // Unique file name
+				$fullPath = $uploadPath . $fileName;
+
+				if (move_uploaded_file($file['tmp_name'], $fullPath)) {
+					$response = [
+						"uploaded" => 1,
+						"fileName" => $fileName,
+						"url" => "/uploads/" . $fileName // URL for CKEditor
+					];
+				} else {
+					$response = ["uploaded" => 0, "error" => ["message" => "Failed to upload file."]];
+				}
+			} else {
+				$response = ["uploaded" => 0, "error" => ["message" => "No file uploaded."]];
+			}
+
+			echo json_encode($response);
+		} else {
+			throw new BadRequestException("Invalid request.");
 		}
 	}
 }

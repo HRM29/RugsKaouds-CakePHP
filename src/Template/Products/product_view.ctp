@@ -99,12 +99,18 @@ use Cake\Routing\Router;
 						<p><strong>Categories:</strong> <?php echo $this->General->getCategory($productDetail->category_id); ?></p>
 					</div>
 					<ul class="social">
-						<!-- <li><a href="#"><?php echo $this->Html->image('fcbook.png', ['alt' => 'facebook']); ?></a></li> -->
-						<li><a href="#"><i class="bi bi-twitter-x"></i></a></li>
-						<li><a href="#"><i class="bi bi-envelope"></i></a></li>
-						<li><a href="#"><i class="bi bi-pinterest"></i></a></li>
-						<li><a href="#"><i class="bi bi-linkedin"></i></a></li>
-						<li><a href="#"><?php echo $this->Html->image('tmblr.png', ['alt' => 'tumblr']); ?></a></li>
+						<?php
+						$ShareUrl = urldecode(SITE_URL . $this->request->here());
+						$img = $displayImage;
+						$title = htmlspecialchars($productDetail->title);
+						$description = htmlspecialchars($productDetail->title);
+						?>
+						<li><a target="_blank" href="http://www.facebook.com/sharer.php?s=100&p[title]=<?php echo urlencode($title); ?>&p[url]=<?php echo urlencode($ShareUrl); ?>&p[summary]=<?php echo urlencode($description); ?>&p[images][0]=<?php echo urlencode($img); ?>"><i class="bi bi-facebook"></i></a></li>
+						<li><a target="_blank" href="http://twitter.com/share?text=<?php echo $title;?>&url=<?php echo urlencode($ShareUrl);?>&hashtags=<?php echo $title;?>&image=<?php echo urlencode($img);?>"><i class="bi bi-twitter-x"></i></a></li>
+						<li><a href="mailto:?subject=<?php echo $title;?>&body=Check this out: <?php echo urlencode($ShareUrl);?>"><i class="bi bi-envelope"></i></a></li>
+						<li><a target="_blank" href="http://pinterest.com/pin/create/bookmarklet/?media=<?php echo urlencode($img);?>&amp;url=<?php echo urlencode($ShareUrl);?>&amp;is_video=false&amp;description=<?php echo $description;?>"><i class="bi bi-pinterest"></i></a></li>
+						<li><a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode($ShareUrl);?>&title=<?php echo ($title); ?>"><i class="bi bi-linkedin"></i></a></li>
+						<li><a target="_blank" href="https://www.tumblr.com/share?v=3&u=<?php echo urlencode($ShareUrl);?>&t=<?php echo ($title); ?>"><?php echo $this->Html->image('tmblr.png', ['alt' => 'tumblr']); ?></a></li>
 					</ul>
 				</div>
 			</div>
@@ -115,8 +121,12 @@ use Cake\Routing\Router;
 						<table class="table">
 							<tbody>
 								<tr>
-									<th scope="row"><strong>Weight</strong></th>
-									<td>10.23 lbs</td>
+									<th scope="row"><strong>Color</strong></th>
+									<td><?php echo $this->General->getColours($productDetail->color_id); ?></td>
+								</tr>
+								<tr>
+									<th scope="row"><strong>Other Colors</strong></th>
+									<td><?php echo $productDetail->other_colors; ?></td>
 								</tr>
 								<tr>
 									<th scope="row"><strong>Dimensions</strong></th>
@@ -124,7 +134,7 @@ use Cake\Routing\Router;
 								</tr>
 								<tr>
 									<th scope="row"><strong>UWCF Sizes</strong></th>
-									<td>3X5</td>
+									<td><?php echo $this->General->getDimension($productDetail->dimension_id); ?></td>
 								</tr>
 							</tbody>
 						</table>

@@ -18,8 +18,7 @@ use Cake\Auth\DefaultPasswordHasher;
 use Cake\Mailer\Email;
 use Cake\Controller\Component\PaginatorComponent;
 //use Cake\Mailer\Email;
-
-
+use Cake\Http\Client;
 
 
 
@@ -34,6 +33,11 @@ use Cake\Controller\Component\PaginatorComponent;
  */
 class ProductsController extends AppController
 {
+	private $paypalClientId = "YOUR_PAYPAL_CLIENT_ID";
+	private $paypalClientSecret = "YOUR_PAYPAL_CLIENT_SECRET";
+	private $paypalApiUrl = "https://api-m.sandbox.paypal.com"; // Use live URL in production
+
+
 	public function initialize()
 	{
 		parent::initialize();
@@ -242,6 +246,7 @@ class ProductsController extends AppController
 		$seoKeyword = "oriental wall to wall carpet in Wilton";
 		$this->set('keyword_for_layout', $seoKeyword);
 
+		$dimensionsTypes = Configure::read('size.type');
 		$filterDataOptions = $this->returnFilterDataOptions();
 		if (!empty($filterDataOptions)) {
 			$enabledCategories = $filterDataOptions['enabledCategories'];
@@ -256,12 +261,23 @@ class ProductsController extends AppController
 			$sizes = $queryParam['sizes'] ?? '';
 			$prices = $queryParam['price'] ?? '';
 			$sorting = $queryParam['sort'] ?? '';
+			$searchFilter = $queryParam['searchq'] ?? '';
 			if (!empty($sizes)) {
+				$dimensionIds = [];
+				$sizeSlugs = [];
 				$sizeArray = explode('~', $sizes);
+				foreach ($sizeArray as $sizeData) {
+					$dimensionName = explode('-', $sizeData, 2)[0];
+					$sizeSlugs[] = explode('-', $sizeData, 2)[1];
+					$dimensionType = array_search($dimensionName, $dimensionsTypes);
+					if ($dimensionType !== false) {
+						$dimensionIds[] = $dimensionType;
+					}
+				}
 				$dimensionsTable = TableRegistry::getTableLocator()->get('Dimensions');
 				$dimensionIds = $dimensionsTable->find()
 					->select(['id'])
-					->where(['slug IN' => $sizeArray])
+					->where(['slug IN' => $sizeSlugs, 'status' => 1, 'type IN' => $dimensionIds])
 					->extract('id')
 					->toArray();
 
@@ -302,6 +318,38 @@ class ProductsController extends AppController
 			} else {
 				$order['id'] = 'DESC';
 			}
+
+			if (!empty($searchFilter)) {
+				$searchTerm = $searchFilter;
+				if (!empty($searchTerm)) {
+					$OR_CONDITIONS = [
+						'LOWER(Products.title) LIKE' => '%' . strtolower($searchTerm) . '%',
+						'LOWER(Products.sku_no) LIKE' =>  '%' . strtolower($searchTerm) . '%',
+						'LOWER(Products.border_color) LIKE' =>  '%' . strtolower($searchTerm) . '%',
+						'LOWER(Products.other_colors) LIKE' =>  '%' . strtolower($searchTerm) . '%',
+						'LOWER(Products.field_color_exact) LIKE' =>  '%' . strtolower($searchTerm) . '%',
+						'LOWER(Products.pattern) LIKE' =>  '%' . strtolower($searchTerm) . '%'
+					];
+
+					$PrimaryColourTable = TableRegistry::getTableLocator()->get('Colors');
+
+					$isPrimaryColour = $PrimaryColourTable->find('all')->select(['id', 'name'])->where([
+						'OR' => [
+							'LOWER(Colors.name) LIKE' => '%' . strtolower($searchTerm) . '%',
+							'Colors.color_code LIKE' => '%' . $searchTerm . '%'
+						]
+					]);
+
+
+					if ($isPrimaryColour->count() > 0) {
+						$primaryCOlorID = $isPrimaryColour->first()->id;
+						$OR_CONDITIONS['Products.color_id'] =  $primaryCOlorID;
+					}
+					if (!empty($OR_CONDITIONS)) {
+						$conditions['OR'] = $OR_CONDITIONS;
+					}
+				}
+			}
 		}
 		if (!isset($order)) {
 			$order['id'] = 'DESC';
@@ -321,6 +369,7 @@ class ProductsController extends AppController
 			'contain' => ['ProductImages'],
 			'order' => $order
 		]);
+
 		$cartItems = $this->checkCartButton();
 		$this->set(compact('ProductData', 'enabledCategories', 'totalCategoriesCount', 'enabledDimentions', 'cartItems'));
 	}
@@ -1580,8 +1629,28 @@ class ProductsController extends AppController
 
 				// Parse sizes into an array
 				if (!empty($sizes)) {
+					$dimensionsTypes = Configure::read('size.type');
+					$dimensionIds = [];
+					$sizeSlugs = [];
 					$sizeArray = explode('~', $sizes);
-					$conditions['Products.dimension_id IN'] = $sizeArray;
+					foreach ($sizeArray as $sizeData) {
+						$dimensionName = explode('-', $sizeData, 2)[0];
+						$sizeSlugs[] = explode('-', $sizeData, 2)[1];
+						$dimensionType = array_search($dimensionName, $dimensionsTypes);
+						if ($dimensionType !== false) {
+							$dimensionIds[] = $dimensionType;
+						}
+					}
+					$dimensionsTable = TableRegistry::getTableLocator()->get('Dimensions');
+					$dimensionIds = $dimensionsTable->find()
+						->select(['id'])
+						->where(['slug IN' => $sizeSlugs, 'status' => 1, 'type IN' => $dimensionIds])
+						->extract('id')
+						->toArray();
+
+					if (!empty($dimensionIds)) {
+						$conditions['Products.dimension_id IN'] = $dimensionIds;
+					}
 					$this->set('size_range', $sizeArray);
 				}
 
@@ -1639,6 +1708,14 @@ class ProductsController extends AppController
 				'contain' => ['ProductImages', 'Categories'],
 				'limit' => Configure::read('App.pageRecord')
 			]);
+			// Print the query
+			// $query = $productTable->find()
+			// 	->where($finalConditions)
+			// 	->order($order)
+			// 	->contain(['ProductImages', 'Categories'])
+			// 	->limit(Configure::read('App.pageRecord'));
+			// echo "<pre>query: ";print_r($query);echo "</pre>";
+			// debug($query);
 			if (!empty($filterDataOptions)) {
 				$enabledCategories = $filterDataOptions['enabledCategories'];
 				$totalCategoriesCount = $filterDataOptions['totalCategoriesCount'];
@@ -2151,21 +2228,41 @@ class ProductsController extends AppController
 			->total;
 		$returnArr['totalCategoriesCount'] = $totalCategoriesCount;
 
+
 		$DimensionsQuery = $DimensionsTable->find()
-			->innerJoinWith('Products', function ($q) {
-				return $q->where(['Products.status' => 1]);
-			})
+			->distinct(['Dimensions.id'])
+			->join([
+				'table' => 'products',
+				'alias' => 'Products',
+				'type' => 'INNER',
+				'conditions' => [
+					'Products.dimension_id = Dimensions.id',
+					'Products.status' => 1
+				]
+			])
 			->select([
-				'Dimensions.slug',
-				'id' => 'MAX(Dimensions.id)',
-				'title' => 'MAX(Dimensions.title)',
-				'type' => 'MAX(Dimensions.type)'
+				'Dimensions.id',
+				'Dimensions.type',
+				'Dimensions.title',
+				'Dimensions.term',
+				'Dimensions.slug'
 			])
 			->where(['Dimensions.status' => 1])
-			->group(['Dimensions.slug'])
-			->order(['MAX(Dimensions.title)']);
-
+			->order([
+				// Then, sort alphabetically based on type names
+				"CASE 
+            WHEN Dimensions.type = 1 THEN 'Rectangular'
+            WHEN Dimensions.type = 2 THEN 'Round'
+            WHEN Dimensions.type = 3 THEN 'Runner'
+            WHEN Dimensions.type = 4 THEN 'Square'
+            WHEN Dimensions.type = 5 THEN 'Odd & Special Sizes'
+            WHEN Dimensions.type = 6 THEN 'Octagon'
+            WHEN Dimensions.type = 7 THEN 'Oval'
+        END" => 'ASC',
+				'Dimensions.title' => 'ASC'
+			]);
 		$enabledDimentions = $DimensionsQuery->enableHydration(false)->all();
+
 		$returnArr['enabledDimentions'] = $enabledDimentions;
 
 		return $returnArr;
@@ -2427,18 +2524,37 @@ class ProductsController extends AppController
 			$searchTerm = $this->request->getData('search_term');
 			if (!empty($searchTerm)) {
 				$productTable = TableRegistry::getTableLocator()->get('Products');
+
+				$OR_CONDITIONS = [
+					'LOWER(Products.title) LIKE' => '%' . strtolower($searchTerm) . '%',
+					'LOWER(Products.sku_no) LIKE' =>  '%' . strtolower($searchTerm) . '%',
+					'LOWER(Products.border_color) LIKE' =>  '%' . strtolower($searchTerm) . '%',
+					'LOWER(Products.other_colors) LIKE' =>  '%' . strtolower($searchTerm) . '%',
+					'LOWER(Products.field_color_exact) LIKE' =>  '%' . strtolower($searchTerm) . '%',
+					'LOWER(Products.pattern) LIKE' =>  '%' . strtolower($searchTerm) . '%'
+				];
+
+				$PrimaryColourTable = TableRegistry::getTableLocator()->get('Colors');
+
+				$isPrimaryColour = $PrimaryColourTable->find('all')->select(['id', 'name'])->where([
+					'OR' => [
+						'LOWER(Colors.name) LIKE' => '%' . strtolower($searchTerm) . '%',
+						'Colors.color_code LIKE' => '%' . $searchTerm . '%'
+					]
+				]);
+
+
+				if ($isPrimaryColour->count() > 0) {
+					$primaryCOlorID = $isPrimaryColour->first()->id;
+					$OR_CONDITIONS['Products.color_id'] =  $primaryCOlorID;
+				}
 				$query = $productTable->find()
 					->select(['id', 'title', 'sku_no'])
 					->where([
-						'OR' => [
-							'LOWER(Products.title) LIKE' => '%' . strtolower($searchTerm) . '%',
-							'LOWER(Products.sku_no) LIKE' =>  '%' . strtolower($searchTerm) . '%'
-						],
+						'OR' => $OR_CONDITIONS,
 						'Products.status' => 1,
 						'Products.sold_status' => 0
-					])
-					->limit(10);
-
+					]);
 				$products = $query->all()->toArray();
 				if (!empty($products)) {
 					$response = ['status' => 1, 'message' => 'Products found', 'data' => $products];
@@ -2452,5 +2568,59 @@ class ProductsController extends AppController
 
 		echo json_encode($response);
 		exit;
+	}
+
+	public function capturePaypalPayment($orderId = null)
+	{
+		$this->autoRender = false;
+
+		// If no order ID is passed, check query parameters
+		if (!$orderId) {
+			$orderId = $this->request->getQuery('token');
+		}
+
+		if (!$orderId) {
+			return json_encode(["error" => "Missing PayPal order ID."]);
+		}
+
+		// Step 1: Get Access Token
+		$http = new Client();
+		$response = $http->post("{$this->paypalApiUrl}/v1/oauth2/token", [
+			'grant_type' => 'client_credentials'
+		], [
+			'auth' => [$this->paypalClientId, $this->paypalClientSecret],
+			'type' => 'form'
+		]);
+
+		$data = json_decode($response->getBody()->getContents(), true);
+		$accessToken = $data['access_token'] ?? null;
+
+		if (!$accessToken) {
+			return json_encode(["error" => "Failed to obtain access token."]);
+		}
+
+		// Step 2: Capture Payment
+		$response = $http->post("{$this->paypalApiUrl}/v2/checkout/orders/{$orderId}/capture", [], [
+			'headers' => [
+				'Authorization' => "Bearer {$accessToken}",
+				'Content-Type' => 'application/json'
+			]
+		]);
+
+		$paymentResponse = json_decode($response->getBody()->getContents(), true);
+
+		// Step 3: Check if Payment was Successful
+		if (!empty($paymentResponse['status']) && $paymentResponse['status'] === "COMPLETED") {
+			return json_encode([
+				"success" => true,
+				"message" => "Payment successful!",
+				"details" => $paymentResponse
+			]);
+		} else {
+			return json_encode([
+				"error" => "Payment capture failed!",
+				"details" => $paymentResponse
+			]);
+		}
 	}
 }

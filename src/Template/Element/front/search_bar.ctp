@@ -17,11 +17,11 @@ $sizeFilters = isset($size_range) ? $size_range : array();
 		?>
 			<div class="product_categories">
 				<ul>
-					<li><a href="<?= Router::url('/', true) . "shop"; ?>">All Products</a> <span class="count">(<?= $totalCategoriesCount; ?>)</span></li>
+					<li><a href="<?php echo Router::url('/', true) . "shop"; ?>">All Products</a> <span class="count">(<?php echo $totalCategoriesCount; ?>)</span></li>
 					<?php
 					foreach ($enabledCategories as $categoryData) {
 					?>
-						<li><a href="<?= Router::url('/', true) . 'product-category/' . $categoryData['page_link']; ?>"><?= $categoryData['title'] ?></a> <span class="count">(<?= $categoryData['total_products'] ?>)</span></li>
+						<li><a href="<?php echo Router::url('/', true) . 'product-category/' . $categoryData['page_link']; ?>"><?php echo $categoryData['title'] ?></a> <span class="count">(<?php echo $categoryData['total_products'] ?>)</span></li>
 					<?php
 					}
 					?>
@@ -35,14 +35,18 @@ $sizeFilters = isset($size_range) ? $size_range : array();
 				<h3>Choose Size</h3>
 				<ul id="size-filter">
 					<?php
+					$RUGS_SIZE = Configure::read('size.type');
+					// echo "<pre>RUGS_SIZE: ";print_r($RUGS_SIZE);echo "</pre>";
+					// echo "<pre>RUGS_SIZE: ";print_r($RUGS_SIZE);echo "</pre>";
+
 					foreach ($enabledDimentions as $dimensionItem => $dimensionData) {
-						if (in_array($dimensionData['slug'], $sizeFilters)) {
+						if (in_array($RUGS_SIZE[$dimensionData['type']] . '-' . $dimensionData['slug'], $sizeFilters)) {
 							$checked = true;
 						} else {
 							$checked = false;
 						}
 					?>
-						<li><input data-name="<?= $dimensionData['title']; ?>" <?= $checked ? 'checked' : ''; ?> data-slug-id="<?= $dimensionData['id']; ?>" class="size-filter" type="checkbox" value="<?= $dimensionData['slug']; ?>" id="<?= $dimensionData['id']; ?>"><label for="<?= $dimensionData['id']; ?>"><?= $dimensionData['title']; ?></label></li>
+						<li><input data-name="<?php echo $dimensionData['title']; ?>" <?php echo $checked ? 'checked' : ''; ?> data-slug-id="<?php echo $dimensionData['id']; ?>" data-term-slug="<?php echo $dimensionData['term']; ?>" class="size-filter" type="checkbox" value="<?php echo $RUGS_SIZE[$dimensionData['type']] . '-' . $dimensionData['slug']; ?>" id="<?php echo $dimensionData['id']; ?>"><label for="<?php echo $dimensionData['id']; ?>"><?php echo $RUGS_SIZE[$dimensionData['type']] . ' - ' . $dimensionData['title']; ?></label></li>
 					<?php
 					}
 					?>
@@ -108,13 +112,13 @@ $sizeFilters = isset($size_range) ? $size_range : array();
 				<?php foreach ($priceRanges as $price): ?>
 					<li>
 						<input
-							data-name="<?= $price['label']; ?>"
-							id="<?= $price['id']; ?>"
+							data-name="<?php echo $price['label']; ?>"
+							id="<?php echo $price['id']; ?>"
 							name="price[]"
 							type="checkbox"
-							value="<?= $price['range']; ?>"
-							<?= in_array($price['range'], $priceFilters) ? 'checked' : ''; ?>>
-						<label for="<?= $price['id']; ?>"><?= $price['label']; ?></label>
+							value="<?php echo $price['range']; ?>"
+							<?php echo in_array($price['range'], $priceFilters) ? 'checked' : ''; ?>>
+						<label for="<?php echo $price['id']; ?>"><?php echo $price['label']; ?></label>
 					</li>
 				<?php endforeach; ?>
 			</ul>
@@ -269,6 +273,7 @@ $sizeFilters = isset($size_range) ? $size_range : array();
 			$('#size-filter input.size-filter').prop('checked', false);
 			updateFilters();
 		});
+		
 	});
 	const filterButton = document.getElementById('shop-sidebar');
 	filterButton.addEventListener('click', function() {

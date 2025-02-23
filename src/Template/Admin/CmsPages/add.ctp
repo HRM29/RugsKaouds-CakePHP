@@ -57,3 +57,14 @@ use Cake\Routing\Router; ?>
 		</div> <!-- /.row -->
 	</div> <!-- /.row -->
 </section><!-- /.content -->
+<?php echo $this->Html->script('ckeditor/ckeditor.js?ver=0.12'); ?>
+<script>
+	CKEDITOR.replace('content', {
+		height: 300,
+		filebrowserBrowseUrl: "<?= $this->Url->build('/js/ckfinder/ckfinder.html'); ?>",
+		filebrowserImageBrowseUrl: "<?= $this->Url->build('/js/ckfinder/ckfinder.html?type=Images'); ?>",
+		allowedContent: true,  // This allows all content, including iframes.
+		extraAllowedContent: 'span(style);', // Allow inline style attribute in <span>
+		disallowedContent: '' // Ensure nothing is explicitly disallowed
+	});
+</script>

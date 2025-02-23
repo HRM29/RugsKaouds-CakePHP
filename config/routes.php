@@ -133,6 +133,8 @@ Router::prefix('admin', function ($routes) {
         '/admin-media/admin-view/:mediaslug/:filename',
         ['controller' => 'MediaUpload', 'action' => 'viewMediaLib'],
         ['pass' => ['mediaslug', 'filename'], 'mediaslug' => '.*', 'filename' => '.*']
-    );  
+    );
+    $routes->connect('/media-upload/editor-upload', ['controller' => 'MediaUpload', 'action' => 'uploadEditorFile']);
+
     $routes->fallbacks('DashedRoute');
 });
