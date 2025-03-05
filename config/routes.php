@@ -98,7 +98,12 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['controller' => 'Pages', 'action' => 'viewMediaLib'],
         ['pass' => ['mediaslug', 'filename'], 'mediaslug' => '.*', 'filename' => '.*']
     );    
-    
+    // $routes->connect('/latest-news', ['controller' => 'LatestNews', 'action' => 'index']);
+    //  $routes->connect('/latest-news/:slug', 
+    //     ['controller' => 'LatestNews', 'action' => 'view'], 
+    //     ['pass' => ['slug'], 'slug' => '[a-zA-Z0-9-_]+']
+    // );
+
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */

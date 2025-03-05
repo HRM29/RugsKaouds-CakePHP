@@ -86,7 +86,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 											</div>
 										</td>
 										<td class="sbttl">$<?= number_format(($data['everyday_price'] * $data['product_qty']), 2); ?></td>
-										<td><a href="#" class="remove-cart delete" data1="<?= $data['id']; ?>"><img src="/Kaouds/img/dlt.png" alt="dlt"></a></td>
+										<td><a href="#" class="remove-cart delete" data1="<?= $data['id']; ?>"><img src="<?php echo $this->Url->build('img/dlt.png') ?>" alt="dlt"></a></td>
 									</tr>
 								<?php }
 							} else { ?>
@@ -103,7 +103,7 @@ if (Configure::read('App.PaypalAccountMode') == Configure::read('Paypal.mode.liv
 			<div class="col-md-4">
 				<div class="table-responsive crt_sbttl">
 					<div class="cupn">
-						<h3><img src="/Kaouds/img/cpn1.png" alt="coupon"> Coupon</h3>
+						<h3><img src="<?php echo $this->Url->build('img/cpn1.png') ?>" alt="coupon"> Coupon</h3>
 						<div class="coupon-input-wrapper">
 							<input class="fotm_control" type="text" name="coupon-code" value="<?= $couponCode; ?>" placeholder="Coupon Code">
 							<?php if ($session->check('coupon')): ?>

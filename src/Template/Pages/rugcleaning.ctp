@@ -15,7 +15,8 @@
 		<div class="row">
 			<div class="col-md-12">
 				<h3>Schedule Rug Cleaning Pickup</h3>
-				<?= $this->Flash->render('positive_forgot') ?>
+				
+				<?php echo $this->Flash->render('positive_forgot') ?>
 				<?php
 				echo $this->Form->create(null, ['id' => 'rugCleaningForm', 'url' => ['controller' => 'Pages', 'action' => 'rugcleaning'], 'type' => 'file']);
 				?>
@@ -67,7 +68,7 @@
 										$selected = 'selected';
 									}
 								?>
-									<option value="<?php echo $statesData; ?>" <?= $selected ?>><?php echo $statesData; ?></option>
+									<option value="<?php echo $statesData; ?>" <?php echo $selected ?>><?php echo $statesData; ?></option>
 								<?php
 								}
 								?>
@@ -169,8 +170,8 @@
 				<div class="form_group">
 					<button class="btn" type="submit">Submit</button>
 				</div>
-				<?= $this->Form->control('g-recaptcha-response', ["type" => "hidden", "class" => "g-recaptcha-response", "id" => false]); ?>
-				<?= $this->Form->end() ?>
+				<?php echo $this->Form->control('g-recaptcha-response', ["type" => "hidden", "class" => "g-recaptcha-response", "id" => false]); ?>
+				<?php echo $this->Form->end() ?>
 			</div>
 		</div>
 	</div>

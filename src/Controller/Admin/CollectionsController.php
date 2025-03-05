@@ -9,6 +9,8 @@ use Cake\Utility\Inflector;
 use Cake\Routing\Router;
 use Cake\Event\Event;
 use Cake\Utility\Text;
+use Cake\Filesystem\Folder;
+use Cake\Filesystem\File;
 
 //use Cake\ORM\Behavior\TreeBehavior;
 /**
@@ -24,11 +26,13 @@ class CollectionsController extends AppController
         parent::initialize();
         $this->loadComponent('Flash');
         $this->loadComponent('Paginator');
+        $collectionsImagesTable = TableRegistry::getTableLocator()->get('collection_images');
     }
 
     public function beforeFilter(Event $event)
     {
         $this->viewBuilder()->setLayout('admin');
+        $this->Auth->allow(['startScan']);
         parent::beforeFilter($event);
     }
 
@@ -50,6 +54,7 @@ class CollectionsController extends AppController
         $title        =    'Collections List';
         $collectionsTable = TableRegistry::getTableLocator()->get('Collections');
         $savesearch = array();
+
         if ($this->request->is(['post', 'put'])) {
             $params = array();
             if (!empty($this->request->getData()['title'])) {
@@ -369,5 +374,114 @@ class CollectionsController extends AppController
                 $this->deleteImg($imageData['id']);
             }
         }
+    }
+    
+    public function scanAndSave($directoryPath, $parentId = 0, $collectionType = 1)
+    {
+        $collectionsImagesTable = TableRegistry::getTableLocator()->get('collection_images');
+        $folder = new Folder($directoryPath);
+        $contents = $folder->read(); // Returns ['directories', 'files']
+
+        $folderName = basename($directoryPath);
+
+        // Ignore folders starting with "."
+        if ($this->isIgnored($folderName)) {
+            return;
+        }
+        echo "<pre>contents: ";print_r($contents);echo "</pre>";
+        
+       
+        // Check if folder already exists in collections table
+        $existingFolder = $this->Collections->find()
+            ->where(['title' => $folderName, 'parent_id' => $parentId])
+            ->first();
+
+        if (!$existingFolder) {
+            // Insert as Category (1) or SubCategory (2) based on depth
+            $folderEntity = $this->Collections->newEntity([
+                'collection_type'   => $collectionType,
+                'title'             => $folderName,
+                'parent_id'         => $parentId,
+                'meta_title'        => null,
+                'meta_description'  => null,
+                'meta_keywords'     => null,
+                'sort'              => null,
+                'status'            => 1,
+                'page_url'          => strtolower(str_replace(' ', '-', $folderName)),
+                'created'           => date('Y-m-d H:i:s')
+            ]);
+            $savedFolder = $this->Collections->save($folderEntity);
+            $folderId = $savedFolder->id;
+            echo "<pre>New Folder Added: ";print_r($folderName);echo "</pre>";
+        } else {
+            echo "<pre>Folder Already Exist: ";print_r($folderName);echo "</pre>";
+            $folderId = $existingFolder->id;
+        }
+        echo "<pre>folderId: ";print_r($folderId);echo "</pre>";
+        // Process subfolders as subcategories
+        foreach ($contents[0] as $subfolder) {
+            if (!$this->isIgnored($subfolder)) {
+                $this->scanAndSave($directoryPath . DS . $subfolder, $folderId, 2);
+            }
+        }
+
+        // Process image files
+        foreach ($contents[1] as $file) {
+            if ($this->isImage($file) && !$this->isIgnored($file)) {
+                $filePath = $directoryPath . DS . $file;
+                $basePath = '/home/kaouds/public_html/webroot/uploads/collection/';
+                $relativePath = str_replace($basePath, '', $filePath);
+                $relativePath = '/' . ltrim($relativePath, '/');
+                // Check if image already exists
+                $existingImage = $collectionsImagesTable->find()
+                    ->where(['file_path' => $relativePath, 'associated_id' => $folderId])
+                    ->first();
+                if (!$existingImage) {
+                    // Insert image
+                    $basePath = '/home/kaouds/public_html/webroot/uploads/collection/';
+                    $relativePath = str_replace($basePath, '', $filePath);
+                    $relativePath = '/' . ltrim($relativePath, '/');
+
+                    $imageEntity = $collectionsImagesTable->newEntity([
+                        'file_path'     => $relativePath,
+                        'image_type'    => pathinfo($file, PATHINFO_EXTENSION),
+                        'associated_id' => $folderId,
+                        'created_at'    => date('Y-m-d H:i:s')
+                    ]);
+                    $collectionsImagesTable->save($imageEntity);
+                    echo "<pre>New Image Added: ";print_r($relativePath);echo "</pre>";
+                } else {
+                    echo "<pre>Image Already Exist: ";print_r($relativePath);echo "</pre>";
+                }
+            }
+        }
+    }
+
+    private function isImage($filename)
+    {
+        $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
+        return in_array(strtolower(pathinfo($filename, PATHINFO_EXTENSION)), $extensions);
+    }
+
+    private function isIgnored($name)
+    {
+        return substr($name, 0, 1) === '.'; // Ignore if name starts with "."
+    }
+
+    public function startScan()
+    {
+        $rootPath = WWW_ROOT . 'uploads/collection/';
+    
+        $folder = new Folder($rootPath);
+        $subfolders = $folder->read()[0]; // Get only directories
+        echo "<pre>subfolders: ";print_r($subfolders);echo "</pre>";
+        foreach ($subfolders as $subfolder) {
+            if (!$this->isIgnored($subfolder)) {
+                $this->scanAndSave($rootPath . DS . $subfolder, 0, 1);
+            }
+        }
+    
+        $this->Flash->success(__('Folders and images have been saved.'));
+        return $this->redirect(['action' => 'index']);
     }
 }

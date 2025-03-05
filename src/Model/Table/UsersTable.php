@@ -68,7 +68,7 @@ class UsersTable extends Table
 			->add('email',[
 				'unique'=>[
                     'rule' => 'validateUnique',
-                    'message' => 'email already exist',
+                    'message' => 'Email already exist.',
                     'provider' => 'table'
 
                 ]
@@ -166,7 +166,7 @@ class UsersTable extends Table
 			->add('email',[
 				'unique'=>[
 					'rule' => 'validateUnique',
-					'message' => 'email already exist',
+					'message' => 'Email already exist.',
 					'provider' => 'table'
                 ]
 			]);
@@ -231,7 +231,7 @@ class UsersTable extends Table
 			->add('email',[
 				'unique'=>[
 					'rule' => 'validateUnique',
-					'message' => 'email already exist',
+					'message' => 'Email already exist',
 					'provider' => 'table'
                 ]
 			]);

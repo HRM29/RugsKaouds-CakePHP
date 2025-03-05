@@ -158,17 +158,27 @@ use Cake\Core\Configure; ?>
 						<thead>
 							<tr>
 								<th>Order ID:</th>
-								<th><?php echo '#' . $orderid->id; ?></th>
+								<th><?php echo '#' . $ordersData->id; ?></th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<th>Transaction ID:</th>
-								<th><?php echo $orderid->trans_id; ?></th>
+								<th><?php echo $ordersData->trans_id; ?></th>
 							</tr>
+							<?php
+							if (!empty($ordersData->discount_amount)) {
+							?>
+							<tr>
+								<th>Order Discount:</th>
+								<th><?php echo "$" . round($ordersData->discount_amount, 2) . " USD" ?></th>
+							</tr>
+							<?php
+							}
+							?>
 							<tr>
 								<th>Payment Gross:</th>
-								<th><?php echo "$" . round($orderid->total_price, 2) . " USD"; ?></th>
+								<th><?php echo "$" . round($ordersData->total_price, 2) . " USD"; ?></th>
 							</tr>
 							<tr>
 								<th>Payment Status:</th>

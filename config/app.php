@@ -9,7 +9,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => filter_var(env('DEBUG', 0), FILTER_VALIDATE_BOOLEAN),
+    'debug' => filter_var(env('DEBUG', 1), FILTER_VALIDATE_BOOLEAN),
 
     /**
      * Configure basic information about the application.
@@ -210,29 +210,40 @@ return [
     ],
 	 */
 
+/*
+    'EmailTransport' => [
+        'default' => [
+           'className' => 'Smtp',
+            'host' => 'smtp.gmail.com',
+            'port' => 465,  // SSL port
+            'username' => 'leander.daniel1027@gmail.com',
+            'password' => 'brsv ibfy ovpm rxdw',
+            'tls' => false,
+            'context' => [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                ]
+            ],
+            'timeout' => 60,
+        ],
+    ],
+
+*/
 
     'EmailTransport' => [
         'default' => [
             'className' => 'Mail',
-            'host' => 'smtp-relay.brevo.com',
+            'host' => '',
             'port' => 587,
             'timeout' => 30,
-            'username' => '8202ab001@smtp-brevo.com',
-            'password' => 'xsmtpsib-d5ee7486acb9a176cbee8eb1d7671380a944789d19faabcf3b25c0e1a18c87cd-aEC73nhPv6ILVDSY',
+            'username' => '',
+            'password' => '',
             'client' => null,
             'tls' => true,
-            'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
-        'Smtp' => [
-            'host' => 'mail.rugsnc.com',
-            'port' => 587,
-            'username' => 'info@rugsnc.com',  //your gmail address
-            'password' => '{u*Q#a?CfIud',        //your gmail password
-            'className' => 'Smtp',
-            'client' => null,
-            'tls' => false,
-        ],
-    ],
+	],
 
     /**
      * Email delivery profiles
@@ -246,9 +257,9 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => 'mathharshit@gmail.com',
             'charset' => 'utf-8',
             'headerCharset' => 'utf-8',
+            'emailFormat' => 'html',
         ],
     ],
 
@@ -280,9 +291,9 @@ return [
             //'username' => 'orcrug',
             // 'password' => 'nasaquhe2',
             //  'database' => 'zadmin_orc',
-            'username' => 'whitelabelledsol_kaouds_prod',
-            'password' => '%2H8&v1eL!}G',
-            'database' => 'whitelabelledsol_kaouds',
+            'username' => 'kaouds_proadministrator',
+            'password' => '6(=@Q9;mmGt@',
+            'database' => 'kaouds_production_DB',
             /*
              * You do not need to set this flag to use full utf-8 encoding (internal default since CakePHP 3.6).
              */

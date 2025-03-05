@@ -85,7 +85,19 @@ use Cake\Routing\Router; ?>
 								</div><!-- /.box-tools -->
 							</div><!-- /.box-header -->
 							<div class="box-body" style="display: block;">
-								<?= date("Y-m-d H:i A", strtotime($data->created_at)); ?>
+							    <?php 
+								$date = DateTime::createFromFormat('n/j/y, g:i A', $data->created_at);
+
+                                // Check for errors in the parsing process
+                                if ($date === false) {
+                                    echo "There was an error parsing the date.";
+                                    print_r(DateTime::getLastErrors());  // This will provide more details on what went wrong
+                                } else {
+                                    // Output the formatted date
+                                    $formattedDate = $date->format('Y-m-d g:i A');
+                                    echo $formattedDate;
+                                }
+								?>
 							</div><!-- /.box-body -->
 						</div><!-- /.box -->
 					</div>
@@ -99,7 +111,19 @@ use Cake\Routing\Router; ?>
 								</div><!-- /.box-tools -->
 							</div><!-- /.box-header -->
 							<div class="box-body" style="display: block;">
-								<?= date("Y-m-d H:i A", strtotime($data->updated_at)); ?>
+							     <?php 
+								$date = DateTime::createFromFormat('n/j/y, g:i A', $data->updated_at);
+
+                                // Check for errors in the parsing process
+                                if ($date === false) {
+                                    echo "There was an error parsing the date.";
+                                    print_r(DateTime::getLastErrors());  // This will provide more details on what went wrong
+                                } else {
+                                    // Output the formatted date
+                                    $formattedDate = $date->format('Y-m-d g:i A');
+                                    echo $formattedDate;
+                                }
+								?>
 							</div><!-- /.box-body -->
 						</div><!-- /.box -->
 					</div>

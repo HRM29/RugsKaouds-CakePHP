@@ -39,39 +39,6 @@ class CollectionImagesTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        // Title validation
-        $validator
-            ->requirePresence('title', 'create')
-            ->notEmpty('title', 'Title is required.')
-            ->maxLength('title', 255, 'Title cannot exceed 255 characters.')
-            ->add('title', 'unique', [
-                'rule' => ['validateUnique'],
-                'provider' => 'table',
-                'message' => 'Name Already Exist.'
-            ]);
-
-        // Status validation
-        $validator
-            ->requirePresence('status', true)
-            ->notEmpty('status', 'Status is required.');
-
-        // Page link validation (only for collection-type = page)
-        $validator
-            ->notEmpty('page_link', 'Page link is required.', function ($context) {
-                return isset($context['data']['collection-type']) && $context['data']['collection-type'] === 'page';
-            })
-            ->add('page_link', 'unique', [
-                'rule' => ['validateUnique'],
-                'provider' => 'table',
-                'message' => 'Page link already exists.'
-            ]);
-
-        // Meta title validation (only for collection-type = page)
-        $validator
-            ->notEmpty('meta_title', 'Meta title is required.', function ($context) {
-                return isset($context['data']['collection-type']) && $context['data']['collection-type'] === 'page';
-            });
-
         return $validator;
     }
 }

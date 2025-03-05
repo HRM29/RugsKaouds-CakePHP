@@ -48,7 +48,7 @@ $controller = $this->request->getParam('controller');
                             <h2>Social Links</h2>
                         </div>
 						<ul>
-							<li><a href="https://www.facebook.com/gaming/play/?store_visit_source=gaming_tab"><i class="bi bi-facebook" target="_blank"></i> Facebook</a></li>
+							<li><a href="https://www.facebook.com/people/Kaoud-Carpets-Rugs/100063498433021/"><i class="bi bi-facebook" target="_blank"></i> Facebook</a></li>
 							<li><a href="https://www.instagram.com/kaoudcarpetandrugs/"><i class="bi bi-instagram" target="_blank"></i> Instagram</a></li>
 							<li><a href="https://x.com/i/flow/login?redirect_after_login=%2FKaoudCarpets" target="_blank"><i class="bi bi-twitter-x"></i> Twitter</a></li>
 							<li><a href="https://www.linkedin.com/in/fred-kaoud-jr-8a98238/?original_referer=https%3A%2F%2Fkaouds.com%2F" target="_blank"><i class="bi bi-linkedin"></i> Linkedin</a></li>

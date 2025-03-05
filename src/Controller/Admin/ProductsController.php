@@ -721,7 +721,8 @@ class ProductsController extends AppController
 					$category 		= $row[10];
 					$dimension  	= $row[4];
 
-					$title 				= $row[18];
+					//$title 				= $row[18];
+					$title 				= $row[32];
 					$rug_type 			= $row[12];
 					$dimension_1_feet 	= ($row[13] > 0) ? $row[13] : '0';
 					$dimension_1_inches = ($row[14] > 0) ? $row[14] : '0';

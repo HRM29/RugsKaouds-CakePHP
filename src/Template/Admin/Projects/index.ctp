@@ -88,7 +88,20 @@ use Cake\Routing\Router; ?>
 								<td><?= $this->Number->format(++$key) ?></td>
 								<td><?= h($val->label) ?></td>
 								<td><?= $this->General->getAdminTextStatus($val->status) ?></td>
-								<td><?= date("Y-m-d H:i A", strtotime($val->created_at)); ?></td>
+								<td>
+								    <?php 
+								$date = DateTime::createFromFormat('n/j/y, g:i A', $val->created_at);
+
+                                // Check for errors in the parsing process
+                                if ($date === false) {
+                                    echo "There was an error parsing the date.";
+                                    print_r(DateTime::getLastErrors());  // This will provide more details on what went wrong
+                                } else {
+                                    // Output the formatted date
+                                    $formattedDate = $date->format('Y-m-d g:i A');
+                                    echo $formattedDate;
+                                }
+								?></td>
 								<td class="actions">
 									<?php
 									echo $this->Html->link(

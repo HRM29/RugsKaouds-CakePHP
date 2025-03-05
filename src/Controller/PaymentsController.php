@@ -79,13 +79,13 @@ class PaymentsController extends AppController
 			$session->delete('coupon');
 			$session->delete('is_success');
 
-			$orderid = $orderstable->find()->where(['trans_id' => $tr_data['tr_id']])->first();
+			$ordersData = $orderstable->find()->where(['trans_id' => $tr_data['tr_id']])->first();
 
-			$orderitems = $OrderProductsTable->find()->where(['order_id' => $orderid->id])->contain(['products' => ['ProductImages']])->toArray();
+			$orderitems = $OrderProductsTable->find()->where(['order_id' => $ordersData->id])->contain(['products' => ['ProductImages']])->toArray();
 
-			$totalPrice = $orderstable->find()->select(['total_price'])->where(['id' => $orderid->id])->first();
+			$totalPrice = $orderstable->find()->select(['total_price'])->where(['id' => $ordersData->id])->first();
 
-			$this->set(compact('orderid', 'orderitems', 'totalPrice', 'payment_status'));
+			$this->set(compact('ordersData', 'orderitems', 'totalPrice', 'payment_status'));
 		} else {
 			$this->redirect(['controller' => 'products', 'action' => 'shopping']);
 		}

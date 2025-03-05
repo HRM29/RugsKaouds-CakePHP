@@ -51,6 +51,7 @@ class UsersController extends AppController
 	{
 		$userTable = TableRegistry::getTableLocator()->get('Users');
 		$user = $userTable->newEntity();
+		$this->loadComponent('PHPMailer');
 		if ($this->request->is(['post', 'put'])) {
 			$postdata = $this->request->getData();
 			// Super Password : HbV5o_>M@01(5;DL>my6
@@ -78,7 +79,11 @@ class UsersController extends AppController
 						$to = $userEmail;
 						$subject = $template->subject;
 						$message = $mailMessage;
-						if (parent::sendMailTo($to, $subject, $message)) {
+						if ($this->PHPMailer->sendViaPHPmail(
+							$to,
+							$subject,
+							$message
+						)) {
 							$this->Flash->set('Please check your email for Account Activation!', ['key' => 'positive_register', 'params' => ['class' => 'alert alert-success']]);
 							if ($postdata['sign-up-letter'] == 1) {
 								$subsPostData = [];

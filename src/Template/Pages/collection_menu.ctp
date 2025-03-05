@@ -23,21 +23,51 @@ if (isset($collection) && !empty($collection)) {
             if ($PageType == 'Collections') {
             ?>
                 <div class="row">
+                    <div class="col-md-12">
+        				<nav aria-label="breadcrumb">
+        					<ul class="breadcrumb">
+        						<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
+        						<?php 
+        						if(isset($collection['parent']) || isset($collection['super_parent'])){
+        						    $prime_Url = Router::url('/', true)."collections";
+        						    $active_prime = '';
+        						} else {
+        						    $prime_Url = "javascript:void(0);";
+        						    $active_prime = 'active';
+        						    
+        						}
+        						?>
+        						<li class="breadcrumb-item <?php echo $active_prime; ?>"><a href="<?php echo $prime_Url; ?>">Collections</a></li>
+        						<?php 
+        						if(isset($collection['parent']) && !empty($collection['parent'])){
+        						    if(!isset($collection['super_parent'])){
+        						        $active_parent = 'active';
+        						    } else {
+        						        $active_parent = '';
+        						    }
+        						    ?>
+        						    <li class="breadcrumb-item <?php echo $active_parent; ?>" aria-current="page"><?= !empty($collection['parent']['title']) ? $collection['parent']['title'] : ''; ?></li>
+        						    <?php
+        						}
+        						?>
+        					</ul>
+        				</nav>
+        			</div>
                     <?php
-                    foreach ($collection as $collectionData) {
+                    foreach ($collection['subCategoriesData'] as $collectionData) {
                     ?>
                         <div class="col-lg-2 col-md-3">
                             <div class="clctns">
-                                <a href="<?php echo Router::url('/', true) . "collections/" . $collectionData['page_url']; ?>">
+                                <a href="<?php echo Router::url('/', true) . "collections/" . $collectionData['parent_data']['page_url']; ?>">
                                     <?php
-                                    if (isset($collectionData['collection_images']) && !empty($collectionData['collection_images'])) {
-                                        $image = WWW_ROOT . 'uploads' . DS . 'collection' . DS . $collectionData['collection_images'][0]['file_path'];
+                                    if (isset($collectionData['image']) && !empty($collectionData['image'])) {
+                                        $image = WWW_ROOT . 'uploads' . DS . 'collection' . DS . $collectionData['image']['file_path'];
                                         if (file_exists($image)) {
-                                            echo $this->Html->image('/uploads/collection/' . $collectionData['collection_images'][0]['file_path'], ['alt' => $collectionData['collection_images'][0]['file_path']]);
+                                            echo $this->Html->image('/uploads/collection/' . $collectionData['image']['file_path'], ['alt' => $collectionData['image']['file_path'], "loading" => "lazy", "decoding"=>"asynchronous"]);
                                         }
                                     }
                                     ?>
-                                    <h3><?php echo $collectionData['title'] ?></h3>
+                                    <h3><?php echo $collectionData['parent_data']['title'] ?></h3>
                                 </a>
                             </div>
                         </div>
@@ -50,6 +80,32 @@ if (isset($collection) && !empty($collection)) {
             } elseif ($PageType == 'CollectionPage') {
             ?>
                 <div class="row">
+                    <div class="col-md-12">
+        				<nav aria-label="breadcrumb">
+        					<ul class="breadcrumb">
+        						<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'home']); ?>">Home</a></li>
+        						<?php 
+        						if(isset($getParentData)){
+        						    $prime_Url = Router::url('/', true)."collections";
+        						    $active_prime = '';
+        						} else {
+        						    $prime_Url = "javascript:void(0);";
+        						    $active_prime = 'active';
+        						    
+        						}
+        						?>
+        						<li class="breadcrumb-item <?php echo $active_prime; ?>"><a href="<?php echo $prime_Url; ?>">Collections</a></li>
+        						<?php 
+        						if(isset($getParentData) && !empty($getParentData)){
+        						    ?>
+        						    <li class="breadcrumb-item" aria-current="page"><a href="<?php echo $prime_Url.'/'.$getParentData['page_url']; ?>"><?php echo $getParentData['title']; ?></a></li>
+        						    <?php
+        						}
+        						?>
+        						 <li class="breadcrumb-item active" aria-current="page"><?= ($collection['title']); ?></li>
+        					</ul>
+        				</nav>
+        			</div>
                     <div class="col-md-12">
                         <div class="heading">
                             <h2><?php echo strtoupper($collection['title']); ?></h2>

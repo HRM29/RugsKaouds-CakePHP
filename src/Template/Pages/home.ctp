@@ -173,7 +173,7 @@ if (count($latestProducts) > 0) {
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
-					<h2>Latest Arrivals</h2>
+					<h2>Shop Latest Arrivals</h2>
 				</div>
 				<div class="arrvls_slide owl-carousel owl-theme">
 					<?php
@@ -262,11 +262,6 @@ if (isset($HomeBlocks['Block5']) && !empty($HomeBlocks['Block5'])) {
 	<section class="wrks">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-12">
-					<div class="heading">
-						<h2>How it Works at Kaoud Carpets & rugs</h2>
-					</div>
-				</div>
 				<?php
 				foreach ($HomeBlocks['Block5'] as $Block5Data) {
 				?>
@@ -357,92 +352,35 @@ if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
 		<div class="row">
 			<div class="col-md-12">
 				<div class="heading">
-					<h2>From The Blog</h2>
+					<h2>In the News</h2>
 				</div>
 				<div class="blg_slide owl-carousel owl-theme">
-					<div class="item">
-						<div class="blg_box">
-							<a href="https://whitelabelledsolutions.com/Kaouds/webroot/blog/celebrating-our-68th-year/" style="text-decoration: none;">
-								<div class="blg_imag">
-									<?php
-									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog001.jpg';
-									if (file_exists($image)) {
-										echo $this->Html->image('/img/blogs/' . 'blog001.jpg', ['alt' => 'blog001.jpg']);
-									}
-									?>
-									<span>October 1, 2022</span>
-								</div>
-								<div class="blg_text">
-									<h3>Celebrating our 68th Year!</h3>
-									<p>We have been selling and servicing our wonderful clients for 68 years with some of [...]</p>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="item">
-						<div class="blg_box">
-							<a href="https://whitelabelledsolutions.com/Kaouds/webroot/blog/we-do-love-doing-stairs/" style="text-decoration: none;">
-								<div class="blg_imag">
-									<?php
-									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog002.jpg';
-									if (file_exists($image)) {
-										echo $this->Html->image('/img/blogs/' . 'blog002.jpg', ['alt' => 'blog002.jpg']);
-									}
-									?>
-									<span>25 Jul, 2020</span>
-								</div>
-								<div class="blg_text">
-									<h3>We do love doing stairs!</h3>
-									<p>Gorgeous Wool & Viscose woven modern pattern on this stair and landing project. Product is [...]</p>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="item">
-						<div class="blg_box">
-							<a href="https://whitelabelledsolutions.com/Kaouds/webroot/blog/another-stair-creation/" style="text-decoration: none;">
-								<div class="blg_imag">
-									<?php
-									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog003.jpg';
-									if (file_exists($image)) {
-										echo $this->Html->image('/img/blogs/' . 'blog003.jpg', ['alt' => 'blog003.jpg']);
-									}
-									?>
-									<span>24 Jun, 2020</span>
-								</div>
-								<div class="blg_text">
-									<h3>Another Stair Creation!</h3>
-									<p>Deerfield Mushroom Animal cut pile print with custom stair rods finish off this multi-level staircase [...]</p>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="item">
-						<div class="blg_box">
-							<a href="https://whitelabelledsolutions.com/Kaouds/webroot/blog/our-latest-creation-darien-ct-residence/" style="text-decoration: none;">
-								<div class="blg_imag">
-									<?php
-									$image = WWW_ROOT . 'img' . DS . 'blogs' . DS . 'blog004.jpg';
-									if (file_exists($image)) {
-										echo $this->Html->image('/img/blogs/' . 'blog004.jpg', ['alt' => 'blog004.jpg']);
-									}
-									?>
-									<span>31 Jul, 2019</span>
-								</div>
-								<div class="blg_text">
-									<h3>Our Latest Creation…Darien, CT Residence</h3>
-									<p>Sophisticated, Regal Luxury with this multi-level custom staircase broadloom installation [...]</p>
-								</div>
-							</a>
-						</div>
-					</div>
+				    <?php foreach ($wpBlogs as $post): ?>
+                        <div class="item">
+                            <div class="blg_box">
+                                <a href="<?= $this->Url->build('/blog/' . h($post->post_name), ['fullBase' => true]) ?>" style="text-decoration: none;">
+                                    <div class="blg_imag">
+                                        <?= $this->Html->image(h($post->image_url), ['alt' => h($post->post_title), "style"=>"height: 280px; background-position: center; background-size: cover;"]); ?>
+                                        <?php 
+                                            $date = DateTime::createFromFormat('n/j/y, g:i A', $post->post_date);
+                                            $formattedDate = $date ? $date->format('F j, Y') : h($post->post_date);
+                                        ?>
+                                        
+                                        <span><?= $formattedDate; ?></span>
+                                    </div>
+                                    <div class="blg_text">
+                                        <h3><?= h($post->post_title); ?></h3>
+                                        <p><?= h(substr(strip_tags($post->post_content), 0, 100)) . '...'; ?></p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
-
-
 <script>
 	$('.mn_slide').owlCarousel({
 		loop: true,

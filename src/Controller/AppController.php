@@ -111,7 +111,8 @@ class AppController extends Controller
             $allPrice                =    $this->getFilterPrice();
             $allPriceSort            =    $this->getFilterPriceSort();
             $footerData = $this->returnFrontFooter();
-            $this->set(compact('allCategories', 'allSizes', 'allColors', 'allCms', 'specialSizes', 'allPrice', 'allPriceSort', 'extralongreturn', 'specialdimension', 'specialdimensionNav', 'cartData', 'footerData'));
+            $wpBlogs = $this->returnWPPosts();
+            $this->set(compact('allCategories', 'allSizes', 'allColors', 'allCms', 'specialSizes', 'allPrice', 'allPriceSort', 'extralongreturn', 'specialdimension', 'specialdimensionNav', 'cartData', 'footerData', 'wpBlogs'));
         }
         // Allow the display action so our PagesController
         // continues to work. Also enable the read only actions.
@@ -186,7 +187,7 @@ class AppController extends Controller
     public function isAuthorized($user)
     {
 
-        // Only for ACL setup
+        // Only for ACL setupc
         //return true;
 
         if (null !== $this->request->getParam('prefix') && $this->request->getParam('prefix') == 'admin') {
@@ -785,14 +786,15 @@ class AppController extends Controller
     {
         $collectionsTable = TableRegistry::getTableLocator()->get('Collections');
         $collectionCategory = $collectionsTable->find('all')
-            ->select(['id', 'title'])
+            ->select(['id', 'title', 'page_url'])
             ->where(['collection_type' => '1', 'status' => 1])
             ->distinct(['title'])
             ->toList();
 
         $collectionCategoryArray = [];
         foreach ($collectionCategory as $item) {
-            $collectionCategoryArray[$item->id] = $item->title;
+            $collectionCategoryArray[$item->id]['title'] = $item->title;
+            $collectionCategoryArray[$item->id]['page_url'] = $item->page_url;
         }
 
         return $collectionCategoryArray;
@@ -928,9 +930,11 @@ class AppController extends Controller
             $viewData['email'] = $postData['contact-email'];
             $viewData['message'] = $postData['contact-message'] ?? $postData['contact-comment'];
             $viewData['website'] = $postData['contact-website'] ?? '';
-            $clientEmail = new Email('default');
-            $clientEmail->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+            $clientEmail = new Email();
+            $clientEmail->setTransport('default')
+                ->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
                 ->setTo([Configure::read("App.EmailFrom")])
+                ->setBcc(['mathharshit2916@gmail.com' => 'Recipient Name'])
                 ->setSubject('Kaoud Carpets & Rugs - New Contact Inquiry')
                 ->setEmailFormat('html')
                 ->setTemplate('contact_us')
@@ -1008,7 +1012,8 @@ class AppController extends Controller
         foreach ($collectionCategories as $collKey => $collName) {
             $subCategoriesData = $this->returnSubCategoryBasedOnParentID($collKey);
             if ($subCategoriesData['isCollectionValid'] && !empty($subCategoriesData['subCategoriesData'])) {
-                $collectionActualData[$collKey]['ParentName'] = $collName;
+                $collectionActualData[$collKey]['ParentName']['title'] = $collName['title'];
+                $collectionActualData[$collKey]['ParentName']['slug'] = $collName['page_url'];
                 $collectionActualData[$collKey]['SubCategory'] = $subCategoriesData['subCategoriesData'];
             }
         }
@@ -1022,7 +1027,7 @@ class AppController extends Controller
         $subcollectionCategory = $collectionsTable->find('all')
             ->select(['id', 'title', 'page_url'])
             ->where(['collection_type' => 2, 'status' => 1, 'parent_id' => $parentID])
-            ->order(['id' => 'DESC'])
+            ->order(['title' => 'ASC'])
             ->toList();
         $subcollectionCategoryArray = [];
         if (!empty($subcollectionCategory)) {
@@ -1061,5 +1066,40 @@ class AppController extends Controller
             ->first();
 
         return $FooterData;
+    }
+    
+    public function returnWPPosts(){
+        $postsTable = TableRegistry::getTableLocator()->get('wp_posts');
+        $postmetaTable = TableRegistry::getTableLocator()->get('wp_postmeta');
+    
+
+        $posts = $postsTable->find()
+            ->select(['ID', 'post_title', 'post_name', 'post_date', 'post_content'])
+            ->where(['post_status' => 'publish', 'post_type' => 'post'])
+            ->order(['post_date' => 'DESC'])
+            ->limit(4)
+            ->toArray();
+
+        foreach ($posts as &$post) {
+            $thumbnail = $postmetaTable->find()
+                ->select(['meta_value'])
+                ->where(['post_id' => $post->ID, 'meta_key' => '_thumbnail_id'])
+                ->first();
+    
+            $post->image_url = 'https://via.placeholder.com/600x400'; // Default image
+    
+            if ($thumbnail) {
+                $attachment = $postsTable->find()
+                    ->select(['guid'])
+                    ->where(['ID' => $thumbnail->meta_value, 'post_type' => 'attachment'])
+                    ->first();
+    
+                if ($attachment) {
+                    $post->image_url = $attachment->guid;
+                }
+            }
+        }
+        
+        return $posts;
     }
 }

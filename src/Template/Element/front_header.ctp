@@ -34,7 +34,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 <?php echo $this->Html->script(['script.js']); ?>
 <?php echo $this->Html->script(['sweetalert2.min.js']); ?>
 <?php echo $this->Html->script(['fancybox.umd.js']); ?>
-<script src="https://www.google.com/recaptcha/api.js?render=<?= CAPTCHA_SITEKEY ?>"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=<?php echo CAPTCHA_SITEKEY ?>"></script>
 
 <div class="topbar">
 	<div class="container-fluid">
@@ -71,7 +71,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 		<div class="row align-items-center">
 			<div class="col-md-2">
 				<div class="logo" style="padding: 5px 0;">
-					<a href="/Kaouds/">
+					<a href="/">
 						<!--?php echo $this->Html->image('logo.jpg', ['alt' => 'logo']); ?-->
 						<img src="<?php echo LOGO_URL; ?>" alt="logo">
 						<img class="mbl" src="<?php echo MBL_LOGO_URL; ?>" alt="logo">
@@ -87,12 +87,12 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 						<div class="collapse navbar-collapse" id="mySidebar">
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 								<button onclick="sdbr_close()" class="close">&times;</button>
-								<li class="nav-item"><a class="nav-link <?= in_array($action, $shop_Actions) ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
-								<!--li class="nav-item"><a class="nav-link <?= $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li-->
+								<li class="nav-item"><a class="nav-link <?php echo in_array($action, $shop_Actions) ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
+								<!--li class="nav-item"><a class="nav-link <?php echo $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li-->
 								<?php
 								if (isset($collectionCategoriesData) && !empty($collectionCategoriesData)) {
 								?>
-									<li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Collections</a>
+									<li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="<?php echo Router::url('/', true) ?>collections" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Collections</a>
 										<div class="dropdown-menu mega" aria-labelledby="navbarDropdown">
 											<div class="container">
 												<div class="row">
@@ -100,7 +100,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 													foreach ($collectionCategoriesData as $parentKey => $parendData) {
 													?>
 														<div class="col-md-2 no_padding">
-															<h4><?php echo $parendData['ParentName']; ?></h4>
+															<h4><a href="<?php echo Router::url('/', true) . "collections/" . $parendData['ParentName']['slug']; ?>" style = "text-decoration:none;"><?php echo $parendData['ParentName']['title']; ?></a></h4>
 															<?php
 															if (isset($parendData['SubCategory']) && !empty($parendData['SubCategory'])) {
 															?>
@@ -130,7 +130,7 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 								?>
 
 								<li class="nav-item dropdown">
-									<a class="nav-link dropdown-toggle <?= in_array($action, $services_Actions) ? 'active'  : ''; ?>" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+									<a class="nav-link dropdown-toggle <?php echo in_array($action, $services_Actions) ? 'active'  : ''; ?>" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>rug-cleaning-form">Schedule Rug Cleaning</a></li>
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>schedule-pickup-for-rug-repair">Schedule Rug Repair</a></li>
@@ -138,11 +138,11 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>schedule-sell-us">Schedule Sell Us</a></li>
 									</ul>
 								</li>
-								<li class="nav-item"><a class="nav-link <?= $slug == 'rug-care' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>rug-care">Rug Care</a></li>
-								<li class="nav-item"><a class="nav-link <?= $slug == 'choosing-a-rug' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>choosing-a-rug">Choosing A Rug</a></li>
-								<li class="nav-item"><a class="nav-link <?= $slug == 'FAQS' || $slug == 'faqs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>faqs">Faqs</a></li>
+								<li class="nav-item"><a class="nav-link <?php echo $slug == 'rug-care' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>rug-care">Rug Care</a></li>
+								<li class="nav-item"><a class="nav-link <?php echo $slug == 'choosing-a-rug' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>choosing-a-rug">Choosing A Rug</a></li>
+								<li class="nav-item"><a class="nav-link <?php echo $slug == 'FAQS' || $slug == 'faqs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>faqs">Faqs</a></li>
 								<li class="nav-item dropdown">
-									<a class="nav-link dropdown-toggle <?= in_array($slug, $aboutUs_Slugs) ? 'active'  : ''; ?>" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
+									<a class="nav-link dropdown-toggle <?php echo in_array($slug, $aboutUs_Slugs) ? 'active'  : ''; ?>" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/kaoud-carpets-rugs">Kaoud Carpets & Rugs</a></li>
 										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/our-brands-inventory">Our Brands & Inventory</a></li>
@@ -151,8 +151,8 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 									</ul>
 								</li>
 								<li class="nav-item"><a class="nav-link" href="<?php echo Router::url('/', true) ?>blog">Latest News</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action == 'projects' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>completed-projects">Inspiration</a></li>
-								<li class="nav-item"><a class="nav-link <?= $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
+								<li class="nav-item"><a class="nav-link <?php echo $action == 'projects' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>completed-projects">Inspiration</a></li>
+								<li class="nav-item"><a class="nav-link <?php echo $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
 							</ul>
 						</div>
 						<div class="srch_icon">
@@ -160,12 +160,12 @@ $services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
 								<li><a href="<?php echo Router::url('/', true) ?>shop" class="btn">Shop Now</a></li>
 								<li><a href="<?php echo $this->Url->build(['controller' => 'Users', 'action' => 'myAccountRedirect']); ?>"><i class="bi bi-person-fill"></i></a></li>
 								<li><a href="<?php echo Router::url('/', true); ?>users/wishlist"><i class="bi bi-heart-fill"></i></a></li>
-								<li><a href="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'cart']); ?>"><i class="bi bi-cart-fill"></i><span><?= $cart_count; ?></span></a></li>
+								<li><a href="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'cart']); ?>"><i class="bi bi-cart-fill"></i><span><?php echo $cart_count; ?></span></a></li>
 							</ul>
 						</div>
 						<div class="search">
 							<form id="search-details">
-								<input type="text" type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off" value="<?= !empty($this->request->getQuery('searchq')) ? $this->request->getQuery('searchq') : '' ?>" />
+								<input type="text" type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off" value="<?php echo !empty($this->request->getQuery('searchq')) ? $this->request->getQuery('searchq') : '' ?>" />
 								<div class="search-results" id="searchResults"></div>
 								<button class="search-btn" type="button"><i class="bi bi-search"></i></button>
 							</form>
