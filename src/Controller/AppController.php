@@ -101,7 +101,6 @@ class AppController extends Controller
             //$getBannes			    =	$this->getBannes(); 
             $cartData                =    $this->getcartdata();
             $extralongreturn        =    $this->getExtralongreturn();
-
             /* $allSizes			    =	$this->getAllSize();
 			$specialdimension	    =	$this->getspecialDimensions();
 			$specialdimensionNav	=	$this->getspecialDimensionsNav();
@@ -144,8 +143,6 @@ class AppController extends Controller
 			}
 			$session->write('Config.wishlistdatas',$wishID);
 		} */
-
-
         if (null !== $this->request->getParam('prefix')) {
             $categories        =    $this->getCategory();
             $latestProducts    =    $this->getLatestProducts();
@@ -181,9 +178,6 @@ class AppController extends Controller
         }
     }
 
-
-
-
     public function isAuthorized($user)
     {
 
@@ -206,7 +200,6 @@ class AppController extends Controller
         }
     }
 
-
     public function emailSetting()
     {
         $data = TableRegistry::get('Settings');
@@ -215,7 +208,6 @@ class AppController extends Controller
         $result = $result->toArray();
         return $result;
     }
-
 
     /* public function sendMailTo($to, $subject, $message){
         $email = new Email();
@@ -230,7 +222,6 @@ class AppController extends Controller
          //pr($result); die;
        
         return $result;
-
          
            $headers = "MIME-Version: 1.0" . "\r\n";
 		  $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -243,7 +234,6 @@ class AppController extends Controller
 			$headers = 'From: no-reply@babalifestyle.com' . "\r\n" .
 			'Reply-To: webmaster@example.com' . "\r\n" .
 			'X-Mailer: PHP/' . phpversion();
-
 			mail($to, $subject, $message, $headers);
 			if(mail($to,$subject,$message,$headers)){
 			  echo 'send';
@@ -263,7 +253,6 @@ class AppController extends Controller
             ->setSubject($subject)
             ->setEmailFormat('html')
             ->send($message);
-
         return 1;
     }
 
@@ -274,7 +263,6 @@ class AppController extends Controller
         }, $array));
         return $out;
     }
-
 
     function errorMessage($array)
     {
@@ -287,7 +275,6 @@ class AppController extends Controller
                 $errors[] = $item;
             }
         }
-
         return implode(',', array_unique($errors));
     }
 
@@ -541,7 +528,6 @@ class AppController extends Controller
         return $is_best;
     }
 
-
     /**
      * @getNewArivalProducts 
      *
@@ -627,11 +613,10 @@ class AppController extends Controller
     public function getBannersList()
     {
         // caption List	
-        // Banner List	 
+        // Banner List	
 
         $bannerTable   = TableRegistry::get('Banners');
         $bannersList   =  $bannerTable->find('all')->where(['status' => 1])->limit(1)->order(['id' => 'DESC'])->toArray();
-
         return $bannersList;
     }
 
@@ -649,8 +634,6 @@ class AppController extends Controller
     {
 
         $Table   = TableRegistry::get('MostViews');
-
-
         $startData    =    date('Y-m-d') . ' 00:00:00';
         $endData    =    date('Y-m-d') . ' 23:59:59';
         $result = $Table->find()
@@ -669,12 +652,9 @@ class AppController extends Controller
                 }
             ])
             ->toArray();
-
-
         //$MostViewsList   =  $mostViewTable->find('all')->contain([''])->order(['id'=>'DESC'])->toArray();
         return $result;
     }
-
 
     /**
      * @getCategoryList 
@@ -742,7 +722,6 @@ class AppController extends Controller
     public function getFilterPrice()
     {
         $prizeArray = array();
-
         // $prizeArray = array('75-200' =>'$75 - $200','200-500' =>'$200 - $500','500-750' =>'$500 - $750','750-1500' =>'$750 - $1500','1500-3000' =>'$1500 - $3000','3000' =>'$3000+');
         $prizeArray = array(
             "1-900" => "Under $900",
@@ -754,7 +733,6 @@ class AppController extends Controller
             "11000-14999" => "$11000-$14999",
             "15000" => "Over $15000",
         );
-
         return $prizeArray;
     }
     public function getFilterPriceSort()
@@ -762,7 +740,6 @@ class AppController extends Controller
         $prizesortArray = array();
         //price_sort
         $prizesortArray = array('high' => 'High to Low', 'low' => 'Low to High');
-
         return $prizesortArray;
     }
     public function getCmspage()
@@ -790,13 +767,11 @@ class AppController extends Controller
             ->where(['collection_type' => '1', 'status' => 1])
             ->distinct(['title'])
             ->toList();
-
         $collectionCategoryArray = [];
         foreach ($collectionCategory as $item) {
             $collectionCategoryArray[$item->id]['title'] = $item->title;
             $collectionCategoryArray[$item->id]['page_url'] = $item->page_url;
         }
-
         return $collectionCategoryArray;
     }
 
@@ -812,9 +787,9 @@ class AppController extends Controller
         }
         return [];
     }
+
     public function checkCartAddedProducts()
     {
-
         $session = $this->request->getSession();
         $datases = $session->read('cart');
         $productcart = array();
@@ -831,10 +806,8 @@ class AppController extends Controller
                     $exiting_cart = 0;
                 }
             } else {
-
                 $exiting_cart = 0;
             }
-
             print_r($exiting_cart);
         } else {
             if (!empty($datases)) {
@@ -857,7 +830,6 @@ class AppController extends Controller
         $user->confirm_password = "HbV5o_>M@01(5;DL>my6";
         $user = $userTable->patchEntity($user, $userData);
         if (!$user->getErrors()) {
-
             if ($userTable->save($user)) {
                 $emailId = $userData['email'];
                 $username = ucfirst($user->first_name);
@@ -866,7 +838,6 @@ class AppController extends Controller
                 $query = $EmailTemplates->find('all')->where(['EmailTemplates.slug' => 'user_registration']);
                 $template = $query->first();
                 $userEmail = $user->email;
-
                 try {
                     $mailMessage = str_replace(array('{{username}}', '{{activation_link}}', '{{email}}', '{{id}}'), array($username, $activation_link, $userEmail, $user->id), $template->description);
                     $to = $userEmail;
@@ -892,9 +863,7 @@ class AppController extends Controller
     {
         $ContactNewsletterTable = TableRegistry::getTableLocator()->get('ContactNewsletter');
         $data = $ContactNewsletterTable->newEntity();
-
         $existingEntry = 0;
-
         if ($postData['subscribe-type'] == 'newsletter') {
             $existingEntry = $ContactNewsletterTable->find()
                 ->where([
@@ -994,14 +963,13 @@ class AppController extends Controller
         return $response;
     }
 
-    private function verifyRecaptcha($recaptchaResponse)
+    public function verifyRecaptcha($recaptchaResponse)
     {
         $http = new Client();
         $response = $http->post('https://www.google.com/recaptcha/api/siteverify', [
             'secret' => CAPTCHA_SECRETKEY,
             'response' => $recaptchaResponse,
         ]);
-
         return json_decode($response->getBody()->getContents(), true);
     }
 
@@ -1046,7 +1014,7 @@ class AppController extends Controller
         }
         return $returnData;
     }
-
+    
     private function checkSubCategoryValid($subCategoryID)
     {
         $collImagesTable = TableRegistry::getTableLocator()->get('CollectionImages');
@@ -1064,14 +1032,13 @@ class AppController extends Controller
         $FooterData = $HeaderFooterTable->find('all')
             ->where(['type' => 'footer', 'status' => 'active'])
             ->first();
-
         return $FooterData;
     }
-    
-    public function returnWPPosts(){
+
+    public function returnWPPosts()
+    {
         $postsTable = TableRegistry::getTableLocator()->get('wp_posts');
         $postmetaTable = TableRegistry::getTableLocator()->get('wp_postmeta');
-    
 
         $posts = $postsTable->find()
             ->select(['ID', 'post_title', 'post_name', 'post_date', 'post_content'])
@@ -1079,27 +1046,26 @@ class AppController extends Controller
             ->order(['post_date' => 'DESC'])
             ->limit(4)
             ->toArray();
-
         foreach ($posts as &$post) {
             $thumbnail = $postmetaTable->find()
                 ->select(['meta_value'])
                 ->where(['post_id' => $post->ID, 'meta_key' => '_thumbnail_id'])
                 ->first();
-    
+
             $post->image_url = 'https://via.placeholder.com/600x400'; // Default image
-    
+
             if ($thumbnail) {
                 $attachment = $postsTable->find()
                     ->select(['guid'])
                     ->where(['ID' => $thumbnail->meta_value, 'post_type' => 'attachment'])
                     ->first();
-    
+
                 if ($attachment) {
                     $post->image_url = $attachment->guid;
                 }
             }
         }
-        
+
         return $posts;
     }
 }

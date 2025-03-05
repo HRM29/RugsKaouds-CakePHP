@@ -91,12 +91,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form_group">
-                            <input class="fotm_control" type="text" name="preferred_date" id="preferred_date" placeholder="Best Date to View Issue" required>
+                            <input class="fotm_control" type="text" name="preferred_date" id="preferred_date" placeholder="Best Date to View Issue" required autocomplete="off">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form_group">
-                            <input class="fotm_control" type="text" name="alternate_date" id="alternate_date" placeholder="Best Alternate Date">
+                            <input class="fotm_control" type="text" name="alternate_date" id="alternate_date" placeholder="Best Alternate Date" autocomplete="off">
                         </div>
                     </div>
                 </div>

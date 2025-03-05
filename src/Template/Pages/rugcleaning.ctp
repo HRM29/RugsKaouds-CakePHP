@@ -86,22 +86,22 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="preferred_date" id="preferred_date" placeholder="Preferred Date for Pickup" required>
+								<input class="fotm_control" type="text" name="preferred_date" id="preferred_date" placeholder="Preferred Date for Pickup" required autocomplete="off">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form_group">
-								<input class="fotm_control" type="time" name="preferred_time" id="preferred_time" placeholder="Preferred Time for Pickup" required>
+								<input class="fotm_control" type="time" name="preferred_time" id="preferred_time" placeholder="Preferred Time for Pickup" required autocomplete="off">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form_group">
-								<input class="fotm_control" type="text" name="alternate_date" id="alternate_date" placeholder="Alternate Date for Pickup">
+								<input class="fotm_control" type="text" name="alternate_date" id="alternate_date" placeholder="Alternate Date for Pickup" autocomplete="off">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form_group">
-								<input class="fotm_control" type="time" name="alternate_time" id="alternate_time" placeholder="Alternate Time for Pickup">
+								<input class="fotm_control" type="time" name="alternate_time" id="alternate_time" placeholder="Alternate Time for Pickup" autocomplete="off">
 							</div>
 						</div>
 					</div>

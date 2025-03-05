@@ -51,15 +51,13 @@ class PagesController extends AppController
 	{
 		parent::beforeFilter($event);
 		$this->Auth->allow(['portfolio1', 'videos', 'frednasseribio', 'businesshighlights', 'awardwinning', 'pairingpatternsorientalrug', 'interiordesign', 'index', 'portfolio', 'privacypolicy', 'contactUs', 'carpet', 'rugcleaning', 'aboutus', 'rugrepair', 'rugappraisal', 'faq', 'returns', 'termsofuse', 'testmail', 'subscribeLetter', 'collectionMenu', 'projects', 'rugsellus', 'viewMediaLib']);
-
-
 		if ($this->Auth->user('role_id') == 1) {
 			$this->Auth->logout();
 			return $this->redirect(['action' => 'home']);
 		}
 	}
 
-
+	
 	/**
 	 * Displays a view
 	 *
@@ -95,11 +93,11 @@ class PagesController extends AppController
 			$cmsPageTable = TableRegistry::getTableLocator()->get('CmsPages');
 
 			$contentData = $cmsPageTable->find('all')->where(['CmsPages.slug' => $page])->first();
-
+			
 			$seoTitle = !empty($contentData['meta_title']) ? $contentData['meta_title'] : $seoTitle;
 			$seoDescription = !empty($contentData['meta_description']) ? $contentData['meta_description'] : $seoDescription;
 			$seoKeyword = !empty($contentData['meta_keywords']) ? $contentData['meta_keywords'] : $seoKeyword;
-
+			
 			$this->set('title_for_layout', $seoTitle);
 			$this->set('keyword_for_layout', $seoKeyword);
 			$this->set('description_for_layout', $seoDescription);
@@ -140,7 +138,7 @@ class PagesController extends AppController
 	public function home()
 	{
 
-
+		
 		$seoTitle = "Best Place To Get Carpet & Rugs Online in Wilton - Kaouds";
 		$seoDescription = "Shop today & buy high-quality, modern, unique Rugs &amp; Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.";
 		$seoKeyword = "oriental wall to wall carpet in Wilton";
@@ -154,13 +152,13 @@ class PagesController extends AppController
 
 		$ProductsTable = TableRegistry::getTableLocator()->get('Products');
 		$featuredProductData = $ProductsTable->find('all')->where(['Products.is_future' => 1])->toArray();
-
+		
 		$BannerTable = TableRegistry::getTableLocator()->get('Banners');
 		$banners = $BannerTable->find('all')->select(['id', 'title', 'description', 'block_type', 'image', 'link', 'link_name', 'status'])->where(['status' => 1])->order(['id' => 'ASC'])->enableHydration(false)->toArray();
-
+		
 		$ProductReviewTable = TableRegistry::getTableLocator()->get('ProductReview');
 		$productReviews = $ProductReviewTable->find('all')->where(['status' => 'approved'])->order(['id' => 'ASC'])->enableHydration(false)->toArray();
-
+		
 		$HomeBlocks = [];
 		foreach ($banners as $bannerKey => $bannerData) {
 			$HomeBlocks['Block' . $bannerData['block_type']][] = $bannerData;
@@ -169,7 +167,7 @@ class PagesController extends AppController
 			$HomeBlocks['BlockReviews'][$reviewKey] = $reviewData;
 		}
 		$ContactNewsletterTable = TableRegistry::getTableLocator()->get('ContactNewsletter');
-
+		
 		$cmspage = parent::getCmspage();
 		$cartItems = parent::checkCartAddedProducts();
 		$this->set(compact('banners', 'featuredProductData', 'cmspage', 'HomeBlocks', 'cartItems'));
@@ -183,7 +181,7 @@ class PagesController extends AppController
 		$seoKeyword = "rugs in north carolina, oriental rugs Wilton nc, interior design oriental rugs Wilton";
 		$seoH2 = "";
 		$seoH1 = "Oriental Rugs Wilton";
-
+		
 		$this->set('title_for_layout', $seoTitle);
 		$this->set('keyword_for_layout', $seoKeyword);
 		$this->set('description_for_layout', $seoDescription);
@@ -192,7 +190,6 @@ class PagesController extends AppController
 
 		$this->viewBuilder()->setLayout('front');
 	}
-
 	public function carpet()
 	{
 		$this->viewBuilder()->setLayout('front');
@@ -221,21 +218,26 @@ class PagesController extends AppController
 		$this->viewBuilder()->setLayout('front');
 		$states = parent::statesList();
 		$this->set(compact('states'));
-
-
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
+			$recaptchaResponse = $data['g-recaptcha-response'];
+			$captchaResponse = parent::verifyRecaptcha($recaptchaResponse);
+			if (isset($captchaResponse['success']) && $captchaResponse['success'] == 1) {
+			} else {
+				$this->Flash->set('reCAPTCHA verification failed. Please try again.', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
+				return $this->redirect(['action' => 'rugcleaning']);
+			}
 			if (!empty($data['email']) && !empty($data['rug_condition'])) {
 				$email = new Email();
 				$email->setTransport('default')
-				->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+					->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
 					->setTo($data['email'])
 					->setSubject('Kaoud Carpets & Rugs - Rug Cleaning Request')
 					->setEmailFormat('html')
 					->setTemplate('rug_cleaning_customer')
 					->setViewVars(['mail_to' => Configure::read("App.EmailFrom"), 'actual_message' => "Thank you for your rug cleaning request. We have received your request and will get back to you shortly.", "header_message" => "Rug Cleaning Request Received"])
 					->send();
-                // echo "<pre>email: ";print_r($email);echo "</pre>";
+				// echo "<pre>email: ";print_r($email);echo "</pre>";
 				$email = new Email();
 				$email->setTransport('default')
 					->setFrom([Configure::read("App.EmailFrom") => 'Admin'])
@@ -244,7 +246,7 @@ class PagesController extends AppController
 					->setEmailFormat('html')
 					->setTemplate('rug_cleaning_admin')
 					->setViewVars(['data' => $data, 'intro_message' => "A new rug cleaning request has been submitted with the following details:", "header_message" => "New Rug Cleaning Request"]);
-                // echo "<pre>emailAdmin: ";print_r($email);echo "</pre>";
+				// echo "<pre>emailAdmin: ";print_r($email);echo "</pre>";
 				// Check if the file exists before attaching
 				if (!empty($data['rug_image']['tmp_name']) && is_uploaded_file($data['rug_image']['tmp_name'])) {
 					$email->setAttachments([
@@ -278,12 +280,17 @@ class PagesController extends AppController
 
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
-
+			$recaptchaResponse = $data['g-recaptcha-response'];
+			$captchaResponse = parent::verifyRecaptcha($recaptchaResponse);
+			if (isset($captchaResponse['success']) && $captchaResponse['success'] == 1) {
+			} else {
+				$this->Flash->set('reCAPTCHA verification failed. Please try again.', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
+				return $this->redirect(['action' => 'rugcleaning']);
+			}
 			if (!empty($data['email']) && !empty($data['rug_condition'])) {
-
 				$clientEmail = new Email();
 				$clientEmail->setTransport('default')
-				    ->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+					->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
 					->setTo($data['email'])
 					->setSubject('Kaoud Carpets & Rugs - Rug Repair Request')
 					->setEmailFormat('html')
@@ -299,8 +306,8 @@ class PagesController extends AppController
 					->setEmailFormat('html')
 					->setTemplate('rug_cleaning_admin')
 					->setViewVars(['data' => $data, 'intro_message' => "A new rug repair request has been submitted with the following details:", "header_message" => "New Rug Repair Request"]);
-
-				// Check if the file exists before attaching
+				
+					// Check if the file exists before attaching
 				if (!empty($data['rug_image']['tmp_name']) && is_uploaded_file($data['rug_image']['tmp_name'])) {
 					$adminEmail->setAttachments([
 						basename($data['rug_image']['name']) => [
@@ -314,7 +321,6 @@ class PagesController extends AppController
 			} else {
 				$this->Flash->set('Please fill all the required fields!', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
 			}
-
 			return $this->redirect(['action' => 'rugrepair']);
 		}
 	}
@@ -330,15 +336,21 @@ class PagesController extends AppController
 		$this->viewBuilder()->setLayout('front');
 		$states = parent::statesList();
 		$this->set(compact('states'));
-
+		
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
-
+			$recaptchaResponse = $data['g-recaptcha-response'];
+			$captchaResponse = parent::verifyRecaptcha($recaptchaResponse);
+			if (isset($captchaResponse['success']) && $captchaResponse['success'] == 1) {
+			} else {
+				$this->Flash->set('reCAPTCHA verification failed. Please try again.', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
+				return $this->redirect(['action' => 'rugappraisal']);
+			}
 			if (!empty($data['preferred_date']) && !empty($data['alternate_date']) && !empty($data['rug_request_problem'])) {
 
 				$clientEmail = new Email();
 				$clientEmail->setTransport('default')
-				    ->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
+					->setFrom([Configure::read("App.EmailFrom") => 'Kaoud Carpets & Rugs'])
 					->setTo($data['email'])
 					->setSubject('Kaoud Carpets & Rugs - Rug Appraisal Request')
 					->setEmailFormat('html')
@@ -388,6 +400,13 @@ class PagesController extends AppController
 
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
+			$recaptchaResponse = $data['g-recaptcha-response'];
+			$captchaResponse = parent::verifyRecaptcha($recaptchaResponse);
+			if (isset($captchaResponse['success']) && $captchaResponse['success'] == 1) {
+			} else {
+				$this->Flash->set('reCAPTCHA verification failed. Please try again.', ['key' => 'positive_forgot', 'params' => ['class' => 'alert alert-danger']]);
+				return $this->redirect(['action' => 'rugsellus']);
+			}
 			if (!empty($data['email']) && !empty($data['phone_number'])) {
 				$adminEmail = new Email();
 				$adminEmail->setTransport('default')
@@ -600,10 +619,6 @@ class PagesController extends AppController
 			->emailFormat('html')
 			->subject($subject)
 			->send($message); */
-
-
-
-
 			$email = new Email('default');
 			$email
 				->transport('default')
@@ -613,7 +628,6 @@ class PagesController extends AppController
 				->emailFormat('html')
 				->viewVars(array('msg' => $message))
 				->send($message);
-
 			echo "send";
 		} catch (Exception $e) {
 			echo "<pre>";
@@ -622,7 +636,6 @@ class PagesController extends AppController
 		}
 		exit;
 	}
-
 	public function subscribeLetter($postData = null)
 	{
 		$response = [];
@@ -650,70 +663,67 @@ class PagesController extends AppController
 				->enableHydration(false)
 				->first();
 
-			if(!empty($checkCollection) && $checkCollection['collection_type'] == 1){
-			    $parentSubCategoriesData = parent::returnSubCategoryBasedOnParentID($checkCollection['id']);
-    		    $collection = [];
-                        
-                if(!empty($parentSubCategoriesData['subCategoriesData'])){
-                    unset($parentSubCategoriesData["isCollectionValid"]);
-                    $collection['parent'] = $checkCollection;
-                    foreach($parentSubCategoriesData['subCategoriesData'] as $parentSubKey => $parentValue){
-                        
-                        $collection['subCategoriesData'][$parentSubKey]['parent_data']['title'] = $parentValue['SubCategoryName'];
-                        $collection['subCategoriesData'][$parentSubKey]['parent_data']['page_url'] = $parentValue['SubCategorySlug'];
-                        $subCollection = $CollectionTable->find()
-        				->where(['Collections.collection_type' => "2", 'Collections.status' => 1, 'Collections.id' => $parentSubKey])
-        				->enableHydration(false)->first();
-        			    
-        			    if(!empty($subCollection)){
-        			        $singleImage = $CollectionImagesTable->find()->where(['CollectionImages.associated_id' => $subCollection['id']])
-        			        ->order(['created_at' => 'DESC'])
-        			        ->enableHydration(false)->first();
-        			        if(!empty($singleImage)){
-        			            $collection['subCategoriesData'][$parentSubKey]['image'] = $singleImage;
-        			        }
-        			    }
-                    }
-                }
-			}else {
-			    $PageType = 'CollectionPage';
-			    $collection = $CollectionTable->find()
-				->contain(['CollectionImages'])
-				->where(['Collections.collection_type' => "2", 'Collections.status' => 1, 'Collections.page_url' => trim($slug)])
-				->enableHydration(false)
-				->first();
-				$getParentData = $CollectionTable->find()
-				->contain(['CollectionImages'])
-				->where(['Collections.status' => 1, 'Collections.id' => $collection['parent_id']])
-				->enableHydration(false)
-				->first();
-    			$seoTitle = !empty($collection['meta_title']) ? $collection['meta_title'] : $seoTitle;
-    			$seoDescription = !empty($collection['meta_description']) ? $collection['meta_description'] : $seoDescription;
-    			$seoKeyword = !empty($collection['meta_keywords']) ? $collection['meta_keywords'] : $seoKeyword;
-    			
-    			$this->set('getParentData', $getParentData);
-			}
+			if (!empty($checkCollection) && $checkCollection['collection_type'] == 1) {
+				$parentSubCategoriesData = parent::returnSubCategoryBasedOnParentID($checkCollection['id']);
+				$collection = [];
 
+				if (!empty($parentSubCategoriesData['subCategoriesData'])) {
+					unset($parentSubCategoriesData["isCollectionValid"]);
+					$collection['parent'] = $checkCollection;					
+					foreach ($parentSubCategoriesData['subCategoriesData'] as $parentSubKey => $parentValue) {
+						
+						$collection['subCategoriesData'][$parentSubKey]['parent_data']['title'] = $parentValue['SubCategoryName'];
+						$collection['subCategoriesData'][$parentSubKey]['parent_data']['page_url'] = $parentValue['SubCategorySlug'];
+						$subCollection = $CollectionTable->find()
+							->where(['Collections.collection_type' => "2", 'Collections.status' => 1, 'Collections.id' => $parentSubKey])
+							->enableHydration(false)->first();
+
+						if (!empty($subCollection)) {
+							$singleImage = $CollectionImagesTable->find()->where(['CollectionImages.associated_id' => $subCollection['id']])
+								->order(['created_at' => 'DESC'])
+								->enableHydration(false)->first();
+							if (!empty($singleImage)) {
+								$collection['subCategoriesData'][$parentSubKey]['image'] = $singleImage;
+							}
+						}
+					}
+				}
+			} else {
+				$PageType = 'CollectionPage';
+				$collection = $CollectionTable->find()
+					->contain(['CollectionImages'])
+					->where(['Collections.collection_type' => "2", 'Collections.status' => 1, 'Collections.page_url' => trim($slug)])
+					->enableHydration(false)
+					->first();
+				$getParentData = $CollectionTable->find()
+					->contain(['CollectionImages'])
+					->where(['Collections.status' => 1, 'Collections.id' => $collection['parent_id']])
+					->enableHydration(false)
+					->first();
+				$seoTitle = !empty($collection['meta_title']) ? $collection['meta_title'] : $seoTitle;
+				$seoDescription = !empty($collection['meta_description']) ? $collection['meta_description'] : $seoDescription;
+				$seoKeyword = !empty($collection['meta_keywords']) ? $collection['meta_keywords'] : $seoKeyword;
+				$this->set('getParentData', $getParentData);
+			}
 		} else {
-		    $collection = [];
+			$collection = [];
 			$parentCategoriesData = parent::returnCollectionCategory();
-            if(!empty($parentCategoriesData)){
-                foreach($parentCategoriesData as $parentKey => $parentValue){
-                    $collection['subCategoriesData'][$parentKey]['parent_data'] = $parentValue;
-                    $subCollection = $CollectionTable->find()
-    				->where(['Collections.collection_type' => "2", 'Collections.status' => 1, 'Collections.parent_id' => $parentKey])
-    				->enableHydration(false)->first();
-    			    
-    			    if(!empty($subCollection)){
-    			        $singleImage = $CollectionImagesTable->find()->where(['CollectionImages.associated_id' => $subCollection['id']])
-    			        ->order(['created_at' => 'DESC'])
-    			        ->enableHydration(false)->first();
-    			        if(!empty($singleImage)){
-    			            $collection['subCategoriesData'][$parentKey]['image'] = $singleImage;
-    			        }
-    			    }
-                }
-            }
+			if (!empty($parentCategoriesData)) {
+				foreach ($parentCategoriesData as $parentKey => $parentValue) {
+					$collection['subCategoriesData'][$parentKey]['parent_data'] = $parentValue;
+					$subCollection = $CollectionTable->find()
+						->where(['Collections.collection_type' => "2", 'Collections.status' => 1, 'Collections.parent_id' => $parentKey])
+						->enableHydration(false)->first();
+					if (!empty($subCollection)) {
+						$singleImage = $CollectionImagesTable->find()->where(['CollectionImages.associated_id' => $subCollection['id']])
+							->order(['created_at' => 'DESC'])
+							->enableHydration(false)->first();
+						if (!empty($singleImage)) {
+							$collection['subCategoriesData'][$parentKey]['image'] = $singleImage;
+						}
+					}
+				}
+			}
 		}
 		$this->set('title_for_layout', $seoTitle);
 		$this->set('keyword_for_layout', $seoKeyword);
@@ -730,7 +740,7 @@ class PagesController extends AppController
 		$seoKeyword = "oriental wall to wall carpet in Wilton";
 
 		$ProjectsTable = TableRegistry::getTableLocator()->get('Projects');
-
+		
 		$projects = $ProjectsTable->find()->where([
 			'status' => "active",
 			'image_url !=' => ""
@@ -742,7 +752,7 @@ class PagesController extends AppController
 		$this->set('description_for_layout', $seoDescription);
 		$this->set('projects', $projects);
 	}
-
+	
 	public function viewMediaLib($mediaslug, $filename)
 	{
 		$folder_slug = [
