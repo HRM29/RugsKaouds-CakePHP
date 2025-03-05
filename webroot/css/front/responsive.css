@@ -552,6 +552,7 @@ header .menus .navbar .search {
 }
 header .menus .navbar .srch_icon {
 	top: -27px;
+	right: 53px;
 }
 header .menus .navbar .srch_icon li:first-child a.btn {
 	right: 0;
@@ -566,6 +567,16 @@ header .menus .navbar .srch_icon li:first-child a.btn {
 header .logo img {
 	width: 16%;
 }
+header .menus .navbar .srch_icon li {
+	margin: 0 0 0 4px;
+}
+header .menus .navbar .srch_icon li a {
+	font-size: 18px;
+}
+header .menus .navbar .srch_icon li:last-child a {
+	font-size: 17px;
+}
+
 
 }
 
