@@ -100,7 +100,12 @@ class CollectionsController extends AppController
                 'order' => $order
             ]);
         }
-        $categoryOption = parent::returnCollectionCategory();
+        $collectionParentData    =    parent::returnCollectionCategory();
+        $categoryOption = [];
+        
+        foreach($collectionParentData as $collectionParentKeys => $collectionParent){
+            $categoryOption[$collectionParentKeys] = $collectionParent['title'];
+        }
         $this->set(compact('categories', 'categoryOption', 'savesearch', 'title'));
     }
 
@@ -111,8 +116,12 @@ class CollectionsController extends AppController
         $collectionsImagesTable = TableRegistry::getTableLocator()->get('collection_images');
 
         $collection        =    $collectionsTable->newEntity();
-        $collCategoryList    =    parent::returnCollectionCategory();
-
+        $collectionParentData    =    parent::returnCollectionCategory();
+        $collCategoryList = [];
+        
+        foreach($collectionParentData as $collectionParentKeys => $collectionParent){
+            $collCategoryList[$collectionParentKeys] = $collectionParent['title'];
+        }
         if ($this->request->is('post')) {
             $postData = $this->request->getData();
             $mappedData = [
@@ -185,7 +194,12 @@ class CollectionsController extends AppController
         $collection        =    $collectionsTable->get($id);
         $collectionImages = parent::returnCollectionImages($id);
 
-        $collCategoryList    =    parent::returnCollectionCategory();
+        $collectionParentData    =    parent::returnCollectionCategory();
+        $collCategoryList = [];
+        
+        foreach($collectionParentData as $collectionParentKeys => $collectionParent){
+            $collCategoryList[$collectionParentKeys] = $collectionParent['title'];
+        }
         if ($this->request->is(['patch', 'put', 'post'])) {
             $postData = $this->request->getData();
             $mappedData = [
