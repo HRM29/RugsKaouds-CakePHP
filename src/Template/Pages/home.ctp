@@ -347,6 +347,7 @@ if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
 <?php
 }
 ?>
+
 <section class="blogs">
 	<div class="container-fluid">
 		<div class="row">
@@ -359,13 +360,11 @@ if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
                         <div class="item">
                             <div class="blg_box">
                                 <a href="<?= $this->Url->build('/blog/' . h($post->post_name), ['fullBase' => true]) ?>" style="text-decoration: none;">
-                                    <div class="blg_imag">
-                                        <?= $this->Html->image(h($post->image_url), ['alt' => h($post->post_title), "style"=>"height: 280px; background-position: center; background-size: cover;"]); ?>
+                                    <div class="blg_imag <?= $post->image_url ?>"  style="background-image: url(<?= $post->image_url ?>);">
                                         <?php 
                                             $date = DateTime::createFromFormat('n/j/y, g:i A', $post->post_date);
                                             $formattedDate = $date ? $date->format('F j, Y') : h($post->post_date);
                                         ?>
-                                        
                                         <span><?= $formattedDate; ?></span>
                                     </div>
                                     <div class="blg_text">
@@ -381,6 +380,7 @@ if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
 		</div>
 	</div>
 </section>
+
 <script>
 	$('.mn_slide').owlCarousel({
 		loop: true,

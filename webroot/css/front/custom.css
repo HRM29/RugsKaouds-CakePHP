@@ -3765,4 +3765,11 @@ footer .cpyrght p {
     opacity: 1;
 
 }
-
+.blogs .blg_slide.owl-theme .item .blg_box .blg_imag {	
+    height: 280px;    
+    background-position: center;    
+    background-size: cover;
+}
+.blogs .blg_slide.owl-theme .item .blg_box a {	
+    text-decoration: none
+}
