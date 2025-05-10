@@ -26,25 +26,33 @@ use Cake\Routing\Router; ?>
 						</div>
 						<div class="col-xs-5">
 							<label class="control-label info-details"> Image </label>
-								<div class="">
-									<?php echo $this->Form->control('image', array("type" => "file", 'label' => false, 'required' => false, 'id' => 'carImage')); ?></br>
-								</div>
+							<div class="">
+								<?php echo $this->Form->control('image', array("type" => "file", 'label' => false, 'required' => false, 'id' => 'carImage')); ?></br>
+							</div>
 						</div>
 					</div>
-					<div class="form-group row">
-						<div class="col-xs-5">
-							<label for="Name">Link</label>
-							<?= $this->Form->control('banner-link', ['placeholder' => 'Link', 'label' => false, 'class' => 'form-control']); ?>
+					<div class="form-group">
+						<div class="row" style="margin-bottom: 15px;">
+							<div class="col-sm-5">
+								<label for="Name">Link</label>
+								<?= $this->Form->control('banner-link', ['placeholder' => 'Link', 'label' => false, 'class' => 'form-control', "required" => false]); ?>
+							</div>
+							<div class="col-sm-5">
+								<label for="Name">Link Name</label>
+								<?= $this->Form->control('banner-link-name', ['placeholder' => 'Link Name', 'label' => false, 'class' => 'form-control', "required" => false]); ?>
+							</div>
 						</div>
-						<div class="col-xs-5">
-							<label for="Password">Block Type</label>
-							<?php $options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4",); ?>
-							<?= $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
-						</div>
-						<div class="col-xs-5">
-							<label for="Password">Status</label>
-							<?php $options = array(Active => "Active", Inactive => "Inactive"); ?>
-							<?= $this->Form->control('status', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
+						<div class="row mb-3">
+							<div class="col-md-5">
+								<label for="Password">Block Type</label>
+								<?php $options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4", "5" => "Block 5"); ?>
+								<?= $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
+							</div>
+							<div class="col-md-5">
+								<label for="Password">Status</label>
+								<?php $options = array(Active => "Active", Inactive => "Inactive"); ?>
+								<?= $this->Form->control('status', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -62,7 +70,18 @@ use Cake\Routing\Router; ?>
 		</div> <!-- /.row -->
 	</div> <!-- /.row -->
 </section><!-- /.content -->
-<?php echo $this->Html->script('ckeditor/ckeditor'); ?>
+<?php echo $this->Html->script('ckeditor/ckeditor.js?ver=0.12'); ?>
+<script>
+	CKEDITOR.replace('description', {
+		height: 300,
+		filebrowserBrowseUrl: "<?= $this->Url->build('/js/ckfinder/ckfinder.html'); ?>",
+		filebrowserImageBrowseUrl: "<?= $this->Url->build('/js/ckfinder/ckfinder.html?type=Images'); ?>",
+		
+		allowedContent: true, // Allow <p>, <span> with any attributes, and <a> with href and title
+		extraAllowedContent: 'span(style);', // Allow inline style attribute in <span>
+		disallowedContent: '' // Ensure nothing is explicitly disallowed
+	});
+</script>
 <script type="text/javascript">
 	function clear_form_elements(jquery_obj) {
 

@@ -2,7 +2,7 @@
 	use Cake\Core\Configure;
 ?>
 <section id="listing" class="shop-list section-padding">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<?php echo $this->element('front/search_bar');
 			?>

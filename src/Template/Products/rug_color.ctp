@@ -4,7 +4,7 @@
 <?php echo $this->element('front/banner'); ?>
 <?php echo $this->element('front/category'); ?>
 <section id="listing">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<?php echo $this->element('front/search_bar');
 			?>

@@ -1,94 +1,67 @@
- <?php use Cake\Routing\Router;?>
+ <?php
+
+	use Cake\Routing\Router;
+	?>
+ <section class="inner_banner shp">
+ 	<div class="container-fluid">
+ 		<div class="row">
+ 			<div class="col-md-12">
+ 				<div class="heading">
+					<h3>Dashboard</h3>
+				</div>
+ 			</div>
+ 		</div>
+ 	</div>
+ </section>
  <!--Cart Page Area Start-->
-        <div class="check-out-area">
-            <div class="container">
-                <div class="row">
-                    
-                    <div class="col-md-3 col-xs-12 col-sm-3 account-sidebar">
-						<div class="checkout-widget">
-							<h1 class="heading-title">My Account</h2>
-							<ul>
-								<li><a href="<?php echo Router::url('/', true); ?>users/myaccount">My Details</a></li>
-								<!-- <li><a href="#"><i class="fa fa-map-marker"></i> My Addres book</a></li> -->
-								<li><a href="<?php echo Router::url('/', true); ?>users/myorder">My Orders</a></li>
-								<li><a href="<?php echo Router::url('/', true); ?>users/wishlist">My Favourite list</a></li>
-								<li><a href="<?php echo Router::url('/', true); ?>users/changepassword">Change Password</a></li>
-							</ul>
-						</div>                        
-                    </div>
-					
-                    <div class="offset-md-1 col-md-7 col-sm-8 col-xs-12 account-main">
-					<?= $this->Flash->render('positive_myaccount') ?>	
-                            <?= $this->Form->create($user, ['url' => ['controller' => 'Users', 'action' => 'myaccount'],'type' => 'file']); ?>
-                                <h1 class="heading-title">My Details</h1>
-								<div class="user-profile">
-									<div class="profile-img">
-										<div class="form-group">
-											<?php
-											if (!empty($user->avatar)) {
-												
-												$original = WWW_ROOT . 'uploads/user' . DS . 'thumb' . DS . $user->avatar;
-												if (file_exists($original)) {
-											 
-													echo $this->Html->image('../uploads/user/thumb/' . $user->avatar, 	array('height' => '100%', 'class' => 'profile-user-img img-responsive img-circle')); 
-												}else{
-													echo $this->Html->image('user-img.jpg', 	array('height' => '100%', 'class' => 'profile-user-img img-responsive img-circle')); 
-												}
-											}else{
-												echo $this->Html->image('user-img.jpg', 	array('height' => '100%', 'class' => 'profile-user-img img-responsive img-circle')); 
-											} ?>
-										</div>
-									</div>
-									<div class="profile-content">
-										<div class="form-group">
-											
-											<input class="choose-file" type="file" id="choose-file" name="avatar" required>
-  <label for="choose-file" class="upload-file"></label>
-										</div>
-									</div>	
-									</div>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<?= $this->Form->control('first_name', ['type'=>'text','placeholder'=>'First Name"','label'=>false,'class'=>'form-control']);?>
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<?= $this->Form->control('last_name', ['type'=>'text','placeholder'=>'Last Name"','label'=>false,'class'=>'form-control']);?>
-										</div>
-									</div>	
-									</div>
-								
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<?= $this->Form->control('email', ['type'=>'email','placeholder'=>'Email','label'=>false,'class'=>'form-control']);?>
-										</div>
-									</div>
-									</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<?= $this->Form->control('phone', ['type'=>'text','placeholder'=>'Phone','label'=>false,'class'=>'form-control' ]);?>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<?php  echo $this->Form->hidden('password', ['value'=>'nothing']); ?>
-									<?php  echo $this->Form->hidden('status', ['value'=>1]); ?>
-									<div class="col-md-6">
-										<div class="form-group m-20">
-										   <button type="submit" title="Update Profile" class="view-button"><span>Update Profile</span></button>
-										</div>
-									</div>									
-								</div>								
-                            <?= $this->Form->end() ?>
-                        </div>
-
-
-
-                </div>
-            </div>
-        </div>
-        <!--Cart Page Area End-->
+ <section class="dshbrd">
+ 	<div class="container-fluid">
+ 		<div class="row">
+ 			<?php echo $this->element('front/account_menu'); ?>
+ 			<div class="col-md-9 no_padding">
+ 				<div class="tab-content" id="v-pills-tabContent">
+ 					<div class="tab-pane fade show active" id="v-pills-one" role="tabpanel" aria-labelledby="v-pills-one-tab">
+ 						<?= $this->Flash->render('positive_myaccount') ?>
+ 						<?= $this->Form->create($user, ['url' => ['controller' => 'Users', 'action' => 'myaccount'], 'type' => 'file']); ?>
+ 						<h3>Dashboard</h3>
+ 						<div class="row">
+ 							<div class="col-md-6">
+ 								<div class="form_group">
+ 									<?= $this->Form->control('first_name', ['type' => 'text', 'placeholder' => 'First Name', 'label' => false, 'class' => 'fotm_control']); ?>
+ 								</div>
+ 							</div>
+ 							<div class="col-md-6">
+ 								<div class="form_group">
+ 									<?= $this->Form->control('last_name', ['type' => 'text', 'placeholder' => 'Last Name', 'label' => false, 'class' => 'fotm_control']); ?>
+ 								</div>
+ 							</div>
+ 							<div class="col-md-6">
+ 								<div class="form_group">
+ 									<?= $this->Form->control('email-null', ['value' => $user->email, 'type' => 'email', 'placeholder' => 'Email', 'label' => false, 'class' => 'fotm_control', "readonly" => true, "disabled" => true]); ?>
+ 									<?= $this->Form->control('email', ['type' => 'hidden', 'label' => false]); ?>
+ 								</div>
+ 							</div>
+ 							<div class="col-md-6">
+ 								<div class="form_group">
+ 									<?= $this->Form->control('phone', ['type' => 'text', 'placeholder' => 'Phone', 'label' => false, 'class' => 'fotm_control']); ?>
+ 								</div>
+ 							</div>
+ 							<div class="col-md-6">
+ 								<div class="form_group">
+ 									<?= $this->Form->control('company_name', ['type' => 'text', 'placeholder' => 'Company Name', 'label' => false, 'class' => 'fotm_control']); ?>
+ 								</div>
+ 							</div>
+ 							<?php echo $this->Form->hidden('password', ['value' => 'nothing']); ?>
+ 							<?php echo $this->Form->hidden('status', ['value' => 1]); ?>
+ 							<div class="form_group">
+ 								<button type="submit" title="Update Profile" class="btn"><span>Update Profile</span></button>
+ 							</div>
+ 						</div>
+ 						<?= $this->Form->end() ?>
+ 					</div>
+ 				</div>
+ 			</div>
+ 		</div>
+ 	</div>
+ </section>
+ <!--Cart Page Area End-->

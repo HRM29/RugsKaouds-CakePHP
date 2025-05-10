@@ -1,5 +1,5 @@
 <div class="static-page">
-<div class="container p-0">
+<div class="container-fluid p-0">
 <h1>Carpet &amp; Stair-Runners</h1>
 <h4>Selecting a Wall-to-Wall Carpet</h4>
 <p>Carpet can do much more than cover your floors. It can be the foundation of a decorating plan, inspiring other ideas. Or, it can be selected to complement existing walls and furnishings. Above all, the carpet you choose should reflect your personality and bring comfort to your home.</p>

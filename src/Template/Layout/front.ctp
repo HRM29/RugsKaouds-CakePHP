@@ -1,67 +1,121 @@
-<?php use Cake\Routing\Router;?>
+<?php
+
+use Cake\Routing\Router;
+use Cake\Core\Configure;
+?>
 <!doctype html>
 <html class="no-js" lang="">
-    
+
 
 <head>
-
-<?php 
-	
-	$url = 'https://'.$_SERVER['HTTP_HOST']. $_SERVER['REQUEST_URI'];
-	if($url == 'https://rugsnc.com/Products/Oushak/design')
-	{
-		$title_for_layout = "Oushak Rugs for Sale - Oushak Rugs in Carolina - Gallery of Oriental Rugs";  
-		$description_for_layout = "Oushak rugs are available for sale in Carolina at the Gallery of Oriental Rugs. These rugs give fabulous design to your home interior. Place order today!" ;
+	<?php
+	$url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	if ($url == 'https://kaouds.com') {
+		$title_for_layout = "Best Place To Get Carpet & Rugs Online in Wilton - Kaouds";
+		$description_for_layout = "Shop today & buy high-quality, modern, unique Rugs & Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.";
 		$keyword_for_layout = "oushak rugs for sale, oushak rugs carolina";
 		$seoH2 = "";
 		$seoH1 = "";
-	}	
+	}
 
 
 
+	$title_for_layout = isset($title_for_layout) ? $title_for_layout : 'Best Place To Get Carpet & Rugs Online in Wilton - Kaouds';
 
-		        $title_for_layout = isset($title_for_layout) ? $title_for_layout : 'GALLERY OF ORIENTAL RUGS';
-		        
-		        if(empty($title_for_layout)){
-		            $title_for_layout = 'GALLERY OF ORIENTAL RUGS';
-		        }
-				if(empty($keyword_for_layout)){
-		            $keyword_for_layout = 'oriental wall to wall carpet in wilmington';
-		        }
-		        if(empty($description_for_layout)){
-		            $description_for_layout = 'Gallery of Oriental Rugs has the exclusive collection of oriental wall to wall carpet in Wilmington that will complement your existing walls and furnishings.';
-		        }				
-		       // print_r($title); die;
-?>
+	if (empty($title_for_layout)) {
+		$title_for_layout = 'Best Place To Get Carpet & Rugs Online in Wilton - Kaouds';
+	}
+	if (empty($keyword_for_layout)) {
+		$keyword_for_layout = 'oriental wall to wall carpet in Wilton';
+	}
+	if (empty($description_for_layout)) {
+		$description_for_layout = 'Shop today & buy high-quality, modern, unique Rugs & Carpets online at Kaouds. We also provide hand washing cleaning solutions to get your Carpet & Rug clean.';
+	}
+	// print_r($title); die;
+	if (Configure::read("App.content-protection") == 1) {
+	?>
+		<style>
+			body {
+				user-select: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+			}
+
+			* {
+				-webkit-user-drag: none;
+				user-drag: none;
+			}
+		</style>
+	<?php
+	}
+	?>
 
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title><?php echo $title_for_layout; ?></title>
-	<meta name="keywords" content="<?php echo $keyword_for_layout;?>" />
-	<meta name="description" content="<?php echo $description_for_layout;?>">
-	<link href="<?php echo Router::url('/', true)."favicon.ico"; ?>"  type="image/x-icon" rel="icon"/><link href="<?php echo Router::url('/', true)."favicon.ico"; ?>" type="image/x-icon" rel="shortcut icon"/>	
+	<meta name="keywords" content="<?php echo $keyword_for_layout; ?>" />
+	<meta name="description" content="<?php echo $description_for_layout; ?>">
+	<link href="<?php echo Router::url('/', true) . "img/favicon.jpeg"; ?>" type="image/x-icon" rel="icon" />
+	<link href="<?php echo Router::url('/', true) . "img/favicon.jpeg"; ?>" type="image/x-icon" rel="shortcut icon" />
 	<meta name="facebook-domain-verification" content="3rrn0glngylfceooaifricmhzex1j9" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<?php echo $this->Html->css(array('front/bootstrap.min','front/bootstrap-grid','front/style','front/responsive','front/owl.carousel','front/owl.theme','front/materialdesignicons.min','front/bootsnav')); ?>
-	<?php //echo $this->Html->css(array('front/bootstrap.min','front/style','front/responsive')); ?>	<!-- Global site tag (gtag.js) - Google Analytics -->	<script async src="https://www.googletagmanager.com/gtag/js?id=G-J34YWES5NL"></script>	<script>	  window.dataLayer = window.dataLayer || [];	  function gtag(){dataLayer.push(arguments);}	  gtag('js', new Date());	  gtag('config', 'G-J34YWES5NL');	</script>
-    
-    </head>
-    <body>
-         
-		<?php echo $this->element('front_header'); ?> 
-			<?php echo $this->fetch('content');?>  
-		<?php echo $this->element('front_footer'); ?>  
-		 
-		<?php echo $this->Html->script(['bootstrap.min.js']);?>
-		<?php echo $this->Html->script(['jquery.min.js']);?>
-		<?php echo $this->Html->script(['jquery-3.3.1.min.js']);?>
-		<?php echo $this->Html->script(['bootstrap.bundle.min.js']);?>
-		<?php echo $this->Html->script(['select2.min.js']);?>
-		<?php //echo $this->Html->script(['owl.carousel.js']);?>
-		<?php echo $this->Html->script(['custom.min.js']);?>
-		<?php echo $this->Html->script(['search.custom.min.js']);?>
-	   <?php echo $this->Html->script(['jquery.payform.min.js']);?>
-		<?php echo $this->Html->script(['script.js']);?>
-    </body>
-</html>	
+	<?php echo $this->Html->css(array('front/bootstrap.min.css?ver=1.0', 'front/bootstrap-icons.min.css?ver=1.0', 'front/owl.carousel.min', 'front/owl.theme.default.min', 'front/custom.css?ver=1.0401', 'front/responsive.css?ver=1.167', 'front/sweetalert2.min.css?ver=1.0', 'front/fancybox.umd.css?ver=0.1')); ?>
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-J34YWES5NL"></script>
+
+	<script>
+		window.dataLayer = window.dataLayer || [];
+
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+		gtag('config', 'G-J34YWES5NL');
+	</script>
+	<?php
+	if (Configure::read("App.content-protection") == 1) {
+	?>
+		<script>
+			document.addEventListener('contextmenu', function(e) {
+				e.preventDefault(); // Disable right-click
+			});
+
+			document.addEventListener('keydown', function(e) {
+				// Disable F12 (DevTools)
+				if (e.keyCode === 123) {
+					e.preventDefault();
+				}
+				// Disable Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (Inspect Element)
+				if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+					e.preventDefault();
+				}
+				// Disable Ctrl+U (View Source)
+				if (e.ctrlKey && e.keyCode === 85) {
+					e.preventDefault();
+				}
+			});
+
+			document.addEventListener('dragstart', function(e) {
+				e.preventDefault();
+			});
+
+			document.addEventListener('drop', function(e) {
+				e.preventDefault();
+			});
+		</script>
+	<?php
+	} ?>
+</head>
+
+<body>
+
+	<?php echo $this->element('front_header'); ?>
+
+	<?php echo $this->fetch('content'); ?>
+	<?php echo $this->element('front_footer'); ?>
+
+</body>
+
+</html>

@@ -3,8 +3,8 @@
 	.checkbox label{padding-left:0px;}
 </style> -->
 <div class="login-logo">
-	<img src="<?php echo Router::url('/', true); ?>/img/logo.png" alt="Logo" />
-	<p class="logo1-title">The Finest Rugs for the Finest Homes</p>
+	<img src="<?php echo Router::url('/', true); ?>img/logo.jpg" alt="Logo" style="width:100%" />
+	
 </div>
 <?php echo $this->Flash->render('positive'); ?>
  

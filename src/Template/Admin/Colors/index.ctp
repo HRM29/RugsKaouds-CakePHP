@@ -87,7 +87,7 @@
 											echo $this->Html->link('<i class="fa fa-pencil"></i> Edit', array('controller' => 'colors','action'=>'edit', $record->id), array('escape' => false,'class'=>"btn btn-info btn-xs","title"=>__("Edit",true)));
 										?>
 										<?php
-											echo $this->Html->link('<i class="fa fa-trash"></i> Delete', array('controller' => 'colors','action'=>'delete', $record->id), array('escape' => false,'class'=>"btn btn-danger btn-xs","title"=>__("Delete",true),'confirm' => __('Are you sure you want to delete # {0}?', $record->id)));
+											echo $this->Html->link('<i class="fa fa-trash"></i> Delete', array('controller' => 'colors','action'=>'delete', $record->id), array('escape' => false,'class'=>"btn btn-danger btn-xs","title"=>__("Delete",true),'confirm' => __('Are you sure you want to delete ?')));
 										?> 
 									</td> 
 								</tr>

@@ -28,6 +28,9 @@ require __DIR__ . '/paths.php';
  * - Setting the default application paths.
  */
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
+require_once ROOT . DS . 'vendor' . DS . 'PHPMailer' . DS . 'src' . DS . 'PHPMailer.php';
+require_once ROOT . DS . 'vendor' . DS . 'PHPMailer' . DS . 'src' . DS . 'SMTP.php';
+require_once ROOT . DS . 'vendor' . DS . 'PHPMailer' . DS . 'src' . DS . 'Exception.php';
 
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
@@ -558,9 +561,10 @@ Configure::write('rugMaterial', array("Cotton"=>"Cotton",
 						); */
 
 $siteFolder	= dirname(dirname($_SERVER['SCRIPT_NAME']));
-define('SITE_URL', 'http://' . $_SERVER['HTTP_HOST'] . $siteFolder);
+define('SITE_URL', 'https://' . $_SERVER['HTTP_HOST'] . $siteFolder);
 define('webroot', SITE_URL.'/webroot/');
-
+define('LOGO_URL', SITE_URL.'/img/logo.jpg');
+define('MBL_LOGO_URL', SITE_URL.'/img/mbl_logo.jpg');
 
 /* get pattern data */
 $data1 = TableRegistry::get('Patterns');
@@ -601,3 +605,7 @@ if(!empty($results3)){
 	}
 	Configure::write('rugMaterial',$arr3);
 }
+define('CAPTCHA_SITEKEY','6LdEVuAqAAAAAGAVixBN0oA_5utIVERbkO02yFim');
+define('CAPTCHA_SECRETKEY','6LdEVuAqAAAAAOQORCtj-lMin1rqMcKRm0d5sgwJ');
+define('KAOUDS_SALT','KAOUDS-RUGS-KEY');
+define('PAYPAL_CLIENT_ID','AQpI6C-uv_8JjPYOTAvTN6LCnzolPlx4Iq6bQFZTvV32FbScX12OMBqWhImcV-gWO-gGpxVImYU5jMuQ');

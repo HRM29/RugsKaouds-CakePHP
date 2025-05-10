@@ -101,6 +101,32 @@
 					  </div><!-- /.box -->
 					</div>
 					<div class="col-md-3">
+					  <div class="box box-default">
+						<div class="box-header with-border">
+						  <h3 class="box-title">No. of Redemptions</h3>
+						  <div class="box-tools pull-right">
+							<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						  </div><!-- /.box-tools -->
+						</div><!-- /.box-header -->
+						<div class="box-body" style="display: block;">
+						<?= h($data->redemption)?>
+						</div><!-- /.box-body -->
+					  </div><!-- /.box -->
+					</div>
+					<div class="col-md-3">
+					  <div class="box box-default">
+						<div class="box-header with-border">
+						  <h3 class="box-title">Total Use Count</h3>
+						  <div class="box-tools pull-right">
+							<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						  </div><!-- /.box-tools -->
+						</div><!-- /.box-header -->
+						<div class="box-body" style="display: block;">
+						<?= h($data->use_count)?>
+						</div><!-- /.box-body -->
+					  </div><!-- /.box -->
+					</div>
+					<div class="col-md-3">
 					  <div class="box box-danger">
 						<div class="box-header with-border">
 						  <h3 class="box-title">Status</h3>

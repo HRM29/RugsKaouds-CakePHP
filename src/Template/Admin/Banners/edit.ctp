@@ -43,7 +43,7 @@ use Cake\Routing\Router; ?>
 
 									if (file_exists($original)) { ?>
 										<?php
-										echo $this->Html->image('/uploads/banner/' . $data->image, array('width' => '100px', 'class' => 'img-responsive imgbdr remove_image'));
+										echo $this->Html->image('/uploads/banner/' . $data->image, array('width' => '100px', 'class' => 'img-responsive imgbdr remove_image', 'data' => $data->id, 'atrValue' => 'image'));
 										echo $this->Html->link('Remove', 'javascript:;', array('data' => $data->id, 'class' => 'remove_image', 'atrValue' => 'image'));
 										?>
 								<?php
@@ -57,20 +57,28 @@ use Cake\Routing\Router; ?>
 							</div>
 						</div>
 					</div>
-					<div class="form-group row">
-						<div class="col-xs-5">
-							<label for="Name">Link</label>
-							<?= $this->Form->control('banner-link', ['placeholder' => 'Link', 'label' => false, 'class' => 'form-control', 'value' => $data->link]); ?>
+					<div class="form-group">
+						<div class="row" style="margin-bottom: 15px;">
+							<div class="col-xs-5">
+								<label for="Name">Link</label>
+								<?= $this->Form->control('banner-link', ['placeholder' => 'Link', 'label' => false, 'class' => 'form-control', 'value' => $data->link, "required" => false]); ?>
+							</div>
+							<div class="col-xs-5">
+								<label for="Name">Link Name</label>
+								<?= $this->Form->control('banner-link-name', ['placeholder' => 'Link Name', 'label' => false, 'class' => 'form-control', 'value' => $data->link_name, "required" => false]); ?>
+							</div>
 						</div>
-						<div class="col-xs-5">
-							<label for="Password">Block Type</label>
-							<?php $options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4",); ?>
-							<?= $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'value' => $data->block_type]); ?>
-						</div>
-						<div class="col-xs-5">
-							<label for="Password">Status</label>
-							<?php $options = array(Active => "Active", Inactive => "Inactive"); ?>
-							<?= $this->Form->control('status', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
+						<div class="row">
+							<div class="col-xs-5">
+								<label for="Password">Block Type</label>
+								<?php $options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4", "5" => "Block 5"); ?>
+								<?= $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'value' => $data->block_type]); ?>
+							</div>
+							<div class="col-xs-5">
+								<label for="Password">Status</label>
+								<?php $options = array(Active => "Active", Inactive => "Inactive"); ?>
+								<?= $this->Form->control('status', ['options' => $options, 'label' => false, 'class' => 'form-control', 'empty' => 'Select Status']); ?>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -86,7 +94,17 @@ use Cake\Routing\Router; ?>
 		</div> <!-- /.row -->
 	</div> <!-- /.row -->
 </section><!-- /.content -->
-<?php echo $this->Html->script('ckeditor/ckeditor'); ?>
+<?php echo $this->Html->script('ckeditor/ckeditor.js?ver=0.12'); ?>
+<script>
+	CKEDITOR.replace('description', {
+		height: 300,
+		filebrowserBrowseUrl: "<?= $this->Url->build('/js/ckfinder/ckfinder.html'); ?>",
+		filebrowserImageBrowseUrl: "<?= $this->Url->build('/js/ckfinder/ckfinder.html?type=Images'); ?>",
+		allowedContent: true, // Allow <p>, <span> with any attributes, and <a> with href and title
+		extraAllowedContent: 'span(style);', // Allow inline style attribute in <span>
+		disallowedContent: '' // Ensure nothing is explicitly disallowed
+	});
+</script>
 <script>
 	function clear_form_elements(jquery_obj) {
 		jquery_obj.find(':input').each(function() {
@@ -120,19 +138,27 @@ use Cake\Routing\Router; ?>
 		var id = $(this).attr('data');
 		var FieldName = $(this).attr('atrValue');
 		var csrfToken = $("[name='_csrfToken']").val();
-		if (confirm('Are you sure Remove Promo Image?')) {
+
+		var formData = new FormData();
+		formData.append('_csrfToken', csrfToken);
+		formData.append('id', id);
+		formData.append('FieldName', FieldName);
+		if (confirm('Are you sure Remove Banner Image?')) {
 			$.ajax({
-				dataType: "html",
-				type: "POST",
-				evalScripts: true,
+				headers: {
+					'X-CSRF-Token': csrfToken
+				},
 				url: '<?php echo Router::url(['controller' => 'Banners', 'action' => 'deleteImg']); ?>',
-				data: ({
-					_csrfToken: csrfToken,
-					id: id,
-					FieldName: FieldName
-				}),
+				type: "POST",
+				processData: false,
+				contentType: false,
+				data: formData,
 				success: function(data) {
 					location.reload();
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.error("AJAX Error:", textStatus, errorThrown);
+					console.error("Response:", jqXHR.responseText);
 				}
 			});
 		}

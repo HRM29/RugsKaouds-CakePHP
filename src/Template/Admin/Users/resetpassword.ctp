@@ -1,6 +1,6 @@
 <?php use Cake\Routing\Router;?>
 <div class="login-logo">
-	<img src="<?php echo Router::url('/', true); ?>/img/logo.png" alt="Logo" />
+	<img src="<?php echo Router::url('/', true); ?>img/logo.jpg" alt="Logo" />
 </div>
 <?php echo $this->Flash->render('positive'); ?>
 <div class="login-box-body">

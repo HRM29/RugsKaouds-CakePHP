@@ -1,80 +1,305 @@
+<section class="inner_banner shp">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="heading">
+					<h1>Schedule Rug Cleaning</h1>
+					<p>Kaoud cleaning and repair in Wilton, CT. utilizes 100% natural cleaning solutions and hand washing techniques to get your carpets and rugs clean. It’s free and easy to schedule a rug cleaning pickup. Kindly fill out this form and be as descriptive as you can so we can better serve you.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="rg_clng">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>Schedule Rug Cleaning Pickup</h3>
+				
+				<?php echo $this->Flash->render('positive_forgot') ?>
+				<?php
+				echo $this->Form->create(null, ['id' => 'rugCleaningForm', 'url' => ['controller' => 'Pages', 'action' => 'rugcleaning'], 'type' => 'file']);
+				?>
+				<h3>Customer Information</h3>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form_group">
+							<input class="fotm_control" type="text" name="first_name" id="first_name" placeholder="First Name" required>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form_group">
+							<input class="fotm_control" type="text" name="last_name" id="last_name" placeholder="Last Name" required>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form_group">
+							<input class="fotm_control" type="email" name="email" id="email" placeholder="Email" required>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form_group">
+							<input class="fotm_control" type="tel" name="phone_number" id="phone_number" placeholder="Phone Number" required>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form_group">
+							<input class="fotm_control" type="text" name="address_line_1" id="address_line_1" placeholder="Address Line 1" required>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form_group">
+							<input class="fotm_control" type="text" name="address_line_2" id="address_line_2" placeholder="Address Line 2">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form_group">
+							<input class="fotm_control" type="text" name="city" id="city" placeholder="City" required>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form_group">
+							<select class="fotm_control" name="state" id="state" required>
+								<?php
+								foreach ($states as $statekey => $statesData) {
+									$selected = '';
+									// 8 Represents --> CT (Connecticut)
+									if ($statekey == '8') {
+										$selected = 'selected';
+									}
+								?>
+									<option value="<?php echo $statesData; ?>" <?php echo $selected ?>><?php echo $statesData; ?></option>
+								<?php
+								}
+								?>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form_group">
+							<input class="fotm_control" type="text" name="zip_code" id="zip_code" placeholder="Zip Code" required>
+						</div>
+					</div>
+				</div>
+				<div class="pckup_dtls">
+					<h3>Pickup Info Details</h3>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form_group">
+								<input class="fotm_control" type="text" name="preferred_date" id="preferred_date" placeholder="Preferred Date for Pickup" required autocomplete="off">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form_group">
+								<input class="fotm_control" type="time" name="preferred_time" id="preferred_time" placeholder="Preferred Time for Pickup" required autocomplete="off">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form_group">
+								<input class="fotm_control" type="text" name="alternate_date" id="alternate_date" placeholder="Alternate Date for Pickup" autocomplete="off">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form_group">
+								<input class="fotm_control" type="time" name="alternate_time" id="alternate_time" placeholder="Alternate Time for Pickup" autocomplete="off">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pckup_dtls">
+					<h3>Rug Information</h3>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="type_rug">
+								<h4>Type of Rug</h4>
+								<ul class="rug_radio">
+									<li class="rug_typ">
+										<input name="rug_type" type="radio" value="New Hand Knotted" id="rug_type_new_hand_knotted" required>
+										<label for="rug_type_new_hand_knotted">New Hand Knotted</label>
+									</li>
+									<li class="rug_typ">
+										<input name="rug_type" type="radio" value="Antique Hand Knotted" id="rug_type_antique_hand_knotted">
+										<label for="rug_type_antique_hand_knotted">Antique Hand Knotted</label>
+									</li>
+									<li class="rug_typ">
+										<input name="rug_type" type="radio" value="Hand Hooked" id="rug_type_hand_hooked">
+										<label for="rug_type_hand_hooked">Hand Hooked</label>
+									</li>
+									<li class="rug_typ">
+										<input name="rug_type" type="radio" value="Shag" id="rug_type_shag">
+										<label for="rug_type_shag">Shag</label>
+									</li>
+									<li class="rug_typ">
+										<input name="rug_type" type="radio" value="Hand Tufted with Backing" id="rug_type_hand_tufted_with_backing">
+										<label for="rug_type_hand_tufted_with_backing">Hand Tufted with Backing</label>
+									</li>
+									<li class="rug_typ">
+										<input name="rug_type" type="radio" value="Machine Made" id="rug_type_machine_made">
+										<label for="rug_type_machine_made">Machine Made</label>
+									</li>
+									<li class="rug_typ">
+										<input name="rug_type" type="radio" value="Broadloom - Custom" id="rug_type_broadloom_custom">
+										<label for="rug_type_broadloom_custom">Broadloom - Custom</label>
+									</li>
+									<li class="rug_typ">
+										<input name="rug_type" type="radio" value="Oriental" id="rug_type_oriental">
+										<label for="rug_type_oriental">Oriental</label>
+									</li>
+									<li class="rug_typ">
+										<input name="rug_type" type="radio" value="Flatweave" id="rug_type_flatweave">
+										<label for="rug_type_flatweave">Flatweave</label>
+									</li>
+									<li class="rug_typ">
+										<input name="rug_type" type="radio" value="Other" id="rug_type_other" onfocus="jQuery(this).next('input').focus();">
+										<input class="small" id="rug_type_other_text" name="rug_type_other_text" type="text" value="Other" aria-label="Other" onfocus="jQuery(this).prev('input')[0].click(); if(jQuery(this).val() == 'Other') { jQuery(this).val(''); }" onblur="if(jQuery(this).val().replace(' ', '') == '') { jQuery(this).val('Other'); }">
+									</li>
+								</ul>
+								<h4 class="rg_cndtn">Rug Condition Including Major Stains & Any Comments*</h4>
+								<div class="form_group">
+									<textarea class="fotm_control" name="rug_condition" id="rug_condition" placeholder="Message" required></textarea>
+								</div>
+								<div class="form_group">
+									<input type="file" class="fotm_control" id="rug_image" name="rug_image">
+								</div>
+								<span>Show us the condition of your rug if you like so we can better assist you.</span>
+							</div>
+						</div>
+					</div>
+				</div>
 
-<div class="static-page">
-<div class="container p-0">
-<div class="row">
-	<div class="col-sm-6"><iframe height="350" src="https://www.youtube.com/embed/EbTey0lFUOk" style="border:0;" width="100%"></iframe></div>
+				<div class="form_group">
+					<button class="btn" type="submit">Submit</button>
+				</div>
+				<?php echo $this->Form->control('g-recaptcha-response', ["type" => "hidden", "class" => "g-recaptcha-response", "id" => false]); ?>
+				<?php echo $this->Form->end() ?>
+			</div>
+		</div>
+	</div>
 
-	<div class="col-sm-6"><iframe height="350" src="https://www.youtube.com/embed/IMM9kKutMEg" style="border:0;" width="100%"></iframe></div>
-</div>
-<p>&nbsp;</p>	
+</section>
+<script>
+	document.getElementById('rugCleaningForm').addEventListener('submit', function(event) {
+		event.preventDefault();
+		let isValid = true;
+		const requiredFields = ['first_name', 'last_name', 'email', 'phone_number', 'address_line_1', 'city', 'state', 'zip_code', 'preferred_date', 'preferred_time', 'rug_condition'];
+		const radioFields = ['rug_type'];
+		const fileField = 'rug_image';
 
-<h1>Oriental Rug Cleaning – Wilmington NC</h1>
-<h4>The Gallery of Oriental Rugs was established in 1988 and has cleaned literally thousands of area rugs. Our experience, state-of-the-art equipment and expertise allows us to remove harmful allergens, dust mites, pet stains and mold at the source</h4>
-<div class="img-static row rugcleaning-banner mt-3">
-	<div class="col-sm-4 col-12">
-		<img src="../img/rugcleaning_1.png" class="img-fluid">
-	</div> 
-	<div class="col-sm-4 col-12 rugcleaning-text">
-		<p>Wash Pool</p>
-		<img src="../img/rugcleaning_2.png" class="img-fluid">
-	</div> 
-	<div class="col-sm-4 col-12">
-		<img src="../img/rugcleaning_3.png" class="img-fluid">
-	</div> 
-</div>
-<h2>Professional Oriental Rug Wash</h2>
-<p>In home vacuuming helps keep some of the dirt out of your rugs, but that alone cannot do it all.
-Rugs need to be professionally washed to remove the deep down dirt and grit that, if not removed, can cause the fibers of your rug to break down through abrasion, taking years away from your rugs useful life.</p>
-<h4>Identification</h4>
-<p>The condition, age, materials and dyes used to make Oriental and antique rugs vary widely and each must be taken into consideration when cleaning. Our in-house ORRA Certified Rug Appraiser and trained staff enable us to carefully select the appropriate method to clean your specific rug.</p>
-<h4>Inspection </h4>
-<p>Before any rug is cleaned, it is inspected to determine whether any damage is present and what cleaning processes are most appropriate for the rug. If damages are found we email our customers a detailed report with recommendations.</p>
-<h4>Dusting </h4>
-<p>This is where a surprising amount of dirt, grit and contaminants are removed from your rug. If left embedded, these particulates will damage your rug.</p>
-<h4>Washing </h4>
-<p>Total submersion in cool water with a mild shampoo is the absolute best way to clean natural fibers like wool, cotton and silk. We gently hand-wash rugs with industry approved brushes and tools to clean through the rugs pile, bringing back a healthy nap, and removing all impurities</p>
-<h4>Rinse </h4>
-<p>After the washing process, the water is dumped completely and the wash pool is re-filled with fresh water. The rug is rinsed until free of all cleaning solutions and impurities</p>
-<h4>Dry </h4>
-<p>We dry your rugs as carefully as we wash them. Immediately after washing, rinsing and water extraction, your rug is placed in a climate-controlled dry room. Both temperature and humidity are continuously monitored while the rug dries under optimum conditions</p>
-<h4>Grooming  </h4>
-<p>The final step is to groom the pile, trim fringes, and inspect. Upon completion the rug will be wrapped in plastic and stored in a climate controlled facility. </p>
-<div class="row m-30">
-<div class="col-sm-7">
-<h4>Area Rug Cleaning Services</h4>
-<ul class="static-list">
-<li>Oriental rug cleaning in Wilmington NC</li>
-<li>Rug Pet stain &amp; odor removal</li>
-<li>Rug Repair</li>
-<li>Rug Padding</li>
-<li>Rug Scotch-guarding</li>
-<li>Rug Moth-proofing</li>
-<li>Rug Storage</li>
-<li>Rug Shipping services</li>
-<li>Rug Water-damage restoration</li>
-<li>ORRA Certified Appraisals</li>
-</ul>
-<img src="../img/oriental_rug_cleaning05.jpg">
-</div>
-<div class="col-sm-5 m-20-mob">
-<div class="img-static">
-<!-- <img src="../img/six_reasons_to_clean_area_rugs002.jpg"> -->
-	<h4>Six Reasons to use the Gallery of Oriental Rugs</h4>
-	<ul class="static-list">
-		<li>Oriental rugs are works of art.</li>
-		<li>We are the only certified experts who can verify type, origin and value of your oriental rugs.</li>
-		<li>This knowledge is essential in choosing the correct and safe method of cleaning.</li>
-		<li>We use a patented sulfate-free shampoo which is gentle on your rug and the environment.  </li>
-		<li>We have been in business for more than 30 years and we have cleaned and restored over 100,000 rugs, including rugs belonging to museums, universities, and private collectors.</li>
-		<li>We are a nationally recognized cleaning business, having won the prestigious Americas Mart Award.</li>
-	</ul>
-</div>
-</div>
-</div>
-<div class="decore-text">
-<h5>Free Pickup &amp; Delivery</h54>
-<h5>Wilmington</h5>
-<h5>+1-910-392-2605</h5>
-</div>
-</div>
-</div>
+		requiredFields.forEach(function(field) {
+			const element = document.getElementById(field);
+			if (!element.value) {
+				isValid = false;
+				element.style.borderColor = 'red';
+			} else {
+				element.style.borderColor = '';
+			}
+		});
+
+		radioFields.forEach(function(field) {
+			const elements = document.getElementsByName(field);
+			let isChecked = false;
+			for (let i = 0; i < elements.length; i++) {
+				if (elements[i].checked) {
+					isChecked = true;
+					break;
+				}
+			}
+			if (!isChecked) {
+				isValid = false;
+				elements[0].parentNode.style.borderColor = 'red';
+			} else {
+				elements[0].parentNode.style.borderColor = '';
+			}
+		});
+
+		if (isValid) {
+			this.submit();
+		} else {
+			const alertBox = document.createElement('div');
+			alertBox.className = 'alert alert-danger';
+			alertBox.innerText = 'Please fill in all required fields.';
+			const form = document.getElementById('rugCleaningForm');
+			form.insertBefore(alertBox, form.firstChild);
+			window.scrollTo(0, form.offsetTop);
+		}
+	});
+	$(document).ready(function() {
+		$('#phone_number').on('keypress', function(event) {
+			var charCode = (event.which) ? event.which : event.keyCode;
+			if (charCode < 48 || charCode > 57) {
+				event.preventDefault();
+			}
+		});
+	});
+
+	$('#preferred_date, #alternate_date').on('keydown', function(event) {
+		event.preventDefault();
+	});
+
+	$('#preferred_date, #alternate_date').on('blur', function() {
+		var inputDate = new Date($(this).val());
+		var today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		if (inputDate < today) {
+			$(this).after('<div class="date-error" style="color: red; margin-top: 5px;">The date cannot be in the past.</div>');
+			setTimeout(function() {
+				$('.date-error').fadeOut('slow', function() {
+					$(this).remove();
+				});
+			}, 3000);
+			$(this).val('');
+		}
+	});
+	$('#preferred_time, #alternate_time').on('blur', function() {
+		var timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
+		var timeValue = $(this).val();
+
+		if (!timePattern.test(timeValue)) {
+			$(this).after('<div class="time-error" style="color: red; margin-top: 5px;">Please enter a valid time in HH:MM format.</div>');
+			setTimeout(function() {
+				$('.time-error').fadeOut('slow', function() {
+					$(this).remove();
+				});
+			}, 3000);
+			$(this).val('');
+		}
+	});
+	// $('#rug_image').on('change', function() {
+	// 	var file = $(this)[0].files[0];
+	// 	var fileType = file['type'];
+	// 	var validImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+	// 	if ($.inArray(fileType, validImageTypes) < 0) {
+	// 		$(this).after('<div class="image-error" style="color: red; margin-top: 5px;">Please upload a valid image file.</div>');
+	// 		setTimeout(function() {
+	// 			$('.image-error').fadeOut('slow', function() {
+	// 				$(this).remove();
+	// 			});
+	// 		}, 3000);
+	// 		$(this).val('');
+	// 	}
+	// });
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$('#preferred_date, #alternate_date').datepicker({
+			format: 'yyyy-mm-dd',
+			startDate: new Date(),
+			autoclose: true,
+			todayHighlight: true,
+			templates: {
+				leftArrow: '&laquo;',
+				rightArrow: '&raquo;'
+			},
+			beforeShowDay: function(date) {
+				var day = date.getDay();
+				return [(day != 0 && day != 6), ''];
+			},
+			clearBtn: true,
+			orientation: "bottom auto"
+		});
+	});
+</script>

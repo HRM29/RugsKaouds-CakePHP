@@ -1,22 +1,39 @@
 /**
- * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-/* CKEDITOR.editorConfig = function( config ) {
+CKEDITOR.editorConfig = function (config) {
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
-}; */
+	config.versionCheck = false;
+	config.toolbarGroups = [
+		{ name: 'document', groups: ['mode', 'document', 'doctools'] },
+		{ name: 'clipboard', groups: ['clipboard', 'undo'] },
+		{ name: 'insert', groups: ['insert'] },
+		{ name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
+		{ name: 'forms', groups: ['forms'] },
+		{ name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+		{ name: 'links', groups: ['links'] },
+		{ name: 'colors', groups: ['colors'] },
+		{ name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
+		{ name: 'styles', groups: ['styles'] },
+		'/',
+		{ name: 'tools', groups: ['tools'] },
+		{ name: 'others', groups: ['others'] },
+		{ name: 'about', groups: ['about'] }
+	];
 
+	config.removeButtons = 'Templates,Save,NewPage,ExportPdf,Preview,Print,PasteFromWord,SelectAll,Scayt,Checkbox,Radio,TextField,Form,Textarea,Select,Button,ImageButton,HiddenField,About,BulletedList,NumberedList,Outdent,Indent,Blockquote,CreateDiv,Anchor,Maximize,ShowBlocks';
 
-CKEDITOR.editorConfig = function( config ) {
-	config.filebrowserBrowseUrl = 'http://notosolutions.net/rugsnc/webroot/js/ckfinder/ckfinder.html';
-	config.filebrowserImageBrowseUrl = 'http://notosolutions.net/rugsnc/webroot/js/ckfinder/ckfinder.html?type=Images';
-	config.filebrowserFlashBrowseUrl = 'http://notosolutions.net/rugsnc/webroot/js/ckfinder/ckfinder.html?type=Flash';
-	
-	config.filebrowserUploadUrl = 'http://notosolutions.net/crowdfunding/webroot/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
-	config.filebrowserImageUploadUrl = 'http://notosolutions.net/rugsnc/webroot/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
-	config.filebrowserFlashUploadUrl = 'http://notosolutions.net/rugsnc/webroot/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
-}
-CKFinder.setupCKEditor( CKEDITOR, '../' );
+    // Disable title attribute
+    config.title = false;
+	config.filebrowserUploadMethod = 'form';
+	config.image_previewText = ' ';
+	config.fileTools_requestHeaders = {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    };
+	config.allowedContent = 'iframe[*]';
+	config.extraAllowedContent = 'iframe[*]';
+};

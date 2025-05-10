@@ -28,329 +28,340 @@ use Cake\Utility\Security;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
 use Cake\Datasource\ConnectionManager;
-class GeneralHelper extends Helper {
 
-    /**
-     * @getUserById
-     * get User Details by Id
-     */
-    public function getUserById($user_id = null) {
-		
-        $usersTable = TableRegistry::get('Users');
-        $users_data = $usersTable->get($user_id);
-		
-        return $users_data;
-    }
-    
- 
-     
-	
+class GeneralHelper extends Helper
+{
+
 	/**
-     * @getRoleById
-     * get User Role by Id
-     */
-    public function getUserName($id=null) {
-        $users = TableRegistry::get('users');
-        $usersData = $users->find('all')->where([
+	 * @getUserById
+	 * get User Details by Id
+	 */
+	public function getUserById($user_id = null)
+	{
+
+		$usersTable = TableRegistry::get('Users');
+		$users_data = $usersTable->get($user_id);
+
+		return $users_data;
+	}
+
+
+
+
+	/**
+	 * @getRoleById
+	 * get User Role by Id
+	 */
+	public function getUserName($id = null)
+	{
+		$users = TableRegistry::get('users');
+		$usersData = $users->find('all')->where([
 			'id' => $id,
-        ])->first();
-		 
-		if(!empty($usersData)){
-			return $usersData->first_name." ".$usersData->last_name;
-		}else{
-		    return '<span class="label label-danger ">Guest User</span>';
+		])->first();
+
+		if (!empty($usersData)) {
+			return $usersData->first_name . " " . $usersData->last_name;
+		} else {
+			return '<span class="label label-danger ">Guest User</span>';
 		}
-		
-    }
-	public function getUserEmail($id=null) {
-        $users = TableRegistry::get('users');
-        $usersData = $users->find('all')->where([
+	}
+	public function getUserEmail($id = null)
+	{
+		$users = TableRegistry::get('users');
+		$usersData = $users->find('all')->where([
 			'id' => $id,
-        ])->first();
-		 
-		if(!empty($usersData)){
+		])->first();
+
+		if (!empty($usersData)) {
 			return $usersData->email;
-		}else{
-		    return '';
+		} else {
+			return '';
 		}
-		
-    }
+	}
 
-	 
- 
-    /**
-     * @getStatus
-     * get status by Id
-     */
-    public function getStatus($status = null){ 
-			
-          switch($status) {
-              
-                case 0:
-                    return '<span class="label label-warning ">Pending</span>';
-                    break;
-               
-               case 1:
-                    return '<span class="label label-danger">Canceled</span>';
-                    break;
-               
-               case 2:
-                    return '<span class="label label-success">Processing</span>';
-                    break;
-					
-				case 3:
-                    return '<span class="label label-success">Completed</span>';
-                    break;
-					
-				case 4:
-                    return '<span class="label label-success">Return</span>';
-                    break;
-					
-				case 5:
-                    return '<span class="label label-success">Shipped</span>';
-                    break;	
-					
-                default:
-                    return null;
-          }
-         
-     }
 
-     public function getAdminStatus($status = null){ 
-			
-          switch($status) {
-              
-                case 0:
-                    return '<span class="label label-warning ">Delected</span>';
-                    break;
-               
-                case 1:
-                    return '<span class="label label-success">Active</span>';
-                    break;
-               
-                case 2:
-                    return '<span class="label label-danger">Inactive</span>';
-                    break;
-					
-                default:
-                    return null;
-          }
-         
-     }
-	 
-	 public function getPaymentstatus($status = null){
-          switch($status) {
-               
-               case 0:
-                    return '<span class="label label-warning">Pending</span>';
-                    break;
-               
-               case 2:
-                    return '<span class="label label-danger">Canceled</span>';
-                    break;
-               
-               case 1:
-                    return '<span class="label label-success">Complete</span>';
-                    break;
-               
-               default:
-                    return null;
-          }
-         
-     }
-	 
-	 /**
-     * @gettype_status
-     * get status by Id
-     */
-    public function getChargeType($status = null){
-          switch($status) {
-               
-               case 1:
-                    return '<span class="label label-warning ">Fixed</span>';
-                    break;
-               
-               case 2:
-                    return '<span class="label label-success">Percentage</span>';
-                    break;
-               
-               default:
-                    return null;
-          }
-         
-     }
-	public function getOrderstatus($status = null){
-          switch($status) {
-               
-               case 0:
-                    return '<span class="label label-warning ">Pending</span>';
-                    break;
-               
-               case 1:
-                    return '<span class="label label-danger">Canceled</span>';
-                    break;
-               
-               case 2:
-                    return '<span class="label label-success">Processing</span>';
-                    break;
-					
-				case 3:
-                    return '<span class="label label-success">Completed</span>';
-                    break;
-					
-				case 4:
-                    return '<span class="label label-warning">Return</span>';
-                    break;
-					
-				case 5:
-                    return '<span class="label label-success">Shipped</span>';
-                    break;	
-               
-               default:
-                    return null;
-          }
-         
-     } 
-	 
 
 	/**
-      *@get page title
-      * get page title
-     */
-   public function getCmspage(){
+	 * @getStatus
+	 * get status by Id
+	 */
+	public function getStatus($status = null)
+	{
+
+		switch ($status) {
+
+			case 0:
+				return '<span class="label label-warning ">Pending</span>';
+				break;
+
+			case 1:
+				return '<span class="label label-danger">Canceled</span>';
+				break;
+
+			case 2:
+				return '<span class="label label-success">Processing</span>';
+				break;
+
+			case 3:
+				return '<span class="label label-success">Completed</span>';
+				break;
+
+			case 4:
+				return '<span class="label label-success">Return</span>';
+				break;
+
+			case 5:
+				return '<span class="label label-success">Shipped</span>';
+				break;
+
+			default:
+				return null;
+		}
+	}
+
+	public function getAdminStatus($status = null)
+	{
+		switch ($status) {
+			case 0:
+				return '<span class="label label-warning ">Deleted</span>';
+				break;
+
+			case 1:
+				return '<span class="label label-success">Active</span>';
+				break;
+
+			case 2:
+				return '<span class="label label-danger">Inactive</span>';
+				break;
+
+			default:
+				return null;
+		}
+	}
+
+	public function getPaymentstatus($status = null)
+	{
+		switch ($status) {
+
+			case 0:
+				return '<span class="label label-warning">Pending</span>';
+				break;
+
+			case 2:
+				return '<span class="label label-danger">Canceled</span>';
+				break;
+
+			case 1:
+				return '<span class="label label-success">Complete</span>';
+				break;
+
+			default:
+				return null;
+		}
+	}
+
+	/**
+	 * @gettype_status
+	 * get status by Id
+	 */
+	public function getChargeType($status = null)
+	{
+		switch ($status) {
+
+			case 1:
+				return '<span class="label label-warning ">Fixed</span>';
+				break;
+
+			case 2:
+				return '<span class="label label-success">Percentage</span>';
+				break;
+
+			default:
+				return null;
+		}
+	}
+	public function getOrderstatus($status = null)
+	{
+		switch ($status) {
+
+			case 0:
+				return '<span class="label label-warning ">Pending</span>';
+				break;
+
+			case 1:
+				return '<span class="label label-danger">Canceled</span>';
+				break;
+
+			case 2:
+				return '<span class="label label-success">Processing</span>';
+				break;
+
+			case 3:
+				return '<span class="label label-success">Completed</span>';
+				break;
+
+			case 4:
+				return '<span class="label label-warning">Return</span>';
+				break;
+
+			case 5:
+				return '<span class="label label-success">Shipped</span>';
+				break;
+
+			default:
+				return null;
+		}
+	}
+
+
+	/**
+	 *@get page title
+	 * get page title
+	 */
+	public function getCmspage()
+	{
 		$cmspageTable = TableRegistry::get('CmsPages');
-		$cmspage = $cmspageTable->find('all')->where(['slug'=> 'About-us'])->orWhere(['slug'=> 'Contact-us'])->toArray();
+		$cmspage = $cmspageTable->find('all')->where(['slug' => 'About-us'])->orWhere(['slug' => 'Contact-us'])->toArray();
 		return $cmspage;
 	}
-	
+
 	public function getProductImages($id)
-     {
-	  $ProductImages = TableRegistry::get('ProductImages');
-	  $data = $ProductImages->find()->where(['product_id' => $id])->toArray();
-	  
-          return $data;
+	{
+		$ProductImages = TableRegistry::get('ProductImages');
+		$data = $ProductImages->find()->where(['product_id' => $id])->toArray();
+
+		return $data;
 	}
 	public function getProductSingleImages($id)
-     {
-	  $ProductImages = TableRegistry::get('ProductImages');
-	  $data = $ProductImages->find()->where(['product_id' => $id])->first();
-	  
-          return $data;
+	{
+		$ProductImages = TableRegistry::get('ProductImages');
+		$data = $ProductImages->find()->where(['product_id' => $id])->first();
+
+		return $data;
 	}
-	
-	
+
+
 	/**
-      *@get Users
-      * get Users
-     */
-	 
-	public function getUsers($id=null){
+	 *@get Users
+	 * get Users
+	 */
+
+	public function getUsers($id = null)
+	{
 		$usersTable = TableRegistry::get('Users');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$users = $usersTable->get($id);
-			$users = $users->first_name.' '.$users->last_name;
-			
-		}else{
+			$users = $users->first_name . ' ' . $users->last_name;
+		} else {
 			$users = '--';
 		}
 		return $users;
 	}
-	
+
 	/**
-      *@get Countries
-      * get Countries
-     */	
-	 
-	public function getCountry($id=null){
+	 *@get Countries
+	 * get Countries
+	 */
+
+	public function getCountry($id = null)
+	{
 		$country = '--';
 		$Table = TableRegistry::get('Countries');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$country = $Table->get($id);
 			$country = $country->country_name;
 		}
 		return $country;
 	}
-	
+
 	/**
-      *@get States
-      * get States
-     */
-	 
-	public function getStates($id=null){
+	 *@get States
+	 * get States
+	 */
+
+	public function getStates($id = null)
+	{
 		$state = '--';
 		$Table = TableRegistry::get('States');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$state = $Table->get($id);
 			$state = $state->state;
 		}
 		return $state;
 	}
-		
+
 	//getCategory 
-	
-	 
-	public function getCategory($id=null){
+
+
+	public function getCategory($id = null)
+	{
 		$category = '--';
 		$Table = TableRegistry::get('categories');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$cate = $Table->get($id);
 			$category = $cate->title;
 		}
 		return $category;
 	}
-	public function getSubCategories($id=null){
+	public function getSubCategories($id = null)
+	{
 		$category = '--';
 		$Table = TableRegistry::get('categories');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$cate = $Table->get($id);
 			$category = $cate->title;
 		}
 		return $category;
 	}
-	public function getPile($id=null){
+	public function getPile($id = null)
+	{
 		$pile = '--';
 		$Table = TableRegistry::get('piles');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$cate = $Table->get($id);
 			$pile = $cate->title;
 		}
 		return $pile;
 	}
-	public function getFoundation($id=null){
+	public function getFoundation($id = null)
+	{
 		$foundations = '--';
 		$Table = TableRegistry::get('foundations');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$cate = $Table->get($id);
 			$foundations = $cate->title;
 		}
 		return $foundations;
 	}
-	public function getColor($id=null){
+	public function getColor($id = null)
+	{
 		$colors = '--';
 		$Table = TableRegistry::get('Colors');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$cate = $Table->get($id);
 			$colors = $cate->name;
 		}
 		return $colors;
 	}
-	public function getDimension($id=null){
+	public function getDimension($id = null)
+	{
 		$dimensions = '--';
 		$Table = TableRegistry::get('dimensions');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$cate = $Table->get($id);
 			$dimensions = $cate->title;
 		}
 		return $dimensions;
 	}
-	public function getOtherColorName($id=null){
+	public function getOtherColorName($id = null)
+	{
 		$OtherColorName = '--';
-		
+
 		$color_coma_sep = explode(',', $id);
 		$ids = $color_coma_sep;
-		
+
 		$Table = TableRegistry::get('Colors');
-		foreach($ids as $idss){
+		foreach ($ids as $idss) {
 			$cate = $Table->get($idss);
 			$colors[] = $cate->name;
 		}
@@ -360,9 +371,10 @@ class GeneralHelper extends Helper {
 		} */
 		return $colors;
 	}
-	public function getCategorys($id=null){
+	public function getCategorys($id = null)
+	{
 		$categoryTable	=	TableRegistry::get('Categories');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$cats	=	$categoryTable->get($id);
 			$cat	=	$cats->title;
 		} else {
@@ -371,163 +383,174 @@ class GeneralHelper extends Helper {
 		return $cat;
 	}
 	//getSubCategory 
-	 
-	public function getSubCategory($id=null){
+
+	public function getSubCategory($id = null)
+	{
 		$subcategory = '--';
 		$Table = TableRegistry::get('sub_categories');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$sub_cate = $Table->get($id);
 			$subcategory = $sub_cate->title;
 		}
 		return $subcategory;
 	}
-	
+
 	//getBrand 
-	public function getBrand($id=null){
+	public function getBrand($id = null)
+	{
 		$brands = '--';
 		$Table = TableRegistry::get('brands');
-		if(!empty($id) && $id !=0){
+		if (!empty($id) && $id != 0) {
 			$brand = $Table->get($id);
 			$brands = $brand->title;
 		}
 		return $brands;
 	}
-	
-	public function getSize($size){
+
+	public function getSize($size)
+	{
 		$val = '';
-		if(!empty($size)){
-			$sizeArr = explode(",",$size);
-			
-			if(!empty($sizeArr)){
+		if (!empty($size)) {
+			$sizeArr = explode(",", $size);
+
+			if (!empty($sizeArr)) {
 				$Table = TableRegistry::get('Sizes');
-				foreach($sizeArr as $key => $sizeVal){
+				foreach ($sizeArr as $key => $sizeVal) {
 					$sizeVal = $Table->get($sizeVal);
 					//pr();
-					$val .= '<span class="label label-success">'.$sizeVal->size.'</span> ';
+					$val .= '<span class="label label-success">' . $sizeVal->size . '</span> ';
 				}
 			}
 		}
 		return $val;
 	}
-	
-	public function getColours($colour){
+
+	public function getColours($colour)
+	{
 		$val = '';
-		if(!empty($colour)){
-			$colourArr = explode(",",$colour);
-			
-			if(!empty($colourArr)){
+		if (!empty($colour)) {
+			$colourArr = explode(",", $colour);
+
+			if (!empty($colourArr)) {
 				$Table = TableRegistry::get('Colors');
-				foreach($colourArr as $key => $colourVal){
+				foreach ($colourArr as $key => $colourVal) {
 					$colourVal = $Table->get($colourVal);
-					$val .= '<span class="label label-success">'.$colourVal->name.'</span> ';
+					$val .= '<span class="label label-success">' . $colourVal->name . '</span> ';
 				}
 			}
 		}
 		return $val;
 	}
-	
+
 	/**
-     * @getStatus
-     * get status by Id
-     */
-    public function getWay($status = null){ 
-			
-          switch($status) {
-              
-				case 1:
-                    return '<span class="label label-success">Admin</span>';
-                    break;
-					
-                case 2:
-                    return '<span class="label label-warning">Customer</span>';
-                    break;
-                default:
-                    return null;
-          }
-         
-    }
-	
-	
-	public function reletedProducts($cat=null,$sub_cat){
-		
-		$productTable = TableRegistry::get('Products');	
+	 * @getStatus
+	 * get status by Id
+	 */
+	public function getWay($status = null)
+	{
+
+		switch ($status) {
+
+			case 1:
+				return '<span class="label label-success">Admin</span>';
+				break;
+
+			case 2:
+				return '<span class="label label-warning">Customer</span>';
+				break;
+			default:
+				return null;
+		}
+	}
+
+
+	public function reletedProducts($cat = null, $sub_cat)
+	{
+
+		$productTable = TableRegistry::get('Products');
 		$filters['OR']['category_id'] = $cat;
 		$filters['OR']['sub_category_id'] = $sub_cat;
 		$filters['Products.status'] = 1;
-					
-		$reletedProducts	=	$productTable->find('all',[
+
+		$reletedProducts	=	$productTable->find('all', [
 			'conditions' => [$filters],
-			'order'		=>	['id'=>'DESC'],
+			'order'		=>	['id' => 'DESC'],
 			'contain'	=>	['ProductImages']
 		])->toArray();
-		
+
 		//pr($reletedProducts); die;
 		return $reletedProducts;
 	}
- 
-	public function checkProductAvail($pro_id){
+
+	public function checkProductAvail($pro_id)
+	{
 		$pro_id = base64_decode($pro_id);
 		$result = '<span class="label label-danger ">Sold Out</span>';
-		if($pro_id > 0){
-			$productTable = TableRegistry::get('Products');	
+		if ($pro_id > 0) {
+			$productTable = TableRegistry::get('Products');
 			$filters['Products.status'] = 1;
 			$filters['Products.total_quantity >'] = 0;
-					
-			$Products	=	$productTable->find('all',[
+
+			$Products	=	$productTable->find('all', [
 				'conditions' => [$filters]
 			])->First();
-			
-			if(!empty($Products)){
+
+			if (!empty($Products)) {
 				$result = '<span class="label label-success">In Stock</span>';
 			}
 		}
-		
+
 		return $result;
 	}
-	
-	public function getChieldCat($cat){
+
+	public function getChieldCat($cat)
+	{
 		$category = [];
 		$Table = TableRegistry::get('categories');
-		if(!empty($cat) && $cat > 0){
+		if (!empty($cat) && $cat > 0) {
 			$category = $Table->find('all')->where([
-			'parent_id' => $cat,
+				'parent_id' => $cat,
 			])->contain(['SubCategories'])->toArray();
 		}
 		return $category;
 	}
-	
-	public function getCountCatProduct($cat_id){
+
+	public function getCountCatProduct($cat_id)
+	{
 		$countData = 0;
 		$Table = TableRegistry::get('Products');
-		if(!empty($cat_id) && $cat_id > 0){
+		if (!empty($cat_id) && $cat_id > 0) {
 			$countData = $Table->find('all')->where([
-			'sub_category_id' => $cat_id,'status' => 1,
+				'sub_category_id' => $cat_id,
+				'status' => 1,
 			])->count();
 		}
 		return $countData;
 	}
-	
-	public function getCountSizeProduct($size){
+
+	public function getCountSizeProduct($size)
+	{
 		$countData = 0;
 		$Table = TableRegistry::get('Products');
-		if(!empty($size) && $size > 0){
-			$countData = $Table->find('all',array('conditions' => array('status' => 1 ,'FIND_IN_SET(\''. $size .'\',size)')))->count();
+		if (!empty($size) && $size > 0) {
+			$countData = $Table->find('all', array('conditions' => array('status' => 1, 'FIND_IN_SET(\'' . $size . '\',size)')))->count();
 		}
 		return $countData;
 	}
- 
- 
-	public function getTotalAmount($data){
+
+
+	public function getTotalAmount($data)
+	{
 		$total = 0.00;
-		if(!empty($data)){
-			foreach($data as $countData){
+		if (!empty($data)) {
+			foreach ($data as $countData) {
 				$price = $countData['price'];
 				$qty = $countData['qty'];
-				
+
 				$total += $price * $qty;
 			}
 		}
-		
+
 		return $total;
 	}
 	function remote_file_exists($url)
@@ -543,14 +566,12 @@ class GeneralHelper extends Helper {
 		$ret = false;
 
 		//if request did not fail
-		if($result !== false)
-		{
+		if ($result !== false) {
 			//if request was ok, check response code
-			$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);  
+			$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-			if ($statusCode == 200)
-			{
-				$ret = true;   
+			if ($statusCode == 200) {
+				$ret = true;
 			}
 		}
 
@@ -558,161 +579,247 @@ class GeneralHelper extends Helper {
 
 		return $ret;
 	}
-	
-	function __get_picture_folder($rug_code=null)
+
+	function __get_picture_folder($rug_code = null)
 	{
 		$sku_no = preg_replace("/[^0-9]/", '', $rug_code);
-		
-		$rug_number=1*$sku_no;
-		$group = floor($rug_number /500);
+
+		$rug_number = 1 * $sku_no;
+		$group = floor($rug_number / 500);
 		$start = $group * 500;
 		$end = ($group + 1) * 500 - 1;
-		$folder = $start ."-".$end;
-			return $folder;
+		$folder = $start . "-" . $end;
+		return $folder;
 	}
-	
-	public function getRugStyle($RugStyle=null,$filtersArr){
+
+	public function getRugStyle($RugStyle = null, $filtersArr)
+	{
 		$productTable	=	TableRegistry::get('Products');
-		
+
 		$data = $productTable->find('all')
 			->where([
-				'Products.status' => 1, 
-				'Products.sold_status !=' => 2, 
-				'Products.overstock_style' => $RugStyle 
+				'Products.status' => 1,
+				'Products.sold_status !=' => 2,
+				'Products.overstock_style' => $RugStyle
 			])->count();
-		 
-		if(!empty($filtersArr)){
-			 
+
+		if (!empty($filtersArr)) {
+
 			$data = $productTable->find('all')
 				->where([
-					'Products.status' => 1, 
-					'Products.sold_status !=' => 2, 
-					'Products.overstock_style' => $RugStyle 
+					'Products.status' => 1,
+					'Products.sold_status !=' => 2,
+					'Products.overstock_style' => $RugStyle
 				])
 				->where([
-					$filtersArr 
-				])->count(); 
+					$filtersArr
+				])->count();
 		}
-		return " (".$data.")";
+		return " (" . $data . ")";
 	}
-	
-	public function getSizeCount($dimensionSlug=null,$dimensionType=null,$filtersArr){
+
+	public function getSizeCount($dimensionSlug = null, $dimensionType = null, $filtersArr)
+	{
 		$dimensionsTable	=	TableRegistry::get('Dimensions');
 		$productTable		=	TableRegistry::get('Products');
-		$Dimension	=	$dimensionsTable->find('all')->where(['slug LIKE'=>$dimensionSlug,'type'=>$dimensionType])->first();
-		$data = $productTable->find()->where(['dimension_id'=>$Dimension->id,'status'=>1,'sold_status'=>0])->count();
-		
-		if(!empty($filtersArr)){
+		$Dimension	=	$dimensionsTable->find('all')->where(['slug LIKE' => $dimensionSlug, 'type' => $dimensionType])->first();
+		$data = $productTable->find()->where(['dimension_id' => $Dimension->id, 'status' => 1, 'sold_status' => 0])->count();
+
+		if (!empty($filtersArr)) {
 			$filterss['Products.status'] = 1;
 			$filterss['Products.sold_status'] = 0;
-			$filterss['Products.dimension_id'] = $Dimension->id; 
-			
+			$filterss['Products.dimension_id'] = $Dimension->id;
+
 			//echo "<pre>";print_r($filterss);
 			//echo "<pre>";print_r($filtersArr);
-		 
-			$data = $productTable->find()->where([$filterss,$filtersArr])->count(); 
+
+			$data = $productTable->find()->where([$filterss, $filtersArr])->count();
 		}
-		
-		return " (".$data.")";
-		
+
+		return " (" . $data . ")";
 	}
-	public function getColorCount($colorId=null,$filtersArr){
+	public function getColorCount($colorId = null, $filtersArr)
+	{
 		$colorsTable	=	TableRegistry::get('Colors');
 		$productTable	=	TableRegistry::get('Products');
 		//$Color	=	$colorsTable->find('all')->where(['slug LIKE'=>$color])->first();
-		$data = $productTable->find()->where(['color_id'=>$colorId,'status'=>1,'sold_status'=>0])->count();
-		
-		if(!empty($filtersArr)){
-			
+		$data = $productTable->find()->where(['color_id' => $colorId, 'status' => 1, 'sold_status' => 0])->count();
+
+		if (!empty($filtersArr)) {
+
 			$filterss['Products.status'] = 1;
 			$filterss['Products.sold_status'] = 0;
-			$filterss['Products.color_id'] = $colorId; 
-			 
-			$data = $productTable->find()->where([$filterss,$filtersArr])->count(); 
+			$filterss['Products.color_id'] = $colorId;
+
+			$data = $productTable->find()->where([$filterss, $filtersArr])->count();
 		}
-		return " (".$data.")";
+		return " (" . $data . ")";
 	}
-	
-	public function getRugPattern($pattern = null,$filtersArr){
+
+	public function getRugPattern($pattern = null, $filtersArr)
+	{
 		$productTable	=	TableRegistry::get('Products');
-		$data = $productTable->find()->where(['pattern'=>$pattern,'status'=>1,'sold_status'=>0])->count();
-		
-		if(!empty($filtersArr)){ 
+		$data = $productTable->find()->where(['pattern' => $pattern, 'status' => 1, 'sold_status' => 0])->count();
+
+		if (!empty($filtersArr)) {
 			$filterss['Products.status'] = 1;
 			$filterss['Products.sold_status'] = 0;
-			$filterss['Products.pattern'] = $pattern; 
-			 
-			$data = $productTable->find()->where([$filterss,$filtersArr])->count(); 
+			$filterss['Products.pattern'] = $pattern;
+
+			$data = $productTable->find()->where([$filterss, $filtersArr])->count();
 		}
-		return " (".$data.")";
+		return " (" . $data . ")";
 	}
-	
-	public function getRugDesign($design = null,$filtersArr){
+
+	public function getRugDesign($design = null, $filtersArr)
+	{
 		$productTable	=	TableRegistry::get('Products');
-		$data = $productTable->find()->where(['rug_design'=>$design,'status'=>1,'sold_status'=>0])->count();
-		 
-		if(!empty($filtersArr)){ 
+		$data = $productTable->find()->where(['rug_design' => $design, 'status' => 1, 'sold_status' => 0])->count();
+
+		if (!empty($filtersArr)) {
 			$filterss['Products.status'] = 1;
 			$filterss['Products.sold_status'] = 0;
-			$filterss['Products.rug_design'] = $design; 
-			 
-			$data = $productTable->find()->where([$filterss,$filtersArr])->count(); 
+			$filterss['Products.rug_design'] = $design;
+
+			$data = $productTable->find()->where([$filterss, $filtersArr])->count();
 		}
-		return " (".$data.")";
+		return " (" . $data . ")";
 	}
-	
-	public function getRugMaterial($material = null,$filtersArr){
+
+	public function getRugMaterial($material = null, $filtersArr)
+	{
 		$productTable	=	TableRegistry::get('Products');
-		$data = $productTable->find()->where(['material'=>$material,'status'=>1,'sold_status'=>0])->count();
-		 
-		if(!empty($filtersArr)){ 
+		$data = $productTable->find()->where(['material' => $material, 'status' => 1, 'sold_status' => 0])->count();
+
+		if (!empty($filtersArr)) {
 			$filterss['Products.status'] = 1;
 			$filterss['Products.sold_status'] = 0;
-			$filterss['Products.material'] = $material; 
-			 
-			$data = $productTable->find()->where([$filterss,$filtersArr])->count(); 
+			$filterss['Products.material'] = $material;
+
+			$data = $productTable->find()->where([$filterss, $filtersArr])->count();
 		}
-		return " (".$data.")";
+		return " (" . $data . ")";
 	}
-	
-	public function getRugConstruction($constr = null,$filtersArr){
+
+	public function getRugConstruction($constr = null, $filtersArr)
+	{
 		$productTable	=	TableRegistry::get('Products');
-		$data = $productTable->find()->where(['rug_type'=>$constr,'status'=>1,'sold_status'=>0])->count();
-		 
-		if(!empty($filtersArr)){ 
+		$data = $productTable->find()->where(['rug_type' => $constr, 'status' => 1, 'sold_status' => 0])->count();
+
+		if (!empty($filtersArr)) {
 			$filterss['Products.status'] = 1;
 			$filterss['Products.sold_status'] = 0;
-			$filterss['Products.rug_type'] = $constr; 
-			 
-			$data = $productTable->find()->where([$filterss,$filtersArr])->count(); 
+			$filterss['Products.rug_type'] = $constr;
+
+			$data = $productTable->find()->where([$filterss, $filtersArr])->count();
 		}
-		return " (".$data.")";
+		return " (" . $data . ")";
 	}
-	
-	public function getRugCategory($cat_id = null,$filtersArr){
+
+	public function getRugCategory($cat_id = null, $filtersArr)
+	{
 		$productTable	=	TableRegistry::get('Products');
-		$data = $productTable->find()->where(['category_id'=>$cat_id,'status'=>1,'sold_status'=>0])->count();
-		 
-		if(!empty($filtersArr)){ 
+		$data = $productTable->find()->where(['category_id' => $cat_id, 'status' => 1, 'sold_status' => 0])->count();
+
+		if (!empty($filtersArr)) {
 			$filterss['Products.status'] = 1;
 			$filterss['Products.sold_status'] = 0;
-			$filterss['Products.category_id'] = $cat_id; 
-			 
-			$data = $productTable->find()->where([$filterss,$filtersArr])->count(); 
+			$filterss['Products.category_id'] = $cat_id;
+
+			$data = $productTable->find()->where([$filterss, $filtersArr])->count();
 		}
-		return " (".$data.")";
+		return " (" . $data . ")";
 	}
-	
-	public function getSizeByType($type = null){
+
+	public function getSizeByType($type = null)
+	{
 		/* $dimensionsTable	=	TableRegistry::get('Dimensions');
 		$order = array("Dimensions.type"=>"ASC","CAST( Dimensions.slug AS UNSIGNED ) ASC");
 		$result	=	$dimensionsTable->find('threaded')->where(['status'=>ACTIVE,'is_large_runner'=>0,'type'=>$type])->order($order)->toArray();
 		return $result; */
-		
-		
+
+
 		$conn = ConnectionManager::get('default');
 		$stmt = $conn->execute("SELECT Dimensions.id,Dimensions.title,Dimensions.type,Dimensions.slug,Dimensions.term,CONVERT(SUBSTRING_INDEX(LOWER(Dimensions.title),'x',1),UNSIGNED INTEGER) as fr,CONVERT(SUBSTRING_INDEX(LOWER(Dimensions.title),'x',-1),UNSIGNED INTEGER) as sr FROM dimensions as Dimensions where Dimensions.status=1 and Dimensions.is_large_runner=0  and type = $type order by fr asc, sr asc");
-		$result = $stmt ->fetchAll('assoc');
-		return  $result; 
+		$result = $stmt->fetchAll('assoc');
+		return  $result;
 	}
- }
+
+	/**
+	 * Limits the text to a certain number of characters and adds ellipsis if necessary.
+	 *
+	 * @param string $text The text to be truncated.
+	 * @param int $limit The maximum number of characters.
+	 * @param string $ellipsis The string to append if the text is truncated (default is '...').
+	 * @return string The truncated text with ellipsis (if any).
+	 */
+	public function limitText($text, $limit = 100, $ellipsis = '...')
+	{
+		// Check if the text length is greater than the limit
+		if (strlen($text) > $limit) {
+			// Truncate the text and add ellipsis
+			return substr($text, 0, $limit) . $ellipsis;
+		}
+
+		// Return the original text if it's within the limit
+		return $text;
+	}
+	public function getAdminTextStatus($status = null)
+	{
+		switch ($status) {
+			case 'approved':
+				return '<span class="label label-success">Approved</span>';
+				break;
+			case 'rejected':
+				return '<span class="label label-danger">Rejected</span>';
+				break;
+			case 'pending':
+				return '<span class="label label-warning">Pending</span>';
+				break;
+			case 'active':
+				return '<span class="label label-success">Active</span>';
+				break;
+			case 'inactive':
+				return '<span class="label label-danger">InActive</span>';
+				break;
+			case 'archived':
+				return '<span class="label label-warning">Archived</span>';
+				break;
+			default:
+				return null;
+		}
+	}
+
+	public function returnCollectionParentData($id)
+	{
+		$collectionTable	=	TableRegistry::getTableLocator()->get('Collections')->setAlias('Collection1');
+		$data = $collectionTable->find()->select(['Collection2.id', 'Collection2.title', 'Collection2.parent_id'])
+			->join([
+				'Collection2' => [
+					'table' => 'collections',
+					'type' => 'INNER',
+					'conditions' => 'Collection2.id = Collection1.parent_id'
+				]
+			])->where(['Collection1.id' => $id]);
+		if ($data->count() > 0) {
+			$parentData = $data->enableHydration(false)->first();
+			return $parentData;
+		}
+		return '';
+	}
+
+	public function returnCollectionChildData($id)
+	{
+		$returnData = ['status' => true, 'data' => [], 'delete_parent' => false];
+		$collectionTable	=	TableRegistry::getTableLocator()->get('Collections')->setAlias('Collection1');
+		$data = $collectionTable->find()->select(['Collection1.title'])->where(['Collection1.parent_id' => $id]);
+		$childCount = $data->count();
+		if ($childCount > 0) {
+			$returnData['data'] = $data->enableHydration(false)->toArray();
+		} else {
+			$returnData['delete_parent'] = true;
+			$returnData['status'] = false;
+		}
+		return $returnData;
+	}
+}

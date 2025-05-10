@@ -451,7 +451,7 @@ class ProductsController extends AppController {
 					$email_billing = $orders->find('all')->select(['billing_first_name','billing_last_name','billing_email',])->where(['id'=>$last_id])->First();
 					
 					$message = 'Thank you for order';
-					$subject = 'Order Details at www.rugsnc.com';
+					$subject = 'Order Details at www.Kaouds.com';
 					$email = new Email();
 					
 					$email->transport('default');

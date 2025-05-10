@@ -1,12 +1,12 @@
 <div class="static-page">
-<div class="container p-0">
+<div class="container-fluid p-0">
 <h1>Shipping Information</h1>
 <h4>Delivery Time</h4>
 <p>Area rugs are processed within 24 to 72 hours of the time orders are placed. All rugs are shipped via ground freight which then takes an additional 3 to 10 days for transit depending on the geographical location of your delivery address. For more information please contact our toll free number 800.999.2605.</p>
 <h4>Tracking Your Package</h4>
 <p>We email your tracking information within 2 days of placing your order.</p>
 <h4>Free Shipping</h4>
-<p>The Gallery of Oriental Rugs offers FREE shipping on all orders within the 48 continental United States, this includes area rugs of all sizes.</p>
+<p>The Kaoud Carpets & Rugs offers FREE shipping on all orders within the 48 continental United States, this includes area rugs of all sizes.</p>
 <h2>Care and Cleaning</h2>
 <p>An area rug brings elegance to any decor. Luckily, caring for an area rug isn’t difficult, and if done properly, you can add considerable life to your rug.</p>
 <h4>Vacuuming and Beating</h4>

@@ -1,201 +1,371 @@
-<?php 
+<?php
+
 use Cake\Routing\Router;
 use Cake\Core\Configure;
+
 $session = $this->request->getSession();
+$session = $this->request->getSession();
+$cardData = $session->read('cart');
+if (empty($cardData)) {
+	$cart_count = 0;
+} else {
+	$cart_count = count($cardData);
+}
 $authUser = $session->read('Auth');
-?> 
-<section class="top-nav-bar">
-  <div class="container">
-    <div class="row">
-      <div class="col-6 top-bar-socials"> <span class="icons"> <a target="_blank" href="https://www.facebook.com/GalleryOfOrientalRugs"><i class="fa fa-facebook"></i></a> <a target="_blank" href="https://www.instagram.com/galleryoforientalrugsnc"><i class="fa fa-instagram"></i></a> 
-       <a target="_blank"  href="https://www.pinterest.com/GalleryofOrientalRugs/"><i class="fa fa-pinterest-p"></i></a>
-            <!--a href="#"><i class="fa fa-rss"></i></a>--> 
-        </span> <span class="text">Enjoy Free Shipping</span>
-		<span class="text"><i class="fa fa-phone"></i> <?php echo Configure::read('App.phone'); ?></span> </div>
-      <div class="col-5 top-link">
-        <ul class="nav">
-		<?php if(!empty($authUser['User']['id'])){ ?>
-			 <!--p class="nav-link active">Welcome : <?= $authUser['User']['first_name']; ?> &nbsp;&nbsp;&nbsp; <a href="<?php echo $this->Url->build(['controller'=>'users','action'=>'logout']); ?>" style="display: inline-block;color: #fff;"><i class="fa fa-sign-out" aria-hidden="true"></i></a></p-->
-			 <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="background: rgb(70, 64, 64) !important;"> 
-				  <a href="<?php echo $this->Url->build(['controller'=>'users','action'=>'myaccount']) ?>" class="deshbord-menu">Dashboard</a>
-				  <a href="<?php echo $this->Url->build(['controller'=>'users','action'=>'wishlist']) ?>" class="deshbord-menu">Favourite List</a>
-				  <a href="<?php echo $this->Url->build(['controller'=>'users','action'=>'logout']) ?>" class="deshbord-menu">Logout</a>
-			  </div>
-            </li>
-		<?php } else{ ?>
-		<div class="nav_iner">	
-			<li> <a class="nav-link active" href="<?php echo $this->Url->build(['controller'=>'users','action'=>'login']); ?>">Login</a> </li>
-			<li><span>|</span></li>
-			<li> <a class="nav-link" href="<?php echo $this->Url->build(['controller'=>'users','action'=>'login']); ?>">Register</a> </li>
-		</div>	
-		<?php } ?>
-          
-          <li class="nav-item">
-		  
-		<?php echo $this->Form->create('',['type' => 'post','id'=>'searchForm','enctype' =>'multipart/form-data']); ?>
-				<div class="searchbar">	
-					<input type="text" name="search_details" class="search_input" placeholder="Search..." id="search-details" required value=<?= isset($savesearch['search_details'])?$savesearch['search_details']:'' ?> >	
-					<a class="search_icon searchForm" style="cursor:pointer;"><i class="fa fa-search"></i></a>
-				</div>
-			<?php  echo $this->Form->end();  ?>
-		  	<?php /* echo $this->Form->create('',['type' => 'post','id'=>'searchForm','enctype' =>'multipart/form-data']); ?>
-			<div class="searchbar">	
-				<?php echo $this->Form->input("search_details",array('required'=>false,'type'=>'text','class'=>'search_input','label'=>false,'value'=>isset($savesearch['search_details'])?$savesearch['search_details']:'',"placeholder"=>"Search...")); ?>
-				
-			<button class="btn btn-outline-success my-2 my-sm-0 searchForm" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
-				<!--a href="#" class="search_icon"><i class="fa fa-search"></i></a-->
-				</div>
-				<!--button class="btn btn-outline-success my-2 my-sm-0 searchForm" type="button"><i class="fa fa-search" aria-hidden="true"></i></button-->
-		    <?php   echo $this->Form->end();  */?>
-            <!--form action="/action_page.php">
-			
-             <div class="searchbar">
-				  <input class="search_input" type="text" name="" placeholder="Search...">
-				  <a href="#" class="search_icon"><i class="fa fa-search"></i></a>
-				</div>
-            </form-->
-          </li>
-          <!--li class="customer-link"><a href="<?php echo $this->Url->build(['controller'=>'products','action'=>'cart']) ?>"><i class="fa fa-shopping-cart"></i></a></li-->
-		  <?php if(!empty($authUser['User']['id'])){ ?>
-			<li class="customer-link"><a href="<?php echo $this->Url->build(['controller'=>'users','action'=>'wishlist']) ?>"><i class="fa fa-heart"></i></a></li>
-		  <?php } ?>
-		  </div>
-		  
-		  
-		  <div class="col-1">
-		  <div class="attr-nav">
-            <ul>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                        <i class="fa fa-shopping-cart"></i>
-                        <span class="badge"><?= count($cartData);?></span>
-                    </a>
-                    <ul class="dropdown-menu cart-list">
-					<?php
-					if(!empty($cartData)){
-					$total = 0;
-					foreach($cartData as $key => $data){ ?>
-                        <li>
-                            <a  class="photo"><?php 
-									$img_src = 'https://shrugs.com/rug_pictures/';	
-											
-									$img_no = str_replace("GOR"," ",$data['sku_no'] );
-									$img_name = "sh".$img_no/7;
-									$inFolder = $this->General->__get_picture_folder($img_name);
-									
-									 
-									$imgName =  $img_name." 001.jpg";
-						 
-									$fileUrl = $img_src."overstock_rugs/".$inFolder."/".$imgName;
-									$thumb_imgName =  	$img_name." 001.jpg";
-									$thumbArr = explode('_',$pimg['ProductImage']['image']);	
-									$fileUrlThumb = $img_src.$inFolder.'/thumbs/thumb_'.$thumb_imgName;
-										if($this->General->remote_file_exists($fileUrl))
-										{
-										?>
-											<img src="<?php echo $fileUrl; ?>"  alt="<?php echo $data['title']; ?>" class="img-fluid">
-									<?php  
-									}
-									
-									if($this->General->remote_file_exists($fileUrl) == "")
-										{	$data =  $this->General->getProductImages($data['id']);
-									 foreach($data as $images){
-									?>
-										<img src="<?php echo $images['image']; ?>"  alt="<?php echo $images['title']; ?>" class="img-fluid">
-										<?php }
-										$i = '';
-										} 
-									?></a>
-                            <h6><a ><?= $data['title'];?></a></h6>
-							<p>1 X $<?= round($data['selling_price'],2);?>  <span class="regular-price">$<?= round($data['everyday_price'],2);?></span></p>
-                        </li>
-					<?php
-						$total = $total + round($data['selling_price'],2);
-					} ?>
-                       
-                        <li class="total">
-                            <span class="pull-right"><strong>Total</strong>: $ <?= $total; ?></span>
-                            <a href="<?php echo $this->Url->build(['controller'=>'products','action'=>'cart']) ?>" class="btn btn-default btn-cart">Checkout</a>
-                        </li>
-					<?php }else{ ?>
-						<p style="text-align:center">Your cart is empty !</p>
-					<?php }?>
-                    </ul>
-                </li>
-            </ul>
-        </div>  
-		
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-<div class="container">
-  <div class="logo mobile">
-	  <a href="<?php echo Router::url('/', true) ?>">
-		   <?= $this->Html->image('logo.png', ['alt' => '','width'=>'60px']);?>
-	  </a>
-    <p><a href="<?php echo Router::url('/', true) ?>">GALLERY OF ORIENTAL RUGS</a></p>
-  </div>
-</div>
-<div class="container-fluid bg-light">
-  <div class="row">
-    <div class="col-md-12">
-      <nav class="navbar navbar-expand-lg navbar-light "> <span class="navbar-brand">Enjoy Free Shipping</span>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav">
-            <li class="nav-item active"> <a class="nav-link underline" href="<?php echo Router::url('/', true) ?>">Home <span class="sr-only">(current)</span></a> </li>
-            <li class="nav-item"> <a class="nav-link underline" href="<?php echo $this->Url->build(['controller'=>'products','action'=>'shopping']); ?>">Shop </a> </li>
-            <li class="nav-item"> <a class="nav-link underline" href="<?php echo Router::url('/', true) ?>pages/carpet">Carpet</a> </li>
-            <li class="nav-item dropdown"> 
-			 <a class="nav-link dropdown-toggle underline" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Rug Cleaning </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
-			  <a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/rugcleaning">Rug Cleaning</a> 
-			  <a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/rugrepair">Rug Repair</a> 
-			  <a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/rugappraisal">Rug Appraisal</a> 
-			  </div>
-            </li>
-			<!--li class="nav-item"> <a class="nav-link" href="<?php echo Router::url('/', true) ?>pages/portfolio">Portfolio</a> </li-->
-             
-          </ul>
-		  
-		  <div class="logo">
-	  <a href="<?php echo Router::url('/', true) ?>">
-		   <?= $this->Html->image('logo.png', ['alt' => '','width'=>'60px']);?>
-	  </a>
-    <p><a href="<?php echo Router::url('/', true) ?>">GALLERY OF ORIENTAL RUGS</a></p>
-  </div>
-  
-		  <ul class="navbar-nav">
-		  <li class="nav-item dropdown"> 
-			 <a class="nav-link dropdown-toggle underline" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Interior design </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
-			  <a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/interiordesign">Interior Design</a> 
-			  <a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/pairingpatternsorientalrug">Pairing Patterns</a> 
+$action = $this->request->getParam('action');
+$slug = $this->request->getParam('slug');
+$controller = $this->request->getParam('controller');
+
+$aboutUs_Slugs = ['kaoud-carpets-rugs', 'our-brands-inventory', 'community', 'asid'];
+$shop_Actions = ['shopping', 'rugs', 'cart', 'checkout', 'productView'];
+$services_Actions = ['rugcleaning', 'rugrepair', 'rugappraisal', 'rugsellus'];
+?>
+
+<?php echo $this->Html->script(['jquery-3.7.1.min.js']); ?>
+<?php echo $this->Html->script(['popper.min.js']); ?>
+<?php echo $this->Html->script(['bootstrap.min.js']); ?>
+<?php echo $this->Html->script(['jquery.matchHeight-min.js']); ?>
+<?php echo $this->Html->script(['owl.carousel.js']); ?>
+<?php echo $this->Html->script(['select2.min.js']); ?>
+<?php echo $this->Html->script(['owl.carousel.js']); ?>
+<?php echo $this->Html->script(['custom.min.js']); ?>
+<?php echo $this->Html->script(['search.custom.min.js']); ?>
+<?php echo $this->Html->script(['jquery.payform.min.js']); ?>
+<?php echo $this->Html->script(['script.js']); ?>
+<?php echo $this->Html->script(['sweetalert2.min.js']); ?>
+<?php echo $this->Html->script(['fancybox.umd.js']); ?>
+<script src="https://www.google.com/recaptcha/api.js?render=<?php echo CAPTCHA_SITEKEY ?>"></script>
+
+<div class="topbar">
+	<div class="container-fluid">
+		<div class="row align-items-center announcement">
+			<div class="col-md-5">
+				<a href="tel:<?php echo Configure::read("App.phone"); ?>">Call Us</a>
+				<a href="https://www.google.com/maps/place/Kaoud+Carpets+%26+Rugs/@41.1638658,-73.4211357,17z/data=!3m1!4b1!4m5!3m4!1s0x89e81d1fe79dcc0f:0x60cd628477e28356!8m2!3d41.1638658!4d-73.418947" target="_blank">Visit Us</a>
+				<a href="mailto:<?php echo Configure::read("App.EmailFrom"); ?>"><i class="bi bi-envelope-fill"></i></a>
 			</div>
-            </li>
-			
-			<li class="nav-item dropdown"> 
-			 <a class="nav-link dropdown-toggle underline" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About Us</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
-			  <a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/aboutus">About Us</a> 
-			  <a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/awardwinning">Award Winning</a> 
-			  <a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/businesshighlights">Business Highlights</a> 
-			  <a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/frednasseribio">Fred Nasseri Bio</a> 
-			  <a class="dropdown-item" href="<?php echo Router::url('/', true) ?>pages/videos">Videos</a> 
-			  </div>
-            </li>
-			
-			<li class="nav-item"> <a class="nav-link underline" href="<?php echo Router::url('/', true) ?>pages/contactUs">Contact Us</a> </li>
-		  <ul>
-		  
-		  
-        </div>
-      </nav>
-    </div>
-  </div>
+			<div class="col-md-7">
+				<p><?php echo Configure::read("App.site-announcement"); ?></p>
+			</div>
+
+			<!-- <div class="col-md-7">
+			</div>
+			<div class="col-md-5">
+				<div class="social">
+					<ul>
+						<li><a href="https://www.facebook.com/profile.php?id=100063498433021#" target="_blank"><i class="bi bi-facebook"></i></a></li>
+						<li><a href="https://www.instagram.com/kaoudcarpetandrugs/" target="_blank"><i class="bi bi-instagram"></i></a></li>
+						<li><a href="https://x.com/KaoudCarpets?mx=2" target="_blank"><i class="bi bi-twitter-x"></i></a></li>
+						<li><a href="https://x.com/KaoudCarpets?mx=2" target="_blank"><i class="bi bi-linkedin"></i></a></li>
+						<li><a href="mailto:info@kaouds.com" target="_blank"><i class="bi bi-envelope-fill"></i></a></li>
+						<li><a href="tel:203.762.0376" target="_blank"><i class="bi bi-telephone-fill"></i></a></li>
+					</ul>
+				</div>
+			</div> -->
+		</div>
+	</div>
 </div>
- <script>document.getElementById('search-details')    .addEventListener('keyup', function(event) {        if (event.code === 'Enter')        {             event.preventDefault();            document.querySelector('form').submit();        }    });</script>
- 
+
+<header id="myHeader">
+	<div class="container-fluid">
+		<div class="row align-items-center">
+			<div class="col-md-2">
+				<div class="logo" style="padding: 5px 0;">
+					<a href="/">
+						<!--?php echo $this->Html->image('logo.jpg', ['alt' => 'logo']); ?-->
+						<img src="<?php echo LOGO_URL; ?>" alt="logo">
+						<img class="mbl" src="<?php echo MBL_LOGO_URL; ?>" alt="logo">
+					</a>
+				</div>
+			</div>
+			<div class="col-md-10">
+				<div class="menus">
+					<nav class="navbar navbar-expand-lg navbar-light">
+						<button class="navbar-toggler" type="button" onclick="sdbr_open()">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="mySidebar">
+							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+								<button onclick="sdbr_close()" class="close">&times;</button>
+								<li class="nav-item"><a class="nav-link <?php echo in_array($action, $shop_Actions) ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>shop">Shop</a></li>
+								<!--li class="nav-item"><a class="nav-link <?php echo $action == 'collectionMenu' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>collections">Collections</a></li-->
+								<?php
+								if (isset($collectionCategoriesData) && !empty($collectionCategoriesData)) {
+								?>
+									<li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="<?php echo Router::url('/', true) ?>collections" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Collections</a>
+										<div class="dropdown-menu mega" aria-labelledby="navbarDropdown">
+											<div class="container">
+												<div class="row">
+													<?php
+													foreach ($collectionCategoriesData as $parentKey => $parendData) {
+													?>
+														<div class="col-md-2 no_padding">
+															<h4><a href="<?php echo Router::url('/', true) . "collections/" . $parendData['ParentName']['slug']; ?>" style = "text-decoration:none;"><?php echo $parendData['ParentName']['title']; ?></a></h4>
+															<?php
+															if (isset($parendData['SubCategory']) && !empty($parendData['SubCategory'])) {
+															?>
+																<ul class="nav flex-column">
+																	<?php
+																	foreach ($parendData['SubCategory'] as $subCategoryKey => $subCategoryValue) {
+																	?>
+																		<li class="nav-item"> <a class="nav-link" href="<?php echo Router::url('/', true) . "collections/" . $subCategoryValue['SubCategorySlug']; ?>"><?php echo $subCategoryValue['SubCategoryName'] ?></a> </li>
+																	<?php
+																	}
+																	?>
+																</ul>
+															<?php
+															}
+															?>
+														</div>
+													<?php
+													}
+													?>
+
+												</div>
+											</div>
+										</div>
+									</li>
+								<?php
+								}
+								?>
+
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle <?php echo in_array($action, $services_Actions) ? 'active'  : ''; ?>" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>rug-cleaning-form">Schedule Rug Cleaning</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>schedule-pickup-for-rug-repair">Schedule Rug Repair</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>schedule-insurance-appraisal">Schedule Appraisal</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>schedule-sell-us">Schedule Sell Us</a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a class="nav-link <?php echo $slug == 'rug-care' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>rug-care">Rug Care</a></li>
+								<li class="nav-item"><a class="nav-link <?php echo $slug == 'choosing-a-rug' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>choosing-a-rug">Choosing A Rug</a></li>
+								<li class="nav-item"><a class="nav-link <?php echo $slug == 'FAQS' || $slug == 'faqs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>faqs">Faqs</a></li>
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle <?php echo in_array($slug, $aboutUs_Slugs) ? 'active'  : ''; ?>" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/kaoud-carpets-rugs">Kaoud Carpets & Rugs</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/our-brands-inventory">Our Brands & Inventory</a></li>
+										<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/community">Community</a></li>
+										<?php /* ?>	<li><a class="dropdown-item" href="<?php echo Router::url('/', true) ?>about-us/asid">Asid</a></li>	<?php */ ?>
+									</ul>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="<?php echo Router::url('/', true) ?>blog">Latest News</a></li>
+								<li class="nav-item"><a class="nav-link <?php echo $action == 'projects' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>completed-projects">Inspiration</a></li>
+								<li class="nav-item"><a class="nav-link <?php echo $action == 'contactUs' ? 'active'  : ''; ?>" href="<?php echo Router::url('/', true) ?>contact">Contact</a></li>
+							</ul>
+						</div>
+						<div class="srch_icon">
+							<ul>
+								<li><a href="<?php echo Router::url('/', true) ?>shop" class="btn">Shop Now</a></li>
+								<li><a href="<?php echo $this->Url->build(['controller' => 'Users', 'action' => 'myAccountRedirect']); ?>"><i class="bi bi-person-fill"></i></a></li>
+								<li><a href="<?php echo Router::url('/', true); ?>users/wishlist"><i class="bi bi-heart-fill"></i></a></li>
+								<li><a href="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'cart']); ?>"><i class="bi bi-cart-fill"></i><span><?php echo $cart_count; ?></span></a></li>
+							</ul>
+						</div>
+						<div class="search">
+							<form id="search-details">
+								<input type="text" type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off" value="<?php echo !empty($this->request->getQuery('searchq')) ? $this->request->getQuery('searchq') : '' ?>" />
+								<div class="search-results" id="searchResults"></div>
+								<button class="search-btn" type="button"><i class="bi bi-search"></i></button>
+							</form>
+						</div>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- Search Bar (Initially Hidden) -->
+<!-- <div class="search-container" id="searchContainer">
+	<input type="text" id="searchInput" class="search-bar" placeholder="Search products..." autocomplete="off">
+</div> -->
+<script>
+	function updateSearchFilters() {
+		let searchq = [];
+		let sort = $('#sort_type').val();
+
+		// Get all selected sizes
+		$('#searchInput').each(function() {
+			searchq.push($(this).val());
+		});
+
+		// Construct the URL
+		let url = new URL("<?php echo Router::url('/', true) ?>shop");
+
+		// Add sizes to URL
+		if (searchq.length > 0) {
+			url.searchParams.set('searchq', searchq.join('~'));
+		} else {
+			url.searchParams.delete('searchq');
+		}
+
+		// Add sorting to URL
+		if (sort) {
+			url.searchParams.set('sort', sort);
+		} else {
+			url.searchParams.delete('sort');
+		}
+
+		window.location.href = url.toString();
+	}
+	if (document.getElementById('search-details')) {
+		$('#search-details').on('keypress', function(e) {
+			var keyCode = e.keyCode || e.which;
+			if (keyCode === 13) {
+				e.preventDefault();
+				let query = document.getElementById("searchInput").value.trim();
+				if (query) {
+					updateSearchFilters();
+				} else {
+					document.getElementById("searchResults").style.display = "none";
+				}
+				return false;
+			}
+		});
+	}
+	window.onscroll = function() {
+		myFunction()
+	};
+
+	var header = document.getElementById("myHeader");
+	var sticky = header.offsetTop;
+
+	function myFunction() {
+		if (window.pageYOffset > sticky) {
+			header.classList.add("sticky");
+		} else {
+			header.classList.remove("sticky");
+		}
+	}
+
+	function sdbr_open() {
+		document.getElementById("mySidebar").style.display = "block";
+	}
+
+	function sdbr_close() {
+		document.getElementById("mySidebar").style.display = "none";
+	}
+
+	if ($(".srvc_box_txt p").length != 0) {
+		$(".srvc_box_txt p").matchHeight({
+			byrow: false,
+		});
+	}
+
+	if ($(".arrvl_text").length != 0) {
+		$(".arrvl_text").matchHeight({
+			byrow: false,
+		});
+	}
+
+	if ($(".rvw_box p").length != 0) {
+		$(".rvw_box p").matchHeight({
+			byrow: false,
+		});
+	}
+
+	if ($(".blg_text p").length != 0) {
+		$(".blg_text p").matchHeight({
+			byrow: false,
+		});
+	}
+	// Show the loading modal
+	function showLoadingModal() {
+		document.getElementById('loadingModal').style.display = 'flex';
+	}
+
+	// Hide the loading modal
+	function hideLoadingModal() {
+		document.getElementById('loadingModal').style.display = 'none';
+	}
+
+	// document.getElementById("toggleSearch").addEventListener("click", function() {
+	// 	let searchContainer = document.getElementById("searchContainer");
+
+	// 	if (searchContainer.style.display === "block") {
+	// 		searchContainer.style.display = "none";
+	// 	} else {
+	// 		searchContainer.style.display = "block";
+	// 		document.getElementById("searchInput").focus(); // Auto-focus on input
+	// 	}
+	// });
+
+	// // Close search bar when clicking outside
+	// document.addEventListener("click", function(event) {
+	// 	let searchContainer = document.getElementById("searchContainer");
+	// 	let toggleButton = document.getElementById("toggleSearch");
+
+	// 	if (!searchContainer.contains(event.target) && !toggleButton.contains(event.target)) {
+	// 		searchContainer.style.display = "none";
+	// 	}
+	// });
+
+	function debounce(func, wait) {
+		let timeout;
+		return function(...args) {
+			const context = this;
+			clearTimeout(timeout);
+			timeout = setTimeout(() => func.apply(context, args), wait);
+		};
+	}
+
+	function performSearch(query) {
+		let searchResults = document.getElementById("searchResults");
+		var csrfToken = <?php echo json_encode($this->request->getParam('_csrfToken')) ?>;
+		$.ajax({
+			headers: {
+				'X-CSRF-Token': csrfToken
+			},
+			url: '<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'searchProductByNameOrSku']); ?>', // Replace with your controller and action
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				search_term: query
+			},
+			success: function(response) {
+				if (response.status === 1 && response.data.length > 0) {
+					searchResults.innerHTML = response.data.map(item =>
+						`<div class="result-item" onclick="selectResult('${item.sku_no}')">
+                            ${item.title} - <span style="color: #881C06;">${item.sku_no}</span>
+                        </div>`
+					).join("");
+				} else {
+					searchResults.innerHTML = `<div class="result-item">No results found</div>`;
+					searchResults.style.display = "block";
+				}
+				searchResults.style.position = 'absolute';
+				searchResults.style.display = 'block';
+				searchResults.style.zIndex = '10';
+			},
+			error: function() {
+				searchResults.innerHTML = `<div class="result-item">Error retrieving results</div>`;
+				searchResults.style.display = "block";
+			}
+		});
+	}
+
+	function selectResult(SKUID) {
+		const PRODUCT_URL = '<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'productView']); ?>' + '/' + btoa(SKUID);
+		window.location.href = PRODUCT_URL;
+	}
+
+	document.getElementById("searchInput").addEventListener("input", debounce(function() {
+		let query = this.value.trim();
+		if (query) {
+			//performSearch(query);
+		} else {
+			document.getElementById("searchResults").style.display = "none";
+		}
+	}, 300));
+
+	document.querySelector(".search-btn").addEventListener("click", debounce(function() {
+		let query = document.getElementById("searchInput").value.trim();
+		if (query) {
+			// performSearch(query);
+			updateSearchFilters();
+		} else {
+			document.getElementById("searchResults").style.display = "none";
+		}
+	}, 300));
+</script>

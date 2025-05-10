@@ -1,4 +1,4 @@
-<div class="container portfolio-detail">
+<div class="container-fluid portfolio-detail">
 <h2>Project Comments</h2>
 <?php
 define('WP_USE_THEMES', false);

@@ -34,7 +34,14 @@ use Cake\Routing\Router; ?>
 				<div class="box-body">
 					<div class="col-sm-3">
 						<label for="Fund">Title</label>
-						<?= $this->Form->control('alt', ['placeholder' => 'Banners Title', 'label' => false, 'class' => 'form-control', 'value' => isset($savesearch['title']) ? $savesearch['title'] : '', 'required' => false]); ?>
+						<?= $this->Form->control('title', ['placeholder' => 'Banners Title', 'label' => false, 'class' => 'form-control', 'value' => isset($savesearch['title']) ? $savesearch['title'] : '', 'required' => false]); ?>
+					</div>
+					<div class="col-sm-3">
+						<label for="status">Block Type</label>
+						<?php
+						$options = array("1" => "Block 1", "2" => "Block 2", "3" => "Block 3", "4" => "Block 4", "5" => "Block 5"); 
+						echo $this->Form->control('block_type', ['options' => $options, 'label' => false, 'class' => 'form-control', 'value' => isset($savesearch['block_type']) ? $savesearch['block_type'] : '', 'empty' => 'Select Block Type']);
+						?>
 					</div>
 					<div class="col-sm-3">
 						<label for="status">Status</label>
@@ -100,7 +107,7 @@ use Cake\Routing\Router; ?>
 								<td><?= $this->Number->format(++$key) ?></td>
 								<td><?= h($val->title) ?></td>
 								<td><?php
-									$blockTypes = ['1' => 'Block 1', '2' => 'Block 2', '3' => 'Block 3', '4' => 'Block 4'];
+									$blockTypes = ['1' => 'Block 1', '2' => 'Block 2', '3' => 'Block 3', '4' => 'Block 4','5' => 'Block 5'];
 									echo $blockTypes[$val->block_type] ?></td>
 								<td><?= $this->General->getAdminStatus($val->status) ?></td>
 								<td><?= h($val->created) ?></td>
@@ -109,21 +116,21 @@ use Cake\Routing\Router; ?>
 									echo $this->Html->link(
 										'<i class="fa fa-eye"></i> View',
 										array('controller' => 'Banners', 'action' => 'view', base64_encode($val->id)),
-										array('escape' => false, 'class' => "btn btn-primary btn-sm", "title" => __("View", true))
+										array('escape' => false, 'class' => "btn btn-primary btn-xs", "title" => __("View", true))
 									);
 									?>
 									<?php
 									echo $this->Html->link(
 										'<i class="fa fa-pencil"></i> Edit',
 										array('controller' => 'Banners', 'action' => 'edit', base64_encode($val->id)),
-										array('escape' => false, 'class' => "btn btn-info btn-sm", "title" => __("Edit", true))
+										array('escape' => false, 'class' => "btn btn-info btn-xs", "title" => __("Edit", true))
 									);
 									?>
 									<?php
 									echo $this->Html->link(
 										'<i class="fa fa-trash"></i> Delete',
 										array('controller' => 'Banners', 'action' => 'delete', base64_encode($val->id)),
-										array('escape' => false, 'class' => "btn btn-danger btn-sm", "title" => __("Delete", true), 'confirm' => __('Are you sure you want to delete ?', $val->id))
+										array('escape' => false, 'class' => "btn btn-danger btn-xs", "title" => __("Delete", true), 'confirm' => __('Are you sure you want to delete ?', $val->id))
 									);
 									?>
 								</td>

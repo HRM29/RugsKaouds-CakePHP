@@ -1,150 +1,542 @@
-	<?php use Cake\Routing\Router;?>
-<div class="container-fluid slider">
-  <div class="row">
-  <?php if(!empty($banners)){?>
-    <div class="desktop_slider">
-	<div id="demo" class="carousel slide" data-ride="carousel"> 
-      <div class="carousel-inner">
-        <?php   
-			$i = 0;
-			foreach($banners as $banner){
-		?>
-		<div class="carousel-item <?php echo ($i==0)?'active':'';?>">
-		  <?php
-			   $image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $banner->image;
-			   if (file_exists($image)) {
-					echo $this->Html->image('/uploads/banner/'.$banner->image, array('alt' => $banner->image)); 
-			   }else{
-					echo $this->Html->image('slider1.jpg', ['alt' => 'Los Angeles']);
-			   }
-			?>  
-          <div class="carousel-caption">
-            <h3><?php echo $banner->title;?></h3>
-            <p><?php echo $banner->description;?> </p>
-          </div>
-        </div>
-		<?php $i++;} ?>
-      </div>   
-      
-      <a class="carousel-control-prev" href="#demo" data-slide="prev"> <span class="carousel-control-prev-icon"></span> </a> <a class="carousel-control-next" href="#demo" data-slide="next"> <span class="carousel-control-next-icon"></span> </a> </div>
-	  </div>
-	  <?php } ?>  
-	  
-	  
-	  <div class="mob_slider">
-	  <div id="demo" class="carousel slide" data-ride="carousel"> 
-      <div class="carousel-inner">
-        		<div class="carousel-item">
-		  <img src="/uploads/banner/mob_slide01.jpg" alt="223688703_Sh51439_slider3.jpg">  
-          <div class="carousel-caption">
-            <h3>New Arrivals</h3>
-            <p>experience the mystical beauty of oriental rugs in your home </p>
-          </div>
-        </div>
-		<div class="carousel-item active">
-		  <img src="/uploads/banner/mob_slide02.jpg" alt="1316479190_slide02.jpg">  
-          <div class="carousel-caption">
-            <h3>New Arrivals01</h3>
-            <p>experience the mystical beauty of oriental rugs </p>
-          </div>
-        </div>
-		      </div>
-      
-      <a class="carousel-control-prev" href="#demo" data-slide="prev"> <span class="carousel-control-prev-icon"></span> </a> <a class="carousel-control-next" href="#demo" data-slide="next"> <span class="carousel-control-next-icon"></span> </a> </div>
-	  </div>  
-	  
-	  
-  </div>
-</div>
-<div class="container ">
-  <div class="row ">
-    <div class="spacing">&nbsp;</div>
-    <div class="col-12 p-0">
-    <div class="main-heading ">
-      <h1>CARPET</h1>
-      <p>Collection</p>
-    </div>
-    </div>
-    <div class="col-md-7 wp-text">Selecting a Wall-to-Wall Carpet Carpet can do much more than cover your floors. It can be the foundation of a decorating plan, inspiring other ideas. Or, it can be selected to complement existing walls and furnishings. Above all, the carpet you choose should reflect your personality and bring comfort to your home.</div>
-    <div  class="col-md-5 pull-right p-0 ">
-      <div class="wp-button"><a href="<?php echo $this->Url->build(['controller'=>'pages','action'=>'carpet']); ?>" class="view-button">View All</a></div>
-    </div>
-    </div>
-    <div class="row rugs">
-      <div class="col-md-5">
-        <div class="rugs-img"><a href="#"><?= $this->Html->image('rugs1.jpg', ['alt' => '']);?> 
-          <p>Stanton Carpet</p></a>
-        </div>
-      </div>
-      <div class="col-md-5">
-        <div class="rugs-img"><a href="#"><?= $this->Html->image('rugs2.jpg', ['alt' => '']);?>  
-          <p>Rosecore</p></a>
-        </div>
-      </div>
-      <div class="col-md-2 ">
-        <div class="rugs-left-img pt-m"><a href="#"><?= $this->Html->image('rugs3.jpg', ['alt' => '']);?>  
-          <p>Crescent</p></a>
-        </div>
-        <div class="rugs-left-img pt"><a href="#"><?= $this->Html->image('rugs4.jpg', ['alt' => '']);?>  
-          <p>Nourison</p></a>
-        </div>
-        <div class="rugs-left-img pt"><a href="#"><?= $this->Html->image('rugs5.jpg', ['alt' => '']);?>  
-          <p>Karastan</p></a>
-        </div>
-      </div>
-    </div>
-  </div>
+<?php
 
-<div class="container ">
-            <div class="row ">
-            <div class="spacing1">&nbsp;</div>
-            <div class="main-heading p-0">
-            <div class="col-md-6"><h1>featureD</h1><p class="heading-text">products</p></div>
-            <div class="col-md-6 p-0"><a href="<?php echo $this->Url->build(['controller'=>'products','action'=>'shopping']); ?>"  class="view-button">View All</a></div>
-            </div>
-             
-            <div class="col-md-12 p-0 mt-4">
-			<?php foreach($featuredProductData as $data){?>
-				<div class="product "><a href="<?php echo $this->Url->build(['controller'=>'products','action'=>'productView',base64_encode($data->sku_no)]); ?>">
-				<?php 
-					//$img_src = 'https://shrugs.com/rug_pictures/';	
-					$img_src = Router::url('/', true).'uploads/product/';
-					
-					$img_no = str_replace("GOR"," ",$data->sku_no );
-					// $img_name = "sh".$img_no/7;
-					$img_name = $data->sku_no."t.jpg";
-					
-					$inFolder = $this->General->__get_picture_folder($img_name);
-					
-					 
-					$imgName =  $img_name." 001.jpg";
-						 
-					//$fileUrl = $img_src."overstock_rugs/".$inFolder."/".$imgName;
-					$fileUrl =$img_src.$inFolder."/".$img_name;
-					$thumb_imgName =  	$img_name." 001.jpg";
-					$thumbArr = explode('_',$pimg['ProductImage']['image']);	
-					$fileUrlThumb = $img_src.$inFolder.'/thumbs/thumb_'.$thumb_imgName;
-					if($this->General->remote_file_exists($fileUrl))
-						{
-					?> 
-						<img src="<?php echo $fileUrl; ?>" alt="<?php echo $record->title; ?>"   />
-					 
-					<?php }else{
-					?>
-					<img src="<?php echo $this->General->getProductSingleImages($data->id)->image; ?>" alt="<?php echo $data->title; ?>" style="height: 250px;"/>
-					<?php
-					}?>
-				<p>Size: <?php echo $data->dimension_1_feet."'".$data->dimension_1_inches.'" X '.$data->dimension_2_feet."'".$data->dimension_2_inches.'"'; ?></p>
-				<!--div class="product_info">
-					<h3><?= $data->sku_no;?></h3>
-					<div class="exact-size"><span> <strong> Exact Size: </strong></span><?php echo $data->dimension_1_feet."'".$data->dimension_1_inches.'" X '.$data->dimension_2_feet."'".$data->dimension_2_inches.'"'; ?></div>
-					<div class="price">
-						<strong>$<?= $data->selling_price;?></strong> <span>was <strike>$<?= $data->everyday_price;?> </strike></span>
+use Cake\Routing\Router; ?>
+<?php
+if (isset($HomeBlocks['Block1']) && !empty($HomeBlocks['Block1'])) {
+?>
+	<section class="main_banner">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12 no_padding">
+					<div class="mn_slide owl-carousel owl-theme">
+						<?php
+						foreach ($HomeBlocks['Block1'] as $Block1Data) {
+						?>
+							<div class="item">
+								<div class="arrvl_box">
+									<?php
+									$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $Block1Data['image'];
+									if (file_exists($image)) {
+										echo $this->Html->image('/uploads/banner/' . $Block1Data['image'], ['alt' => $Block1Data['image'], "class" => "carousel-image"]);
+									}
+
+									if (!empty($Block1Data['description']) || !empty($Block1Data['link'])) {
+									?>
+										<div class="sldr_text">
+											<?php
+											if (!empty($Block1Data['description'])) {
+												echo $Block1Data['description'];
+											}
+											if (!empty($Block1Data['link'] && !empty($Block1Data['link_name']))) {
+											?>
+												<a href="<?php echo $Block1Data['link']; ?>" class="btn"><?php echo $Block1Data['link_name']; ?></a>
+											<?php
+											}
+											?>
+										</div>
+									<?php } ?>
+									<!-- <div class="sldr_text">
+										<h1>Latest Trends</h1>
+										<span>For Today's Decor</span> 
+										<p>We Search the globe so you don't have to</p>
+										<a href="shop.html" class="btn">Browse</a>
+									</div> -->
+								</div>
+							</div>
+						<?php
+						}
+						?>
 					</div>
-				</div-->
-				</a></div>
-			<?php } ?>
-            
-            </div>
-            </div>
-</div>
+				</div>
+			</div>
+		</div>
+	</section>
+<?php
+}
+if (isset($HomeBlocks['Block2']) && !empty($HomeBlocks['Block2'])) {
+?>
+	<section class="rgs_type">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="block_type_side owl-carousel owl-theme">
+						<?php
+						foreach ($HomeBlocks['Block2'] as $block2Data) {
+						?>
+
+							<div class="typ_box block_box item">
+								<div class="typ_box_imag arrvl_box">
+									<?php
+									$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $block2Data['image'];
+									if (file_exists($image)) {
+										echo $this->Html->link(
+
+											$this->Html->image('/uploads/banner/' . $block2Data['image'], ['alt' => $block2Data['image'], "class" => "zoom-image"]),
+											$block2Data['link'],
+											array('escape' => false)
+
+										);
+									}
+									?>
+								</div>
+								<h4><?= $block2Data['title'] ?></h4>
+							</div>
+						<?php
+						}
+						?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+<?php
+}
+?>
+<?php
+if (isset($HomeBlocks['Block3']) && !empty($HomeBlocks['Block3'])) {
+	foreach ($HomeBlocks['Block3'] as $Block3Data) {
+?>
+		<section class="rgs_abt">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="col-md-6">
+						<div class="rgs_abt_txt">
+							<h1><?php echo $Block3Data['title'] ?></h1>
+							<?php echo $Block3Data['description'] ?>
+							<a class="btn" href="<?php echo Router::url('/', true) ?>shop">Shop Now</a>
+							<a class="btn cntct" href="<?php echo Router::url('/', true) ?>contact">Contact Us</a>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="rgs_abt_imag">
+							<?php
+							$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $Block3Data['image'];
+							if (file_exists($image)) {
+								echo $this->Html->image('/uploads/banner/' . $Block3Data['image'], ['alt' => $Block3Data['image']]);
+							}
+							?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	<?php
+	}
+}
+if (isset($HomeBlocks['Block4']) && !empty($HomeBlocks['Block4'])) {
+	?>
+	<section class="rgs_srvc">
+		<div class="container-fluid">
+			<div class="row justify-content-center">
+				<?php
+				foreach ($HomeBlocks['Block4'] as $Block4Data) {
+				?>
+					<div class="col-md-3">
+						<div class="srvc_box">
+							<div class="srvc_box_imag">
+								<?php
+								$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $Block4Data['image'];
+								if (file_exists($image)) {
+									echo $this->Html->image('/uploads/banner/' . $Block4Data['image'], ['alt' => $Block4Data['image']]);
+								}
+								?>
+							</div>
+							<div class="srvc_box_txt">
+								<h3><?php echo $Block4Data['title']; ?></h3>
+								<?php
+								echo $Block4Data['description'];
+								if (isset($Block4Data['link']) && !empty($Block4Data['link'])) {
+								?>
+									<a class="btn" href="<?php echo $Block4Data['link']; ?>"><?php echo $Block4Data['link_name'] ?></a>
+								<?php
+								}
+								?>
+
+							</div>
+						</div>
+					</div>
+				<?php
+				}
+				?>
+			</div>
+		</div>
+	</section>
+<?php
+}
+?>
+<?php
+if (count($latestProducts) > 0) {
+}
+?>
+<section class="ltst_arrvls">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="heading">
+					<h2>Shop Latest Arrivals</h2>
+				</div>
+				<div class="arrvls_slide owl-carousel owl-theme">
+					<?php
+					foreach ($latestProducts as $productkeys => $productData) {
+						if (!empty($productData['product_images'])) {
+							$image_data = $productData['product_images'][0];
+							$imageURL = $image_data->image;
+						}
+					?>
+						<div class="item">
+							<div class="arrvl_box">
+								<a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>">
+									<?php
+									$img_src = Router::url('/', true) . 'uploads/product/';
+
+									$img_name = isset($productData->product_images[0]->image) ? $productData->product_images[0]->image : '';
+
+									// $img_name = $data->sku_no."a.jpg";
+									$img_name_a = substr($productData->sku_no, 3) . "a.jpg";
+
+									$sku = $productData->sku_no;
+
+									$inFolder = $this->General->__get_picture_folder($sku);
+
+
+									$filePath =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . $img_name;
+									$filePath_A =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . $img_name_a;
+									//echo $filePath ; die(" Check point1");
+
+									$filePath21 =  WWW_ROOT . 'uploads' . DS . 'product' . DS . $inFolder . DS . str_replace('jpg', 'JPG', $img_name);
+
+									$fileUrl = $img_src . $inFolder . "/" . $img_name;
+									$fileUrl_A = $img_src . $inFolder . "/" . $img_name_a;
+
+									$fileUr2l = $img_src . $inFolder . "/" . str_replace('jpg', 'JPG', $img_name);
+
+									if ($img_name != '') {
+									?>
+										<img src="<?php echo $img_name; ?>" alt="<?= $productData->title; ?>" width="400" />
+
+									<?php } else { ?>
+										<img src="<?php echo Router::url('/', true); ?>img/no-image.png" alt="<?php echo $productData->title; ?>" style="height:250px;" />
+									<?php
+									} ?>
+								</a>
+								<span class="sale">Sale!</span>
+								<div class="arrvl_text">
+									<!--h3><a href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'productView', base64_encode($productData->sku_no)]); ?>" style="text-decoration: none; color: #000"><?php echo $productData->style; ?></a></h3-->
+									<div class="sku-container-fluid">
+										<span class="sku-label">SKU:</span>
+										<span class="sku-value"><?php echo $productData->sku_no; ?></span>
+									</div>
+									<?php
+									if (in_array($productData->id, $cartItems)) {
+									?>
+										<div class="pdocut-buton" data-id=<?php echo $productData->id; ?>>
+											<a class="btn crt_btn cart-button" data-id=<?php echo $productData->id; ?> href="<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>"><i class="bi bi-bag-plus"></i> Added to Cart</a>
+										</div>
+									<?php
+									} else {
+									?>
+										<div class="pdocut-buton" data-id=<?php echo $productData->id; ?>>
+											<a class="btn crt_btn cart-button" data-id=<?php echo $productData->id; ?> href="javascript:void(0);"><i class="bi bi-bag-plus"></i> Add to Cart</a>
+										</div>
+									<?php
+									}
+									?>
+
+									<p><?= $productData->title; ?></p>
+									<span>$<?php echo number_format($productData->selling_price, 2); ?></span>
+									<span class="nw_price">$<?php echo number_format($productData->everyday_price, 2); ?></span>
+								</div>
+							</div>
+						</div>
+					<?php
+					}
+					?>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<?php
+if (isset($HomeBlocks['Block5']) && !empty($HomeBlocks['Block5'])) {
+?>
+	<section class="wrks">
+		<div class="container-fluid">
+			<div class="row">
+				<?php
+				foreach ($HomeBlocks['Block5'] as $Block5Data) {
+				?>
+					<div class="col-lg-4 col-md-12">
+						<div class="wrk_box">
+							<div class="wrk_icn">
+								<div class="wrk_icn_inr">
+									<?php
+									$image = WWW_ROOT . 'uploads' . DS . 'banner' . DS . $Block5Data['image'];
+									if (file_exists($image)) {
+										echo $this->Html->image('/uploads/banner/' . $Block5Data['image'], ['alt' => $Block5Data['image']]);
+									}
+									?>
+								</div>
+							</div>
+							<div class="wrk_txt">
+								<h3><?php echo $Block5Data['title']; ?></h3>
+								<?php echo $Block5Data['description']; ?>
+							</div>
+						</div>
+					</div>
+				<?php
+				}
+				?>
+			</div>
+		</div>
+	</section>
+<?php
+}
+if (isset($HomeBlocks['BlockReviews']) && !empty($HomeBlocks['BlockReviews'])) {
+?>
+	<section class="rvws">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="heading">
+						<h2>Rave Reviews</h2>
+					</div>
+				</div>
+				<?php foreach ($HomeBlocks['BlockReviews'] as $reviewData): ?>
+					<div class="col-lg-4 col-md-12">
+						<div class="rvw_box">
+							<div class="rvw_prfl">
+								<?php
+								if (!empty($reviewData['reviewer_image'])) {
+									$image = WWW_ROOT . 'uploads' . DS . 'reviewers' . DS . $reviewData['reviewer_image'];
+									if (file_exists($image)) {
+										echo $this->Html->image('/uploads/reviewers/' . $reviewData['reviewer_image'], ['alt' => $reviewData['reviewer_image'], "class" => "circular-image"]);
+									} else {
+										echo $this->Html->image('/img/user-img.jpg', ['alt' => 'user-img.jpg', "class" => "circular-image"]);
+									}
+								} else {
+									echo $this->Html->image('/img/user-img.jpg', ['alt' => 'user-img.jpg', "class" => "circular-image"]);
+								}
+								?>
+								<div class="rvw_text">
+									<h3><?= h($reviewData['reviewer_name']) ?></h3>
+									<?php
+									$rating = $reviewData['rating'];
+									$emptyStars = 5 - $rating;
+									?>
+									<div class="star-rating">
+										<?php for ($i = 0; $i < $rating; $i++): ?>
+											<i class="bi bi-star-fill"></i>
+										<?php endfor; ?>
+										<?php for ($i = 0; $i < $emptyStars; $i++): ?>
+											<i class="bi bi-star"></i>
+										<?php endfor; ?>
+									</div>
+								</div>
+							</div>
+							<!-- Review text container -->
+							<div class="review-text">
+								<?= nl2br(h($reviewData['review_text'])) ?>
+							</div>
+							<button class="toggle-review">Show More</button>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+<?php
+}
+?>
+
+<section class="blogs">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="heading">
+					<h2>In the News</h2>
+				</div>
+				<div class="blg_slide owl-carousel owl-theme">
+				    <?php foreach ($wpBlogs as $post): ?>
+                        <div class="item">
+                            <div class="blg_box">
+                                <a href="<?= $this->Url->build('/blog/' . h($post->post_name), ['fullBase' => true]) ?>" style="text-decoration: none;">
+                                    <div class="blg_imag <?= $post->image_url ?>"  style="background-image: url(<?= $post->image_url ?>);">
+                                        <?php 
+                                            $date = DateTime::createFromFormat('n/j/y, g:i A', $post->post_date);
+                                            $formattedDate = $date ? $date->format('F j, Y') : h($post->post_date);
+                                        ?>
+                                        <span><?= $formattedDate; ?></span>
+                                    </div>
+                                    <div class="blg_text">
+                                        <h3><?= h($post->post_title); ?></h3>
+                                        <p><?= h(substr(strip_tags($post->post_content), 0, 100)) . '...'; ?></p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	$('.mn_slide').owlCarousel({
+		loop: true,
+		margin: 30,
+		nav: true,
+		dots: false,
+		autoplay: true,
+		autoplayTimeout: 5000,
+		navText: ['<?php echo $this->Html->image('prev_wht.png', ['alt' => 'prev_wht']); ?>', '<?php echo $this->Html->image('next_wht.png', ['alt' => 'next_wht']); ?>'],
+		responsive: {
+			0: {
+				items: 1
+			},
+			768: {
+				items: 1
+			},
+			1200: {
+				items: 1
+			}
+		}
+	});
+	$('.arrvls_slide').owlCarousel({
+		loop: true,
+		margin: 10,
+		nav: true,
+		dots: false,
+		autoplay: true,
+		autoplayTimeout: 5000,
+		navText: ['<?php echo $this->Html->image('prev.png', ['alt' => 'prev']); ?>', '<?php echo $this->Html->image('next.png', ['alt' => 'next']); ?>'],
+		responsive: {
+			0: {
+				items: 2
+			},
+			576: {
+				items: 3
+			},
+			768: {
+				items: 3
+			},
+			992: {
+				items: 4
+			}
+		}
+	});
+
+	$('.blg_slide').owlCarousel({
+		loop: true,
+		margin: 30,
+		nav: true,
+		dots: false,
+		autoplay: true,
+		autoplayTimeout: 5000,
+		navText: ['<?php echo $this->Html->image('prev.png', ['alt' => 'prev']); ?>', '<?php echo $this->Html->image('next.png', ['alt' => 'next']); ?>'],
+		responsive: {
+			0: {
+				items: 1
+			},
+			768: {
+				items: 2
+			},
+			1200: {
+				items: 3
+			}
+		}
+	});
+
+	$('.tstmnls_slide').owlCarousel({
+		loop: true,
+		margin: 10,
+		nav: true,
+		dots: false,
+		autoplay: true,
+		autoplayTimeout: 5000,
+		navText: ['<?php echo $this->Html->image('tstmnls_arow_prv.png', ['alt' => 'tstmnls_arow_prv']); ?>', '<?php echo $this->Html->image('tstmnls_arow_nxt.png', ['alt' => 'tstmnls_arow_nxt']); ?>'],
+		responsive: {
+			0: {
+				items: 1
+			},
+			768: {
+				items: 1
+			},
+			1200: {
+				items: 1
+			}
+		}
+	});
+	$('.cart-button').click(function() {
+
+		var product_id = $(this).attr('data-id');
+		//var csrfToken = $("[name='_csrfToken']").val();
+		var csrfToken = <?php echo json_encode($this->request->getParam('_csrfToken')) ?>;
+		var url = '<?php echo $this->Url->build(['controller' => 'products', 'action' => 'addToCart']); ?>';
+		$.ajax({
+			headers: {
+				'X-CSRF-Token': csrfToken
+			},
+			type: 'POST',
+			data: {
+				product_id: product_id,
+				_csrfToken: csrfToken
+			},
+			url: url,
+			success: function(data) {
+				// window.location.replace('<?php echo $this->Url->build(['controller' => 'products', 'action' => 'cart']); ?>');
+			}
+		});
+	});
+
+	$('.block_type_side').owlCarousel({
+		loop: true,
+		margin: 30,
+		nav: true,
+		dots: false,
+		autoplay: false,
+		autoplayTimeout: 5000,
+		navText: ['<?php echo $this->Html->image('prev.png', ['alt' => 'prev']); ?>', '<?php echo $this->Html->image('next.png', ['alt' => 'next']); ?>'],
+		responsive: {
+			0: {
+				items: 1
+			},
+			576: {
+				items: 2
+			},
+			768: {
+				items: 3
+			},
+			1200: {
+				items: 4
+			}
+		}
+	});
+	document.addEventListener('DOMContentLoaded', function() {
+		// Select all toggle buttons
+		const toggleButtons = document.querySelectorAll('.toggle-review');
+
+		toggleButtons.forEach(function(button) {
+			button.addEventListener('click', function() {
+				// Find the corresponding review-text container
+				const reviewText = this.previousElementSibling;
+				const isExpanded = reviewText.classList.contains('expanded');
+
+				if (isExpanded) {
+					// Collapse: animate from current height to 60px
+					reviewText.style.maxHeight = reviewText.scrollHeight + 'px'; // set current height explicitly
+					// Force reflow to ensure the new maxHeight is taken into account
+					reviewText.offsetHeight;
+					reviewText.style.maxHeight = '60px';
+					reviewText.classList.remove('expanded');
+					this.textContent = 'Show More';
+				} else {
+					// Expand: animate from 60px to the element's scrollHeight
+					reviewText.style.maxHeight = reviewText.scrollHeight + 'px';
+					reviewText.classList.add('expanded');
+					this.textContent = 'Show Less';
+				}
+			});
+		});
+	});
+</script>

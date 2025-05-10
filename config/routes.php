@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routes configuration
  *
@@ -47,17 +48,16 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
-	
-	//$routes->connect('/', ['prefix' => 'admin','controller' => 'Users', 'action' => 'login']);
+
+    //$routes->connect('/', ['prefix' => 'admin','controller' => 'Users', 'action' => 'login']);
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'home']);
-	$routes->connect('/Products/', ['controller' => 'Products', 'action' => 'search']);
-	$routes->connect(
+    $routes->connect('/Products/', ['controller' => 'Products', 'action' => 'search']);
+    $routes->connect(
         '/:slug',
         ['controller' => 'Pages', 'action' => 'display'],
         [
@@ -65,17 +65,49 @@ Router::scope('/', function (RouteBuilder $routes) {
             //'slug' => '[^\/]+' // Taken from your example
         ]
     );
-	
-	$routes->connect('/Products/*', ['controller' => 'Products', 'action' => 'rugs']);
-	
-	$routes->connect('/rug-style/*', ['controller' => 'Products', 'action' => 'rugStyle']);
-	$routes->connect('/rug-size/*', ['controller' => 'Products', 'action' => 'rugSize']);
-	$routes->connect('/rug-color/*', ['controller' => 'Products', 'action' => 'rugColor']);
-   
+
+    $routes->connect('/product-category/*', ['controller' => 'Products', 'action' => 'rugs']);
+
+    $routes->connect('/rug-style/*', ['controller' => 'Products', 'action' => 'rugStyle']);
+    $routes->connect('/rug-size/*', ['controller' => 'Products', 'action' => 'rugSize']);
+    $routes->connect('/rug-color/*', ['controller' => 'Products', 'action' => 'rugColor']);
+    $routes->connect('/contact/', ['controller' => 'Pages', 'action' => 'contactUs']);
+
+    $routes->connect('/collections', ['controller' => 'Pages', 'action' => 'collectionMenu']);
+
+    $routes->connect(
+        '/collections/:slug',
+        ['controller' => 'Pages', 'action' => 'collectionMenu'],
+        ['pass' => ['slug'], 'slug' => '.*'] 
+    );
+
+    $routes->connect('/shop/', ['controller' => 'Products', 'action' => 'shopping']);
+    $routes->connect('/completed-projects/', ['controller' => 'Pages', 'action' => 'projects']);
+    $routes->connect('/about-us/:slug', ['controller' => 'Pages', 'action' => 'display'], ['pass' => ['slug'],'slug' => 'kaoud-carpets-rugs|our-brands-inventory|community|asid']);
+
+    $routes->connect('/my-account', ['controller' => 'Users', 'action' => 'login']);
+    $routes->connect('/my-account-2', ['controller' => 'Users', 'action' => 'myaccount']);
+    $routes->connect('/my-account/lost-password/', ['controller' => 'Users', 'action' => 'forgotPassword']);
+
+    $routes->connect('/rug-cleaning-form/', ['controller' => 'Pages', 'action' => 'rugcleaning']);
+    $routes->connect('/schedule-pickup-for-rug-repair/', ['controller' => 'Pages', 'action' => 'rugrepair']);
+    $routes->connect('/schedule-insurance-appraisal/', ['controller' => 'Pages', 'action' => 'rugappraisal']);
+    $routes->connect('/schedule-sell-us/', ['controller' => 'Pages', 'action' => 'rugsellus']);
+    $routes->connect(
+        '/media/view/:mediaslug/:filename',
+        ['controller' => 'Pages', 'action' => 'viewMediaLib'],
+        ['pass' => ['mediaslug', 'filename'], 'mediaslug' => '.*', 'filename' => '.*']
+    );    
+    // $routes->connect('/latest-news', ['controller' => 'LatestNews', 'action' => 'index']);
+    //  $routes->connect('/latest-news/:slug', 
+    //     ['controller' => 'LatestNews', 'action' => 'view'], 
+    //     ['pass' => ['slug'], 'slug' => '[a-zA-Z0-9-_]+']
+    // );
+
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
-	 
+
     /**
      * Connect catchall routes for all controllers.
      *
@@ -92,6 +124,7 @@ Router::scope('/', function (RouteBuilder $routes) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
+
     $routes->fallbacks(DashedRoute::class);
 });
 
@@ -99,6 +132,14 @@ Router::prefix('admin', function ($routes) {
     $routes->connect('/', ['controller' => 'Users', 'action' => 'login']);
 
     $routes->connect('/forgot', ['controller' => 'Users', 'action' => 'forgot']);
-  $routes->connect('/users/dashboard', ['controller' => 'Users', 'action' => 'index']);
+    $routes->connect('/users/dashboard', ['controller' => 'Users', 'action' => 'index']);
+    $routes->connect('/configuration/manage-footer', ['controller' => 'HeaderFooter', 'action' => 'manageFooter']);
+    $routes->connect(
+        '/admin-media/admin-view/:mediaslug/:filename',
+        ['controller' => 'MediaUpload', 'action' => 'viewMediaLib'],
+        ['pass' => ['mediaslug', 'filename'], 'mediaslug' => '.*', 'filename' => '.*']
+    );
+    $routes->connect('/media-upload/editor-upload', ['controller' => 'MediaUpload', 'action' => 'uploadEditorFile']);
+
     $routes->fallbacks('DashedRoute');
 });
